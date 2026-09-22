@@ -45,14 +45,13 @@
 
     <!-- =========================================
          COMPROBACION DIRECTA DE SESION
-         
-         Esta pagina se protege directamente,
-         independientemente de auth.js.
     ========================================== -->
 
     <script>
 
-        (async function protegerFamilias() {
+        window.familiasAutorizado = false;
+
+        window.familiasAuth = (async function protegerFamilias() {
 
             try {
 
@@ -78,13 +77,19 @@
                         "index.html"
                     );
 
-                    return;
+                    return false;
 
                 }
 
 
                 /*
                  * Sesion valida.
+                 */
+
+                window.familiasAutorizado = true;
+
+
+                /*
                  * Mostramos la pagina.
                  */
 
@@ -92,29 +97,7 @@
                     "visible";
 
 
-                /*
-                 * Indicamos que la pagina
-                 * esta autorizada.
-                 */
-
-                window.familiasAutorizado =
-                    true;
-
-
-                /*
-                 * Iniciamos la carga de la base
-                 * solamente despues de validar
-                 * la sesion.
-                 */
-
-                if (
-                    typeof iniciarFamilias ===
-                    "function"
-                ) {
-
-                    iniciarFamilias();
-
-                }
+                return true;
 
 
             } catch (error) {
@@ -128,6 +111,8 @@
                 window.location.replace(
                     "index.html"
                 );
+
+                return false;
 
             }
 
@@ -995,8 +980,6 @@
 
                     <thead>
 
-                        <!-- ENCABEZADOS -->
-
                         <tr>
 
                             <th>
@@ -1025,8 +1008,6 @@
 
                         </tr>
 
-
-                        <!-- FILA DE FILTROS -->
 
                         <tr class="fila-filtros">
 
@@ -1141,10 +1122,6 @@
             </div>
 
 
-            <!-- =====================================
-                 PAGINACION
-            ====================================== -->
-
             <div
                 id="paginacion"
                 class="paginacion"
@@ -1237,21 +1214,16 @@
 
 
             return String(valor)
-
                 .replace(/\u00A0/g, "")
-
                 .replace(
                     /[\u200B-\u200D\uFEFF]/g,
                     ""
                 )
-
                 .replace(
                     /\s+/g,
                     " "
                 )
-
                 .trim()
-
                 .toUpperCase();
 
         }
@@ -1398,18 +1370,16 @@
                     const {
                         data,
                         error
-                    } = await supabaseClient
-
-                        .from("afiliados")
-
-                        .select(
-                            "Sitio,PersonaId,FamiliaId,Nombres,Apellidos,estado"
-                        )
-
-                        .range(
-                            desde,
-                            hasta
-                        );
+                    } =
+                        await supabaseClient
+                            .from("afiliados")
+                            .select(
+                                "Sitio,PersonaId,FamiliaId,Nombres,Apellidos,estado"
+                            )
+                            .range(
+                                desde,
+                                hasta
+                            );
 
 
                     if (error) {
@@ -1462,7 +1432,6 @@
                     1;
 
                 mostrarAfiliados();
-
 
                 ocultarResultado();
 
@@ -1683,17 +1652,12 @@
                 afiliados.filter(
                     afiliado => {
 
-
                         const sitio =
                             obtenerSitio(
                                 afiliado.Sitio,
                                 afiliado.FamiliaId
                             );
 
-
-                        // =====================================
-                        // FILTRO DE ESTADO GENERAL
-                        // =====================================
 
                         if (
                             filtroEstado ===
@@ -1718,10 +1682,6 @@
 
                         }
 
-
-                        // =====================================
-                        // FILTROS DE LA TABLA
-                        // =====================================
 
                         if (
                             filtrosTabla.sitio &&
@@ -1804,10 +1764,6 @@
                         }
 
 
-                        // =====================================
-                        // BUSQUEDA GENERAL
-                        // =====================================
-
                         if (!texto) {
 
                             return true;
@@ -1817,21 +1773,13 @@
 
                         const contenido =
                             normalizar(
-
                                 [
-
                                     sitio,
-
                                     afiliado.FamiliaId,
-
                                     afiliado.PersonaId,
-
                                     afiliado.Nombres,
-
                                     afiliado.Apellidos
-
                                 ].join(" ")
-
                             );
 
 
@@ -1842,10 +1790,6 @@
                     }
                 );
 
-
-            // =====================================
-            // PAGINACION
-            // =====================================
 
             const totalPaginas =
                 Math.max(
@@ -2112,7 +2056,6 @@
 
             paginaActual--;
 
-
             mostrarAfiliados();
 
         }
@@ -2142,7 +2085,6 @@
 
 
             paginaActual++;
-
 
             mostrarAfiliados();
 
@@ -2359,10 +2301,6 @@
                     );
 
 
-                // =====================================
-                // COMPROBAR HOJA
-                // =====================================
-
                 const hojaEncontrada =
                     libro.SheetNames.find(
                         nombre =>
@@ -2414,10 +2352,6 @@
                 }
 
 
-                // =====================================
-                // PROCESAR EXCEL
-                // =====================================
-
                 mostrarResultado(
                     "⏳ Procesando registros del Excel..."
                 );
@@ -2442,10 +2376,6 @@
 
                 }
 
-
-                // =====================================
-                // CREAR MAPA DE LA BASE ACTUAL
-                // =====================================
 
                 const baseAnterior =
                     new Map();
@@ -2473,10 +2403,6 @@
                 );
 
 
-                // =====================================
-                // CREAR NUEVA BASE COMPLETA
-                // =====================================
-
                 const nuevaBase =
                     new Map();
 
@@ -2490,10 +2416,6 @@
                 let reactivados =
                     0;
 
-
-                // =====================================
-                // PERSONAS DEL EXCEL
-                // =====================================
 
                 nuevosPorPersona.forEach(
                     (nuevo, clave) => {
@@ -2581,11 +2503,6 @@
                 );
 
 
-                // =====================================
-                // PERSONAS QUE YA NO APARECEN
-                // QUEDAN INACTIVAS
-                // =====================================
-
                 let inactivados =
                     0;
 
@@ -2649,10 +2566,6 @@
                     );
 
 
-                // =====================================
-                // GUARDAR EN SUPABASE
-                // =====================================
-
                 mostrarResultado(
 
                     `⏳ Guardando ${nuevaBaseArray.length.toLocaleString("es-GT")} afiliados en Supabase...`
@@ -2665,10 +2578,6 @@
                 );
 
 
-                // =====================================
-                // ACTUALIZAR MEMORIA LOCAL
-                // =====================================
-
                 afiliados =
                     nuevaBaseArray;
 
@@ -2680,10 +2589,6 @@
 
                 mostrarAfiliados();
 
-
-                // =====================================
-                // GUARDAR FECHA LOCAL
-                // =====================================
 
                 const ahora =
                     new Date();
@@ -2727,10 +2632,6 @@
                 ).value =
                     "";
 
-
-                // =====================================
-                // RESULTADO
-                // =====================================
 
                 mostrarResultado(
 
@@ -2876,9 +2777,7 @@
                     error
                 } =
                     await supabaseClient
-
                         .from("afiliados")
-
                         .upsert(
                             bloque,
                             {
@@ -2975,7 +2874,7 @@
 
 
         // =========================================
-        // REINICIAR PAGINA Y MOSTRAR
+        // APLICAR FILTRO
         // =========================================
 
         function aplicarFiltroTabla() {
@@ -3079,19 +2978,15 @@
 
         // =========================================
         // INICIAR FAMILIAS
-        //
-        // IMPORTANTE:
-        // Ya no se llama directamente a cargarBase().
-        // La comprobacion de sesion ejecutara
-        // iniciarFamilias() solamente cuando el
-        // usuario este autenticado.
         // =========================================
 
         async function iniciarFamilias() {
 
-            if (
-                !window.familiasAutorizado
-            ) {
+            const accesoPermitido =
+                await window.familiasAuth;
+
+
+            if (!accesoPermitido) {
 
                 return;
 
@@ -3101,6 +2996,16 @@
             await cargarBase();
 
         }
+
+
+        // =========================================
+        // INICIAR PAGINA
+        //
+        // En este punto todas las funciones
+        // ya fueron declaradas.
+        // =========================================
+
+        iniciarFamilias();
 
     </script>
 
