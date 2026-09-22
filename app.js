@@ -1,247 +1,282 @@
 // =========================================================
-// CONFIGURACIÓN
-// =========================================================
-
-const CLAVE_LIBROS = "biblioteca_libros";
-const CLAVE_PRESTAMOS = "biblioteca_prestamos";
-
-
-// =========================================================
-// OBTENER LIBROS
-// =========================================================
-
-function obtenerLibros() {
-
-    const datos = localStorage.getItem(CLAVE_LIBROS);
-
-    if (!datos) {
-        return [];
-    }
-
-    try {
-        return JSON.parse(datos);
-    } catch (error) {
-
-        console.error(
-            "Error al leer los libros:",
-            error
-        );
-
-        return [];
-    }
-}
-
-
-// =========================================================
-// OBTENER PRÉSTAMOS
-// =========================================================
-
-function obtenerPrestamos() {
-
-    const datos =
-        localStorage.getItem(CLAVE_PRESTAMOS);
-
-    if (!datos) {
-        return [];
-    }
-
-    try {
-        return JSON.parse(datos);
-    } catch (error) {
-
-        console.error(
-            "Error al leer los préstamos:",
-            error
-        );
-
-        return [];
-    }
-}
-
-
-// =========================================================
-// GUARDAR PRÉSTAMOS
-// =========================================================
-
-function guardarPrestamos(prestamos) {
-
-    localStorage.setItem(
-        CLAVE_PRESTAMOS,
-        JSON.stringify(prestamos)
-    );
-
-}
-
-
-// =========================================================
-// FECHA ACTUAL
-// =========================================================
-
-function obtenerFechaActual() {
-
-    const fecha = new Date();
-
-    const año = fecha.getFullYear();
-
-    const mes = String(
-        fecha.getMonth() + 1
-    ).padStart(2, "0");
-
-    const dia = String(
-        fecha.getDate()
-    ).padStart(2, "0");
-
-    return `${año}-${mes}-${dia}`;
-}
-
-
-// =========================================================
-// SUMAR 4 SEMANAS
-// =========================================================
-
-function obtenerFechaDevolucion() {
-
-    const fecha = new Date();
-
-    fecha.setDate(
-        fecha.getDate() + 28
-    );
-
-    const año = fecha.getFullYear();
-
-    const mes = String(
-        fecha.getMonth() + 1
-    ).padStart(2, "0");
-
-    const dia = String(
-        fecha.getDate()
-    ).padStart(2, "0");
-
-    return `${año}-${mes}-${dia}`;
-}
-
-
-// =========================================================
 // ACTUALIZAR ESTADÍSTICAS DEL INICIO
 // =========================================================
 
-function actualizarInicio() {
+async function actualizarInicio() {
 
-    const libros = obtenerLibros();
+    try {
 
-    const prestamos = obtenerPrestamos();
+        // =====================================================
+        // OBTENER LIBROS DESDE SUPABASE
+        // =====================================================
 
-    const totalLibros =
-        libros.length;
-
-    const disponibles =
-        libros.filter(
-            libro => libro.estado === "Disponible"
-        ).length;
-
-    const prestados =
-        prestamos.filter(
-            prestamo =>
-                prestamo.estado === "Prestado"
-        ).length;
+        const {
+            data: libros,
+            error: errorLibros
+        } = await supabaseClient
+            .from("libros")
+            .select("*");
 
 
-    const hoy =
-        new Date(
-            obtenerFechaActual()
-        );
+        if (errorLibros) {
+
+            console.error(
+                "Error al cargar los libros:",
+                errorLibros
+            );
+
+            return;
+        }
 
 
-    const vencidos =
-        prestamos.filter(
-            prestamo => {
+        // =====================================================
+        // OBTENER PRÉSTAMOS ACTIVOS DESDE SUPABASE
+        // =====================================================
 
-                if (
-                    prestamo.estado !== "Prestado"
-                ) {
-                    return false;
-                }
+        const {
+            data: prestamos,
+            error: errorPrestamos
+        } = await supabaseClient
+            .from("prestamos")
+            .select("*");
 
-                const fechaDevolucion =
-                    new Date(
-                        prestamo.fechaDevolucion
+
+        if (errorPrestamos) {
+
+            console.error(
+                "Error al cargar los préstamos:",
+                errorPrestamos
+            );
+
+            return;
+        }
+
+
+        // =====================================================
+        // NORMALIZAR DATOS
+        // =====================================================
+
+        const listaLibros =
+            Array.isArray(libros)
+                ? libros
+                : [];
+
+
+        const listaPrestamos =
+            Array.isArray(prestamos)
+                ? prestamos
+                : [];
+
+
+        // =====================================================
+        // TOTAL DE LIBROS
+        // =====================================================
+
+        const totalLibros =
+            listaLibros.length;
+
+
+        // =====================================================
+        // PRÉSTAMOS ACTIVOS
+        // =====================================================
+
+        const prestamosActivos =
+            listaPrestamos.filter(
+                prestamo =>
+                    prestamo.estado === "Prestado"
+            );
+
+
+        // =====================================================
+        // CÓDIGOS DE LIBROS PRESTADOS
+        // =====================================================
+
+        const librosPrestados =
+            new Set(
+                prestamosActivos.map(
+                    prestamo =>
+                        String(
+                            prestamo.codigoLibro
+                        )
+                            .trim()
+                            .replace(/^0+/, "") || "0"
+                )
+            );
+
+
+        // =====================================================
+        // LIBROS DISPONIBLES
+        // =====================================================
+
+        const disponibles =
+            listaLibros.filter(
+                libro => {
+
+                    if (
+                        libro.estado === "Baja"
+                    ) {
+                        return false;
+                    }
+
+
+                    const codigo =
+                        String(
+                            libro.codigoLibro
+                        )
+                            .trim()
+                            .replace(/^0+/, "") || "0";
+
+
+                    return !librosPrestados.has(
+                        codigo
                     );
 
-                return fechaDevolucion < hoy;
+                }
+            ).length;
 
+
+        // =====================================================
+        // TOTAL DE PRESTADOS
+        // =====================================================
+
+        const prestados =
+            prestamosActivos.length;
+
+
+        // =====================================================
+        // FECHA ACTUAL
+        // =====================================================
+
+        const hoy =
+            new Date();
+
+
+        hoy.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
+        // =====================================================
+        // TOTAL DE VENCIDOS
+        // =====================================================
+
+        const vencidos =
+            prestamosActivos.filter(
+                prestamo => {
+
+                    if (
+                        !prestamo.fechaDevolucion
+                    ) {
+                        return false;
+                    }
+
+
+                    const fechaDevolucion =
+                        new Date(
+                            prestamo.fechaDevolucion
+                        );
+
+
+                    fechaDevolucion.setHours(
+                        0,
+                        0,
+                        0,
+                        0
+                    );
+
+
+                    return fechaDevolucion < hoy;
+
+                }
+            ).length;
+
+
+        // =====================================================
+        // MOSTRAR RESULTADOS
+        // =====================================================
+
+        const elementoLibros =
+            document.getElementById(
+                "totalLibros"
+            );
+
+
+        const elementoDisponibles =
+            document.getElementById(
+                "totalDisponibles"
+            );
+
+
+        const elementoPrestados =
+            document.getElementById(
+                "totalPrestados"
+            );
+
+
+        const elementoVencidos =
+            document.getElementById(
+                "totalVencidos"
+            );
+
+
+        if (elementoLibros) {
+
+            elementoLibros.textContent =
+                totalLibros;
+
+        }
+
+
+        if (elementoDisponibles) {
+
+            elementoDisponibles.textContent =
+                disponibles;
+
+        }
+
+
+        if (elementoPrestados) {
+
+            elementoPrestados.textContent =
+                prestados;
+
+        }
+
+
+        if (elementoVencidos) {
+
+            elementoVencidos.textContent =
+                vencidos;
+
+        }
+
+
+        // =====================================================
+        // INFORMACIÓN PARA CONSOLA
+        // =====================================================
+
+        console.log(
+            "Estadísticas actualizadas:",
+            {
+                libros: totalLibros,
+                disponibles: disponibles,
+                prestados: prestados,
+                vencidos: vencidos
             }
-        ).length;
-
-
-    const elementoLibros =
-        document.getElementById(
-            "totalLibros"
-        );
-
-    const elementoDisponibles =
-        document.getElementById(
-            "totalDisponibles"
-        );
-
-    const elementoPrestados =
-        document.getElementById(
-            "totalPrestados"
-        );
-
-    const elementoVencidos =
-        document.getElementById(
-            "totalVencidos"
         );
 
 
-    if (elementoLibros) {
-        elementoLibros.textContent =
-            totalLibros;
-    }
+    } catch (error) {
 
-    if (elementoDisponibles) {
-        elementoDisponibles.textContent =
-            disponibles;
-    }
-
-    if (elementoPrestados) {
-        elementoPrestados.textContent =
-            prestados;
-    }
-
-    if (elementoVencidos) {
-        elementoVencidos.textContent =
-            vencidos;
-    }
-
-}
-
-
-// =========================================================
-// MENSAJE DE OPCIÓN EN DESARROLLO
-// =========================================================
-
-function mostrarMensajeProximamente(
-    evento,
-    nombre
-) {
-
-    evento.preventDefault();
-
-    const mensaje =
-        document.getElementById(
-            "mensajeInicio"
+        console.error(
+            "Error al actualizar las estadísticas:",
+            error
         );
 
-    if (!mensaje) {
-        return;
     }
-
-    mensaje.textContent =
-        `${nombre} estará disponible en la siguiente etapa del sistema.`;
-
-    mensaje.className =
-        "mensaje aviso";
 
 }
 
