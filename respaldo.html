@@ -43,9 +43,6 @@
 
     <!-- =========================================================
          COMPROBACIÓN DIRECTA DE SESIÓN
-         
-         Esta página no depende únicamente de auth.js.
-         También verifica directamente que exista una sesión.
     ========================================================== -->
 
     <script>
@@ -60,11 +57,6 @@
                 } =
                     await supabaseClient.auth.getSession();
 
-
-                /*
-                 * Si existe un error o no existe una sesión,
-                 * enviamos al usuario al inicio.
-                 */
 
                 if (
                     error ||
@@ -81,28 +73,12 @@
                 }
 
 
-                /*
-                 * Si existe una sesión válida,
-                 * mostramos la página.
-                 */
-
                 document.documentElement.style.visibility =
                     "visible";
 
 
-                /*
-                 * Indicamos que la página ya fue autorizada.
-                 * El código principal utilizará esta variable
-                 * antes de consultar los datos.
-                 */
-
                 window.respaldoAutorizado = true;
 
-
-                /*
-                 * Iniciamos la aplicación solamente después
-                 * de comprobar la sesión.
-                 */
 
                 if (
                     typeof iniciarRespaldo === "function"
@@ -284,6 +260,17 @@
         }
 
 
+        .boton-limpiar {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+
+        .boton-limpiar:hover {
+            background: #ffcdd2;
+        }
+
+
         .informacion {
             background: #f8fafb;
             border: 1px solid #e0e6e9;
@@ -367,6 +354,18 @@
             border-left: 4px solid #f9a825;
             border-radius: 5px;
             color: #6d5b00;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        .nota-limpiar {
+            margin-top: 18px;
+            padding: 14px;
+            background: #ffebee;
+            border-left: 4px solid #e53935;
+            border-radius: 5px;
+            color: #b71c1c;
             font-size: 14px;
             line-height: 1.5;
         }
@@ -488,6 +487,15 @@
                     📥 Restaurar respaldo
                 </button>
 
+
+                <button
+                    type="button"
+                    class="boton boton-limpiar"
+                    id="btnLimpiarPrestamos"
+                >
+                    🗑️ Limpiar préstamos
+                </button>
+
             </div>
 
 
@@ -605,6 +613,22 @@
 
             </div>
 
+
+            <div class="nota-limpiar">
+
+                <strong>Limpiar préstamos:</strong>
+
+                esta opción elimina únicamente los registros de préstamos
+                y devoluciones. Los libros y afiliados permanecerán intactos.
+
+                <br><br>
+
+                Se recomienda utilizarla solamente para eliminar los datos
+                utilizados durante las pruebas antes de comenzar a trabajar
+                con registros reales.
+
+            </div>
+
         </section>
 
     </main>
@@ -637,6 +661,12 @@
         const btnSeleccionarRespaldo =
             document.getElementById(
                 "btnSeleccionarRespaldo"
+            );
+
+
+        const btnLimpiarPrestamos =
+            document.getElementById(
+                "btnLimpiarPrestamos"
             );
 
 
@@ -751,13 +781,6 @@
         ========================================================== */
 
         async function actualizarInformacion() {
-
-            /*
-             * Protección adicional.
-             *
-             * Aunque esta función sea llamada por error,
-             * no consulta Supabase si no existe autorización.
-             */
 
             if (
                 !window.respaldoAutorizado
@@ -905,6 +928,10 @@
 
 
             btnSeleccionarRespaldo.disabled =
+                true;
+
+
+            btnLimpiarPrestamos.disabled =
                 true;
 
 
@@ -1094,6 +1121,239 @@
 
 
                 btnSeleccionarRespaldo.disabled =
+                    false;
+
+
+                btnLimpiarPrestamos.disabled =
+                    false;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           LIMPIAR PRÉSTAMOS
+        ========================================================== */
+
+        async function limpiarPrestamos() {
+
+            if (
+                !window.respaldoAutorizado
+            ) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                /*
+                 * Primero consultamos cuántos registros existen.
+                 * Así podemos informar al usuario cuántos se eliminarán.
+                 */
+
+                mostrarMensaje(
+                    "Consultando los préstamos actuales...",
+                    "aviso"
+                );
+
+
+                const prestamos =
+                    await cargarTabla(
+                        "prestamos"
+                    );
+
+
+                const cantidad =
+                    prestamos.length;
+
+
+                /*
+                 * Si no existen registros, no hacemos ninguna
+                 * operación de eliminación.
+                 */
+
+                if (
+                    cantidad === 0
+                ) {
+
+                    mostrarMensaje(
+                        "No existen registros de préstamos para eliminar.",
+                        "aviso"
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Primera confirmación.
+                 */
+
+                const primeraConfirmacion =
+                    confirm(
+
+                        "⚠️ LIMPIAR PRÉSTAMOS\n\n" +
+
+                        `Actualmente existen ${cantidad.toLocaleString("es-GT")} registros de préstamos y devoluciones.\n\n` +
+
+                        "Esta acción eliminará TODOS esos registros.\n\n" +
+
+                        "Los LIBROS y los AFILIADOS NO serán eliminados.\n\n" +
+
+                        "¿Deseas continuar?"
+
+                    );
+
+
+                if (
+                    !primeraConfirmacion
+                ) {
+
+                    mostrarMensaje(
+                        "Limpieza cancelada. No se eliminó ningún registro.",
+                        "aviso"
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Segunda confirmación para evitar una eliminación
+                 * accidental.
+                 */
+
+                const segundaConfirmacion =
+                    confirm(
+
+                        "ÚLTIMA CONFIRMACIÓN\n\n" +
+
+                        `Se eliminarán ${cantidad.toLocaleString("es-GT")} registros de la tabla de préstamos.\n\n` +
+
+                        "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
+
+                        "¿Confirmas que deseas eliminarlos?"
+
+                    );
+
+
+                if (
+                    !segundaConfirmacion
+                ) {
+
+                    mostrarMensaje(
+                        "Limpieza cancelada. No se eliminó ningún registro.",
+                        "aviso"
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Deshabilitamos los botones mientras se realiza
+                 * la operación para evitar acciones simultáneas.
+                 */
+
+                btnCrearRespaldo.disabled =
+                    true;
+
+
+                btnSeleccionarRespaldo.disabled =
+                    true;
+
+
+                btnLimpiarPrestamos.disabled =
+                    true;
+
+
+                mostrarMensaje(
+                    "Eliminando los registros de préstamos. No cierre esta página...",
+                    "aviso"
+                );
+
+
+                /*
+                 * Eliminamos todos los registros de prestamos.
+                 *
+                 * La tabla utiliza un campo "id", por lo que esta
+                 * condición permite eliminar todos los registros.
+                 */
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("prestamos")
+                        .delete()
+                        .not(
+                            "id",
+                            "is",
+                            null
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Error eliminando los préstamos:",
+                        error
+                    );
+
+
+                    throw error;
+
+                }
+
+
+                /*
+                 * Actualizamos los contadores después de la limpieza.
+                 */
+
+                await actualizarInformacion();
+
+
+                mostrarMensaje(
+                    `Limpieza completada correctamente. Se eliminaron ${cantidad.toLocaleString("es-GT")} registros de préstamos y devoluciones. Los libros y afiliados permanecen intactos.`,
+                    "exito"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error limpiando préstamos:",
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No fue posible eliminar los registros de préstamos. Revise la consola para obtener más información.",
+                    "error"
+                );
+
+
+            } finally {
+
+                btnCrearRespaldo.disabled =
+                    false;
+
+
+                btnSeleccionarRespaldo.disabled =
+                    false;
+
+
+                btnLimpiarPrestamos.disabled =
                     false;
 
             }
@@ -1326,6 +1586,10 @@
                 true;
 
 
+            btnLimpiarPrestamos.disabled =
+                true;
+
+
             const lector =
                 new FileReader();
 
@@ -1434,14 +1698,8 @@
                         /*
                          * =================================================
                          * ORDEN DE RESTAURACIÓN
-                         *
-                         * Primero préstamos porque representan el historial
-                         * de uso de los libros.
-                         *
-                         * Luego libros y finalmente afiliados.
                          * =================================================
                          */
-
 
                         await eliminarTabla(
                             "prestamos"
@@ -1463,7 +1721,6 @@
                          * INSERTAR DATOS
                          * =================================================
                          */
-
 
                         await insertarPorLotes(
                             "afiliados",
@@ -1515,6 +1772,10 @@
                         btnSeleccionarRespaldo.disabled =
                             false;
 
+
+                        btnLimpiarPrestamos.disabled =
+                            false;
+
                     }
 
                 };
@@ -1534,6 +1795,10 @@
 
 
                     btnSeleccionarRespaldo.disabled =
+                        false;
+
+
+                    btnLimpiarPrestamos.disabled =
                         false;
 
                 };
@@ -1565,6 +1830,12 @@
         );
 
 
+        btnLimpiarPrestamos.addEventListener(
+            "click",
+            limpiarPrestamos
+        );
+
+
         archivoRespaldo.addEventListener(
             "change",
             restaurarRespaldo
@@ -1573,11 +1844,6 @@
 
         /* =========================================================
            INICIAR RESPALDO
-           
-           IMPORTANTE:
-           Ya NO llamamos directamente a actualizarInformacion().
-           La función protegerRespaldo() la ejecutará únicamente
-           después de confirmar que existe una sesión.
         ========================================================== */
 
         async function iniciarRespaldo() {
