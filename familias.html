@@ -13,10 +13,9 @@
     <title>Familias - Biblioteca</title>
 
 
-    <!-- =========================================
-         OCULTAR LA PAGINA MIENTRAS SE VERIFICA
-         LA SESION
-    ========================================== -->
+    <!-- =====================================================
+         OCULTAR PAGINA MIENTRAS SE COMPRUEBA LA SESION
+    ====================================================== -->
 
     <style>
 
@@ -27,39 +26,33 @@
     </style>
 
 
-    <!-- =========================================
+    <!-- =====================================================
          SUPABASE
-    ========================================== -->
+    ====================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase.js"></script>
 
-
-    <!-- =========================================
-         PROTECCION GENERAL
-    ========================================== -->
-
     <script src="auth.js"></script>
 
 
-    <!-- =========================================
-         COMPROBACION DIRECTA DE SESION
-    ========================================== -->
+    <!-- =====================================================
+         PROTECCION DE LA PAGINA
+    ====================================================== -->
 
     <script>
 
         window.familiasAutorizado = false;
 
-        window.familiasAuth = (async function protegerFamilias() {
+        window.familiasAuth = (async function () {
 
             try {
 
                 const {
                     data,
                     error
-                } =
-                    await supabaseClient.auth.getSession();
+                } = await supabaseClient.auth.getSession();
 
 
                 if (
@@ -68,9 +61,7 @@
                     !data.session
                 ) {
 
-                    window.location.replace(
-                        "index.html"
-                    );
+                    window.location.replace("index.html");
 
                     return false;
 
@@ -79,10 +70,7 @@
 
                 window.familiasAutorizado = true;
 
-
-                document.documentElement.style.visibility =
-                    "visible";
-
+                document.documentElement.style.visibility = "visible";
 
                 return true;
 
@@ -90,14 +78,11 @@
             } catch (error) {
 
                 console.error(
-                    "Error al comprobar la sesion:",
+                    "Error al comprobar la sesión:",
                     error
                 );
 
-
-                window.location.replace(
-                    "index.html"
-                );
+                window.location.replace("index.html");
 
                 return false;
 
@@ -108,12 +93,16 @@
     </script>
 
 
-    <!-- =========================================
+    <!-- =====================================================
          SHEETJS
-    ========================================== -->
+    ====================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
+
+    <!-- =====================================================
+         ESTILOS
+    ====================================================== -->
 
     <style>
 
@@ -123,626 +112,946 @@
 
 
         body {
+
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
             background: #f4f6f8;
+
             color: #263238;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            ENCABEZADO
-        ========================================== */
+        ================================================= */
 
         .encabezado {
+
             background: #263238;
+
             color: white;
+
             padding: 22px 20px;
+
         }
 
 
         .encabezado-contenido {
+
             max-width: 1100px;
+
             margin: auto;
+
         }
 
 
         .marca {
+
             display: flex;
+
             align-items: center;
+
             gap: 12px;
+
         }
 
 
         .icono-marca {
+
             font-size: 32px;
+
         }
 
 
         .marca h1 {
+
             margin: 0;
+
             font-size: 25px;
+
         }
 
 
         .marca p {
+
             margin: 4px 0 0;
+
             color: #cfd8dc;
+
             font-size: 14px;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            CONTENEDOR
-        ========================================== */
+        ================================================= */
 
         .contenedor {
+
             max-width: 1100px;
+
             margin: 25px auto;
+
             padding: 0 18px;
+
         }
 
 
         .barra-superior {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             gap: 15px;
+
             margin-bottom: 20px;
+
         }
 
 
         .barra-superior h2 {
+
             margin: 0;
+
             font-size: 22px;
+
         }
 
 
         .boton-volver {
+
             display: inline-block;
+
             text-decoration: none;
+
             background: white;
+
             color: #263238;
+
             border: 1px solid #cfd8dc;
+
             padding: 9px 15px;
+
             border-radius: 7px;
+
             font-size: 14px;
+
             font-weight: bold;
+
         }
 
 
         .boton-volver:hover {
+
             background: #eceff1;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            ESTADISTICAS
-        ========================================== */
+        ================================================= */
 
         .estadisticas {
+
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
             gap: 12px;
+
             margin-bottom: 20px;
+
         }
 
 
         .tarjeta {
+
             background: white;
+
             border: 1px solid #e0e0e0;
+
             border-radius: 9px;
+
             padding: 17px;
+
             text-align: center;
+
         }
 
 
         .tarjeta .icono {
+
             font-size: 23px;
+
             margin-bottom: 6px;
+
         }
 
 
         .tarjeta .numero {
+
             font-size: 24px;
+
             font-weight: bold;
+
             margin-bottom: 4px;
+
         }
 
 
         .tarjeta .texto {
+
             color: #607d8b;
+
             font-size: 13px;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            SECCIONES
-        ========================================== */
+        ================================================= */
 
         .seccion {
+
             background: white;
+
             border: 1px solid #e0e0e0;
+
             border-radius: 9px;
+
             padding: 20px;
+
             margin-bottom: 20px;
+
         }
 
 
         .seccion h3 {
+
             margin: 0 0 15px;
+
             font-size: 18px;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            IMPORTACION
-        ========================================== */
+        ================================================= */
 
         .importacion-info {
+
             background: #f5f7f8;
+
             border-left: 4px solid #546e7a;
+
             padding: 12px 14px;
+
             border-radius: 5px;
+
             margin-bottom: 15px;
+
             font-size: 13px;
+
             line-height: 1.5;
+
         }
 
 
         .archivo {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
+
             flex-wrap: wrap;
+
         }
 
 
         .archivo input[type="file"] {
+
             max-width: 100%;
+
         }
 
 
         .boton {
+
             border: none;
+
             border-radius: 6px;
+
             padding: 10px 16px;
+
             cursor: pointer;
+
             font-size: 14px;
+
             font-weight: bold;
+
         }
 
 
         .boton-principal {
+
             background: #37474f;
+
             color: white;
+
         }
 
 
         .boton-principal:hover {
+
             background: #263238;
-        }
 
-
-        .boton-secundario {
-            background: #eceff1;
-            color: #263238;
-        }
-
-
-        .boton-secundario:hover {
-            background: #cfd8dc;
         }
 
 
         .boton:disabled {
-            opacity: 0.6;
+
+            opacity: .6;
+
             cursor: not-allowed;
+
         }
 
 
-        /* =========================================
-           RESULTADO DE IMPORTACION
-        ========================================== */
+        /* =================================================
+           RESULTADO IMPORTACION
+        ================================================= */
 
         .resultado-importacion {
+
             display: none;
+
             margin-top: 15px;
+
             padding: 14px;
+
             border-radius: 7px;
+
             background: #e8f5e9;
+
             color: #2e7d32;
+
             font-size: 13px;
+
             line-height: 1.6;
+
         }
 
 
         .resultado-importacion.mostrar {
+
             display: block;
+
         }
 
 
         .resultado-importacion.error {
+
             background: #ffebee;
+
             color: #c62828;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            BUSQUEDA
-        ========================================== */
+        ================================================= */
 
         .busqueda {
+
             display: grid;
-            grid-template-columns: 1fr 180px;
+
+            grid-template-columns:
+                1fr 180px;
+
             gap: 12px;
+
         }
 
 
         .campo label {
+
             display: block;
+
             font-size: 13px;
+
             font-weight: bold;
+
             margin-bottom: 6px;
+
         }
 
 
         .campo input,
         .campo select {
+
             width: 100%;
+
             padding: 10px;
+
             border: 1px solid #b0bec5;
+
             border-radius: 6px;
+
             font-size: 14px;
+
             background: white;
+
         }
 
 
-        /* =========================================
-           INFORMACION BASE
-        ========================================== */
+        /* =================================================
+           INFORMACION
+        ================================================= */
 
         .informacion-base {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             gap: 15px;
+
             flex-wrap: wrap;
+
             margin-bottom: 15px;
+
             color: #607d8b;
+
             font-size: 13px;
+
         }
 
 
         .anio-base {
+
             font-weight: bold;
+
             color: #37474f;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            TABLA
-        ========================================== */
+        ================================================= */
 
         .tabla-contenedor {
+
             overflow-x: auto;
+
         }
 
 
         table {
+
             width: 100%;
+
             border-collapse: collapse;
+
             font-size: 13px;
+
         }
 
 
         th {
+
             background: #eceff1;
+
             padding: 9px 8px;
+
             text-align: center;
+
             border-bottom: 1px solid #cfd8dc;
+
             white-space: nowrap;
-        }
 
-
-        /* =========================================
-           ENCABEZADOS CON FILTRO
-        ========================================== */
-
-        .encabezado-columna {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-
-        .boton-filtro-columna {
-            border: none;
-            background: transparent;
-            color: #607d8b;
-            padding: 2px 4px;
-            margin: 0;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 11px;
-            line-height: 1;
-        }
-
-
-        .boton-filtro-columna:hover {
-            background: #cfd8dc;
-            color: #263238;
-        }
-
-
-        .boton-filtro-columna.activo {
-            color: #1565c0;
-            font-weight: bold;
         }
 
 
         td {
+
             padding: 10px 8px;
+
             border-bottom: 1px solid #eeeeee;
+
             text-align: center;
+
         }
 
 
         td.nombre {
+
             text-align: left;
+
         }
 
 
         tr:hover {
+
             background: #fafafa;
+
         }
 
 
-        /* =========================================
+        /* =================================================
+           ENCABEZADOS DE FILTRO
+        ================================================= */
+
+        .encabezado-columna {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 4px;
+
+        }
+
+
+        .boton-filtro-columna {
+
+            border: none;
+
+            background: transparent;
+
+            color: #607d8b;
+
+            padding: 3px 5px;
+
+            cursor: pointer;
+
+            border-radius: 4px;
+
+            font-size: 11px;
+
+            line-height: 1;
+
+        }
+
+
+        .boton-filtro-columna:hover {
+
+            background: #cfd8dc;
+
+            color: #263238;
+
+        }
+
+
+        .boton-filtro-columna.activo {
+
+            color: #1565c0;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =================================================
            MENU DE FILTRO
-        ========================================== */
+        ================================================= */
 
         #menuFiltro {
+
             position: fixed;
+
             display: none;
-            width: 270px;
-            max-width: calc(100vw - 20px);
+
+            width: 285px;
+
+            max-width:
+                calc(100vw - 20px);
+
             background: white;
+
             border: 1px solid #cfd8dc;
+
             border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+            box-shadow:
+                0 7px 22px
+                rgba(0, 0, 0, .16);
+
             z-index: 9999;
+
             overflow: hidden;
+
         }
 
 
         #menuFiltro.mostrar {
+
             display: block;
+
         }
 
 
         .menu-filtro-titulo {
+
             padding: 11px 12px;
+
             background: #eceff1;
-            border-bottom: 1px solid #cfd8dc;
+
+            border-bottom:
+                1px solid #cfd8dc;
+
             font-size: 13px;
+
             font-weight: bold;
-            color: #263238;
+
         }
 
 
         .menu-filtro-buscador {
+
             padding: 9px;
-            border-bottom: 1px solid #eeeeee;
+
+            border-bottom:
+                1px solid #eeeeee;
+
         }
 
 
         .menu-filtro-buscador input {
+
             width: 100%;
+
             padding: 8px 9px;
-            border: 1px solid #b0bec5;
+
+            border:
+                1px solid #b0bec5;
+
             border-radius: 5px;
+
             font-size: 12px;
+
             outline: none;
+
         }
 
 
         .menu-filtro-buscador input:focus {
+
             border-color: #607d8b;
-            box-shadow: 0 0 0 2px rgba(96, 125, 139, 0.12);
+
         }
 
 
         #opcionesFiltro {
-            max-height: 220px;
+
+            max-height: 230px;
+
             overflow-y: auto;
+
             padding: 5px;
+
         }
 
 
         .opcion-filtro {
+
             display: block;
+
             width: 100%;
+
             border: none;
+
             background: white;
+
             color: #263238;
+
             padding: 8px 9px;
+
             text-align: left;
+
             cursor: pointer;
+
             border-radius: 4px;
+
             font-size: 12px;
+
         }
 
 
         .opcion-filtro:hover {
+
             background: #f1f3f4;
+
         }
 
 
         .opcion-filtro.seleccionado {
+
             background: #e3f2fd;
+
             color: #1565c0;
+
             font-weight: bold;
+
+        }
+
+
+        .opcion-todos {
+
+            border-bottom:
+                1px solid #eeeeee;
+
+            margin-bottom: 4px;
+
         }
 
 
         .menu-filtro-botones {
+
             display: flex;
+
             gap: 7px;
+
             padding: 9px;
-            border-top: 1px solid #eeeeee;
+
+            border-top:
+                1px solid #eeeeee;
+
             background: #fafafa;
+
         }
 
 
         .menu-filtro-botones button {
+
             flex: 1;
+
             border: none;
+
             border-radius: 5px;
+
             padding: 8px 7px;
+
             cursor: pointer;
+
             font-size: 12px;
+
             font-weight: bold;
+
         }
 
 
         #botonLimpiarFiltro {
+
             background: #eceff1;
+
             color: #37474f;
-        }
 
-
-        #botonLimpiarFiltro:hover {
-            background: #cfd8dc;
         }
 
 
         #botonAplicarFiltro {
+
             background: #37474f;
+
             color: white;
+
         }
 
 
-        #botonAplicarFiltro:hover {
-            background: #263238;
-        }
-
-
-        /* =========================================
+        /* =================================================
            ESTADOS
-        ========================================== */
+        ================================================= */
 
         .estado {
+
             display: inline-block;
+
             padding: 5px 9px;
+
             border-radius: 15px;
+
             font-size: 12px;
+
             font-weight: bold;
+
         }
 
 
         .estado-activo {
+
             background: #d4edda;
+
             color: #155724;
+
         }
 
 
         .estado-inactivo {
+
             background: #eceff1;
+
             color: #546e7a;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            PAGINACION
-        ========================================== */
+        ================================================= */
 
         .paginacion {
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
             gap: 10px;
+
             margin-top: 18px;
+
             flex-wrap: wrap;
+
         }
 
 
         .boton-paginacion {
-            border: 1px solid #cfd8dc;
+
+            border:
+                1px solid #cfd8dc;
+
             background: white;
+
             color: #263238;
+
             border-radius: 6px;
+
             padding: 8px 13px;
+
             cursor: pointer;
+
             font-size: 13px;
+
             font-weight: bold;
+
         }
 
 
         .boton-paginacion:hover:not(:disabled) {
+
             background: #eceff1;
+
         }
 
 
         .boton-paginacion:disabled {
-            opacity: 0.45;
+
+            opacity: .45;
+
             cursor: not-allowed;
+
         }
 
 
         .informacion-pagina {
+
             font-size: 13px;
+
             color: #607d8b;
+
             font-weight: bold;
+
             min-width: 120px;
+
             text-align: center;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            SIN RESULTADOS
-        ========================================== */
+        ================================================= */
 
         .sin-resultados {
+
             text-align: center;
+
             padding: 30px 15px;
+
             color: #78909c;
+
             font-size: 14px;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            PIE
-        ========================================== */
+        ================================================= */
 
         .pie {
+
             text-align: center;
+
             color: #78909c;
+
             font-size: 12px;
+
             padding: 10px 0 25px;
+
         }
 
 
-        /* =========================================
+        /* =================================================
            RESPONSIVE
-        ========================================== */
+        ================================================= */
 
         @media (max-width: 800px) {
 
             .estadisticas {
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
             }
 
 
             .busqueda {
+
                 grid-template-columns: 1fr;
+
             }
 
 
             .barra-superior {
+
                 align-items: flex-start;
+
                 flex-direction: column;
+
             }
 
         }
@@ -751,18 +1060,26 @@
         @media (max-width: 500px) {
 
             .estadisticas {
-                grid-template-columns: 1fr 1fr;
+
+                grid-template-columns:
+                    1fr 1fr;
+
             }
 
 
             .archivo {
+
                 flex-direction: column;
+
                 align-items: stretch;
+
             }
 
 
             .archivo .boton {
+
                 width: 100%;
+
             }
 
         }
@@ -775,9 +1092,9 @@
 <body>
 
 
-    <!-- =========================================
+    <!-- =====================================================
          ENCABEZADO
-    ========================================== -->
+    ====================================================== -->
 
     <header class="encabezado">
 
@@ -808,13 +1125,12 @@
     </header>
 
 
-
     <main class="contenedor">
 
 
-        <!-- =====================================
+        <!-- =================================================
              TITULO
-        ====================================== -->
+        ================================================== -->
 
         <div class="barra-superior">
 
@@ -832,10 +1148,9 @@
         </div>
 
 
-
-        <!-- =====================================
+        <!-- =================================================
              ESTADISTICAS
-        ====================================== -->
+        ================================================== -->
 
         <section class="estadisticas">
 
@@ -860,7 +1175,6 @@
             </div>
 
 
-
             <div class="tarjeta">
 
                 <div class="icono">
@@ -881,7 +1195,6 @@
             </div>
 
 
-
             <div class="tarjeta">
 
                 <div class="icono">
@@ -900,7 +1213,6 @@
                 </div>
 
             </div>
-
 
 
             <div class="tarjeta">
@@ -926,10 +1238,9 @@
         </section>
 
 
-
-        <!-- =====================================
+        <!-- =================================================
              IMPORTACION
-        ====================================== -->
+        ================================================== -->
 
         <section class="seccion">
 
@@ -998,10 +1309,9 @@
         </section>
 
 
-
-        <!-- =====================================
-             BUSQUEDA
-        ====================================== -->
+        <!-- =================================================
+             BUSQUEDA GENERAL
+        ================================================== -->
 
         <section class="seccion">
 
@@ -1035,9 +1345,7 @@
                         Estado
                     </label>
 
-                    <select
-                        id="filtroEstado"
-                    >
+                    <select id="filtroEstado">
 
                         <option value="todos">
                             Todos
@@ -1061,12 +1369,12 @@
         </section>
 
 
-
-        <!-- =====================================
-             LISTADO
-        ====================================== -->
+        <!-- =================================================
+             TABLA
+        ================================================== -->
 
         <section class="seccion">
+
 
             <div class="informacion-base">
 
@@ -1086,7 +1394,7 @@
                     Última actualización:
 
                     <span id="ultimaActualizacion">
-                        Sin registrar
+                        Base en Supabase
                     </span>
 
                 </div>
@@ -1101,6 +1409,7 @@
                     <thead>
 
                         <tr>
+
 
                             <th>
 
@@ -1233,6 +1542,7 @@
 
                             </th>
 
+
                         </tr>
 
                     </thead>
@@ -1266,7 +1576,6 @@
                     type="button"
                     class="boton-paginacion"
                     id="botonAnterior"
-                    onclick="paginaAnterior()"
                 >
                     ← Anterior
                 </button>
@@ -1284,15 +1593,14 @@
                     type="button"
                     class="boton-paginacion"
                     id="botonSiguiente"
-                    onclick="paginaSiguiente()"
                 >
                     Siguiente →
                 </button>
 
             </div>
 
-        </section>
 
+        </section>
 
 
         <div class="pie">
@@ -1303,13 +1611,12 @@
     </main>
 
 
-    <!-- =========================================
-         MENU FLOTANTE DE FILTRO
-    ========================================== -->
+    <!-- =====================================================
+         MENU DE FILTRO
+    ====================================================== -->
 
-    <div
-        id="menuFiltro"
-    >
+    <div id="menuFiltro">
+
 
         <div
             class="menu-filtro-titulo"
@@ -1331,9 +1638,7 @@
         </div>
 
 
-        <div
-            id="opcionesFiltro"
-        ></div>
+        <div id="opcionesFiltro"></div>
 
 
         <div class="menu-filtro-botones">
@@ -1355,15 +1660,20 @@
 
         </div>
 
+
     </div>
 
 
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
 
     <script>
 
-        // =========================================
+
+        // =================================================
         // CONFIGURACION
-        // =========================================
+        // =================================================
 
         const NOMBRE_HOJA =
             "v_GEN_Afiliados";
@@ -1375,9 +1685,9 @@
             25;
 
 
-        // =========================================
-        // VARIABLES
-        // =========================================
+        // =================================================
+        // VARIABLES PRINCIPALES
+        // =================================================
 
         let afiliados = [];
 
@@ -1386,14 +1696,26 @@
         let resultadosActuales = [];
 
 
+        // =================================================
+        // FILTROS CONECTADOS
+        // =================================================
+
         /*
-         * Filtros independientes.
+         * Cada columna tiene su propio filtro.
          *
-         * Cada columna conserva su propio filtro.
-         * Esto permite combinarlos.
+         * IMPORTANTE:
+         * Estos filtros NO se reemplazan entre ellos.
+         *
+         * Ejemplo:
+         *
+         * sitio = M
+         * estado = Activo
+         * apellidos = LOPEZ
+         *
+         * Los tres permanecen activos.
          */
 
-        let filtrosColumnas = {
+        const filtrosColumnas = {
 
             sitio: "",
 
@@ -1415,9 +1737,9 @@
         let filtroTemporal = "";
 
 
-        // =========================================
+        // =================================================
         // NORMALIZAR
-        // =========================================
+        // =================================================
 
         function normalizar(valor) {
 
@@ -1432,29 +1754,32 @@
 
 
             return String(valor)
-                .replace(/\u00A0/g, "")
+
+                .replace(
+                    /\u00A0/g,
+                    ""
+                )
+
                 .replace(
                     /[\u200B-\u200D\uFEFF]/g,
                     ""
                 )
+
                 .replace(
                     /\s+/g,
                     " "
                 )
+
                 .trim()
+
                 .toUpperCase();
 
         }
 
 
-        // =========================================
+        // =================================================
         // OBTENER SITIO
-        // F = Antigua
-        // M = San Miguel Milpas Altas
-        // R = San Rafael el Arado
-        // N = Nueva Esperanza
-        // Z = Zapote
-        // =========================================
+        // =================================================
 
         function obtenerSitio(
             sitio,
@@ -1465,14 +1790,17 @@
                 normalizar(sitio);
 
 
+            const sitiosValidos = [
+                "F",
+                "M",
+                "R",
+                "N",
+                "Z"
+            ];
+
+
             if (
-                [
-                    "F",
-                    "M",
-                    "R",
-                    "N",
-                    "Z"
-                ].includes(
+                sitiosValidos.includes(
                     sitioNormalizado
                 )
             ) {
@@ -1491,13 +1819,7 @@
 
 
             if (
-                [
-                    "F",
-                    "M",
-                    "R",
-                    "N",
-                    "Z"
-                ].includes(
+                sitiosValidos.includes(
                     primeraLetra
                 )
             ) {
@@ -1512,31 +1834,36 @@
         }
 
 
-        // =========================================
+        // =================================================
         // ESCAPAR HTML
-        // =========================================
+        // =================================================
 
         function escaparHtml(valor) {
 
             return String(
                 valor ?? ""
             )
+
                 .replace(
                     /&/g,
                     "&amp;"
                 )
+
                 .replace(
                     /</g,
                     "&lt;"
                 )
+
                 .replace(
                     />/g,
                     "&gt;"
                 )
+
                 .replace(
                     /"/g,
                     "&quot;"
                 )
+
                 .replace(
                     /'/g,
                     "&#039;"
@@ -1545,9 +1872,378 @@
         }
 
 
-        // =========================================
+        // =================================================
+        // OBTENER VALOR DE UNA COLUMNA
+        // =================================================
+
+        function obtenerValorColumna(
+            afiliado,
+            columna
+        ) {
+
+            const sitio =
+                obtenerSitio(
+                    afiliado.Sitio,
+                    afiliado.FamiliaId
+                );
+
+
+            switch (columna) {
+
+                case "sitio":
+
+                    return sitio;
+
+
+                case "familia":
+
+                    return afiliado.FamiliaId || "";
+
+
+                case "persona":
+
+                    return afiliado.PersonaId || "";
+
+
+                case "nombres":
+
+                    return afiliado.Nombres || "";
+
+
+                case "apellidos":
+
+                    return afiliado.Apellidos || "";
+
+
+                case "estado":
+
+                    return afiliado.estado || "";
+
+
+                default:
+
+                    return "";
+
+            }
+
+        }
+
+
+        // =================================================
+        // NOMBRE DE COLUMNA
+        // =================================================
+
+        function obtenerNombreColumna(
+            columna
+        ) {
+
+            const nombres = {
+
+                sitio:
+                    "Sitio",
+
+                familia:
+                    "FamiliaId",
+
+                persona:
+                    "PersonaId",
+
+                nombres:
+                    "Nombres",
+
+                apellidos:
+                    "Apellidos",
+
+                estado:
+                    "Estado"
+
+            };
+
+
+            return nombres[columna] ||
+                "";
+
+        }
+
+
+        // =================================================
+        // COMPROBAR FILTRO GENERAL
+        // =================================================
+
+        function cumpleFiltrosGenerales(
+            afiliado
+        ) {
+
+            const texto =
+                normalizar(
+                    document.getElementById(
+                        "buscarAfiliado"
+                    ).value
+                );
+
+
+            const filtroEstadoGeneral =
+                document.getElementById(
+                    "filtroEstado"
+                ).value;
+
+
+            /*
+             * Buscador general
+             */
+
+            if (texto) {
+
+                const sitio =
+                    obtenerSitio(
+                        afiliado.Sitio,
+                        afiliado.FamiliaId
+                    );
+
+
+                const contenido =
+                    normalizar(
+
+                        [
+
+                            sitio,
+
+                            afiliado.FamiliaId,
+
+                            afiliado.PersonaId,
+
+                            afiliado.Nombres,
+
+                            afiliado.Apellidos
+
+                        ].join(" ")
+
+                    );
+
+
+                if (
+                    !contenido.includes(
+                        texto
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+            }
+
+
+            /*
+             * Estado general
+             */
+
+            if (
+                filtroEstadoGeneral ===
+                "activos"
+            ) {
+
+                if (
+                    afiliado.estado !==
+                    "Activo"
+                ) {
+
+                    return false;
+
+                }
+
+            }
+
+
+            if (
+                filtroEstadoGeneral ===
+                "inactivos"
+            ) {
+
+                if (
+                    afiliado.estado !==
+                    "Inactivo"
+                ) {
+
+                    return false;
+
+                }
+
+            }
+
+
+            return true;
+
+        }
+
+
+        // =================================================
+        // COMPROBAR FILTRO DE UNA COLUMNA
+        // =================================================
+
+        function cumpleFiltroColumna(
+            afiliado,
+            columna,
+            valorFiltro
+        ) {
+
+            if (!valorFiltro) {
+
+                return true;
+
+            }
+
+
+            const valor =
+                obtenerValorColumna(
+                    afiliado,
+                    columna
+                );
+
+
+            /*
+             * Sitio y Estado son selección exacta.
+             */
+
+            if (
+                columna === "sitio" ||
+                columna === "estado"
+            ) {
+
+                return (
+                    normalizar(valor) ===
+                    normalizar(valorFiltro)
+                );
+
+            }
+
+
+            /*
+             * Las columnas de texto
+             * permiten coincidencias parciales.
+             */
+
+            return normalizar(valor)
+                .includes(
+                    normalizar(
+                        valorFiltro
+                    )
+                );
+
+        }
+
+
+        // =================================================
+        // AQUI ESTA LA PARTE IMPORTANTE
+        // =================================================
+
+        /*
+         * Devuelve los registros sobre los cuales
+         * se deben construir las opciones del filtro.
+         *
+         * IGNORA únicamente la columna que estamos
+         * abriendo.
+         *
+         * TODOS LOS DEMAS FILTROS SIGUEN ACTIVOS.
+         *
+         * Ejemplo:
+         *
+         * Sitio = M
+         * Estado = Activo
+         *
+         * Abrimos FamiliaId
+         *
+         * Esta función aplica:
+         *
+         * Sitio = M
+         * Estado = Activo
+         *
+         * pero IGNORA FamiliaId.
+         *
+         * Por eso las opciones de FamiliaId
+         * pertenecen únicamente a M + Activo.
+         */
+
+        function obtenerBaseParaOpcionesFiltro(
+            columnaExcluida
+        ) {
+
+            return afiliados.filter(
+                afiliado => {
+
+                    /*
+                     * Primero aplicamos:
+                     *
+                     * - búsqueda general
+                     * - estado general
+                     */
+
+                    if (
+                        !cumpleFiltrosGenerales(
+                            afiliado
+                        )
+                    ) {
+
+                        return false;
+
+                    }
+
+
+                    /*
+                     * Ahora aplicamos TODOS
+                     * los filtros de columnas
+                     * excepto el actual.
+                     */
+
+                    for (
+                        const columna
+                        of Object.keys(
+                            filtrosColumnas
+                        )
+                    ) {
+
+                        if (
+                            columna ===
+                            columnaExcluida
+                        ) {
+
+                            continue;
+
+                        }
+
+
+                        const filtro =
+                            filtrosColumnas[
+                                columna
+                            ];
+
+
+                        if (
+                            !cumpleFiltroColumna(
+                                afiliado,
+                                columna,
+                                filtro
+                            )
+                        ) {
+
+                            return false;
+
+                        }
+
+                    }
+
+
+                    return true;
+
+                }
+            );
+
+        }
+
+
+        // =================================================
         // CARGAR BASE DESDE SUPABASE
-        // =========================================
+        // =================================================
 
         async function cargarBase() {
 
@@ -1560,21 +2256,13 @@
             }
 
 
-            mostrarResultado(
-                "⏳ Cargando afiliados desde Supabase..."
-            );
-
-
             try {
 
-                const todos =
-                    [];
+                const todos = [];
 
-                let desde =
-                    0;
+                let desde = 0;
 
-                const cantidad =
-                    1000;
+                const cantidad = 1000;
 
 
                 while (true) {
@@ -1590,10 +2278,13 @@
                         error
                     } =
                         await supabaseClient
+
                             .from("afiliados")
+
                             .select(
                                 "Sitio,PersonaId,FamiliaId,Nombres,Apellidos,estado"
                             )
+
                             .range(
                                 desde,
                                 hasta
@@ -1651,7 +2342,7 @@
 
                 mostrarAfiliados();
 
-                ocultarResultado();
+                actualizarIndicadoresFiltros();
 
 
             } catch (error) {
@@ -1679,9 +2370,9 @@
         }
 
 
-        // =========================================
+        // =================================================
         // ESTADISTICAS
-        // =========================================
+        // =================================================
 
         function actualizarEstadisticas() {
 
@@ -1689,11 +2380,9 @@
                 new Set();
 
 
-            let activos =
-                0;
+            let activos = 0;
 
-            let inactivos =
-                0;
+            let inactivos = 0;
 
 
             afiliados.forEach(
@@ -1755,9 +2444,9 @@
         }
 
 
-        // =========================================
-        // INFORMACION DE ACTUALIZACION
-        // =========================================
+        // =================================================
+        // INFORMACION BASE
+        // =================================================
 
         function mostrarInformacionBase() {
 
@@ -1773,74 +2462,39 @@
                 );
 
 
-            if (!ultima) {
+            if (ultima) {
+
+                elemento.textContent =
+                    ultima;
+
+            } else {
 
                 elemento.textContent =
                     "Base en Supabase";
 
-                return;
-
             }
-
-
-            elemento.textContent =
-                ultima;
 
         }
 
 
-        // =========================================
+        // =================================================
         // MOSTRAR AFILIADOS
-        // =========================================
+        // =================================================
 
         function mostrarAfiliados() {
-
-            const texto =
-                normalizar(
-                    document.getElementById(
-                        "buscarAfiliado"
-                    ).value
-                );
-
-
-            const filtroEstado =
-                document.getElementById(
-                    "filtroEstado"
-                ).value;
-
 
             resultadosActuales =
                 afiliados.filter(
                     afiliado => {
 
-                        const sitio =
-                            obtenerSitio(
-                                afiliado.Sitio,
-                                afiliado.FamiliaId
-                            );
-
-
                         /*
-                         * FILTRO GENERAL DE ESTADO
+                         * Primero filtros generales
                          */
 
                         if (
-                            filtroEstado ===
-                            "activos" &&
-                            afiliado.estado !==
-                            "Activo"
-                        ) {
-
-                            return false;
-
-                        }
-
-
-                        if (
-                            filtroEstado ===
-                            "inactivos" &&
-                            afiliado.estado !==
-                            "Inactivo"
+                            !cumpleFiltrosGenerales(
+                                afiliado
+                            )
                         ) {
 
                             return false;
@@ -1849,125 +2503,39 @@
 
 
                         /*
-                         * FILTROS DE COLUMNAS
+                         * Después TODOS los filtros
+                         * de las columnas.
                          */
 
-                        if (
-                            filtrosColumnas.sitio &&
-                            normalizar(
-                                sitio
-                            ) !==
-                            normalizar(
-                                filtrosColumnas.sitio
+                        for (
+                            const columna
+                            of Object.keys(
+                                filtrosColumnas
                             )
                         ) {
 
-                            return false;
+                            const filtro =
+                                filtrosColumnas[
+                                    columna
+                                ];
 
-                        }
 
-
-                        if (
-                            filtrosColumnas.familia &&
-                            !normalizar(
-                                afiliado.FamiliaId
-                            ).includes(
-                                normalizar(
-                                    filtrosColumnas.familia
+                            if (
+                                !cumpleFiltroColumna(
+                                    afiliado,
+                                    columna,
+                                    filtro
                                 )
-                            )
-                        ) {
+                            ) {
 
-                            return false;
+                                return false;
 
-                        }
-
-
-                        if (
-                            filtrosColumnas.persona &&
-                            !normalizar(
-                                afiliado.PersonaId
-                            ).includes(
-                                normalizar(
-                                    filtrosColumnas.persona
-                                )
-                            )
-                        ) {
-
-                            return false;
+                            }
 
                         }
 
 
-                        if (
-                            filtrosColumnas.nombres &&
-                            !normalizar(
-                                afiliado.Nombres
-                            ).includes(
-                                normalizar(
-                                    filtrosColumnas.nombres
-                                )
-                            )
-                        ) {
-
-                            return false;
-
-                        }
-
-
-                        if (
-                            filtrosColumnas.apellidos &&
-                            !normalizar(
-                                afiliado.Apellidos
-                            ).includes(
-                                normalizar(
-                                    filtrosColumnas.apellidos
-                                )
-                            )
-                        ) {
-
-                            return false;
-
-                        }
-
-
-                        if (
-                            filtrosColumnas.estado &&
-                            afiliado.estado !==
-                            filtrosColumnas.estado
-                        ) {
-
-                            return false;
-
-                        }
-
-
-                        /*
-                         * BUSQUEDA GENERAL
-                         */
-
-                        if (!texto) {
-
-                            return true;
-
-                        }
-
-
-                        const contenido =
-                            normalizar(
-                                [
-                                    sitio,
-                                    afiliado.FamiliaId,
-                                    afiliado.PersonaId,
-                                    afiliado.Nombres,
-                                    afiliado.Apellidos
-                                ].join(" ")
-                            );
-
-
-                        return contenido.includes(
-                            texto
-                        );
+                        return true;
 
                     }
                 );
@@ -1975,11 +2543,16 @@
 
             const totalPaginas =
                 Math.max(
+
                     1,
+
                     Math.ceil(
+
                         resultadosActuales.length /
                         REGISTROS_POR_PAGINA
+
                     )
+
                 );
 
 
@@ -2007,7 +2580,7 @@
                 REGISTROS_POR_PAGINA;
 
 
-            const resultadosPagina =
+            const registrosPagina =
                 resultadosActuales.slice(
                     inicio,
                     fin
@@ -2059,18 +2632,13 @@
                 "none";
 
 
-            resultadosPagina.forEach(
+            registrosPagina.forEach(
                 afiliado => {
 
                     const fila =
                         document.createElement(
                             "tr"
                         );
-
-
-                    const activo =
-                        afiliado.estado ===
-                        "Activo";
 
 
                     const sitio =
@@ -2080,40 +2648,40 @@
                         );
 
 
+                    const activo =
+                        afiliado.estado ===
+                        "Activo";
+
+
                     fila.innerHTML = `
 
                         <td>
                             ${escaparHtml(
-                                sitio ||
-                                "-"
+                                sitio || "-"
                             )}
                         </td>
 
                         <td>
                             ${escaparHtml(
-                                afiliado.FamiliaId ||
-                                "-"
+                                afiliado.FamiliaId || "-"
                             )}
                         </td>
 
                         <td>
                             ${escaparHtml(
-                                afiliado.PersonaId ||
-                                "-"
+                                afiliado.PersonaId || "-"
                             )}
                         </td>
 
                         <td class="nombre">
                             ${escaparHtml(
-                                afiliado.Nombres ||
-                                "-"
+                                afiliado.Nombres || "-"
                             )}
                         </td>
 
                         <td class="nombre">
                             ${escaparHtml(
-                                afiliado.Apellidos ||
-                                "-"
+                                afiliado.Apellidos || "-"
                             )}
                         </td>
 
@@ -2155,9 +2723,9 @@
         }
 
 
-        // =========================================
-        // ACTUALIZAR PAGINACION
-        // =========================================
+        // =================================================
+        // PAGINACION
+        // =================================================
 
         function actualizarPaginacion(
             totalPaginas
@@ -2169,13 +2737,13 @@
                 );
 
 
-            const botonAnterior =
+            const anterior =
                 document.getElementById(
                     "botonAnterior"
                 );
 
 
-            const botonSiguiente =
+            const siguiente =
                 document.getElementById(
                     "botonSiguiente"
                 );
@@ -2208,27 +2776,21 @@
                 `Página ${paginaActual} de ${totalPaginas}`;
 
 
-            botonAnterior.disabled =
-                paginaActual <=
-                1;
+            anterior.disabled =
+                paginaActual <= 1;
 
 
-            botonSiguiente.disabled =
+            siguiente.disabled =
                 paginaActual >=
                 totalPaginas;
 
         }
 
 
-        // =========================================
-        // PAGINA ANTERIOR
-        // =========================================
-
         function paginaAnterior() {
 
             if (
-                paginaActual <=
-                1
+                paginaActual <= 1
             ) {
 
                 return;
@@ -2243,16 +2805,14 @@
         }
 
 
-        // =========================================
-        // PAGINA SIGUIENTE
-        // =========================================
-
         function paginaSiguiente() {
 
             const totalPaginas =
                 Math.ceil(
+
                     resultadosActuales.length /
                     REGISTROS_POR_PAGINA
+
                 );
 
 
@@ -2273,15 +2833,876 @@
         }
 
 
-        // =========================================
-        // PREPARAR DATOS DEL EXCEL
-        // =========================================
+        // =================================================
+        // VALORES DISPONIBLES DEL FILTRO
+        // =================================================
+
+        function obtenerValoresFiltro(
+            columna
+        ) {
+
+            /*
+             * AQUÍ ESTÁ LA CONEXION ENTRE FILTROS.
+             *
+             * No usamos todos los afiliados.
+             *
+             * Usamos únicamente los registros
+             * que cumplen los otros filtros.
+             */
+
+            const base =
+                obtenerBaseParaOpcionesFiltro(
+                    columna
+                );
+
+
+            const valores =
+                new Set();
+
+
+            base.forEach(
+                afiliado => {
+
+                    const valor =
+                        obtenerValorColumna(
+                            afiliado,
+                            columna
+                        );
+
+
+                    if (
+                        valor !== null &&
+                        valor !== undefined &&
+                        String(valor).trim() !== ""
+                    ) {
+
+                        valores.add(
+                            String(valor).trim()
+                        );
+
+                    }
+
+                }
+            );
+
+
+            return Array.from(
+                valores
+            ).sort(
+                (a, b) =>
+                    normalizar(a).localeCompare(
+                        normalizar(b),
+                        "es"
+                    )
+            );
+
+        }
+
+
+        // =================================================
+        // CONSTRUIR OPCIONES DEL MENU
+        // =================================================
+
+        function construirOpcionesFiltro() {
+
+            const contenedor =
+                document.getElementById(
+                    "opcionesFiltro"
+                );
+
+
+            const buscador =
+                document.getElementById(
+                    "buscarFiltroColumna"
+                );
+
+
+            const texto =
+                normalizar(
+                    buscador.value
+                );
+
+
+            contenedor.innerHTML =
+                "";
+
+
+            /*
+             * BOTON TODOS
+             */
+
+            const botonTodos =
+                document.createElement(
+                    "button"
+                );
+
+
+            botonTodos.type =
+                "button";
+
+
+            botonTodos.className =
+                "opcion-filtro opcion-todos";
+
+
+            botonTodos.textContent =
+                "✓ Todos";
+
+
+            if (!filtroTemporal) {
+
+                botonTodos.classList.add(
+                    "seleccionado"
+                );
+
+            }
+
+
+            botonTodos.addEventListener(
+                "click",
+                () => {
+
+                    filtroTemporal =
+                        "";
+
+                    construirOpcionesFiltro();
+
+                }
+            );
+
+
+            contenedor.appendChild(
+                botonTodos
+            );
+
+
+            /*
+             * VALORES CONECTADOS
+             */
+
+            let valores =
+                obtenerValoresFiltro(
+                    columnaFiltroActual
+                );
+
+
+            /*
+             * BUSQUEDA DENTRO DEL MENU
+             */
+
+            if (texto) {
+
+                valores =
+                    valores.filter(
+                        valor =>
+                            normalizar(
+                                valor
+                            ).includes(
+                                texto
+                            )
+                    );
+
+            }
+
+
+            /*
+             * Si no hay resultados
+             */
+
+            if (
+                valores.length ===
+                0
+            ) {
+
+                const mensaje =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                mensaje.textContent =
+                    "No hay valores disponibles.";
+
+
+                mensaje.style.padding =
+                    "10px";
+
+
+                mensaje.style.color =
+                    "#78909c";
+
+
+                mensaje.style.fontSize =
+                    "12px";
+
+
+                contenedor.appendChild(
+                    mensaje
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+             * Mostrar máximo 100 opciones.
+             *
+             * Para FamiliaId o PersonaId
+             * se puede usar el buscador.
+             */
+
+            const limite =
+                100;
+
+
+            valores
+                .slice(
+                    0,
+                    limite
+                )
+                .forEach(
+                    valor => {
+
+                        const boton =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        boton.type =
+                            "button";
+
+
+                        boton.className =
+                            "opcion-filtro";
+
+
+                        boton.textContent =
+                            valor;
+
+
+                        if (
+                            normalizar(
+                                filtroTemporal
+                            ) ===
+                            normalizar(
+                                valor
+                            )
+                        ) {
+
+                            boton.classList.add(
+                                "seleccionado"
+                            );
+
+                        }
+
+
+                        boton.addEventListener(
+                            "click",
+                            () => {
+
+                                filtroTemporal =
+                                    valor;
+
+                                construirOpcionesFiltro();
+
+                            }
+                        );
+
+
+                        contenedor.appendChild(
+                            boton
+                        );
+
+                    }
+                );
+
+
+            if (
+                valores.length >
+                limite
+            ) {
+
+                const aviso =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                aviso.textContent =
+                    "Hay más valores. Usa el buscador para encontrarlos.";
+
+
+                aviso.style.padding =
+                    "8px";
+
+
+                aviso.style.color =
+                    "#78909c";
+
+
+                aviso.style.fontSize =
+                    "11px";
+
+
+                contenedor.appendChild(
+                    aviso
+                );
+
+            }
+
+        }
+
+
+        // =================================================
+        // ABRIR MENU
+        // =================================================
+
+        function abrirMenuFiltro(
+            boton,
+            columna
+        ) {
+
+            columnaFiltroActual =
+                columna;
+
+
+            /*
+             * El filtro temporal comienza con
+             * el filtro que ya tiene esa columna.
+             */
+
+            filtroTemporal =
+                filtrosColumnas[
+                    columna
+                ] || "";
+
+
+            const titulo =
+                document.getElementById(
+                    "tituloMenuFiltro"
+                );
+
+
+            titulo.textContent =
+                `Filtrar ${obtenerNombreColumna(columna)}`;
+
+
+            const buscador =
+                document.getElementById(
+                    "buscarFiltroColumna"
+                );
+
+
+            buscador.value =
+                "";
+
+
+            construirOpcionesFiltro();
+
+
+            const menu =
+                document.getElementById(
+                    "menuFiltro"
+                );
+
+
+            menu.classList.add(
+                "mostrar"
+            );
+
+
+            /*
+             * Posicionar debajo del encabezado
+             */
+
+            const rect =
+                boton.getBoundingClientRect();
+
+
+            const ancho =
+                285;
+
+
+            let izquierda =
+                rect.left;
+
+
+            let arriba =
+                rect.bottom + 5;
+
+
+            if (
+                izquierda +
+                ancho >
+                window.innerWidth -
+                10
+            ) {
+
+                izquierda =
+                    window.innerWidth -
+                    ancho -
+                    10;
+
+            }
+
+
+            if (
+                arriba +
+                350 >
+                window.innerHeight
+            ) {
+
+                arriba =
+                    rect.top -
+                    355;
+
+            }
+
+
+            if (
+                arriba <
+                10
+            ) {
+
+                arriba =
+                    10;
+
+            }
+
+
+            menu.style.left =
+                `${izquierda}px`;
+
+
+            menu.style.top =
+                `${arriba}px`;
+
+
+            setTimeout(
+                () => {
+
+                    buscador.focus();
+
+                },
+                50
+            );
+
+        }
+
+
+        // =================================================
+        // CERRAR MENU
+        // =================================================
+
+        function cerrarMenuFiltro() {
+
+            const menu =
+                document.getElementById(
+                    "menuFiltro"
+                );
+
+
+            menu.classList.remove(
+                "mostrar"
+            );
+
+
+            columnaFiltroActual =
+                "";
+
+            filtroTemporal =
+                "";
+
+        }
+
+
+        // =================================================
+        // APLICAR FILTRO
+        // =================================================
+
+        function aplicarFiltroActual() {
+
+            if (
+                !columnaFiltroActual
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * IMPORTANTE:
+             *
+             * Solo modificamos esta columna.
+             *
+             * Los demás filtros permanecen.
+             */
+
+            filtrosColumnas[
+                columnaFiltroActual
+            ] =
+                filtroTemporal;
+
+
+            paginaActual =
+                1;
+
+
+            mostrarAfiliados();
+
+
+            actualizarIndicadoresFiltros();
+
+
+            cerrarMenuFiltro();
+
+        }
+
+
+        // =================================================
+        // LIMPIAR FILTRO
+        // =================================================
+
+        function limpiarFiltroActual() {
+
+            if (
+                !columnaFiltroActual
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * Solo eliminamos el filtro
+             * de esta columna.
+             */
+
+            filtrosColumnas[
+                columnaFiltroActual
+            ] =
+                "";
+
+
+            paginaActual =
+                1;
+
+
+            mostrarAfiliados();
+
+
+            actualizarIndicadoresFiltros();
+
+
+            cerrarMenuFiltro();
+
+        }
+
+
+        // =================================================
+        // INDICADORES
+        // =================================================
+
+        function actualizarIndicadoresFiltros() {
+
+            document
+                .querySelectorAll(
+                    ".boton-filtro-columna"
+                )
+                .forEach(
+                    boton => {
+
+                        const columna =
+                            boton.dataset.columna;
+
+
+                        if (
+                            filtrosColumnas[
+                                columna
+                            ]
+                        ) {
+
+                            boton.classList.add(
+                                "activo"
+                            );
+
+
+                            boton.textContent =
+                                "●";
+
+                        } else {
+
+                            boton.classList.remove(
+                                "activo"
+                            );
+
+
+                            boton.textContent =
+                                "▾";
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+        // =================================================
+        // EVENTOS DE LOS BOTONES DE FILTRO
+        // =================================================
+
+        document
+            .querySelectorAll(
+                ".boton-filtro-columna"
+            )
+            .forEach(
+                boton => {
+
+                    boton.addEventListener(
+                        "click",
+                        evento => {
+
+                            evento.stopPropagation();
+
+
+                            abrirMenuFiltro(
+                                boton,
+                                boton.dataset.columna
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        // =================================================
+        // BUSCADOR DENTRO DEL MENU
+        // =================================================
+
+        document
+            .getElementById(
+                "buscarFiltroColumna"
+            )
+            .addEventListener(
+                "input",
+                () => {
+
+                    construirOpcionesFiltro();
+
+                }
+            );
+
+
+        // =================================================
+        // APLICAR
+        // =================================================
+
+        document
+            .getElementById(
+                "botonAplicarFiltro"
+            )
+            .addEventListener(
+                "click",
+                evento => {
+
+                    evento.stopPropagation();
+
+                    aplicarFiltroActual();
+
+                }
+            );
+
+
+        // =================================================
+        // LIMPIAR
+        // =================================================
+
+        document
+            .getElementById(
+                "botonLimpiarFiltro"
+            )
+            .addEventListener(
+                "click",
+                evento => {
+
+                    evento.stopPropagation();
+
+                    limpiarFiltroActual();
+
+                }
+            );
+
+
+        // =================================================
+        // CERRAR MENU AL HACER CLICK AFUERA
+        // =================================================
+
+        document.addEventListener(
+            "click",
+            evento => {
+
+                const menu =
+                    document.getElementById(
+                        "menuFiltro"
+                    );
+
+
+                const esBotonFiltro =
+                    evento.target.closest(
+                        ".boton-filtro-columna"
+                    );
+
+
+                if (
+                    !menu.contains(
+                        evento.target
+                    ) &&
+                    !esBotonFiltro
+                ) {
+
+                    cerrarMenuFiltro();
+
+                }
+
+            }
+        );
+
+
+        // =================================================
+        // BUSQUEDA GENERAL
+        // =================================================
+
+        document
+            .getElementById(
+                "buscarAfiliado"
+            )
+            .addEventListener(
+                "input",
+                () => {
+
+                    paginaActual =
+                        1;
+
+                    mostrarAfiliados();
+
+                }
+            );
+
+
+        // =================================================
+        // ESTADO GENERAL
+        // =================================================
+
+        document
+            .getElementById(
+                "filtroEstado"
+            )
+            .addEventListener(
+                "change",
+                () => {
+
+                    paginaActual =
+                        1;
+
+                    mostrarAfiliados();
+
+                }
+            );
+
+
+        // =================================================
+        // PAGINACION
+        // =================================================
+
+        document
+            .getElementById(
+                "botonAnterior"
+            )
+            .addEventListener(
+                "click",
+                paginaAnterior
+            );
+
+
+        document
+            .getElementById(
+                "botonSiguiente"
+            )
+            .addEventListener(
+                "click",
+                paginaSiguiente
+            );
+
+
+        // =================================================
+        // IMPORTACION EXCEL
+        // =================================================
+
+        function leerArchivoExcel(
+            archivo
+        ) {
+
+            return new Promise(
+                (
+                    resolver,
+                    rechazar
+                ) => {
+
+                    const lector =
+                        new FileReader();
+
+
+                    lector.onload =
+                        evento => {
+
+                            resolver(
+                                new Uint8Array(
+                                    evento.target.result
+                                )
+                            );
+
+                        };
+
+
+                    lector.onerror =
+                        () => {
+
+                            rechazar(
+                                new Error(
+                                    "No fue posible leer el archivo Excel."
+                                )
+                            );
+
+                        };
+
+
+                    lector.readAsArrayBuffer(
+                        archivo
+                    );
+
+                }
+            );
+
+        }
+
+
+        // =================================================
+        // PREPARAR EXCEL
+        // =================================================
 
         function prepararDatosExcel(
             filas
         ) {
 
-            const nuevosPorPersona =
+            const nuevos =
                 new Map();
 
 
@@ -2340,15 +3761,13 @@
 
 
                     if (
-                        !nuevosPorPersona.has(
+                        !nuevos.has(
                             clave
                         )
                     ) {
 
-                        nuevosPorPersona.set(
-
+                        nuevos.set(
                             clave,
-
                             {
 
                                 Sitio:
@@ -2370,7 +3789,6 @@
                                     "Activo"
 
                             }
-
                         );
 
                     }
@@ -2379,14 +3797,14 @@
             );
 
 
-            return nuevosPorPersona;
+            return nuevos;
 
         }
 
 
-        // =========================================
-        // ACTUALIZAR BASE DESDE EXCEL
-        // =========================================
+        // =================================================
+        // ACTUALIZAR BASE
+        // =================================================
 
         async function actualizarBase() {
 
@@ -2462,11 +3880,6 @@
 
             try {
 
-                mostrarResultado(
-                    "⏳ Leyendo el archivo Excel..."
-                );
-
-
                 const datos =
                     await leerArchivoExcel(
                         archivo
@@ -2477,8 +3890,7 @@
                     XLSX.read(
                         datos,
                         {
-                            type:
-                                "array"
+                            type: "array"
                         }
                     );
 
@@ -2499,7 +3911,7 @@
 
                     throw new Error(
 
-                        `No se encontró la hoja "${NOMBRE_HOJA}". Hojas disponibles: ${libro.SheetNames.join(", ")}`
+                        `No se encontró la hoja "${NOMBRE_HOJA}".`
 
                     );
 
@@ -2516,27 +3928,9 @@
                     XLSX.utils.sheet_to_json(
                         hoja,
                         {
-                            defval:
-                                ""
+                            defval: ""
                         }
                     );
-
-
-                if (
-                    filas.length ===
-                    0
-                ) {
-
-                    throw new Error(
-                        "La hoja de Excel no contiene registros."
-                    );
-
-                }
-
-
-                mostrarResultado(
-                    "⏳ Procesando registros del Excel..."
-                );
 
 
                 const nuevosPorPersona =
@@ -2551,9 +3945,7 @@
                 ) {
 
                     throw new Error(
-
-                        "No se encontraron registros válidos con PersonaId y FamiliaId."
-
+                        "No se encontraron registros válidos."
                     );
 
                 }
@@ -2589,14 +3981,13 @@
                     new Map();
 
 
-                let agregados =
-                    0;
+                let agregados = 0;
 
-                let actualizados =
-                    0;
+                let actualizados = 0;
 
-                let reactivados =
-                    0;
+                let reactivados = 0;
+
+                let inactivados = 0;
 
 
                 nuevosPorPersona.forEach(
@@ -2610,83 +4001,32 @@
 
                         if (!anterior) {
 
-                            nuevaBase.set(
-                                clave,
-                                {
-
-                                    Sitio:
-                                        nuevo.Sitio,
-
-                                    PersonaId:
-                                        nuevo.PersonaId,
-
-                                    FamiliaId:
-                                        nuevo.FamiliaId,
-
-                                    Nombres:
-                                        nuevo.Nombres,
-
-                                    Apellidos:
-                                        nuevo.Apellidos,
-
-                                    estado:
-                                        "Activo"
-
-                                }
-                            );
-
-
                             agregados++;
 
-                            return;
+                        } else {
 
-                        }
+                            actualizados++;
 
 
-                        if (
-                            anterior.estado ===
-                            "Inactivo"
-                        ) {
+                            if (
+                                anterior.estado ===
+                                "Inactivo"
+                            ) {
 
-                            reactivados++;
+                                reactivados++;
+
+                            }
 
                         }
 
 
                         nuevaBase.set(
                             clave,
-                            {
-
-                                Sitio:
-                                    nuevo.Sitio,
-
-                                PersonaId:
-                                    nuevo.PersonaId,
-
-                                FamiliaId:
-                                    nuevo.FamiliaId,
-
-                                Nombres:
-                                    nuevo.Nombres,
-
-                                Apellidos:
-                                    nuevo.Apellidos,
-
-                                estado:
-                                    "Activo"
-
-                            }
+                            nuevo
                         );
-
-
-                        actualizados++;
 
                     }
                 );
-
-
-                let inactivados =
-                    0;
 
 
                 baseAnterior.forEach(
@@ -2748,13 +4088,6 @@
                     );
 
 
-                mostrarResultado(
-
-                    `⏳ Guardando ${nuevaBaseArray.length.toLocaleString("es-GT")} afiliados en Supabase...`
-
-                );
-
-
                 await guardarEnSupabase(
                     nuevaBaseArray
                 );
@@ -2766,10 +4099,15 @@
 
                 actualizarEstadisticas();
 
+
                 paginaActual =
                     1;
 
+
                 mostrarAfiliados();
+
+
+                actualizarIndicadoresFiltros();
 
 
                 const ahora =
@@ -2781,20 +4119,15 @@
                         "es-GT",
                         {
 
-                            day:
-                                "2-digit",
+                            day: "2-digit",
 
-                            month:
-                                "2-digit",
+                            month: "2-digit",
 
-                            year:
-                                "numeric",
+                            year: "numeric",
 
-                            hour:
-                                "2-digit",
+                            hour: "2-digit",
 
-                            minute:
-                                "2-digit"
+                            minute: "2-digit"
 
                         }
                     );
@@ -2811,25 +4144,22 @@
 
                 document.getElementById(
                     "archivoExcel"
-                ).value =
-                    "";
+                ).value = "";
 
 
                 mostrarResultado(
 
                     `<strong>✅ Base actualizada correctamente.</strong><br><br>` +
 
-                    `🆕 Registros nuevos: <strong>${agregados}</strong><br>` +
+                    `🆕 Nuevos: <strong>${agregados}</strong><br>` +
 
-                    `🔄 Registros actualizados: <strong>${actualizados}</strong><br>` +
+                    `🔄 Actualizados: <strong>${actualizados}</strong><br>` +
 
-                    `♻️ Personas reactivadas: <strong>${reactivados}</strong><br>` +
+                    `♻️ Reactivados: <strong>${reactivados}</strong><br>` +
 
-                    `🔴 Personas que pasaron a inactivas: <strong>${inactivados}</strong><br>` +
+                    `🔴 Pasaron a inactivos: <strong>${inactivados}</strong><br>` +
 
-                    `👥 Total de afiliados en Supabase: <strong>${nuevaBaseArray.length}</strong><br><br>` +
-
-                    `Los préstamos históricos se conservaron.`
+                    `👥 Total: <strong>${nuevaBaseArray.length}</strong>`
 
                 );
 
@@ -2837,14 +4167,13 @@
             } catch (error) {
 
                 console.error(
-                    "Error actualizando afiliados:",
                     error
                 );
 
 
                 mostrarResultado(
 
-                    "❌ Ocurrió un error al actualizar la base.<br><br>" +
+                    "❌ Error al actualizar la base.<br><br>" +
 
                     escaparHtml(
                         error.message
@@ -2868,76 +4197,13 @@
         }
 
 
-        // =========================================
-        // LEER ARCHIVO EXCEL
-        // =========================================
-
-        function leerArchivoExcel(
-            archivo
-        ) {
-
-            return new Promise(
-                (
-                    resolver,
-                    rechazar
-                ) => {
-
-                    const lector =
-                        new FileReader();
-
-
-                    lector.onload =
-                        evento => {
-
-                            resolver(
-                                new Uint8Array(
-                                    evento.target.result
-                                )
-                            );
-
-                        };
-
-
-                    lector.onerror =
-                        () => {
-
-                            rechazar(
-                                new Error(
-                                    "No fue posible leer el archivo Excel."
-                                )
-                            );
-
-                        };
-
-
-                    lector.readAsArrayBuffer(
-                        archivo
-                    );
-
-                }
-            );
-
-        }
-
-
-        // =========================================
+        // =================================================
         // GUARDAR EN SUPABASE
-        // =========================================
+        // =================================================
 
         async function guardarEnSupabase(
             registros
         ) {
-
-            if (
-                !window.familiasAutorizado
-            ) {
-
-                throw new Error(
-                    "Sesión no autorizada."
-                );
-
-            }
-
 
             for (
                 let inicio = 0;
@@ -2959,7 +4225,9 @@
                     error
                 } =
                     await supabaseClient
+
                         .from("afiliados")
+
                         .upsert(
                             bloque,
                             {
@@ -2995,9 +4263,9 @@
         }
 
 
-        // =========================================
-        // MOSTRAR RESULTADO
-        // =========================================
+        // =================================================
+        // MENSAJES
+        // =================================================
 
         function mostrarResultado(
             mensaje,
@@ -3036,925 +4304,9 @@
         }
 
 
-        // =========================================
-        // OCULTAR RESULTADO
-        // =========================================
-
-        function ocultarResultado() {
-
-            const elemento =
-                document.getElementById(
-                    "resultadoImportacion"
-                );
-
-
-            elemento.classList.remove(
-                "mostrar"
-            );
-
-        }
-
-
-        // =========================================
-        // MENU DE FILTROS
-        // =========================================
-
-        function obtenerValorColumna(
-            afiliado,
-            columna
-        ) {
-
-            const sitio =
-                obtenerSitio(
-                    afiliado.Sitio,
-                    afiliado.FamiliaId
-                );
-
-
-            switch (columna) {
-
-                case "sitio":
-                    return sitio;
-
-                case "familia":
-                    return afiliado.FamiliaId || "";
-
-                case "persona":
-                    return afiliado.PersonaId || "";
-
-                case "nombres":
-                    return afiliado.Nombres || "";
-
-                case "apellidos":
-                    return afiliado.Apellidos || "";
-
-                case "estado":
-                    return afiliado.estado || "";
-
-                default:
-                    return "";
-
-            }
-
-        }
-
-
-        // =========================================
-        // NOMBRE DE COLUMNA
-        // =========================================
-
-        function obtenerNombreColumna(
-            columna
-        ) {
-
-            const nombres = {
-
-                sitio:
-                    "Sitio",
-
-                familia:
-                    "FamiliaId",
-
-                persona:
-                    "PersonaId",
-
-                nombres:
-                    "Nombres",
-
-                apellidos:
-                    "Apellidos",
-
-                estado:
-                    "Estado"
-
-            };
-
-
-            return nombres[columna] ||
-                "columna";
-
-        }
-
-
-        // =========================================
-        // OBTENER VALORES DE FILTRO
-        // =========================================
-
-        function obtenerValoresFiltro(
-            columna
-        ) {
-
-            const valores =
-                new Set();
-
-
-            /*
-             * Los valores se obtienen de los
-             * afiliados actualmente cargados.
-             */
-
-            afiliados.forEach(
-                afiliado => {
-
-                    const valor =
-                        obtenerValorColumna(
-                            afiliado,
-                            columna
-                        );
-
-
-                    if (valor) {
-
-                        valores.add(
-                            String(valor)
-                        );
-
-                    }
-
-                }
-            );
-
-
-            return Array.from(
-                valores
-            ).sort(
-                (a, b) =>
-                    normalizar(a).localeCompare(
-                        normalizar(b),
-                        "es"
-                    )
-            );
-
-        }
-
-
-        // =========================================
-        // ABRIR MENU
-        // =========================================
-
-        function abrirMenuFiltro(
-            boton,
-            columna
-        ) {
-
-            const menu =
-                document.getElementById(
-                    "menuFiltro"
-                );
-
-
-            const titulo =
-                document.getElementById(
-                    "tituloMenuFiltro"
-                );
-
-
-            const buscador =
-                document.getElementById(
-                    "buscarFiltroColumna"
-                );
-
-
-            columnaFiltroActual =
-                columna;
-
-
-            filtroTemporal =
-                filtrosColumnas[
-                    columna
-                ] || "";
-
-
-            titulo.textContent =
-                `Filtrar ${obtenerNombreColumna(columna)}`;
-
-
-            buscador.value =
-                "";
-
-
-            construirOpcionesFiltro();
-
-
-            menu.classList.add(
-                "mostrar"
-            );
-
-
-            const rect =
-                boton.getBoundingClientRect();
-
-
-            const anchoMenu =
-                270;
-
-
-            let izquierda =
-                rect.left;
-
-
-            let arriba =
-                rect.bottom + 5;
-
-
-            if (
-                izquierda +
-                anchoMenu >
-                window.innerWidth -
-                10
-            ) {
-
-                izquierda =
-                    window.innerWidth -
-                    anchoMenu -
-                    10;
-
-            }
-
-
-            if (
-                arriba +
-                330 >
-                window.innerHeight
-            ) {
-
-                arriba =
-                    rect.top -
-                    335;
-
-            }
-
-
-            if (
-                arriba <
-                10
-            ) {
-
-                arriba =
-                    10;
-
-            }
-
-
-            menu.style.left =
-                `${izquierda}px`;
-
-
-            menu.style.top =
-                `${arriba}px`;
-
-
-            setTimeout(
-                () => {
-
-                    buscador.focus();
-
-                },
-                50
-            );
-
-        }
-
-
-        // =========================================
-        // CONSTRUIR OPCIONES
-        // =========================================
-
-        function construirOpcionesFiltro() {
-
-            const opciones =
-                document.getElementById(
-                    "opcionesFiltro"
-                );
-
-
-            const buscador =
-                document.getElementById(
-                    "buscarFiltroColumna"
-                );
-
-
-            const texto =
-                normalizar(
-                    buscador.value
-                );
-
-
-            opciones.innerHTML =
-                "";
-
-
-            /*
-             * SITIO
-             */
-
-            if (
-                columnaFiltroActual ===
-                "sitio"
-            ) {
-
-                const sitios = [
-                    "F",
-                    "M",
-                    "R",
-                    "N",
-                    "Z"
-                ];
-
-
-                sitios.forEach(
-                    sitio => {
-
-                        if (
-                            texto &&
-                            !normalizar(
-                                sitio
-                            ).includes(
-                                texto
-                            )
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        agregarOpcionFiltro(
-                            opciones,
-                            sitio
-                        );
-
-                    }
-                );
-
-
-                return;
-
-            }
-
-
-            /*
-             * ESTADO
-             */
-
-            if (
-                columnaFiltroActual ===
-                "estado"
-            ) {
-
-                const estados = [
-                    "Activo",
-                    "Inactivo"
-                ];
-
-
-                estados.forEach(
-                    estado => {
-
-                        if (
-                            texto &&
-                            !normalizar(
-                                estado
-                            ).includes(
-                                texto
-                            )
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        agregarOpcionFiltro(
-                            opciones,
-                            estado
-                        );
-
-                    }
-                );
-
-
-                return;
-
-            }
-
-
-            /*
-             * DEMAS COLUMNAS
-             */
-
-            let valores =
-                obtenerValoresFiltro(
-                    columnaFiltroActual
-                );
-
-
-            if (texto) {
-
-                valores =
-                    valores.filter(
-                        valor =>
-                            normalizar(
-                                valor
-                            ).includes(
-                                texto
-                            )
-                    );
-
-            }
-
-
-            if (
-                valores.length ===
-                0
-            ) {
-
-                const mensaje =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                mensaje.textContent =
-                    "No hay coincidencias.";
-
-
-                mensaje.style.padding =
-                    "9px 8px";
-
-
-                mensaje.style.color =
-                    "#78909c";
-
-
-                mensaje.style.fontSize =
-                    "12px";
-
-
-                opciones.appendChild(
-                    mensaje
-                );
-
-
-                return;
-
-            }
-
-
-            /*
-             * Para columnas con miles de valores,
-             * mostramos los primeros 100 y usamos
-             * el buscador para localizar otros.
-             */
-
-            valores
-                .slice(
-                    0,
-                    100
-                )
-                .forEach(
-                    valor => {
-
-                        agregarOpcionFiltro(
-                            opciones,
-                            valor
-                        );
-
-                    }
-                );
-
-
-            if (
-                valores.length >
-                100
-            ) {
-
-                const mensaje =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                mensaje.textContent =
-                    "Escribe en el buscador para encontrar más valores.";
-
-
-                mensaje.style.padding =
-                    "8px";
-
-
-                mensaje.style.color =
-                    "#78909c";
-
-
-                mensaje.style.fontSize =
-                    "11px";
-
-
-                opciones.appendChild(
-                    mensaje
-                );
-
-            }
-
-        }
-
-
-        // =========================================
-        // AGREGAR OPCION
-        // =========================================
-
-        function agregarOpcionFiltro(
-            contenedor,
-            valor
-        ) {
-
-            const boton =
-                document.createElement(
-                    "button"
-                );
-
-
-            boton.type =
-                "button";
-
-
-            boton.className =
-                "opcion-filtro";
-
-
-            if (
-                filtroTemporal ===
-                valor
-            ) {
-
-                boton.classList.add(
-                    "seleccionado"
-                );
-
-            }
-
-
-            boton.textContent =
-                valor;
-
-
-            boton.addEventListener(
-                "click",
-                () => {
-
-                    filtroTemporal =
-                        valor;
-
-
-                    document
-                        .querySelectorAll(
-                            "#opcionesFiltro .opcion-filtro"
-                        )
-                        .forEach(
-                            opcion => {
-
-                                opcion.classList.remove(
-                                    "seleccionado"
-                                );
-
-                            }
-                        );
-
-
-                    boton.classList.add(
-                        "seleccionado"
-                    );
-
-                }
-            );
-
-
-            contenedor.appendChild(
-                boton
-            );
-
-        }
-
-
-        // =========================================
-        // CERRAR MENU
-        // =========================================
-
-        function cerrarMenuFiltro() {
-
-            const menu =
-                document.getElementById(
-                    "menuFiltro"
-                );
-
-
-            menu.classList.remove(
-                "mostrar"
-            );
-
-
-            columnaFiltroActual =
-                "";
-
-            filtroTemporal =
-                "";
-
-        }
-
-
-        // =========================================
-        // APLICAR FILTRO
-        // =========================================
-
-        function aplicarFiltroActual() {
-
-            if (
-                !columnaFiltroActual
-            ) {
-
-                return;
-
-            }
-
-
-            /*
-             * Solo modificamos el filtro de
-             * la columna actual.
-             *
-             * Los demás permanecen intactos.
-             */
-
-            filtrosColumnas[
-                columnaFiltroActual
-            ] =
-                filtroTemporal;
-
-
-            paginaActual =
-                1;
-
-
-            mostrarAfiliados();
-
-
-            actualizarIndicadoresFiltros();
-
-
-            cerrarMenuFiltro();
-
-        }
-
-
-        // =========================================
-        // LIMPIAR FILTRO
-        // =========================================
-
-        function limpiarFiltroActual() {
-
-            if (
-                !columnaFiltroActual
-            ) {
-
-                return;
-
-            }
-
-
-            filtrosColumnas[
-                columnaFiltroActual
-            ] =
-                "";
-
-
-            paginaActual =
-                1;
-
-
-            mostrarAfiliados();
-
-
-            actualizarIndicadoresFiltros();
-
-
-            cerrarMenuFiltro();
-
-        }
-
-
-        // =========================================
-        // INDICADORES DE FILTROS
-        // =========================================
-
-        function actualizarIndicadoresFiltros() {
-
-            document
-                .querySelectorAll(
-                    ".boton-filtro-columna"
-                )
-                .forEach(
-                    boton => {
-
-                        const columna =
-                            boton.dataset.columna;
-
-
-                        if (
-                            filtrosColumnas[
-                                columna
-                            ]
-                        ) {
-
-                            boton.classList.add(
-                                "activo"
-                            );
-
-
-                            boton.textContent =
-                                "●";
-
-                        } else {
-
-                            boton.classList.remove(
-                                "activo"
-                            );
-
-
-                            boton.textContent =
-                                "▾";
-
-                        }
-
-                    }
-                );
-
-        }
-
-
-        // =========================================
-        // EVENTOS DE LOS BOTONES DE FILTRO
-        // =========================================
-
-        document
-            .querySelectorAll(
-                ".boton-filtro-columna"
-            )
-            .forEach(
-                boton => {
-
-                    boton.addEventListener(
-                        "click",
-                        evento => {
-
-                            evento.stopPropagation();
-
-
-                            const columna =
-                                boton.dataset.columna;
-
-
-                            abrirMenuFiltro(
-                                boton,
-                                columna
-                            );
-
-                        }
-                    );
-
-                }
-            );
-
-
-        // =========================================
-        // BUSCADOR DEL MENU
-        // =========================================
-
-        document
-            .getElementById(
-                "buscarFiltroColumna"
-            )
-            .addEventListener(
-                "input",
-                construirOpcionesFiltro
-            );
-
-
-        // =========================================
-        // BOTON LIMPIAR
-        // =========================================
-
-        document
-            .getElementById(
-                "botonLimpiarFiltro"
-            )
-            .addEventListener(
-                "click",
-                evento => {
-
-                    evento.stopPropagation();
-
-                    limpiarFiltroActual();
-
-                }
-            );
-
-
-        // =========================================
-        // BOTON APLICAR
-        // =========================================
-
-        document
-            .getElementById(
-                "botonAplicarFiltro"
-            )
-            .addEventListener(
-                "click",
-                evento => {
-
-                    evento.stopPropagation();
-
-                    aplicarFiltroActual();
-
-                }
-            );
-
-
-        // =========================================
-        // CERRAR AL HACER CLIC AFUERA
-        // =========================================
-
-        document.addEventListener(
-            "click",
-            evento => {
-
-                const menu =
-                    document.getElementById(
-                        "menuFiltro"
-                    );
-
-
-                if (
-                    !menu.contains(
-                        evento.target
-                    ) &&
-                    !evento.target.closest(
-                        ".boton-filtro-columna"
-                    )
-                ) {
-
-                    cerrarMenuFiltro();
-
-                }
-
-            }
-        );
-
-
-        // =========================================
-        // EVENTO - BUSQUEDA GENERAL
-        // =========================================
-
-        document
-            .getElementById(
-                "buscarAfiliado"
-            )
-            .addEventListener(
-                "input",
-                () => {
-
-                    paginaActual =
-                        1;
-
-                    mostrarAfiliados();
-
-                }
-            );
-
-
-        // =========================================
-        // EVENTO - ESTADO GENERAL
-        // =========================================
-
-        document
-            .getElementById(
-                "filtroEstado"
-            )
-            .addEventListener(
-                "change",
-                () => {
-
-                    paginaActual =
-                        1;
-
-                    mostrarAfiliados();
-
-                }
-            );
-
-
-        // =========================================
-        // INICIAR FAMILIAS
-        // =========================================
+        // =================================================
+        // INICIAR
+        // =================================================
 
         async function iniciarFamilias() {
 
@@ -3974,11 +4326,8 @@
         }
 
 
-        // =========================================
-        // INICIAR PAGINA
-        // =========================================
-
         iniciarFamilias();
+
 
     </script>
 
@@ -3986,4 +4335,3 @@
 </body>
 
 </html>
-```
