@@ -1,886 +1,1525 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Biblioteca</title>
+    <title>Biblioteca</title>
 
-<link
-    rel="stylesheet"
-    href="estilos.css"
->
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                #f4f6f8;
+
+            color:
+                #333;
+
+        }
+
+
+        /* ==========================================
+           PANTALLA DE ACCESO
+        ========================================== */
+
+        #pantallaAcceso {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1f4e79,
+                    #2f75b5
+                );
+
+        }
+
+
+        .caja-acceso {
+
+            width: 100%;
+
+            max-width: 420px;
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,0.18);
+
+            text-align: center;
+
+        }
+
+
+        .icono-acceso {
+
+            font-size: 52px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .caja-acceso h1 {
+
+            margin:
+                0 0 8px 0;
+
+            color:
+                #1f4e79;
+
+        }
+
+
+        .caja-acceso p {
+
+            margin:
+                0 0 25px 0;
+
+            color:
+                #666;
+
+        }
+
+
+        .campo {
+
+            text-align: left;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .campo label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+            color:
+                #444;
+
+        }
+
+
+        .campo input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border:
+                1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+        }
+
+
+        .campo input:focus {
+
+            outline: none;
+
+            border-color:
+                #2f75b5;
+
+        }
+
+
+        #botonIniciar {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background:
+                #1f4e79;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        #botonIniciar:hover {
+
+            background:
+                #173a5c;
+
+        }
+
+
+        #botonIniciar:disabled {
+
+            opacity: 0.7;
+
+            cursor: not-allowed;
+
+        }
+
+
+        #mensajeAcceso {
+
+            margin-top: 15px;
+
+            color:
+                #c0392b;
+
+            font-size: 14px;
+
+            min-height: 18px;
+
+        }
+
+
+        /* ==========================================
+           CONTENIDO DE LA BIBLIOTECA
+        ========================================== */
+
+        #contenidoBiblioteca {
+
+            display: none;
+
+            min-height: 100vh;
+
+        }
+
+
+        /* ==========================================
+           ENCABEZADO
+        ========================================== */
+
+        .encabezado {
+
+            background:
+                #1f4e79;
+
+            color: white;
+
+            padding:
+                18px 25px;
+
+        }
+
+
+        .encabezado-contenido {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            align-items: center;
+
+            width: 100%;
+
+        }
+
+
+        .marca {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .marca-icono {
+
+            font-size: 35px;
+
+        }
+
+
+        .marca-texto h1 {
+
+            margin: 0;
+
+            font-size: 25px;
+
+        }
+
+
+        .marca-texto p {
+
+            margin:
+                3px 0 0 0;
+
+            font-size: 13px;
+
+            opacity: 0.9;
+
+        }
+
+
+        /* ==========================================
+           BOTÓN CERRAR SESIÓN
+        ========================================== */
+
+        #botonCerrarSesion {
+
+            margin-left: auto;
+
+            padding:
+                9px 15px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.35);
+
+            border-radius: 8px;
+
+            background:
+                transparent;
+
+            color: inherit;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+
+        }
+
+
+        #botonCerrarSesion:hover {
+
+            background:
+                rgba(255,255,255,0.12);
+
+        }
+
+
+        #botonCerrarSesion:disabled {
+
+            opacity: 0.7;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* ==========================================
+           CONTENIDO PRINCIPAL
+        ========================================== */
+
+        .contenedor {
+
+            max-width: 1200px;
+
+            margin:
+                0 auto;
+
+            padding:
+                30px 20px;
+
+        }
+
+
+        .bienvenida {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .bienvenida h2 {
+
+            margin:
+                0 0 8px 0;
+
+            color:
+                #1f4e79;
+
+        }
+
+
+        .bienvenida p {
+
+            margin: 0;
+
+            color:
+                #666;
+
+        }
+
+
+        /* ==========================================
+           ESTADÍSTICAS
+        ========================================== */
+
+        .estadisticas {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .estadistica {
+
+            background: white;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.08);
+
+        }
+
+
+        .estadistica .numero {
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color:
+                #1f4e79;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .estadistica .texto {
+
+            font-size: 14px;
+
+            color:
+                #666;
+
+        }
+
+
+        /* ==========================================
+           ACCIONES PRINCIPALES
+        ========================================== */
+
+        .seccion {
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .seccion h3 {
+
+            margin:
+                0 0 15px 0;
+
+            color:
+                #1f4e79;
+
+        }
+
+
+        .acciones {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+        }
+
+
+        .accion {
+
+            display: block;
+
+            background: white;
+
+            text-decoration: none;
+
+            color:
+                #333;
+
+            border-radius: 10px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.08);
+
+            transition:
+                transform 0.15s,
+                box-shadow 0.15s;
+
+        }
+
+
+        .accion:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 5px 14px
+                rgba(0,0,0,0.12);
+
+        }
+
+
+        .accion-icono {
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .accion-titulo {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            color:
+                #1f4e79;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .accion-descripcion {
+
+            font-size: 13px;
+
+            color:
+                #666;
+
+            line-height: 1.4;
+
+        }
+
+
+        /* ==========================================
+           ADMINISTRACIÓN
+        ========================================== */
+
+        .administracion {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .admin-enlace {
+
+            display: block;
+
+            background: white;
+
+            text-decoration: none;
+
+            color:
+                #333;
+
+            border:
+                1px solid #e2e6ea;
+
+            border-radius: 8px;
+
+            padding: 16px;
+
+            text-align: center;
+
+            transition:
+                background 0.15s;
+
+        }
+
+
+        .admin-enlace:hover {
+
+            background:
+                #f1f5f8;
+
+        }
+
+
+        .admin-icono {
+
+            font-size: 25px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .admin-titulo {
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color:
+                #1f4e79;
+
+        }
+
+
+        /* ==========================================
+           PIE DE PÁGINA
+        ========================================== */
+
+        .pie {
+
+            text-align: center;
+
+            padding:
+                25px 20px;
+
+            color:
+                #777;
+
+            font-size: 13px;
+
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 850px) {
+
+            .estadisticas {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .acciones {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .administracion {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .encabezado {
+
+                padding:
+                    15px;
+
+            }
+
+
+            .encabezado-contenido {
+
+                gap: 10px;
+
+            }
+
+
+            .marca-texto h1 {
+
+                font-size: 21px;
+
+            }
+
+
+            .marca-texto p {
+
+                display: none;
+
+            }
+
+
+            #botonCerrarSesion {
+
+                padding:
+                    8px 10px;
+
+                font-size: 12px;
+
+            }
+
+
+            .estadisticas {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 10px;
+
+            }
+
+
+            .estadistica {
+
+                padding: 15px 10px;
+
+            }
+
+
+            .administracion {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-<!-- =========================================
-     PANTALLA DE ACCESO
-========================================== -->
 
-<div
-    id="pantallaAcceso"
-    style="
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-        box-sizing: border-box;
-    "
->
+    <!-- ==========================================
+         PANTALLA DE ACCESO
+    ========================================== -->
 
-    <div
-        style="
-            width: 100%;
-            max-width: 420px;
-            background: white;
-            border-radius: 14px;
-            padding: 32px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.10);
-            text-align: center;
-        "
-    >
+    <div id="pantallaAcceso">
 
-        <div
-            style="
-                font-size: 48px;
-                margin-bottom: 10px;
-            "
-        >
-            📚
-        </div>
+        <div class="caja-acceso">
 
-        <h1
-            style="
-                margin: 0 0 8px 0;
-            "
-        >
-            Biblioteca
-        </h1>
+            <div class="icono-acceso">
+                📚
+            </div>
 
-        <p
-            style="
-                margin: 0 0 28px 0;
-                color: #666;
-            "
-        >
-            Sistema de control de préstamos
-        </p>
+            <h1>
+                Biblioteca
+            </h1>
+
+            <p>
+                Sistema de gestión de biblioteca
+            </p>
 
 
-        <form id="formularioAcceso">
+            <div class="campo">
 
-            <div
-                style="
-                    text-align: left;
-                    margin-bottom: 16px;
-                "
-            >
-
-                <label
-                    for="correo"
-                    style="
-                        display: block;
-                        margin-bottom: 6px;
-                        font-weight: 600;
-                    "
-                >
+                <label for="correo">
                     Correo electrónico
                 </label>
 
                 <input
                     type="email"
                     id="correo"
-                    autocomplete="username"
-                    required
                     placeholder="Ingresa tu correo"
-                    style="
-                        width: 100%;
-                        box-sizing: border-box;
-                        padding: 12px;
-                        border: 1px solid #ccc;
-                        border-radius: 8px;
-                        font-size: 15px;
-                    "
+                    autocomplete="username"
                 >
 
             </div>
 
 
-            <div
-                style="
-                    text-align: left;
-                    margin-bottom: 18px;
-                "
-            >
+            <div class="campo">
 
-                <label
-                    for="contrasena"
-                    style="
-                        display: block;
-                        margin-bottom: 6px;
-                        font-weight: 600;
-                    "
-                >
+                <label for="contrasena">
                     Contraseña
                 </label>
 
                 <input
                     type="password"
                     id="contrasena"
-                    autocomplete="current-password"
-                    required
                     placeholder="Ingresa tu contraseña"
-                    style="
-                        width: 100%;
-                        box-sizing: border-box;
-                        padding: 12px;
-                        border: 1px solid #ccc;
-                        border-radius: 8px;
-                        font-size: 15px;
-                    "
+                    autocomplete="current-password"
                 >
 
             </div>
 
-
-            <div
-                id="mensajeAcceso"
-                style="
-                    display: none;
-                    margin-bottom: 16px;
-                    padding: 10px;
-                    border-radius: 8px;
-                    background: #f8d7da;
-                    color: #842029;
-                    font-size: 14px;
-                "
-            ></div>
-
-
-            <button
-                type="submit"
-                id="botonIngresar"
-                style="
-                    width: 100%;
-                    padding: 12px;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-size: 16px;
-                    font-weight: 600;
-                "
-            >
-                Ingresar
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-
-<!-- =========================================
-     CONTENIDO DE LA BIBLIOTECA
-========================================== -->
-
-<div id="contenidoBiblioteca" style="display: none;">
-
-
-    <!-- =========================================
-         ENCABEZADO
-    ========================================== -->
-
-    <header class="encabezado">
-
-        <div class="encabezado-contenido">
-
-            <div class="marca">
-
-                <div class="icono-marca">
-                    📚
-                </div>
-
-                <div>
-
-                    <h1>
-                        Biblioteca
-                    </h1>
-
-                    <p>
-                        Sistema de control de préstamos
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- =====================================
-                 CERRAR SESION
-            ====================================== -->
 
             <button
                 type="button"
-                id="botonCerrarSesion"
-                style="
-                    margin-left: auto;
-                    padding: 10px 16px;
-                    border: 1px solid rgba(255,255,255,0.35);
-                    border-radius: 8px;
-                    background: transparent;
-                    color: inherit;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: 600;
-                "
+                id="botonIniciar"
             >
-                Cerrar sesión
+                Iniciar sesión
             </button>
+
+
+            <div id="mensajeAcceso"></div>
 
         </div>
 
-    </header>
+    </div>
 
 
-
-    <!-- =========================================
-         CONTENIDO PRINCIPAL
+    <!-- ==========================================
+         CONTENIDO DE LA BIBLIOTECA
     ========================================== -->
 
-    <main class="contenedor">
+    <div id="contenidoBiblioteca">
 
 
-        <!-- BIENVENIDA -->
+        <!-- ENCABEZADO -->
 
-        <section class="bienvenida">
+        <header class="encabezado">
 
-            <span class="etiqueta">
-                SISTEMA DE BIBLIOTECA
-            </span>
+            <div class="encabezado-contenido">
 
-            <h2>
-                Bienvenido al sistema de biblioteca
-            </h2>
 
-            <p>
-                Desde aquí puedes administrar los libros,
-                familias, préstamos, devoluciones y consultar
-                los reportes de la biblioteca.
-            </p>
+                <div class="marca">
 
-        </section>
-
-
-
-        <!-- =====================================
-             ESTADISTICAS
-        ====================================== -->
-
-        <section class="estadisticas">
-
-
-            <div class="tarjeta-estadistica">
-
-                <div class="estadistica-icono">
-                    📚
-                </div>
-
-                <div
-                    class="estadistica-numero"
-                    id="totalLibros"
-                >
-                    0
-                </div>
-
-                <div class="estadistica-texto">
-                    Libros
-                </div>
-
-            </div>
-
-
-
-            <div class="tarjeta-estadistica">
-
-                <div class="estadistica-icono">
-                    📖
-                </div>
-
-                <div
-                    class="estadistica-numero"
-                    id="totalDisponibles"
-                >
-                    0
-                </div>
-
-                <div class="estadistica-texto">
-                    Disponibles
-                </div>
-
-            </div>
-
-
-
-            <div class="tarjeta-estadistica">
-
-                <div class="estadistica-icono">
-                    📕
-                </div>
-
-                <div
-                    class="estadistica-numero"
-                    id="totalPrestados"
-                >
-                    0
-                </div>
-
-                <div class="estadistica-texto">
-                    Prestados
-                </div>
-
-            </div>
-
-
-
-            <div class="tarjeta-estadistica">
-
-                <div class="estadistica-icono">
-                    ⏰
-                </div>
-
-                <div
-                    class="estadistica-numero"
-                    id="totalVencidos"
-                >
-                    0
-                </div>
-
-                <div class="estadistica-texto">
-                    Vencidos
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- =====================================
-             ACCIONES PRINCIPALES
-        ====================================== -->
-
-        <section class="seccion">
-
-            <h2 class="seccion-titulo">
-                Acciones principales
-            </h2>
-
-
-            <div class="acciones-principales">
-
-
-                <a
-                    href="prestamos.html"
-                    class="accion"
-                >
-
-                    <div class="accion-icono">
-                        📖
-                    </div>
-
-                    <div class="accion-contenido">
-
-                        <strong>
-                            Nuevo préstamo
-                        </strong>
-
-                        <span>
-                            Registrar un nuevo préstamo de libro
-                        </span>
-
-                    </div>
-
-                    <div class="accion-flecha">
-                        →
-                    </div>
-
-                </a>
-
-
-
-                <a
-                    href="devoluciones.html"
-                    class="accion"
-                >
-
-                    <div class="accion-icono">
-                        ↩️
-                    </div>
-
-                    <div class="accion-contenido">
-
-                        <strong>
-                            Registrar devolución
-                        </strong>
-
-                        <span>
-                            Registrar el regreso de un libro
-                        </span>
-
-                    </div>
-
-                    <div class="accion-flecha">
-                        →
-                    </div>
-
-                </a>
-
-
-
-                <a
-                    href="buscar.html"
-                    class="accion"
-                >
-
-                    <div class="accion-icono">
-                        🔎
-                    </div>
-
-                    <div class="accion-contenido">
-
-                        <strong>
-                            Buscar
-                        </strong>
-
-                        <span>
-                            Consultar personas, familias y préstamos
-                        </span>
-
-                    </div>
-
-                    <div class="accion-flecha">
-                        →
-                    </div>
-
-                </a>
-
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =====================================
-             ADMINISTRACION
-        ====================================== -->
-
-        <section class="seccion">
-
-            <h2 class="seccion-titulo">
-                Administración
-            </h2>
-
-
-            <div class="administracion">
-
-
-                <a
-                    href="libros.html"
-                    class="opcion"
-                >
-
-                    <div class="opcion-icono">
+                    <div class="marca-icono">
                         📚
                     </div>
 
-                    <div class="opcion-contenido">
 
-                        <strong>
-                            Libros
-                        </strong>
+                    <div class="marca-texto">
 
-                        <span>
-                            Registrar y administrar los libros
-                        </span>
+                        <h1>
+                            Biblioteca
+                        </h1>
+
+                        <p>
+                            Sistema de gestión de biblioteca
+                        </p>
 
                     </div>
 
-                    <div class="opcion-flecha">
-                        →
-                    </div>
-
-                </a>
+                </div>
 
 
+                <!-- CERRAR SESIÓN -->
 
-                <a
-                    href="familias.html"
-                    class="opcion"
+                <button
+                    type="button"
+                    id="botonCerrarSesion"
                 >
-
-                    <div class="opcion-icono">
-                        👨‍👩‍👧
-                    </div>
-
-                    <div class="opcion-contenido">
-
-                        <strong>
-                            Familias
-                        </strong>
-
-                        <span>
-                            Consultar la base de afiliados
-                        </span>
-
-                    </div>
-
-                    <div class="opcion-flecha">
-                        →
-                    </div>
-
-                </a>
-
-
-
-                <a
-                    href="reportes.html"
-                    class="opcion"
-                >
-
-                    <div class="opcion-icono">
-                        📊
-                    </div>
-
-                    <div class="opcion-contenido">
-
-                        <strong>
-                            Reportes
-                        </strong>
-
-                        <span>
-                            Consultar estadísticas e historial
-                        </span>
-
-                    </div>
-
-                    <div class="opcion-flecha">
-                        →
-                    </div>
-
-                </a>
-
-
-
-                <a
-                    href="respaldo.html"
-                    class="opcion"
-                >
-
-                    <div class="opcion-icono">
-                        💾
-                    </div>
-
-                    <div class="opcion-contenido">
-
-                        <strong>
-                            Respaldo
-                        </strong>
-
-                        <span>
-                            Crear o restaurar una copia de seguridad
-                        </span>
-
-                    </div>
-
-                    <div class="opcion-flecha">
-                        →
-                    </div>
-
-                </a>
+                    Cerrar sesión
+                </button>
 
 
             </div>
 
-        </section>
+        </header>
 
 
+        <!-- CONTENIDO -->
 
-        <!-- =====================================
-             INFORMACION
-        ====================================== -->
-
-        <section class="mensaje-inicio">
-
-            <strong>
-                💡 Información
-            </strong>
-
-            <p>
-                Utiliza las opciones del sistema para
-                administrar los libros y controlar sus
-                préstamos y devoluciones.
-            </p>
-
-        </section>
+        <main class="contenedor">
 
 
-    </main>
+            <!-- BIENVENIDA -->
+
+            <section class="bienvenida">
+
+                <h2>
+                    Bienvenido al sistema
+                </h2>
+
+                <p>
+                    Desde aquí puedes gestionar los libros,
+                    afiliados, préstamos y devoluciones de la biblioteca.
+                </p>
+
+            </section>
 
 
+            <!-- ESTADÍSTICAS -->
 
-    <!-- =========================================
-         PIE
+            <section class="estadisticas">
+
+
+                <div class="estadistica">
+
+                    <div
+                        class="numero"
+                        id="totalLibros"
+                    >
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Total de libros
+                    </div>
+
+                </div>
+
+
+                <div class="estadistica">
+
+                    <div
+                        class="numero"
+                        id="totalDisponibles"
+                    >
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Libros disponibles
+                    </div>
+
+                </div>
+
+
+                <div class="estadistica">
+
+                    <div
+                        class="numero"
+                        id="totalPrestados"
+                    >
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Libros prestados
+                    </div>
+
+                </div>
+
+
+                <div class="estadistica">
+
+                    <div
+                        class="numero"
+                        id="totalVencidos"
+                    >
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Préstamos vencidos
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- ACCIONES PRINCIPALES -->
+
+            <section class="seccion">
+
+                <h3>
+                    Biblioteca
+                </h3>
+
+
+                <div class="acciones">
+
+
+                    <a
+                        href="prestamos.html"
+                        class="accion"
+                    >
+
+                        <div class="accion-icono">
+                            📖
+                        </div>
+
+                        <div class="accion-titulo">
+                            Préstamos
+                        </div>
+
+                        <div class="accion-descripcion">
+                            Registrar y consultar préstamos de libros.
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="devoluciones.html"
+                        class="accion"
+                    >
+
+                        <div class="accion-icono">
+                            🔄
+                        </div>
+
+                        <div class="accion-titulo">
+                            Devoluciones
+                        </div>
+
+                        <div class="accion-descripcion">
+                            Registrar la devolución de libros prestados.
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="buscar.html"
+                        class="accion"
+                    >
+
+                        <div class="accion-icono">
+                            🔎
+                        </div>
+
+                        <div class="accion-titulo">
+                            Buscar
+                        </div>
+
+                        <div class="accion-descripcion">
+                            Consultar préstamos y movimientos de la biblioteca.
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- ADMINISTRACIÓN -->
+
+            <section class="seccion">
+
+                <h3>
+                    Administración
+                </h3>
+
+
+                <div class="administracion">
+
+
+                    <a
+                        href="libros.html"
+                        class="admin-enlace"
+                    >
+
+                        <div class="admin-icono">
+                            📚
+                        </div>
+
+                        <div class="admin-titulo">
+                            Libros
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="familias.html"
+                        class="admin-enlace"
+                    >
+
+                        <div class="admin-icono">
+                            👨‍👩‍👧‍👦
+                        </div>
+
+                        <div class="admin-titulo">
+                            Familias
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="reportes.html"
+                        class="admin-enlace"
+                    >
+
+                        <div class="admin-icono">
+                            📊
+                        </div>
+
+                        <div class="admin-titulo">
+                            Reportes
+                        </div>
+
+                    </a>
+
+
+                    <a
+                        href="respaldo.html"
+                        class="admin-enlace"
+                    >
+
+                        <div class="admin-icono">
+                            💾
+                        </div>
+
+                        <div class="admin-titulo">
+                            Respaldo
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+
+        <!-- PIE -->
+
+        <footer class="pie">
+
+            Biblioteca · Sistema de gestión
+
+        </footer>
+
+
+    </div>
+
+
+    <!-- ==========================================
+         SUPABASE
     ========================================== -->
 
-    <footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        Sistema de Biblioteca
-
-    </footer>
-
-</div>
+    <script src="supabase.js"></script>
 
 
+    <!-- ==========================================
+         AUTENTICACIÓN
+    ========================================== -->
 
-<!-- =========================================
-     SUPABASE
-========================================== -->
+    <script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="supabase.js"></script>
-
-
-
-<!-- =========================================
-     AUTENTICACION
-========================================== -->
-
-<script>
-
-    const pantallaAcceso =
-        document.getElementById("pantallaAcceso");
-
-    const contenidoBiblioteca =
-        document.getElementById("contenidoBiblioteca");
-
-    const formularioAcceso =
-        document.getElementById("formularioAcceso");
-
-    const correo =
-        document.getElementById("correo");
-
-    const contrasena =
-        document.getElementById("contrasena");
-
-    const botonIngresar =
-        document.getElementById("botonIngresar");
-
-    const mensajeAcceso =
-        document.getElementById("mensajeAcceso");
-
-    const botonCerrarSesion =
-        document.getElementById("botonCerrarSesion");
-
-
-    // =========================================
-    // MOSTRAR BIBLIOTECA
-    // =========================================
-
-    function mostrarBiblioteca() {
-
-        pantallaAcceso.style.display = "none";
-
-        contenidoBiblioteca.style.display = "block";
-
-        // Cargar la aplicación solamente
-        // después de iniciar sesión.
-        const scriptApp =
-            document.createElement("script");
-
-        scriptApp.src = "app.js";
-
-        document.body.appendChild(scriptApp);
-    }
-
-
-    // =========================================
-    // MOSTRAR ERROR
-    // =========================================
-
-    function mostrarError(mensaje) {
-
-        mensajeAcceso.textContent = mensaje;
-
-        mensajeAcceso.style.display = "block";
-    }
-
-
-    // =========================================
-    // COMPROBAR SESION EXISTENTE
-    // =========================================
-
-    async function comprobarSesion() {
-
-        const {
-            data: { session },
-            error
-        } = await supabaseClient.auth.getSession();
-
-
-        if (error) {
-
-            console.error(
-                "Error al comprobar la sesión:",
-                error
+        const pantallaAcceso =
+            document.getElementById(
+                "pantallaAcceso"
             );
 
-            mostrarError(
-                "No se pudo comprobar la sesión."
+        const contenidoBiblioteca =
+            document.getElementById(
+                "contenidoBiblioteca"
             );
 
-            return;
-        }
+        const correo =
+            document.getElementById(
+                "correo"
+            );
+
+        const contrasena =
+            document.getElementById(
+                "contrasena"
+            );
+
+        const botonIniciar =
+            document.getElementById(
+                "botonIniciar"
+            );
+
+        const botonCerrarSesion =
+            document.getElementById(
+                "botonCerrarSesion"
+            );
+
+        const mensajeAcceso =
+            document.getElementById(
+                "mensajeAcceso"
+            );
 
 
-        if (session) {
+        /* ==========================================
+           MOSTRAR BIBLIOTECA
+        ========================================== */
 
-            mostrarBiblioteca();
+        function mostrarBiblioteca() {
 
-        }
+            pantallaAcceso.style.display =
+                "none";
 
-    }
-
-
-    // =========================================
-    // INICIAR SESION
-    // =========================================
-
-    formularioAcceso.addEventListener(
-        "submit",
-        async function (evento) {
-
-            evento.preventDefault();
-
-            mensajeAcceso.style.display = "none";
-
-            botonIngresar.disabled = true;
-
-            botonIngresar.textContent =
-                "Ingresando...";
+            contenidoBiblioteca.style.display =
+                "block";
 
 
-            const {
-                data,
-                error
-            } = await supabaseClient.auth.signInWithPassword({
+            /*
+             * Cargamos app.js solamente
+             * cuando el usuario ya inició sesión.
+             */
 
-                email: correo.value.trim(),
+            if (
+                !document.querySelector(
+                    'script[src="app.js"]'
+                )
+            ) {
 
-                password: contrasena.value
+                const script =
+                    document.createElement(
+                        "script"
+                    );
 
-            });
+                script.src =
+                    "app.js";
 
-
-            if (error) {
-
-                console.error(
-                    "Error de inicio de sesión:",
-                    error
+                document.body.appendChild(
+                    script
                 );
 
-                mostrarError(
-                    "El correo o la contraseña no son correctos."
-                );
-
-                botonIngresar.disabled = false;
-
-                botonIngresar.textContent =
-                    "Ingresar";
-
-                return;
             }
 
+        }
 
-            if (data.session) {
+
+        /* ==========================================
+           COMPROBAR SESIÓN
+        ========================================== */
+
+        async function comprobarSesion() {
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.getSession();
+
+
+                if (
+                    error
+                    ||
+                    !data
+                    ||
+                    !data.session
+                ) {
+
+                    pantallaAcceso.style.display =
+                        "flex";
+
+                    contenidoBiblioteca.style.display =
+                        "none";
+
+                    return;
+
+                }
+
 
                 mostrarBiblioteca();
 
-            }
 
-        }
-    );
-
-
-    // =========================================
-    // CERRAR SESION
-    // =========================================
-
-    botonCerrarSesion.addEventListener(
-        "click",
-        async function () {
-
-            botonCerrarSesion.disabled = true;
-
-            botonCerrarSesion.textContent =
-                "Cerrando sesión...";
-
-
-            const {
-                error
-            } = await supabaseClient.auth.signOut();
-
-
-            if (error) {
+            } catch (error) {
 
                 console.error(
-                    "Error al cerrar sesión:",
+                    "Error al comprobar la sesión:",
                     error
                 );
 
-                botonCerrarSesion.disabled = false;
+                pantallaAcceso.style.display =
+                    "flex";
 
-                botonCerrarSesion.textContent =
-                    "Cerrar sesión";
+                contenidoBiblioteca.style.display =
+                    "none";
 
-                alert(
-                    "No se pudo cerrar la sesión. Intenta nuevamente."
-                );
-
-                return;
             }
 
-
-            // Recargar la página para limpiar
-            // completamente el estado de la aplicación.
-            window.location.reload();
-
         }
-    );
 
 
-    // =========================================
-    // INICIAR
-    // =========================================
+        /* ==========================================
+           INICIAR SESIÓN
+        ========================================== */
 
-    comprobarSesion();
+        botonIniciar.addEventListener(
+            "click",
+            async function () {
 
-</script>
+
+                const email =
+                    correo.value.trim();
+
+                const password =
+                    contrasena.value;
+
+
+                mensajeAcceso.textContent =
+                    "";
+
+
+                if (!email || !password) {
+
+                    mensajeAcceso.textContent =
+                        "Ingresa tu correo y contraseña.";
+
+                    return;
+
+                }
+
+
+                botonIniciar.disabled =
+                    true;
+
+                botonIniciar.textContent =
+                    "Iniciando sesión...";
+
+
+                try {
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient.auth
+                            .signInWithPassword({
+
+                                email:
+                                    email,
+
+                                password:
+                                    password
+
+                            });
+
+
+                    if (error) {
+
+                        console.error(
+                            "Error al iniciar sesión:",
+                            error
+                        );
+
+                        mensajeAcceso.textContent =
+                            "Correo o contraseña incorrectos.";
+
+                        botonIniciar.disabled =
+                            false;
+
+                        botonIniciar.textContent =
+                            "Iniciar sesión";
+
+                        return;
+
+                    }
+
+
+                    if (
+                        data
+                        &&
+                        data.session
+                    ) {
+
+                        mostrarBiblioteca();
+
+                    }
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Error al iniciar sesión:",
+                        error
+                    );
+
+                    mensajeAcceso.textContent =
+                        "Ocurrió un error. Intenta nuevamente.";
+
+                    botonIniciar.disabled =
+                        false;
+
+                    botonIniciar.textContent =
+                        "Iniciar sesión";
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+           CERRAR SESIÓN
+        ========================================== */
+
+        botonCerrarSesion.addEventListener(
+            "click",
+            async function () {
+
+
+                botonCerrarSesion.disabled =
+                    true;
+
+                botonCerrarSesion.textContent =
+                    "Cerrando sesión...";
+
+
+                try {
+
+                    const {
+                        error
+                    } =
+                        await supabaseClient.auth
+                            .signOut();
+
+
+                    if (error) {
+
+                        console.error(
+                            "Error al cerrar sesión:",
+                            error
+                        );
+
+                        botonCerrarSesion.disabled =
+                            false;
+
+                        botonCerrarSesion.textContent =
+                            "Cerrar sesión";
+
+                        alert(
+                            "No se pudo cerrar la sesión. Intenta nuevamente."
+                        );
+
+                        return;
+
+                    }
+
+
+                    window.location.reload();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Error al cerrar sesión:",
+                        error
+                    );
+
+                    botonCerrarSesion.disabled =
+                        false;
+
+                    botonCerrarSesion.textContent =
+                        "Cerrar sesión";
+
+                    alert(
+                        "No se pudo cerrar la sesión. Intenta nuevamente."
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+           ENTER PARA INICIAR SESIÓN
+        ========================================== */
+
+        correo.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    botonIniciar.click();
+
+                }
+
+            }
+        );
+
+
+        contrasena.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    botonIniciar.click();
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+           INICIO
+        ========================================== */
+
+        comprobarSesion();
+
+    </script>
+
 
 </body>
 
