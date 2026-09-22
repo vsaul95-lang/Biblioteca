@@ -18,7 +18,6 @@
     href="estilos.css"
 >
 
-
 </head>
 
 <body>
@@ -227,6 +226,29 @@
                 </div>
 
             </div>
+
+
+            <!-- =====================================
+                 CERRAR SESION
+            ====================================== -->
+
+            <button
+                type="button"
+                id="botonCerrarSesion"
+                style="
+                    margin-left: auto;
+                    padding: 10px 16px;
+                    border: 1px solid rgba(255,255,255,0.35);
+                    border-radius: 8px;
+                    background: transparent;
+                    color: inherit;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: 600;
+                "
+            >
+                Cerrar sesión
+            </button>
 
         </div>
 
@@ -644,6 +666,7 @@
 <script src="supabase.js"></script>
 
 
+
 <!-- =========================================
      AUTENTICACION
 ========================================== -->
@@ -670,6 +693,9 @@
 
     const mensajeAcceso =
         document.getElementById("mensajeAcceso");
+
+    const botonCerrarSesion =
+        document.getElementById("botonCerrarSesion");
 
 
     // =========================================
@@ -796,6 +822,53 @@
                 mostrarBiblioteca();
 
             }
+
+        }
+    );
+
+
+    // =========================================
+    // CERRAR SESION
+    // =========================================
+
+    botonCerrarSesion.addEventListener(
+        "click",
+        async function () {
+
+            botonCerrarSesion.disabled = true;
+
+            botonCerrarSesion.textContent =
+                "Cerrando sesión...";
+
+
+            const {
+                error
+            } = await supabaseClient.auth.signOut();
+
+
+            if (error) {
+
+                console.error(
+                    "Error al cerrar sesión:",
+                    error
+                );
+
+                botonCerrarSesion.disabled = false;
+
+                botonCerrarSesion.textContent =
+                    "Cerrar sesión";
+
+                alert(
+                    "No se pudo cerrar la sesión. Intenta nuevamente."
+                );
+
+                return;
+            }
+
+
+            // Recargar la página para limpiar
+            // completamente el estado de la aplicación.
+            window.location.reload();
 
         }
     );
