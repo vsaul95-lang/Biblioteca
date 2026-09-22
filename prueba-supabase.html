@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Supabase</title>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Conexión de nuestro proyecto -->
+    <script src="supabase.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .contenedor {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            min-height: 25px;
+        }
+
+        .exito {
+            color: #166534;
+            background: #dcfce7 !important;
+        }
+
+        .error {
+            color: #991b1b;
+            background: #fee2e2 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+        <h1>🔗 Prueba de Supabase</h1>
+
+        <p>
+            Esta página comprobará si la Biblioteca puede conectarse
+            correctamente con la base de datos.
+        </p>
+
+        <button onclick="probarConexion()">
+            Probar conexión
+        </button>
+
+        <div id="resultado">
+            Aún no se ha realizado la prueba.
+        </div>
+    </div>
+
+    <script>
+        async function probarConexion() {
+            const resultado = document.getElementById("resultado");
+
+            resultado.className = "";
+            resultado.textContent = "⏳ Probando conexión...";
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from("afiliados")
+                    .select("*")
+                    .limit(1);
+
+                if (error) {
+                    throw error;
+                }
+
+                resultado.className = "exito";
+
+                if (data.length > 0) {
+                    resultado.innerHTML =
+                        "✅ <strong>Conexión correcta.</strong><br>" +
+                        "Supabase respondió correctamente y encontró registros en la tabla afiliados.";
+                } else {
+                    resultado.innerHTML =
+                        "✅ <strong>Conexión correcta.</strong><br>" +
+                        "Supabase respondió correctamente, pero la tabla afiliados está vacía.";
+                }
+
+            } catch (error) {
+                console.error(error);
+
+                resultado.className = "error";
+
+                resultado.innerHTML =
+                    "❌ <strong>Error de conexión.</strong><br><br>" +
+                    error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>

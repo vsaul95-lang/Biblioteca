@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Respaldo de datos - Biblioteca</title>
+
+
+    <!-- =========================================================
+         OCULTAR LA PÁGINA MIENTRAS SE COMPRUEBA EL ACCESO
+    ========================================================== -->
+
+    <style>
+
+        html {
+            visibility: hidden;
+        }
+
+    </style>
+
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase.js"></script>
+
+
+    <!-- =========================================================
+         PROTECCIÓN GENERAL
+    ========================================================== -->
+
+    <script src="auth.js"></script>
+
+
+    <!-- =========================================================
+         COMPROBACIÓN DIRECTA DE SESIÓN
+         
+         Esta página no depende únicamente de auth.js.
+         También verifica directamente que exista una sesión.
+    ========================================================== -->
+
+    <script>
+
+        (async function protegerRespaldo() {
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.getSession();
+
+
+                /*
+                 * Si existe un error o no existe una sesión,
+                 * enviamos al usuario al inicio.
+                 */
+
+                if (
+                    error ||
+                    !data ||
+                    !data.session
+                ) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Si existe una sesión válida,
+                 * mostramos la página.
+                 */
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+
+                /*
+                 * Indicamos que la página ya fue autorizada.
+                 * El código principal utilizará esta variable
+                 * antes de consultar los datos.
+                 */
+
+                window.respaldoAutorizado = true;
+
+
+                /*
+                 * Iniciamos la aplicación solamente después
+                 * de comprobar la sesión.
+                 */
+
+                if (
+                    typeof iniciarRespaldo === "function"
+                ) {
+
+                    iniciarRespaldo();
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al comprobar la sesión:",
+                    error
+                );
+
+
+                window.location.replace(
+                    "index.html"
+                );
+
+            }
+
+        })();
+
+    </script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #263238;
+        }
+
+
+        .encabezado {
+            background: #263238;
+            color: white;
+            padding: 18px 24px;
+        }
+
+
+        .encabezado-contenido {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .icono-marca {
+            font-size: 32px;
+        }
+
+
+        .marca h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+
+        .marca p {
+            margin: 3px 0 0;
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+
+        .contenedor {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #37474f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+
+        .volver:hover {
+            text-decoration: underline;
+        }
+
+
+        .seccion {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        }
+
+
+        .seccion h2 {
+            margin: 0 0 8px;
+            font-size: 21px;
+        }
+
+
+        .descripcion {
+            margin: 0 0 22px;
+            color: #607d8b;
+            line-height: 1.5;
+        }
+
+
+        .acciones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+
+        .boton {
+            border: none;
+            border-radius: 9px;
+            padding: 15px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+
+        .boton:hover {
+            transform: translateY(-1px);
+        }
+
+
+        .boton:disabled {
+            opacity: 0.6;
+            cursor: wait;
+            transform: none;
+        }
+
+
+        .boton-respaldo {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+
+        .boton-respaldo:hover {
+            background: #dceddd;
+        }
+
+
+        .boton-restaurar {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+
+        .boton-restaurar:hover {
+            background: #d7ebfa;
+        }
+
+
+        .informacion {
+            background: #f8fafb;
+            border: 1px solid #e0e6e9;
+            border-radius: 9px;
+            padding: 18px;
+        }
+
+
+        .informacion h3 {
+            margin: 0 0 12px;
+            font-size: 17px;
+        }
+
+
+        .datos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+
+        .dato {
+            background: white;
+            border: 1px solid #e4e8eb;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+
+        .dato-numero {
+            font-size: 22px;
+            font-weight: bold;
+            color: #263238;
+        }
+
+
+        .dato-texto {
+            margin-top: 3px;
+            font-size: 13px;
+            color: #607d8b;
+        }
+
+
+        .mensaje {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+
+        .mensaje.exito {
+            display: block;
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+        }
+
+
+        .mensaje.error {
+            display: block;
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            color: #c62828;
+        }
+
+
+        .mensaje.aviso {
+            display: block;
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            color: #8d6e00;
+        }
+
+
+        .nota {
+            margin-top: 18px;
+            padding: 14px;
+            background: #fff8e1;
+            border-left: 4px solid #f9a825;
+            border-radius: 5px;
+            color: #6d5b00;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        .pie {
+            text-align: center;
+            color: #78909c;
+            font-size: 13px;
+            padding: 10px 20px 30px;
+        }
+
+
+        input[type="file"] {
+            display: none;
+        }
+
+
+        @media (max-width: 700px) {
+
+            .encabezado-contenido {
+                align-items: flex-start;
+            }
+
+
+            .acciones {
+                grid-template-columns: 1fr;
+            }
+
+
+            .datos {
+                grid-template-columns: 1fr;
+            }
+
+
+            .contenedor {
+                margin-top: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header class="encabezado">
+
+        <div class="encabezado-contenido">
+
+            <div class="marca">
+
+                <div class="icono-marca">
+                    📚
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        Biblioteca
+                    </h1>
+
+
+                    <p>
+                        Respaldo y restauración de datos
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="contenedor">
+
+        <a
+            href="index.html"
+            class="volver"
+        >
+            ← Volver al inicio
+        </a>
+
+
+        <section class="seccion">
+
+            <h2>
+                💾 Respaldo de la base de datos
+            </h2>
+
+
+            <p class="descripcion">
+                Guarda una copia de seguridad de toda la información registrada
+                actualmente en la Biblioteca.
+            </p>
+
+
+            <div class="acciones">
+
+                <button
+                    type="button"
+                    class="boton boton-respaldo"
+                    id="btnCrearRespaldo"
+                >
+                    💾 Crear respaldo
+                </button>
+
+
+                <button
+                    type="button"
+                    class="boton boton-restaurar"
+                    id="btnSeleccionarRespaldo"
+                >
+                    📥 Restaurar respaldo
+                </button>
+
+            </div>
+
+
+            <input
+                type="file"
+                id="archivoRespaldo"
+                accept=".json,application/json"
+            >
+
+
+            <div
+                id="mensaje"
+                class="mensaje"
+            ></div>
+
+        </section>
+
+
+        <section class="seccion">
+
+            <h2>
+                📊 Información actual
+            </h2>
+
+
+            <p class="descripcion">
+                Registros que se encuentran almacenados actualmente en Supabase.
+            </p>
+
+
+            <div class="informacion">
+
+                <div class="datos">
+
+                    <div class="dato">
+
+                        <div
+                            class="dato-numero"
+                            id="totalLibros"
+                        >
+                            0
+                        </div>
+
+
+                        <div class="dato-texto">
+                            Libros
+                        </div>
+
+                    </div>
+
+
+                    <div class="dato">
+
+                        <div
+                            class="dato-numero"
+                            id="totalAfiliados"
+                        >
+                            0
+                        </div>
+
+
+                        <div class="dato-texto">
+                            Afiliados
+                        </div>
+
+                    </div>
+
+
+                    <div class="dato">
+
+                        <div
+                            class="dato-numero"
+                            id="totalPrestamos"
+                        >
+                            0
+                        </div>
+
+
+                        <div class="dato-texto">
+                            Préstamos
+                        </div>
+
+                    </div>
+
+
+                    <div class="dato">
+
+                        <div
+                            class="dato-numero"
+                            id="totalDatos"
+                        >
+                            0
+                        </div>
+
+
+                        <div class="dato-texto">
+                            Registros respaldables
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="nota">
+
+                <strong>Importante:</strong>
+
+                el respaldo contiene la información almacenada actualmente
+                en la base de datos de la Biblioteca. Se recomienda guardar
+                el archivo en un lugar seguro, por ejemplo una memoria USB,
+                disco externo o carpeta de respaldo.
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="pie">
+        Sistema de control de préstamos · Biblioteca
+    </footer>
+
+
+    <script>
+
+        /* =========================================================
+           CONFIGURACIÓN
+        ========================================================== */
+
+        const TAMANO_LOTE = 500;
+
+
+        /* =========================================================
+           ELEMENTOS
+        ========================================================== */
+
+        const btnCrearRespaldo =
+            document.getElementById(
+                "btnCrearRespaldo"
+            );
+
+
+        const btnSeleccionarRespaldo =
+            document.getElementById(
+                "btnSeleccionarRespaldo"
+            );
+
+
+        const archivoRespaldo =
+            document.getElementById(
+                "archivoRespaldo"
+            );
+
+
+        /* =========================================================
+           MENSAJES
+        ========================================================== */
+
+        function mostrarMensaje(
+            texto,
+            tipo
+        ) {
+
+            const mensaje =
+                document.getElementById(
+                    "mensaje"
+                );
+
+
+            mensaje.textContent =
+                texto;
+
+
+            mensaje.className =
+                "mensaje " + tipo;
+
+        }
+
+
+        /* =========================================================
+           CARGAR TABLA COMPLETA
+        ========================================================== */
+
+        async function cargarTabla(
+            nombreTabla
+        ) {
+
+            const registros = [];
+
+            let desde = 0;
+
+
+            while (true) {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from(nombreTabla)
+                        .select("*")
+                        .range(
+                            desde,
+                            desde + 999
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        `Error cargando ${nombreTabla}:`,
+                        error
+                    );
+
+
+                    throw error;
+
+                }
+
+
+                if (
+                    !data ||
+                    data.length === 0
+                ) {
+
+                    break;
+
+                }
+
+
+                registros.push(
+                    ...data
+                );
+
+
+                if (
+                    data.length < 1000
+                ) {
+
+                    break;
+
+                }
+
+
+                desde += 1000;
+
+            }
+
+
+            return registros;
+
+        }
+
+
+        /* =========================================================
+           ACTUALIZAR INFORMACIÓN
+        ========================================================== */
+
+        async function actualizarInformacion() {
+
+            /*
+             * Protección adicional.
+             *
+             * Aunque esta función sea llamada por error,
+             * no consulta Supabase si no existe autorización.
+             */
+
+            if (
+                !window.respaldoAutorizado
+            ) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const [
+                    libros,
+                    afiliados,
+                    prestamos
+                ] =
+                    await Promise.all([
+
+                        cargarTabla(
+                            "libros"
+                        ),
+
+                        cargarTabla(
+                            "afiliados"
+                        ),
+
+                        cargarTabla(
+                            "prestamos"
+                        )
+
+                    ]);
+
+
+                document.getElementById(
+                    "totalLibros"
+                ).textContent =
+                    libros.length.toLocaleString(
+                        "es-GT"
+                    );
+
+
+                document.getElementById(
+                    "totalAfiliados"
+                ).textContent =
+                    afiliados.length.toLocaleString(
+                        "es-GT"
+                    );
+
+
+                document.getElementById(
+                    "totalPrestamos"
+                ).textContent =
+                    prestamos.length.toLocaleString(
+                        "es-GT"
+                    );
+
+
+                document.getElementById(
+                    "totalDatos"
+                ).textContent =
+                    (
+                        libros.length +
+                        afiliados.length +
+                        prestamos.length
+                    ).toLocaleString(
+                        "es-GT"
+                    );
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No se pudo consultar la información actual de Supabase.",
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           FECHA PARA NOMBRE DEL ARCHIVO
+        ========================================================== */
+
+        function obtenerFechaArchivo() {
+
+            const fecha =
+                new Date();
+
+
+            const dia =
+                String(
+                    fecha.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const mes =
+                String(
+                    fecha.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const anio =
+                fecha.getFullYear();
+
+
+            return `${dia}-${mes}-${anio}`;
+
+        }
+
+
+        /* =========================================================
+           CREAR RESPALDO
+        ========================================================== */
+
+        async function crearRespaldo() {
+
+            if (
+                !window.respaldoAutorizado
+            ) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
+
+
+            btnCrearRespaldo.disabled =
+                true;
+
+
+            btnSeleccionarRespaldo.disabled =
+                true;
+
+
+            mostrarMensaje(
+                "Preparando respaldo. Espere un momento...",
+                "aviso"
+            );
+
+
+            try {
+
+                const [
+                    afiliados,
+                    libros,
+                    prestamos
+                ] =
+                    await Promise.all([
+
+                        cargarTabla(
+                            "afiliados"
+                        ),
+
+                        cargarTabla(
+                            "libros"
+                        ),
+
+                        cargarTabla(
+                            "prestamos"
+                        )
+
+                    ]);
+
+
+                const totalRegistros =
+                    afiliados.length +
+                    libros.length +
+                    prestamos.length;
+
+
+                if (
+                    totalRegistros === 0
+                ) {
+
+                    mostrarMensaje(
+                        "No se encontraron registros en Supabase para respaldar.",
+                        "aviso"
+                    );
+
+
+                    return;
+
+                }
+
+
+                const respaldo = {
+
+                    aplicacion:
+                        "Biblioteca",
+
+                    versionRespaldo:
+                        "2.0",
+
+                    tipo:
+                        "Supabase",
+
+                    fechaRespaldo:
+                        new Date().toISOString(),
+
+                    tablas: {
+
+                        afiliados:
+                            afiliados,
+
+                        libros:
+                            libros,
+
+                        prestamos:
+                            prestamos
+
+                    },
+
+                    resumen: {
+
+                        afiliados:
+                            afiliados.length,
+
+                        libros:
+                            libros.length,
+
+                        prestamos:
+                            prestamos.length,
+
+                        totalRegistros:
+                            totalRegistros
+
+                    }
+
+                };
+
+
+                const contenido =
+                    JSON.stringify(
+                        respaldo,
+                        null,
+                        2
+                    );
+
+
+                const archivo =
+                    new Blob(
+                        [
+                            contenido
+                        ],
+                        {
+                            type:
+                                "application/json"
+                        }
+                    );
+
+
+                const url =
+                    URL.createObjectURL(
+                        archivo
+                    );
+
+
+                const enlace =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                const nombreArchivo =
+                    `Biblioteca_Respaldo_${obtenerFechaArchivo()}.json`;
+
+
+                enlace.href =
+                    url;
+
+
+                enlace.download =
+                    nombreArchivo;
+
+
+                document.body.appendChild(
+                    enlace
+                );
+
+
+                enlace.click();
+
+
+                document.body.removeChild(
+                    enlace
+                );
+
+
+                URL.revokeObjectURL(
+                    url
+                );
+
+
+                mostrarMensaje(
+                    `Respaldo creado correctamente: ${nombreArchivo}. Se respaldaron ${totalRegistros.toLocaleString("es-GT")} registros.`,
+                    "exito"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error creando respaldo:",
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No fue posible crear el respaldo. Revise la consola para obtener más información.",
+                    "error"
+                );
+
+
+            } finally {
+
+                btnCrearRespaldo.disabled =
+                    false;
+
+
+                btnSeleccionarRespaldo.disabled =
+                    false;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           SELECCIONAR ARCHIVO
+        ========================================================== */
+
+        function seleccionarRespaldo() {
+
+            if (
+                !window.respaldoAutorizado
+            ) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
+
+
+            archivoRespaldo.click();
+
+        }
+
+
+        /* =========================================================
+           VALIDAR RESPALDO
+        ========================================================== */
+
+        function validarRespaldo(
+            respaldo
+        ) {
+
+            if (
+                !respaldo ||
+                typeof respaldo !== "object"
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                !respaldo.tablas ||
+                typeof respaldo.tablas !== "object"
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                !Array.isArray(
+                    respaldo.tablas.afiliados
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                !Array.isArray(
+                    respaldo.tablas.libros
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                !Array.isArray(
+                    respaldo.tablas.prestamos
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =========================================================
+           INSERTAR POR LOTES
+        ========================================================== */
+
+        async function insertarPorLotes(
+            nombreTabla,
+            registros
+        ) {
+
+            if (
+                !registros ||
+                registros.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            for (
+                let i = 0;
+                i < registros.length;
+                i += TAMANO_LOTE
+            ) {
+
+                const lote =
+                    registros.slice(
+                        i,
+                        i + TAMANO_LOTE
+                    );
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from(nombreTabla)
+                        .insert(
+                            lote
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        `Error restaurando ${nombreTabla}:`,
+                        error
+                    );
+
+
+                    throw error;
+
+                }
+
+            }
+
+        }
+
+
+        /* =========================================================
+           ELIMINAR TABLA COMPLETA
+        ========================================================== */
+
+        async function eliminarTabla(
+            nombreTabla
+        ) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(nombreTabla)
+                    .delete()
+                    .not(
+                        "id",
+                        "is",
+                        null
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    `Error eliminando ${nombreTabla}:`,
+                    error
+                );
+
+
+                throw error;
+
+            }
+
+        }
+
+
+        /* =========================================================
+           RESTAURAR RESPALDO
+        ========================================================== */
+
+        async function restaurarRespaldo(
+            evento
+        ) {
+
+            if (
+                !window.respaldoAutorizado
+            ) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
+
+
+            const archivo =
+                evento.target.files[0];
+
+
+            if (!archivo) {
+
+                return;
+
+            }
+
+
+            btnCrearRespaldo.disabled =
+                true;
+
+
+            btnSeleccionarRespaldo.disabled =
+                true;
+
+
+            const lector =
+                new FileReader();
+
+
+            lector.onload =
+                async function(e) {
+
+                    try {
+
+                        const respaldo =
+                            JSON.parse(
+                                e.target.result
+                            );
+
+
+                        if (
+                            !validarRespaldo(
+                                respaldo
+                            )
+                        ) {
+
+                            mostrarMensaje(
+                                "El archivo seleccionado no parece ser un respaldo válido de la Biblioteca.",
+                                "error"
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        const afiliados =
+                            respaldo.tablas.afiliados;
+
+
+                        const libros =
+                            respaldo.tablas.libros;
+
+
+                        const prestamos =
+                            respaldo.tablas.prestamos;
+
+
+                        const total =
+                            afiliados.length +
+                            libros.length +
+                            prestamos.length;
+
+
+                        const fechaRespaldo =
+                            respaldo.fechaRespaldo
+                                ? new Date(
+                                    respaldo.fechaRespaldo
+                                ).toLocaleString(
+                                    "es-GT"
+                                )
+                                : "No indicada";
+
+
+                        const confirmacion =
+                            confirm(
+
+                                "ADVERTENCIA\n\n" +
+
+                                "La restauración reemplazará los datos actuales de Supabase por los datos contenidos en este respaldo.\n\n" +
+
+                                `Fecha del respaldo: ${fechaRespaldo}\n\n` +
+
+                                `Afiliados: ${afiliados.length.toLocaleString("es-GT")}\n` +
+
+                                `Libros: ${libros.length.toLocaleString("es-GT")}\n` +
+
+                                `Préstamos: ${prestamos.length.toLocaleString("es-GT")}\n\n` +
+
+                                `Total de registros: ${total.toLocaleString("es-GT")}\n\n` +
+
+                                "Esta acción no se puede deshacer automáticamente.\n\n" +
+
+                                "¿Desea continuar?"
+
+                            );
+
+
+                        if (
+                            !confirmacion
+                        ) {
+
+                            mostrarMensaje(
+                                "Restauración cancelada. Los datos actuales no fueron modificados.",
+                                "aviso"
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        mostrarMensaje(
+                            "Restaurando datos en Supabase. No cierre esta página...",
+                            "aviso"
+                        );
+
+
+                        /*
+                         * =================================================
+                         * ORDEN DE RESTAURACIÓN
+                         *
+                         * Primero préstamos porque representan el historial
+                         * de uso de los libros.
+                         *
+                         * Luego libros y finalmente afiliados.
+                         * =================================================
+                         */
+
+
+                        await eliminarTabla(
+                            "prestamos"
+                        );
+
+
+                        await eliminarTabla(
+                            "libros"
+                        );
+
+
+                        await eliminarTabla(
+                            "afiliados"
+                        );
+
+
+                        /*
+                         * =================================================
+                         * INSERTAR DATOS
+                         * =================================================
+                         */
+
+
+                        await insertarPorLotes(
+                            "afiliados",
+                            afiliados
+                        );
+
+
+                        await insertarPorLotes(
+                            "libros",
+                            libros
+                        );
+
+
+                        await insertarPorLotes(
+                            "prestamos",
+                            prestamos
+                        );
+
+
+                        mostrarMensaje(
+                            `Restauración completada correctamente. Se restauraron ${total.toLocaleString("es-GT")} registros.`,
+                            "exito"
+                        );
+
+
+                        await actualizarInformacion();
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error restaurando respaldo:",
+                            error
+                        );
+
+
+                        mostrarMensaje(
+                            "Ocurrió un error durante la restauración. Revise la consola y verifique los datos de Supabase.",
+                            "error"
+                        );
+
+
+                    } finally {
+
+                        btnCrearRespaldo.disabled =
+                            false;
+
+
+                        btnSeleccionarRespaldo.disabled =
+                            false;
+
+                    }
+
+                };
+
+
+            lector.onerror =
+                function() {
+
+                    mostrarMensaje(
+                        "No fue posible leer el archivo seleccionado.",
+                        "error"
+                    );
+
+
+                    btnCrearRespaldo.disabled =
+                        false;
+
+
+                    btnSeleccionarRespaldo.disabled =
+                        false;
+
+                };
+
+
+            lector.readAsText(
+                archivo
+            );
+
+
+            evento.target.value = "";
+
+        }
+
+
+        /* =========================================================
+           EVENTOS
+        ========================================================== */
+
+        btnCrearRespaldo.addEventListener(
+            "click",
+            crearRespaldo
+        );
+
+
+        btnSeleccionarRespaldo.addEventListener(
+            "click",
+            seleccionarRespaldo
+        );
+
+
+        archivoRespaldo.addEventListener(
+            "change",
+            restaurarRespaldo
+        );
+
+
+        /* =========================================================
+           INICIAR RESPALDO
+           
+           IMPORTANTE:
+           Ya NO llamamos directamente a actualizarInformacion().
+           La función protegerRespaldo() la ejecutará únicamente
+           después de confirmar que existe una sesión.
+        ========================================================== */
+
+        async function iniciarRespaldo() {
+
+            if (
+                !window.respaldoAutorizado
+            ) {
+
+                return;
+
+            }
+
+
+            await actualizarInformacion();
+
+        }
+
+    </script>
+
+</body>
+</html>

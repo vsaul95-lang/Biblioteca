@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Devoluciones - Biblioteca</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .encabezado {
+            background: #263238;
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .encabezado h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .btn-volver {
+            background: #546e7a;
+            color: white;
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .resumen {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .tarjeta {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,.08);
+        }
+
+        .tarjeta .numero {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .tarjeta .texto {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .seccion {
+            background: white;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.08);
+        }
+
+        .seccion h2 {
+            margin: 0 0 15px;
+            font-size: 18px;
+        }
+
+        .fila-busqueda {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-buscar {
+            background: #1976d2;
+            color: white;
+        }
+
+        .btn-devolver {
+            background: #2e7d32;
+            color: white;
+            padding: 7px 11px;
+            font-size: 12px;
+        }
+
+        .mensaje {
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .mensaje.exito {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .mensaje.error {
+            display: block;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: #eceff1;
+            padding: 9px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        td {
+            padding: 9px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        td.nombre {
+            text-align: left;
+        }
+
+        tr.vencido {
+            background: #fff3f3;
+        }
+
+        .estado-prestado {
+            color: #1565c0;
+            font-weight: bold;
+        }
+
+        .estado-vencido {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .detalle {
+            background: #f7f9fa;
+            border-radius: 6px;
+            padding: 14px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .detalle p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .confirmacion {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .confirmacion strong {
+            color: #e65100;
+        }
+
+        .acciones-confirmacion {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-confirmar {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-cancelar {
+            background: #757575;
+            color: white;
+        }
+
+        @media (max-width: 700px) {
+
+            .resumen {
+                grid-template-columns: 1fr;
+            }
+
+            .fila-busqueda {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .encabezado {
+                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="encabezado">
+
+    <h1>📚 Devoluciones</h1>
+
+    <a
+        href="index.html"
+        class="btn-volver"
+    >
+        ← Volver
+    </a>
+
+</header>
+
+
+<div class="contenedor">
+
+
+    <!-- RESUMEN -->
+
+    <section class="resumen">
+
+        <div class="tarjeta">
+
+            <div
+                class="numero"
+                id="totalActivos"
+            >
+                0
+            </div>
+
+            <div class="texto">
+                Préstamos activos
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div
+                class="numero"
+                id="totalVencidos"
+            >
+                0
+            </div>
+
+            <div class="texto">
+                Vencidos
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div
+                class="numero"
+                id="totalDisponibles"
+            >
+                0
+            </div>
+
+            <div class="texto">
+                Libros disponibles
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BUSCAR -->
+
+    <section class="seccion">
+
+        <h2>
+            Buscar préstamo
+        </h2>
+
+
+        <div class="fila-busqueda">
+
+            <input
+                type="text"
+                id="buscar"
+                placeholder="Familia, PersonaId, nombre, apellido o código de libro..."
+            >
+
+            <button
+                class="btn-buscar"
+                id="btnBuscar"
+            >
+                Buscar
+            </button>
+
+        </div>
+
+
+        <div
+            id="mensaje"
+            class="mensaje"
+        ></div>
+
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Familia</th>
+                        <th>Persona</th>
+                        <th>Libro</th>
+                        <th>Préstamo</th>
+                        <th>Devolución</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="tablaPrestamos">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- DETALLE -->
+
+    <section class="seccion">
+
+        <h2>
+            Detalle de devolución
+        </h2>
+
+
+        <div
+            id="detalle"
+            class="detalle"
+        ></div>
+
+
+        <div
+            id="confirmacion"
+            class="confirmacion"
+        >
+
+            <strong>
+                ¿Desea registrar la devolución de este libro?
+            </strong>
+
+
+            <div class="acciones-confirmacion">
+
+                <button
+                    class="btn-confirmar"
+                    id="btnConfirmar"
+                >
+                    Sí, registrar devolución
+                </button>
+
+
+                <button
+                    class="btn-cancelar"
+                    id="btnCancelar"
+                >
+                    Cancelar
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let prestamos = [];
+
+let prestamoSeleccionado = null;
+
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const tablaPrestamos =
+    document.getElementById(
+        "tablaPrestamos"
+    );
+
+const buscarInput =
+    document.getElementById(
+        "buscar"
+    );
+
+const mensaje =
+    document.getElementById(
+        "mensaje"
+    );
+
+const detalle =
+    document.getElementById(
+        "detalle"
+    );
+
+const confirmacion =
+    document.getElementById(
+        "confirmacion"
+    );
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    cargarDatos
+);
+
+
+/* =========================================================
+   CARGAR DATOS
+========================================================= */
+
+async function cargarDatos() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+
+            .from("prestamos")
+
+            .select("*")
+
+            .eq(
+                "estado",
+                "Prestado"
+            )
+
+            .order(
+                "fechaPrestamo",
+                {
+                    ascending: false
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        prestamos =
+            data || [];
+
+
+        actualizarResumen();
+
+        mostrarPrestamos(
+            prestamos
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            "No fue posible cargar los préstamos.",
+            "error"
+        );
+    }
+}
+
+
+/* =========================================================
+   RESUMEN
+========================================================= */
+
+async function actualizarResumen() {
+
+    const totalActivos =
+        prestamos.length;
+
+
+    const ahora =
+        new Date();
+
+
+    const totalVencidos =
+        prestamos.filter(
+            prestamo =>
+                new Date(
+                    prestamo.fechaDevolucion
+                ) < ahora
+        ).length;
+
+
+    document.getElementById(
+        "totalActivos"
+    ).textContent =
+        totalActivos;
+
+
+    document.getElementById(
+        "totalVencidos"
+    ).textContent =
+        totalVencidos;
+
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+
+            .from("libros")
+
+            .select("id, estado");
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        const disponibles =
+            (data || []).filter(
+                libro =>
+                    libro.estado ===
+                    "Disponible"
+            ).length;
+
+
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent =
+            disponibles;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent =
+            "—";
+    }
+}
+
+
+/* =========================================================
+   MOSTRAR PRÉSTAMOS
+========================================================= */
+
+function mostrarPrestamos(
+    lista
+) {
+
+    tablaPrestamos.innerHTML =
+        "";
+
+
+    if (!lista.length) {
+
+        tablaPrestamos.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    style="padding:20px;"
+                >
+                    No hay préstamos activos.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+    }
+
+
+    const ahora =
+        new Date();
+
+
+    lista.forEach(
+        prestamo => {
+
+            const vencido =
+                new Date(
+                    prestamo.fechaDevolucion
+                ) < ahora;
+
+
+            const fila =
+                document.createElement(
+                    "tr"
+                );
+
+
+            if (vencido) {
+
+                fila.classList.add(
+                    "vencido"
+                );
+            }
+
+
+            const tdFamilia =
+                document.createElement(
+                    "td"
+                );
+
+            tdFamilia.textContent =
+                prestamo.FamiliaId;
+
+
+            const tdPersona =
+                document.createElement(
+                    "td"
+                );
+
+            tdPersona.className =
+                "nombre";
+
+            tdPersona.textContent =
+                `${prestamo.Nombres} ${prestamo.Apellidos}`;
+
+
+            const tdLibro =
+                document.createElement(
+                    "td"
+                );
+
+            tdLibro.className =
+                "nombre";
+
+            tdLibro.textContent =
+                `${prestamo.codigoLibro} - ${prestamo.nombreLibro}`;
+
+
+            const tdPrestamo =
+                document.createElement(
+                    "td"
+                );
+
+            tdPrestamo.textContent =
+                formatearFecha(
+                    prestamo.fechaPrestamo
+                );
+
+
+            const tdDevolucion =
+                document.createElement(
+                    "td"
+                );
+
+            tdDevolucion.textContent =
+                formatearFecha(
+                    prestamo.fechaDevolucion
+                );
+
+
+            const tdEstado =
+                document.createElement(
+                    "td"
+                );
+
+
+            if (vencido) {
+
+                tdEstado.textContent =
+                    "Vencido";
+
+                tdEstado.className =
+                    "estado-vencido";
+
+            } else {
+
+                tdEstado.textContent =
+                    "Prestado";
+
+                tdEstado.className =
+                    "estado-prestado";
+            }
+
+
+            const tdAccion =
+                document.createElement(
+                    "td"
+                );
+
+
+            const boton =
+                document.createElement(
+                    "button"
+                );
+
+
+            boton.type =
+                "button";
+
+            boton.className =
+                "btn-devolver";
+
+            boton.textContent =
+                "Devolver";
+
+
+            boton.addEventListener(
+                "click",
+                function() {
+
+                    seleccionarPrestamo(
+                        prestamo
+                    );
+
+                }
+            );
+
+
+            tdAccion.appendChild(
+                boton
+            );
+
+
+            fila.appendChild(
+                tdFamilia
+            );
+
+            fila.appendChild(
+                tdPersona
+            );
+
+            fila.appendChild(
+                tdLibro
+            );
+
+            fila.appendChild(
+                tdPrestamo
+            );
+
+            fila.appendChild(
+                tdDevolucion
+            );
+
+            fila.appendChild(
+                tdEstado
+            );
+
+            fila.appendChild(
+                tdAccion
+            );
+
+
+            tablaPrestamos.appendChild(
+                fila
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   SELECCIONAR PRÉSTAMO
+========================================================= */
+
+function seleccionarPrestamo(
+    prestamo
+) {
+
+    prestamoSeleccionado =
+        prestamo;
+
+
+    detalle.innerHTML = `
+
+        <p>
+            <strong>Familia:</strong>
+            ${escapeHtml(
+                prestamo.FamiliaId
+            )}
+        </p>
+
+        <p>
+            <strong>Persona:</strong>
+            ${escapeHtml(
+                prestamo.Nombres
+            )}
+            ${escapeHtml(
+                prestamo.Apellidos
+            )}
+        </p>
+
+        <p>
+            <strong>PersonaId:</strong>
+            ${escapeHtml(
+                prestamo.PersonaId
+            )}
+        </p>
+
+        <p>
+            <strong>Libro:</strong>
+            ${escapeHtml(
+                prestamo.nombreLibro
+            )}
+        </p>
+
+        <p>
+            <strong>Código:</strong>
+            ${escapeHtml(
+                prestamo.codigoLibro
+            )}
+        </p>
+
+        <p>
+            <strong>Fecha del préstamo:</strong>
+            ${formatearFecha(
+                prestamo.fechaPrestamo
+            )}
+        </p>
+
+        <p>
+            <strong>Fecha límite:</strong>
+            ${formatearFecha(
+                prestamo.fechaDevolucion
+            )}
+        </p>
+
+    `;
+
+
+    detalle.style.display =
+        "block";
+
+
+    confirmacion.style.display =
+        "block";
+
+
+    detalle.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
+}
+
+
+/* =========================================================
+   CONFIRMAR DEVOLUCIÓN
+========================================================= */
+
+async function confirmarDevolucion() {
+
+    if (!prestamoSeleccionado) {
+
+        mostrarMensaje(
+            "Seleccione un préstamo.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const fechaReal =
+            new Date();
+
+
+        /*
+         * 1. Actualizar préstamo
+         */
+
+        const {
+            error: errorPrestamo
+        } = await supabaseClient
+
+            .from("prestamos")
+
+            .update({
+
+                estado:
+                    "Devuelto",
+
+                fechaDevolucionReal:
+                    fechaReal.toISOString()
+
+            })
+
+            .eq(
+                "id",
+                prestamoSeleccionado.id
+            );
+
+
+        if (errorPrestamo) {
+            throw errorPrestamo;
+        }
+
+
+        /*
+         * 2. Buscar el libro exacto
+         */
+
+        const {
+            data: libros,
+            error: errorLibroConsulta
+        } = await supabaseClient
+
+            .from("libros")
+
+            .select("id, codigoLibro");
+
+
+        if (errorLibroConsulta) {
+            throw errorLibroConsulta;
+        }
+
+
+        const codigoNormalizado =
+            normalizarCodigo(
+                prestamoSeleccionado.codigoLibro
+            );
+
+
+        const libro =
+            (libros || []).find(
+                item =>
+                    normalizarCodigo(
+                        item.codigoLibro
+                    ) === codigoNormalizado
+            );
+
+
+        /*
+         * 3. Cambiar libro a Disponible
+         */
+
+        if (libro) {
+
+            const {
+                error: errorLibroUpdate
+            } = await supabaseClient
+
+                .from("libros")
+
+                .update({
+
+                    estado:
+                        "Disponible"
+
+                })
+
+                .eq(
+                    "id",
+                    libro.id
+                );
+
+
+            if (errorLibroUpdate) {
+                throw errorLibroUpdate;
+            }
+        }
+
+
+        mostrarMensaje(
+            "Devolución registrada correctamente.",
+            "exito"
+        );
+
+
+        prestamoSeleccionado =
+            null;
+
+
+        detalle.style.display =
+            "none";
+
+
+        confirmacion.style.display =
+            "none";
+
+
+        await cargarDatos();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            "No fue posible registrar la devolución: " +
+            (
+                error.message ||
+                "error desconocido"
+            ),
+            "error"
+        );
+    }
+}
+
+
+/* =========================================================
+   CANCELAR
+========================================================= */
+
+function cancelarDevolucion() {
+
+    prestamoSeleccionado =
+        null;
+
+    detalle.style.display =
+        "none";
+
+    confirmacion.style.display =
+        "none";
+}
+
+
+/* =========================================================
+   BUSCAR
+========================================================= */
+
+function buscar() {
+
+    const texto =
+        buscarInput.value
+            .trim()
+            .toLowerCase();
+
+
+    if (!texto) {
+
+        mostrarPrestamos(
+            prestamos
+        );
+
+        limpiarMensaje();
+
+        return;
+    }
+
+
+    const resultados =
+        prestamos.filter(
+            prestamo => {
+
+                return (
+
+                    String(
+                        prestamo.FamiliaId
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                    ||
+
+                    String(
+                        prestamo.PersonaId
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                    ||
+
+                    String(
+                        prestamo.Nombres
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                    ||
+
+                    String(
+                        prestamo.Apellidos
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                    ||
+
+                    String(
+                        prestamo.codigoLibro
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                    ||
+
+                    String(
+                        prestamo.nombreLibro
+                    )
+                    .toLowerCase()
+                    .includes(texto)
+
+                );
+            }
+        );
+
+
+    mostrarPrestamos(
+        resultados
+    );
+
+
+    if (!resultados.length) {
+
+        mostrarMensaje(
+            "No se encontraron préstamos con ese criterio.",
+            "error"
+        );
+
+    } else {
+
+        limpiarMensaje();
+    }
+}
+
+
+/* =========================================================
+   FORMATO FECHA
+========================================================= */
+
+function formatearFecha(
+    fecha
+) {
+
+    if (!fecha) {
+        return "";
+    }
+
+
+    return new Date(
+        fecha
+    ).toLocaleDateString(
+        "es-GT",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+}
+
+
+/* =========================================================
+   NORMALIZAR CÓDIGO
+========================================================= */
+
+function normalizarCodigo(
+    codigo
+) {
+
+    return String(
+        codigo || ""
+    )
+    .replace(
+        /\D/g,
+        ""
+    )
+    .replace(
+        /^0+/,
+        ""
+    ) || "0";
+}
+
+
+/* =========================================================
+   MENSAJES
+========================================================= */
+
+function mostrarMensaje(
+    texto,
+    tipo
+) {
+
+    mensaje.textContent =
+        texto;
+
+    mensaje.className =
+        "mensaje " + tipo;
+}
+
+
+function limpiarMensaje() {
+
+    mensaje.textContent =
+        "";
+
+    mensaje.className =
+        "mensaje";
+}
+
+
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
+
+function escapeHtml(
+    valor
+) {
+
+    return String(
+        valor ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+}
+
+
+/* =========================================================
+   EVENTOS
+========================================================= */
+
+document
+    .getElementById(
+        "btnBuscar"
+    )
+    .addEventListener(
+        "click",
+        buscar
+    );
+
+
+document
+    .getElementById(
+        "btnConfirmar"
+    )
+    .addEventListener(
+        "click",
+        confirmarDevolucion
+    );
+
+
+document
+    .getElementById(
+        "btnCancelar"
+    )
+    .addEventListener(
+        "click",
+        cancelarDevolucion
+    );
+
+
+buscarInput
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                buscar();
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

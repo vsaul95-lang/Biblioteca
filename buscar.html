@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar - Biblioteca</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        header {
+            background: #34495e;
+            color: white;
+            padding: 16px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .boton-volver {
+            position: absolute;
+            left: 20px;
+            top: 14px;
+            background: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .boton-volver:hover {
+            background: #687476;
+        }
+
+        .contenedor {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* FILTROS */
+
+        .filtros {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+
+        .filtros h2 {
+            margin: 0 0 12px 0;
+            font-size: 17px;
+        }
+
+        .fila-filtros {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #566573;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            height: 34px;
+            padding: 6px 8px;
+            border: 1px solid #ccd1d1;
+            border-radius: 5px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .botones-filtros {
+            display: flex;
+            gap: 7px;
+            margin-top: 12px;
+        }
+
+        .boton {
+            border: none;
+            padding: 8px 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .boton-buscar {
+            background: #3498db;
+            color: white;
+        }
+
+        .boton-limpiar {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .boton:hover {
+            opacity: 0.9;
+        }
+
+        /* ESTADÍSTICAS */
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .tarjeta {
+            background: white;
+            border-radius: 8px;
+            padding: 11px 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 65px;
+        }
+
+        .icono {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .icono-personas {
+            background: #e8f4fd;
+        }
+
+        .icono-libros {
+            background: #eafaf1;
+        }
+
+        .icono-activos {
+            background: #fef5e7;
+        }
+
+        .icono-vencidos {
+            background: #fdedec;
+        }
+
+        .tarjeta-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tarjeta-titulo {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-bottom: 2px;
+        }
+
+        .tarjeta-numero {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* RESULTADOS */
+
+        .resultados {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .resultados h2 {
+            margin: 0 0 12px 0;
+            font-size: 17px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        thead {
+            background: #34495e;
+            color: white;
+        }
+
+        th {
+            padding: 9px 7px;
+            text-align: center;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 8px 7px;
+            border-bottom: 1px solid #ecf0f1;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #f8f9f9;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 4px 7px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .estado-prestado {
+            background: #d6eaf8;
+            color: #21618c;
+        }
+
+        .estado-vencido {
+            background: #fadbd8;
+            color: #922b21;
+        }
+
+        .estado-devuelto {
+            background: #d5f5e3;
+            color: #196f3d;
+        }
+
+        .sin-resultados {
+            text-align: center;
+            padding: 30px 10px;
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVO */
+
+        @media (max-width: 1100px) {
+            .fila-filtros {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .estadisticas {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            header h1 {
+                font-size: 20px;
+            }
+
+            .boton-volver {
+                left: 10px;
+                top: 12px;
+                padding: 6px 9px;
+                font-size: 11px;
+            }
+
+            .contenedor {
+                padding: 0 10px;
+                margin-top: 15px;
+            }
+
+            .fila-filtros {
+                grid-template-columns: 1fr;
+            }
+
+            .estadisticas {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .tarjeta {
+                min-height: 58px;
+                padding: 8px;
+            }
+
+            .icono {
+                width: 32px;
+                height: 32px;
+                min-width: 32px;
+                font-size: 16px;
+            }
+
+            .tarjeta-numero {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <button class="boton-volver" onclick="volverAtras()">← Volver atrás</button>
+    <h1>Buscar</h1>
+</header>
+
+<div class="contenedor">
+
+    <!-- FILTROS -->
+    <div class="filtros">
+
+        <h2>🔎 Filtros de búsqueda</h2>
+
+        <div class="fila-filtros">
+
+            <div class="campo">
+                <label for="busquedaGeneral">Búsqueda general</label>
+                <input
+                    type="text"
+                    id="busquedaGeneral"
+                    placeholder="Nombre, familia, persona o libro..."
+                >
+            </div>
+
+            <div class="campo">
+                <label for="familia">Familia</label>
+                <input
+                    type="text"
+                    id="familia"
+                    placeholder="F1068"
+                >
+            </div>
+
+            <div class="campo">
+                <label for="persona">Persona / Afiliado</label>
+                <input
+                    type="text"
+                    id="persona"
+                    placeholder="P1234"
+                >
+            </div>
+
+            <div class="campo">
+                <label for="codigoLibro">Código libro</label>
+                <input
+                    type="text"
+                    id="codigoLibro"
+                    placeholder="00000001"
+                >
+            </div>
+
+            <div class="campo">
+                <label for="estado">Estado</label>
+                <select id="estado">
+                    <option value="Todos">Todos</option>
+                    <option value="Prestado">Prestado</option>
+                    <option value="Vencido">Vencido</option>
+                    <option value="Devuelto">Devuelto</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="fechaDesde">Desde</label>
+                <input type="date" id="fechaDesde">
+            </div>
+
+        </div>
+
+        <div class="botones-filtros">
+            <button class="boton boton-buscar" onclick="buscar()">🔎 Buscar</button>
+            <button class="boton boton-limpiar" onclick="limpiarFiltros()">Limpiar</button>
+        </div>
+
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div class="estadisticas">
+
+        <div class="tarjeta">
+            <div class="icono icono-personas">👤</div>
+            <div class="tarjeta-info">
+                <div class="tarjeta-titulo">Personas encontradas</div>
+                <div class="tarjeta-numero" id="totalPersonas">0</div>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono icono-libros">📚</div>
+            <div class="tarjeta-info">
+                <div class="tarjeta-titulo">Libros relacionados</div>
+                <div class="tarjeta-numero" id="totalLibros">0</div>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono icono-activos">📖</div>
+            <div class="tarjeta-info">
+                <div class="tarjeta-titulo">Préstamos activos</div>
+                <div class="tarjeta-numero" id="totalActivos">0</div>
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono icono-vencidos">⚠️</div>
+            <div class="tarjeta-info">
+                <div class="tarjeta-titulo">Préstamos vencidos</div>
+                <div class="tarjeta-numero" id="totalVencidos">0</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RESULTADOS -->
+    <div class="resultados">
+
+        <h2>Resultados</h2>
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Familia</th>
+                        <th>Persona</th>
+                        <th>Nombre</th>
+                        <th>Código</th>
+                        <th>Libro</th>
+                        <th>Préstamo</th>
+                        <th>Devolución</th>
+                        <th>Devolución real</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaResultados">
+
+                    <tr>
+                        <td colspan="9" class="sin-resultados">
+                            Realiza una búsqueda para mostrar resultados.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let prestamos = [];
+let resultadosActuales = [];
+
+/* =========================
+   CARGAR PRÉSTAMOS
+========================= */
+
+async function cargarPrestamos() {
+
+    prestamos = [];
+
+    let desde = 0;
+    const cantidad = 1000;
+
+    while (true) {
+
+        const { data, error } = await supabaseClient
+            .from("prestamos")
+            .select("*")
+            .order("fechaPrestamo", { ascending: false })
+            .range(desde, desde + cantidad - 1);
+
+        if (error) {
+            console.error(error);
+            alert("No se pudieron cargar los préstamos.");
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            break;
+        }
+
+        prestamos.push(...data);
+
+        if (data.length < cantidad) {
+            break;
+        }
+
+        desde += cantidad;
+    }
+
+    mostrarResultados(prestamos);
+}
+
+/* =========================
+   NORMALIZAR
+========================= */
+
+function normalizar(valor) {
+
+    if (valor === null || valor === undefined) {
+        return "";
+    }
+
+    return String(valor)
+        .toLowerCase()
+        .trim();
+}
+
+/* =========================
+   ESTADO DEL PRÉSTAMO
+========================= */
+
+function obtenerEstado(prestamo) {
+
+    if (prestamo.estado === "Devuelto") {
+        return "Devuelto";
+    }
+
+    if (!prestamo.fechaDevolucion) {
+        return "Prestado";
+    }
+
+    const fechaLimite = new Date(prestamo.fechaDevolucion);
+    const ahora = new Date();
+
+    if (fechaLimite < ahora) {
+        return "Vencido";
+    }
+
+    return "Prestado";
+}
+
+/* =========================
+   FORMATEAR FECHA
+========================= */
+
+function formatearFecha(fecha) {
+
+    if (!fecha) {
+        return "-";
+    }
+
+    const fechaObj = new Date(fecha);
+
+    if (isNaN(fechaObj.getTime())) {
+        return "-";
+    }
+
+    return fechaObj.toLocaleDateString("es-GT");
+}
+
+/* =========================
+   BUSCAR
+========================= */
+
+function buscar() {
+
+    const busquedaGeneral =
+        normalizar(document.getElementById("busquedaGeneral").value);
+
+    const familia =
+        normalizar(document.getElementById("familia").value);
+
+    const persona =
+        normalizar(document.getElementById("persona").value);
+
+    const codigoLibro =
+        normalizar(document.getElementById("codigoLibro").value);
+
+    const estadoSeleccionado =
+        document.getElementById("estado").value;
+
+    const fechaDesde =
+        document.getElementById("fechaDesde").value;
+
+    resultadosActuales = prestamos.filter(prestamo => {
+
+        const estado = obtenerEstado(prestamo);
+
+        const textoGeneral = [
+            prestamo.FamiliaId,
+            prestamo.PersonaId,
+            prestamo.Nombres,
+            prestamo.Apellidos,
+            prestamo.codigoLibro,
+            prestamo.nombreLibro
+        ]
+        .map(normalizar)
+        .join(" ");
+
+        if (
+            busquedaGeneral &&
+            !textoGeneral.includes(busquedaGeneral)
+        ) {
+            return false;
+        }
+
+        if (
+            familia &&
+            !normalizar(prestamo.FamiliaId).includes(familia)
+        ) {
+            return false;
+        }
+
+        if (
+            persona &&
+            !normalizar(prestamo.PersonaId).includes(persona)
+        ) {
+            return false;
+        }
+
+        if (
+            codigoLibro &&
+            !normalizar(prestamo.codigoLibro).includes(codigoLibro)
+        ) {
+            return false;
+        }
+
+        if (
+            estadoSeleccionado !== "Todos" &&
+            estado !== estadoSeleccionado
+        ) {
+            return false;
+        }
+
+        if (fechaDesde) {
+
+            const fechaPrestamo =
+                new Date(prestamo.fechaPrestamo);
+
+            const desde =
+                new Date(fechaDesde + "T00:00:00");
+
+            if (fechaPrestamo < desde) {
+                return false;
+            }
+        }
+
+        return true;
+
+    });
+
+    mostrarResultados(resultadosActuales);
+}
+
+/* =========================
+   MOSTRAR RESULTADOS
+========================= */
+
+function mostrarResultados(lista) {
+
+    const tbody =
+        document.getElementById("tablaResultados");
+
+    tbody.innerHTML = "";
+
+    const personas = new Set();
+    const libros = new Set();
+
+    let activos = 0;
+    let vencidos = 0;
+
+    lista.forEach(prestamo => {
+
+        const estado = obtenerEstado(prestamo);
+
+        if (prestamo.PersonaId) {
+            personas.add(prestamo.PersonaId);
+        }
+
+        if (prestamo.codigoLibro) {
+            libros.add(prestamo.codigoLibro);
+        }
+
+        if (estado === "Prestado") {
+            activos++;
+        }
+
+        if (estado === "Vencido") {
+            vencidos++;
+        }
+    });
+
+    document.getElementById("totalPersonas").textContent =
+        personas.size;
+
+    document.getElementById("totalLibros").textContent =
+        libros.size;
+
+    document.getElementById("totalActivos").textContent =
+        activos;
+
+    document.getElementById("totalVencidos").textContent =
+        vencidos;
+
+    if (lista.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="sin-resultados">
+                    No se encontraron resultados.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    lista.forEach(prestamo => {
+
+        const estado = obtenerEstado(prestamo);
+
+        let claseEstado = "";
+
+        if (estado === "Prestado") {
+            claseEstado = "estado-prestado";
+        }
+
+        if (estado === "Vencido") {
+            claseEstado = "estado-vencido";
+        }
+
+        if (estado === "Devuelto") {
+            claseEstado = "estado-devuelto";
+        }
+
+        const nombreCompleto =
+            `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`.trim();
+
+        const fechaDevolucionReal =
+            prestamo.fechaDevolucionReal
+                ? formatearFecha(prestamo.fechaDevolucionReal)
+                : "-";
+
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>${prestamo.FamiliaId || "-"}</td>
+            <td>${prestamo.PersonaId || "-"}</td>
+            <td>${nombreCompleto || "-"}</td>
+            <td>${prestamo.codigoLibro || "-"}</td>
+            <td>${prestamo.nombreLibro || "-"}</td>
+            <td>${formatearFecha(prestamo.fechaPrestamo)}</td>
+            <td>${formatearFecha(prestamo.fechaDevolucion)}</td>
+            <td>${fechaDevolucionReal}</td>
+            <td>
+                <span class="estado ${claseEstado}">
+                    ${estado}
+                </span>
+            </td>
+        `;
+
+        tbody.appendChild(fila);
+    });
+}
+
+/* =========================
+   LIMPIAR FILTROS
+========================= */
+
+function limpiarFiltros() {
+
+    document.getElementById("busquedaGeneral").value = "";
+    document.getElementById("familia").value = "";
+    document.getElementById("persona").value = "";
+    document.getElementById("codigoLibro").value = "";
+    document.getElementById("estado").value = "Todos";
+    document.getElementById("fechaDesde").value = "";
+
+    resultadosActuales = [];
+
+    mostrarResultados(prestamos);
+}
+
+/* =========================
+   ENTER PARA BUSCAR
+========================= */
+
+document.addEventListener("keydown", function(event) {
+
+    if (
+        event.key === "Enter" &&
+        document.activeElement.tagName === "INPUT"
+    ) {
+        buscar();
+    }
+
+});
+
+/* =========================
+   VOLVER
+========================= */
+
+function volverAtras() {
+    window.history.back();
+}
+
+/* =========================
+   INICIO
+========================= */
+
+document.addEventListener("DOMContentLoaded", function() {
+    cargarPrestamos();
+});
+
+</script>
+
+</body>
+</html>

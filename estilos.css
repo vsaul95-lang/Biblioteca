@@ -1,0 +1,557 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #263238;
+}
+
+
+/* =========================
+   ENCABEZADO
+   ========================= */
+
+.encabezado {
+    background: #263238;
+    color: white;
+    padding: 18px 30px;
+}
+
+.encabezado-contenido {
+    width: 92%;
+    max-width: 1150px;
+    margin: auto;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icono-marca {
+    width: 43px;
+    height: 43px;
+    background: #455a64;
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+}
+
+.marca h1 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.marca p {
+    margin: 3px 0 0;
+    font-size: 13px;
+    color: #cfd8dc;
+}
+
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+   ========================= */
+
+.contenedor {
+    width: 92%;
+    max-width: 1150px;
+    margin: 25px auto 40px;
+}
+
+
+/* =========================
+   BIENVENIDA
+   ========================= */
+
+.bienvenida {
+    background: white;
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin-bottom: 20px;
+
+    border: 1px solid #e2e6e8;
+
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.04);
+}
+
+.etiqueta {
+    display: inline-block;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    letter-spacing: 0.7px;
+
+    color: #546e7a;
+    background: #eceff1;
+
+    padding: 5px 8px;
+
+    border-radius: 12px;
+
+    margin-bottom: 8px;
+}
+
+.bienvenida h2 {
+    margin: 0 0 7px;
+
+    font-size: 25px;
+    font-weight: 600;
+
+    color: #263238;
+}
+
+.bienvenida p {
+    margin: 0;
+
+    max-width: 720px;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   ESTADÍSTICAS
+   ========================= */
+
+.estadisticas {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 14px;
+
+    margin-bottom: 28px;
+}
+
+.tarjeta-estadistica {
+    background: white;
+
+    border: 1px solid #e2e6e8;
+
+    border-radius: 9px;
+
+    padding: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 82px;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.04);
+}
+
+.estadistica-icono {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    background: #eceff1;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+.estadistica-numero {
+    display: block;
+
+    font-size: 23px;
+
+    font-weight: 600;
+
+    line-height: 1.1;
+
+    color: #263238;
+}
+
+.estadistica-texto {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 12px;
+
+    color: #737b80;
+}
+
+
+/* =========================
+   SECCIONES
+   ========================= */
+
+.seccion {
+    margin-bottom: 28px;
+}
+
+.seccion-titulo {
+    margin-bottom: 12px;
+}
+
+.seccion-titulo h3 {
+    margin: 0;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    color: #263238;
+}
+
+.seccion-titulo p {
+    margin: 4px 0 0;
+
+    font-size: 13px;
+
+    color: #7a8287;
+}
+
+
+/* =========================
+   ACCIONES PRINCIPALES
+   ========================= */
+
+.acciones-principales {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 14px;
+}
+
+.accion {
+    text-decoration: none;
+
+    background: white;
+
+    border: 1px solid #e0e4e6;
+
+    border-radius: 9px;
+
+    padding: 17px;
+
+    color: #263238;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 82px;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.accion:hover {
+    transform: translateY(-2px);
+
+    border-color: #b0bec5;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.07);
+}
+
+.accion-icono {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    background: #eceff1;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+.accion-contenido {
+    flex: 1;
+}
+
+.accion-contenido strong {
+    display: block;
+
+    font-size: 14px;
+
+    margin-bottom: 4px;
+}
+
+.accion-contenido span {
+    display: block;
+
+    font-size: 12px;
+
+    line-height: 1.35;
+
+    color: #737b80;
+}
+
+.accion-flecha {
+    color: #78909c;
+
+    font-size: 19px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   ADMINISTRACIÓN
+   ========================= */
+
+.administracion {
+    background: white;
+
+    border: 1px solid #e0e4e6;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.04);
+}
+
+.opcion {
+    width: 100%;
+
+    border: none;
+
+    border-bottom: 1px solid #e9ecee;
+
+    background: white;
+
+    color: #263238;
+
+    text-decoration: none;
+
+    padding: 14px 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    text-align: left;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease;
+}
+
+.opcion:last-child {
+    border-bottom: none;
+}
+
+.opcion:hover {
+    background: #f7f9fa;
+}
+
+.opcion-icono {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    background: #eceff1;
+
+    border-radius: 7px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+}
+
+.opcion-contenido {
+    flex: 1;
+}
+
+.opcion-contenido strong {
+    display: block;
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+.opcion-contenido span {
+    display: block;
+
+    font-size: 12px;
+
+    color: #7a8287;
+}
+
+.opcion-flecha {
+    color: #78909c;
+
+    font-size: 18px;
+}
+
+.opcion-deshabilitada {
+    cursor: pointer;
+}
+
+
+/* =========================
+   MENSAJE
+   ========================= */
+
+.mensaje-inicio {
+    display: none;
+
+    background: #e3f2fd;
+
+    color: #1565c0;
+
+    border: 1px solid #bbdefb;
+
+    border-radius: 7px;
+
+    padding: 11px 14px;
+
+    font-size: 13px;
+
+    margin-top: 15px;
+}
+
+.mensaje-inicio.mostrar {
+    display: block;
+}
+
+
+/* =========================
+   PIE DE PÁGINA
+   ========================= */
+
+footer {
+    width: 92%;
+    max-width: 1150px;
+
+    margin: 0 auto 25px;
+
+    text-align: center;
+
+    color: #8a9398;
+
+    font-size: 11px;
+}
+
+footer p {
+    margin: 0;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .estadisticas {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .acciones-principales {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .encabezado {
+        padding: 16px 18px;
+    }
+
+    .contenedor {
+        width: 94%;
+
+        margin-top: 18px;
+    }
+
+    .bienvenida {
+        padding: 20px;
+    }
+
+    .bienvenida h2 {
+        font-size: 21px;
+    }
+
+    .estadisticas {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 9px;
+    }
+
+    .tarjeta-estadistica {
+        padding: 12px;
+
+        min-height: 72px;
+
+        gap: 8px;
+    }
+
+    .estadistica-icono {
+        width: 34px;
+        height: 34px;
+
+        font-size: 16px;
+    }
+
+    .estadistica-numero {
+        font-size: 19px;
+    }
+
+    .estadistica-texto {
+        font-size: 11px;
+    }
+
+    .accion {
+        padding: 14px;
+    }
+
+}

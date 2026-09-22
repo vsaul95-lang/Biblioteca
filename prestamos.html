@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo préstamo - Biblioteca</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .encabezado {
+            background: #263238;
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .encabezado h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .btn-volver {
+            background: #546e7a;
+            color: white;
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .seccion {
+            background: white;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.08);
+        }
+
+        .seccion h2 {
+            margin: 0 0 15px;
+            font-size: 18px;
+        }
+
+        .fila-busqueda {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-buscar {
+            background: #1976d2;
+            color: white;
+        }
+
+        .mensaje {
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .mensaje.exito {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .mensaje.error {
+            display: block;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: #eceff1;
+            padding: 9px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        td {
+            padding: 9px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        td.nombre {
+            text-align: left;
+        }
+
+        tr.seleccionada {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .btn-seleccionar {
+            background: #1976d2;
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .btn-seleccionar.seleccionada {
+            background: #2e7d32;
+        }
+
+        .detalle {
+            background: #f7f9fa;
+            border-radius: 6px;
+            padding: 14px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .detalle p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .confirmacion {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .confirmacion strong {
+            color: #e65100;
+        }
+
+        .acciones-confirmacion {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-confirmar {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-cancelar {
+            background: #757575;
+            color: white;
+        }
+
+        .libro-info {
+            margin-top: 12px;
+            padding: 12px;
+            background: #e3f2fd;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .libro-info strong {
+            color: #1565c0;
+        }
+
+        @media (max-width: 700px) {
+            .fila-busqueda {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .encabezado {
+                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="encabezado">
+    <h1>📚 Nuevo préstamo</h1>
+    <a href="index.html" class="btn-volver">← Volver</a>
+</header>
+
+<div class="contenedor">
+
+    <!-- 1. FAMILIA -->
+    <section class="seccion">
+
+        <h2>1. Buscar familia</h2>
+
+        <div class="fila-busqueda">
+
+            <input
+                type="text"
+                id="buscarFamilia"
+                placeholder="Ingrese número de familia..."
+            >
+
+            <button
+                class="btn-buscar"
+                id="btnBuscarFamilia"
+            >
+                Buscar
+            </button>
+
+        </div>
+
+        <div id="mensajeFamilia" class="mensaje"></div>
+
+        <div class="tabla-contenedor">
+
+            <table id="tablaFamilia" style="display:none;">
+
+                <thead>
+
+                    <tr>
+                        <th>PersonaId</th>
+                        <th>FamiliaId</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Seleccionar</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="cuerpoFamilia"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- 2. LIBRO -->
+    <section class="seccion">
+
+        <h2>2. Buscar libro</h2>
+
+        <div class="fila-busqueda">
+
+            <input
+                type="text"
+                id="buscarLibro"
+                placeholder="Ingrese código del libro..."
+                maxlength="8"
+                inputmode="numeric"
+            >
+
+            <button
+                class="btn-buscar"
+                id="btnBuscarLibro"
+            >
+                Buscar
+            </button>
+
+        </div>
+
+        <div id="mensajeLibro" class="mensaje"></div>
+
+        <div id="libroInfo" class="libro-info"></div>
+
+    </section>
+
+
+    <!-- 3. CONFIRMAR -->
+    <section class="seccion">
+
+        <h2>3. Confirmar préstamo</h2>
+
+        <div
+            id="detallePrestamo"
+            class="detalle"
+        ></div>
+
+        <div
+            id="confirmacion"
+            class="confirmacion"
+        >
+
+            <strong>¿Desea registrar este préstamo?</strong>
+
+            <div class="acciones-confirmacion">
+
+                <button
+                    class="btn-confirmar"
+                    id="btnConfirmar"
+                >
+                    Sí, registrar préstamo
+                </button>
+
+                <button
+                    class="btn-cancelar"
+                    id="btnCancelar"
+                >
+                    Cancelar
+                </button>
+
+            </div>
+
+        </div>
+
+        <div
+            id="mensajeFinal"
+            class="mensaje"
+        ></div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let personaSeleccionada = null;
+let libroSeleccionado = null;
+
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const buscarFamiliaInput =
+    document.getElementById("buscarFamilia");
+
+const buscarLibroInput =
+    document.getElementById("buscarLibro");
+
+const cuerpoFamilia =
+    document.getElementById("cuerpoFamilia");
+
+const tablaFamilia =
+    document.getElementById("tablaFamilia");
+
+const mensajeFamilia =
+    document.getElementById("mensajeFamilia");
+
+const mensajeLibro =
+    document.getElementById("mensajeLibro");
+
+const mensajeFinal =
+    document.getElementById("mensajeFinal");
+
+const libroInfo =
+    document.getElementById("libroInfo");
+
+const detallePrestamo =
+    document.getElementById("detallePrestamo");
+
+const confirmacion =
+    document.getElementById("confirmacion");
+
+
+/* =========================================================
+   MENSAJES
+========================================================= */
+
+function mostrarMensaje(elemento, texto, tipo) {
+
+    elemento.textContent = texto;
+
+    elemento.className = "mensaje " + tipo;
+}
+
+
+function limpiarMensaje(elemento) {
+
+    elemento.textContent = "";
+
+    elemento.className = "mensaje";
+}
+
+
+/* =========================================================
+   NORMALIZAR CÓDIGO
+========================================================= */
+
+function normalizarCodigo(codigo) {
+
+    return String(codigo || "")
+        .replace(/\D/g, "")
+        .replace(/^0+/, "") || "0";
+}
+
+
+/* =========================================================
+   FORMATO FECHA
+========================================================= */
+
+function formatearFecha(fecha) {
+
+    if (!fecha) return "";
+
+    return new Date(fecha).toLocaleDateString(
+        "es-GT",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+}
+
+
+/* =========================================================
+   OBTENER SITIO
+========================================================= */
+
+function obtenerSitio(persona) {
+
+    if (persona && persona.Sitio) {
+
+        const sitio =
+            String(persona.Sitio)
+                .trim()
+                .toUpperCase();
+
+        if (
+            ["F", "M", "R", "N", "Z"]
+                .includes(sitio)
+        ) {
+            return sitio;
+        }
+    }
+
+
+    if (persona && persona.FamiliaId) {
+
+        const sitio =
+            String(persona.FamiliaId)
+                .trim()
+                .charAt(0)
+                .toUpperCase();
+
+        if (
+            ["F", "M", "R", "N", "Z"]
+                .includes(sitio)
+        ) {
+            return sitio;
+        }
+    }
+
+
+    return null;
+}
+
+
+/* =========================================================
+   BUSCAR FAMILIA
+========================================================= */
+
+async function buscarFamilia() {
+
+    const familia =
+        buscarFamiliaInput.value.trim();
+
+    limpiarMensaje(mensajeFamilia);
+
+    cuerpoFamilia.innerHTML = "";
+
+    tablaFamilia.style.display = "none";
+
+    personaSeleccionada = null;
+
+    actualizarDetalle();
+
+    if (!familia) {
+
+        mostrarMensaje(
+            mensajeFamilia,
+            "Ingrese un número de familia.",
+            "error"
+        );
+
+        return;
+    }
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+
+                .from("afiliados")
+
+                .select("*")
+
+                .eq("FamiliaId", familia)
+
+                .eq("estado", "Activo")
+
+                .order(
+                    "Apellidos",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            mostrarMensaje(
+                mensajeFamilia,
+                "No se encontraron personas activas para esta familia.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        data.forEach(persona => {
+
+            const fila =
+                document.createElement("tr");
+
+
+            const tdPersona =
+                document.createElement("td");
+
+            tdPersona.textContent =
+                persona.PersonaId;
+
+
+            const tdFamilia =
+                document.createElement("td");
+
+            tdFamilia.textContent =
+                persona.FamiliaId;
+
+
+            const tdNombre =
+                document.createElement("td");
+
+            tdNombre.className = "nombre";
+
+            tdNombre.textContent =
+                `${persona.Nombres} ${persona.Apellidos}`;
+
+
+            const tdEstado =
+                document.createElement("td");
+
+            tdEstado.textContent =
+                persona.estado;
+
+
+            const tdAccion =
+                document.createElement("td");
+
+
+            const boton =
+                document.createElement("button");
+
+            boton.type = "button";
+
+            boton.className =
+                "btn-seleccionar";
+
+            boton.textContent =
+                "Seleccionar";
+
+
+            boton.addEventListener(
+                "click",
+                function() {
+
+                    seleccionarPersona(
+                        persona,
+                        fila,
+                        boton
+                    );
+
+                }
+            );
+
+
+            tdAccion.appendChild(boton);
+
+
+            fila.appendChild(tdPersona);
+            fila.appendChild(tdFamilia);
+            fila.appendChild(tdNombre);
+            fila.appendChild(tdEstado);
+            fila.appendChild(tdAccion);
+
+
+            cuerpoFamilia.appendChild(fila);
+
+        });
+
+
+        tablaFamilia.style.display = "table";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            mensajeFamilia,
+            "Ocurrió un error al consultar la familia.",
+            "error"
+        );
+    }
+}
+
+
+/* =========================================================
+   SELECCIONAR PERSONA
+========================================================= */
+
+function seleccionarPersona(
+    persona,
+    filaSeleccionada,
+    botonSeleccionado
+) {
+
+    document
+        .querySelectorAll("#cuerpoFamilia tr")
+        .forEach(fila => {
+
+            fila.classList.remove("seleccionada");
+
+            const boton =
+                fila.querySelector(".btn-seleccionar");
+
+            if (boton) {
+
+                boton.classList.remove(
+                    "seleccionada"
+                );
+
+                boton.textContent =
+                    "Seleccionar";
+            }
+
+        });
+
+
+    filaSeleccionada.classList.add(
+        "seleccionada"
+    );
+
+    botonSeleccionado.classList.add(
+        "seleccionada"
+    );
+
+    botonSeleccionado.textContent =
+        "✓ Seleccionada";
+
+
+    personaSeleccionada = persona;
+
+
+    actualizarDetalle();
+}
+
+
+/* =========================================================
+   BUSCAR LIBRO
+========================================================= */
+
+async function buscarLibro() {
+
+    const codigoIngresado =
+        buscarLibroInput.value.trim();
+
+    limpiarMensaje(mensajeLibro);
+
+    libroInfo.style.display = "none";
+
+    libroSeleccionado = null;
+
+    actualizarDetalle();
+
+
+    if (!codigoIngresado) {
+
+        mostrarMensaje(
+            mensajeLibro,
+            "Ingrese el código del libro.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const codigoNormalizado =
+        normalizarCodigo(codigoIngresado);
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+
+                .from("libros")
+
+                .select("*");
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        const libro =
+            (data || []).find(
+                item =>
+                    normalizarCodigo(
+                        item.codigoLibro
+                    ) === codigoNormalizado
+            );
+
+
+        if (!libro) {
+
+            mostrarMensaje(
+                mensajeLibro,
+                "No se encontró un libro con ese código.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (libro.estado === "Baja") {
+
+            mostrarMensaje(
+                mensajeLibro,
+                "Este libro está dado de baja.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const {
+            data: prestamosActivos,
+            error: errorPrestamos
+        } = await supabaseClient
+
+            .from("prestamos")
+
+            .select("*")
+
+            .eq("estado", "Prestado");
+
+
+        if (errorPrestamos) {
+            throw errorPrestamos;
+        }
+
+
+        const yaPrestado =
+            (prestamosActivos || []).some(
+                prestamo =>
+                    normalizarCodigo(
+                        prestamo.codigoLibro
+                    ) === codigoNormalizado
+            );
+
+
+        if (
+            yaPrestado ||
+            libro.estado === "Prestado"
+        ) {
+
+            mostrarMensaje(
+                mensajeLibro,
+                "Este libro actualmente está prestado.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        libroSeleccionado = libro;
+
+
+        libroInfo.innerHTML = `
+            <strong>Libro encontrado</strong><br>
+            Código: ${escapeHtml(libro.codigoLibro)}<br>
+            Nombre: ${escapeHtml(libro.nombreLibro)}<br>
+            Estado: Disponible
+        `;
+
+
+        libroInfo.style.display =
+            "block";
+
+
+        actualizarDetalle();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            mensajeLibro,
+            "Ocurrió un error al consultar el libro.",
+            "error"
+        );
+    }
+}
+
+
+/* =========================================================
+   ACTUALIZAR DETALLE
+========================================================= */
+
+function actualizarDetalle() {
+
+    if (
+        !personaSeleccionada ||
+        !libroSeleccionado
+    ) {
+
+        detallePrestamo.style.display =
+            "none";
+
+        confirmacion.style.display =
+            "none";
+
+        return;
+    }
+
+
+    const hoy = new Date();
+
+
+    const devolucion =
+        new Date(hoy);
+
+
+    devolucion.setDate(
+        devolucion.getDate() + 28
+    );
+
+
+    detallePrestamo.innerHTML = `
+
+        <p>
+            <strong>Familia:</strong>
+            ${escapeHtml(
+                personaSeleccionada.FamiliaId
+            )}
+        </p>
+
+        <p>
+            <strong>Persona:</strong>
+            ${escapeHtml(
+                personaSeleccionada.Nombres
+            )}
+            ${escapeHtml(
+                personaSeleccionada.Apellidos
+            )}
+        </p>
+
+        <p>
+            <strong>PersonaId:</strong>
+            ${escapeHtml(
+                personaSeleccionada.PersonaId
+            )}
+        </p>
+
+        <p>
+            <strong>Libro:</strong>
+            ${escapeHtml(
+                libroSeleccionado.nombreLibro
+            )}
+        </p>
+
+        <p>
+            <strong>Código:</strong>
+            ${escapeHtml(
+                libroSeleccionado.codigoLibro
+            )}
+        </p>
+
+        <p>
+            <strong>Fecha del préstamo:</strong>
+            ${formatearFecha(hoy)}
+        </p>
+
+        <p>
+            <strong>Fecha de devolución:</strong>
+            ${formatearFecha(devolucion)}
+        </p>
+
+    `;
+
+
+    detallePrestamo.style.display =
+        "block";
+
+    confirmacion.style.display =
+        "block";
+}
+
+
+/* =========================================================
+   CONFIRMAR PRÉSTAMO
+========================================================= */
+
+async function confirmarPrestamo() {
+
+    if (
+        !personaSeleccionada ||
+        !libroSeleccionado
+    ) {
+
+        mostrarMensaje(
+            mensajeFinal,
+            "Debe seleccionar una persona y un libro.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const {
+            data: prestamosExistentes,
+            error: errorConsulta
+        } = await supabaseClient
+
+            .from("prestamos")
+
+            .select("*")
+
+            .eq("estado", "Prestado");
+
+
+        if (errorConsulta) {
+            throw errorConsulta;
+        }
+
+
+        const codigoNormalizado =
+            normalizarCodigo(
+                libroSeleccionado.codigoLibro
+            );
+
+
+        const duplicado =
+            (prestamosExistentes || []).some(
+                prestamo =>
+                    normalizarCodigo(
+                        prestamo.codigoLibro
+                    ) === codigoNormalizado
+            );
+
+
+        if (duplicado) {
+
+            mostrarMensaje(
+                mensajeFinal,
+                "Este libro ya fue prestado.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const sitio =
+            obtenerSitio(personaSeleccionada);
+
+
+        if (!sitio) {
+
+            mostrarMensaje(
+                mensajeFinal,
+                "No se pudo determinar el sitio de la persona. Verifique el Sitio o FamiliaId del afiliado.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const fechaPrestamo =
+            new Date();
+
+
+        const fechaDevolucion =
+            new Date(fechaPrestamo);
+
+
+        fechaDevolucion.setDate(
+            fechaDevolucion.getDate() + 28
+        );
+
+
+        const nuevoPrestamo = {
+
+            Sitio:
+                sitio,
+
+            FamiliaId:
+                personaSeleccionada.FamiliaId,
+
+            PersonaId:
+                personaSeleccionada.PersonaId,
+
+            Nombres:
+                personaSeleccionada.Nombres,
+
+            Apellidos:
+                personaSeleccionada.Apellidos,
+
+            codigoLibro:
+                libroSeleccionado.codigoLibro,
+
+            nombreLibro:
+                libroSeleccionado.nombreLibro,
+
+            fechaPrestamo:
+                fechaPrestamo.toISOString(),
+
+            fechaDevolucion:
+                fechaDevolucion.toISOString(),
+
+            estado:
+                "Prestado",
+
+            fechaDevolucionReal:
+                null
+        };
+
+
+        const {
+            data: prestamoGuardado,
+            error: errorInsertar
+        } = await supabaseClient
+
+            .from("prestamos")
+
+            .insert(nuevoPrestamo)
+
+            .select()
+
+            .single();
+
+
+        if (errorInsertar) {
+            throw errorInsertar;
+        }
+
+
+        const {
+            error: errorLibro
+        } = await supabaseClient
+
+            .from("libros")
+
+            .update({
+                estado: "Prestado"
+            })
+
+            .eq(
+                "id",
+                libroSeleccionado.id
+            );
+
+
+        if (errorLibro) {
+            throw errorLibro;
+        }
+
+
+        mostrarMensaje(
+            mensajeFinal,
+            "Préstamo registrado correctamente.",
+            "exito"
+        );
+
+
+        personaSeleccionada = null;
+
+        libroSeleccionado = null;
+
+
+        libroInfo.style.display =
+            "none";
+
+
+        detallePrestamo.style.display =
+            "none";
+
+
+        confirmacion.style.display =
+            "none";
+
+
+        buscarLibroInput.value = "";
+
+
+        document
+            .querySelectorAll(
+                "#cuerpoFamilia tr"
+            )
+            .forEach(fila => {
+
+                fila.classList.remove(
+                    "seleccionada"
+                );
+
+                const boton =
+                    fila.querySelector(
+                        ".btn-seleccionar"
+                    );
+
+                if (boton) {
+
+                    boton.classList.remove(
+                        "seleccionada"
+                    );
+
+                    boton.textContent =
+                        "Seleccionar";
+                }
+
+            });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            mensajeFinal,
+            "No fue posible registrar el préstamo: " +
+            (error.message ||
+                "error desconocido"),
+            "error"
+        );
+    }
+}
+
+
+/* =========================================================
+   CANCELAR
+========================================================= */
+
+function cancelarPrestamo() {
+
+    libroSeleccionado = null;
+
+    libroInfo.style.display =
+        "none";
+
+    buscarLibroInput.value = "";
+
+    actualizarDetalle();
+}
+
+
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
+
+function escapeHtml(valor) {
+
+    return String(valor ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+document
+    .getElementById("btnBuscarFamilia")
+    .addEventListener(
+        "click",
+        buscarFamilia
+    );
+
+
+document
+    .getElementById("btnBuscarLibro")
+    .addEventListener(
+        "click",
+        buscarLibro
+    );
+
+
+document
+    .getElementById("btnConfirmar")
+    .addEventListener(
+        "click",
+        confirmarPrestamo
+    );
+
+
+document
+    .getElementById("btnCancelar")
+    .addEventListener(
+        "click",
+        cancelarPrestamo
+    );
+
+
+/* =========================================================
+   ENTER - FAMILIA
+========================================================= */
+
+buscarFamiliaInput
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+                buscarFamilia();
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ENTER - LIBRO
+========================================================= */
+
+buscarLibroInput
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+                buscarLibro();
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   SOLO NÚMEROS - CÓDIGO LIBRO
+========================================================= */
+
+buscarLibroInput
+    .addEventListener(
+        "input",
+        function() {
+
+            this.value =
+                this.value
+                    .replace(/\D/g, "")
+                    .slice(0, 8);
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
