@@ -1285,6 +1285,10 @@
                         <tr>
 
                             <th>
+                                Sitio
+                            </th>
+
+                            <th>
                                 Familia
                             </th>
 
@@ -1294,10 +1298,6 @@
 
                             <th>
                                 Libro
-                            </th>
-
-                            <th>
-                                Sitio
                             </th>
 
                             <th>
@@ -3169,6 +3169,15 @@
                         <td>
 
                             ${escapeHtml(
+                                sitio
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
                                 familia
                             )}
 
@@ -3202,15 +3211,6 @@
 
                             ${escapeHtml(
                                 nombreLibro
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHtml(
-                                sitio
                             )}
 
                         </td>
@@ -3447,6 +3447,13 @@
 
                         return {
 
+                            "Sitio":
+
+                                obtenerSitio(
+                                    prestamo
+                                ),
+
+
                             "Familia":
 
                                 prestamo.FamiliaId ||
@@ -3484,13 +3491,6 @@
                                 prestamo.nombreLibro ||
 
                                 "",
-
-
-                            "Sitio":
-
-                                obtenerSitio(
-                                    prestamo
-                                ),
 
 
                             "Préstamo":
@@ -3744,4 +3744,3 @@
 </body>
 
 </html>
-
