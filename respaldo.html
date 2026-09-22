@@ -43,11 +43,18 @@
 
     <!-- =========================================================
          COMPROBACIÓN DIRECTA DE SESIÓN
+         
+         IMPORTANTE:
+         Aquí solamente comprobamos la sesión.
+         La carga de los datos se hará al final de la página,
+         cuando todas las funciones ya estén disponibles.
     ========================================================== -->
 
     <script>
 
-        (async function protegerRespaldo() {
+        window.respaldoAutorizado = false;
+
+        window.respaldoAuth = (async function () {
 
             try {
 
@@ -68,25 +75,19 @@
                         "index.html"
                     );
 
-                    return;
+                    return false;
 
                 }
+
+
+                window.respaldoAutorizado = true;
 
 
                 document.documentElement.style.visibility =
                     "visible";
 
 
-                window.respaldoAutorizado = true;
-
-
-                if (
-                    typeof iniciarRespaldo === "function"
-                ) {
-
-                    iniciarRespaldo();
-
-                }
+                return true;
 
 
             } catch (error) {
@@ -100,6 +101,9 @@
                 window.location.replace(
                     "index.html"
                 );
+
+
+                return false;
 
             }
 
@@ -850,9 +854,11 @@
                         "es-GT"
                     );
 
+
             } catch (error) {
 
                 console.error(
+                    "Error actualizando información:",
                     error
                 );
 
@@ -1153,11 +1159,6 @@
 
             try {
 
-                /*
-                 * Primero consultamos cuántos registros existen.
-                 * Así podemos informar al usuario cuántos se eliminarán.
-                 */
-
                 mostrarMensaje(
                     "Consultando los préstamos actuales...",
                     "aviso"
@@ -1174,11 +1175,6 @@
                     prestamos.length;
 
 
-                /*
-                 * Si no existen registros, no hacemos ninguna
-                 * operación de eliminación.
-                 */
-
                 if (
                     cantidad === 0
                 ) {
@@ -1192,10 +1188,6 @@
 
                 }
 
-
-                /*
-                 * Primera confirmación.
-                 */
 
                 const primeraConfirmacion =
                     confirm(
@@ -1227,11 +1219,6 @@
                 }
 
 
-                /*
-                 * Segunda confirmación para evitar una eliminación
-                 * accidental.
-                 */
-
                 const segundaConfirmacion =
                     confirm(
 
@@ -1260,11 +1247,6 @@
                 }
 
 
-                /*
-                 * Deshabilitamos los botones mientras se realiza
-                 * la operación para evitar acciones simultáneas.
-                 */
-
                 btnCrearRespaldo.disabled =
                     true;
 
@@ -1282,13 +1264,6 @@
                     "aviso"
                 );
 
-
-                /*
-                 * Eliminamos todos los registros de prestamos.
-                 *
-                 * La tabla utiliza un campo "id", por lo que esta
-                 * condición permite eliminar todos los registros.
-                 */
 
                 const {
                     error
@@ -1315,10 +1290,6 @@
 
                 }
 
-
-                /*
-                 * Actualizamos los contadores después de la limpieza.
-                 */
 
                 await actualizarInformacion();
 
@@ -1695,12 +1666,6 @@
                         );
 
 
-                        /*
-                         * =================================================
-                         * ORDEN DE RESTAURACIÓN
-                         * =================================================
-                         */
-
                         await eliminarTabla(
                             "prestamos"
                         );
@@ -1715,12 +1680,6 @@
                             "afiliados"
                         );
 
-
-                        /*
-                         * =================================================
-                         * INSERTAR DATOS
-                         * =================================================
-                         */
 
                         await insertarPorLotes(
                             "afiliados",
@@ -1740,13 +1699,13 @@
                         );
 
 
+                        await actualizarInformacion();
+
+
                         mostrarMensaje(
                             `Restauración completada correctamente. Se restauraron ${total.toLocaleString("es-GT")} registros.`,
                             "exito"
                         );
-
-
-                        await actualizarInformacion();
 
 
                     } catch (error) {
@@ -1844,12 +1803,20 @@
 
         /* =========================================================
            INICIAR RESPALDO
+           
+           IMPORTANTE:
+           Esperamos a que la comprobación de sesión termine
+           antes de consultar las tablas de Supabase.
         ========================================================== */
 
         async function iniciarRespaldo() {
 
+            const accesoPermitido =
+                await window.respaldoAuth;
+
+
             if (
-                !window.respaldoAutorizado
+                !accesoPermitido
             ) {
 
                 return;
@@ -1860,6 +1827,14 @@
             await actualizarInformacion();
 
         }
+
+
+        /*
+         * Ahora todas las funciones ya fueron declaradas,
+         * por lo que podemos iniciar correctamente.
+         */
+
+        iniciarRespaldo();
 
     </script>
 
