@@ -32,6 +32,10 @@
         .encabezado-contenido {
             max-width: 1200px;
             margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
         }
 
         .marca {
@@ -57,7 +61,6 @@
 
         .volver {
             display: inline-block;
-            margin-top: 14px;
             color: white;
             text-decoration: none;
             font-size: 14px;
@@ -449,6 +452,15 @@
 
             .encabezado {
                 padding: 15px;
+            }
+
+            .encabezado-contenido {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .volver {
+                align-self: flex-end;
             }
 
             .contenedor {
@@ -1282,14 +1294,11 @@
 
 
             mostrarMensaje(
-
                 document.getElementById(
                     "mensajeRegistro"
                 ),
-
                 "No fue posible cargar los libros desde Supabase: " +
                 error.message,
-
                 "error"
             );
 
@@ -2856,6 +2865,7 @@
                 ) {
 
                     continue;
+
                 }
 
 
