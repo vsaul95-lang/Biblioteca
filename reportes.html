@@ -17,12 +17,7 @@
         href="estilos.css"
     >
 
-
-    <!-- =========================================================
-         OCULTAR LA PÁGINA MIENTRAS SE COMPRUEBA LA SESIÓN
-    ========================================================== -->
-
-    <style id="bloqueo-acceso">
+    <style>
 
         html {
             visibility: hidden;
@@ -30,19 +25,9 @@
 
     </style>
 
-
-    <!-- =========================================================
-         SUPABASE
-    ========================================================== -->
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase.js"></script>
-
-
-    <!-- =========================================================
-         PROTECCIÓN DIRECTA DE ESTA PÁGINA
-    ========================================================== -->
 
     <script>
 
@@ -53,9 +38,7 @@
                 const {
                     data,
                     error
-                } =
-                    await supabaseClient.auth.getSession();
-
+                } = await supabaseClient.auth.getSession();
 
                 if (
                     error ||
@@ -63,21 +46,15 @@
                     !data.session
                 ) {
 
-                    window.location.replace(
-                        "index.html"
-                    );
+                    window.location.replace("index.html");
 
                     return false;
 
                 }
 
-
-                document.documentElement.style.visibility =
-                    "visible";
-
+                document.documentElement.style.visibility = "visible";
 
                 return true;
-
 
             } catch (error) {
 
@@ -86,11 +63,7 @@
                     error
                 );
 
-
-                window.location.replace(
-                    "index.html"
-                );
-
+                window.location.replace("index.html");
 
                 return false;
 
@@ -100,23 +73,12 @@
 
     </script>
 
-
-    <!-- =========================================================
-         EXCEL
-    ========================================================== -->
-
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
-
-    <!-- =========================================================
-         CHART.JS
-    ========================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
     <style>
-
 
         /* =========================================================
            CONTENEDOR
@@ -310,11 +272,6 @@
             height: 190px;
 
         }
-
-
-        /* =========================================================
-           GRÁFICA DE ACTIVIDAD
-        ========================================================== */
 
         .grafico-actividad {
 
@@ -556,7 +513,7 @@
 
 
         /* =========================================================
-           RESUMEN DE RESULTADOS
+           RESUMEN
         ========================================================== */
 
         .resultado-resumen {
@@ -893,8 +850,6 @@
     <main class="reportes-contenedor">
 
 
-        <!-- ENCABEZADO -->
-
         <section class="reporte-encabezado">
 
             <a
@@ -1106,8 +1061,6 @@
             </div>
 
 
-            <!-- FILTROS -->
-
             <div class="filtros">
 
                 <div class="filtros-titulo">
@@ -1198,7 +1151,7 @@
                     <div class="campo">
 
                         <label for="filtroSitio">
-                            Sitio
+                            SitioPréstamo
                         </label>
 
                         <select id="filtroSitio">
@@ -1288,8 +1241,6 @@
             </div>
 
 
-            <!-- RESUMEN -->
-
             <div class="resultado-resumen">
 
                 <div
@@ -1309,7 +1260,9 @@
             </div>
 
 
-            <!-- TABLA -->
+            <!-- =================================================
+                 TABLA
+            ================================================== -->
 
             <div class="tabla-contenedor">
 
@@ -1320,7 +1273,7 @@
                         <tr>
 
                             <th>
-                                Sitio
+                                SitioPréstamo
                             </th>
 
                             <th>
@@ -1389,7 +1342,7 @@
 
 
     <!-- =========================================================
-         JAVASCRIPT DE REPORTES
+         JAVASCRIPT
     ========================================================== -->
 
     <script>
@@ -1470,7 +1423,7 @@
 
 
         /* =========================================================
-           CÓDIGO DE 8 DÍGITOS
+           FORMATEAR CÓDIGO A 8 DÍGITOS
         ========================================================== */
 
         function formatearCodigo(codigo) {
@@ -1664,7 +1617,7 @@
 
 
         /* =========================================================
-           ESTADO DEL PRÉSTAMO
+           ESTADO
         ========================================================== */
 
         function obtenerEstado(prestamo) {
@@ -1701,10 +1654,10 @@
 
 
         /* =========================================================
-           SITIO
+           SITIO DEL PRÉSTAMO
         ========================================================== */
 
-        function obtenerSitio(prestamo) {
+        function obtenerSitioPrestamo(prestamo) {
 
             return (
 
@@ -1786,7 +1739,7 @@
 
 
         /* =========================================================
-           BUSCAR DATOS DEL LIBRO
+           BUSCAR LIBRO
         ========================================================== */
 
         function obtenerLibroPorCodigo(codigo) {
@@ -1815,7 +1768,7 @@
 
 
         /* =========================================================
-           DATOS COMPLETOS DEL LIBRO
+           DATOS DEL LIBRO
         ========================================================== */
 
         function obtenerDatosLibro(prestamo) {
@@ -2023,7 +1976,7 @@
 
 
         /* =========================================================
-           CARGAR TODO
+           CARGAR DATOS
         ========================================================== */
 
         async function cargarDatos() {
@@ -2161,7 +2114,7 @@
 
 
         /* =========================================================
-           GRÁFICA CIRCULAR
+           GRÁFICA DE LIBROS
         ========================================================== */
 
         function actualizarGraficaLibros(
@@ -2249,49 +2202,6 @@
 
                                     }
 
-                                },
-
-                                tooltip: {
-
-                                    callbacks: {
-
-                                        label:
-                                            function(
-                                                context
-                                            ) {
-
-                                                const total =
-                                                    disponibles +
-                                                    prestados;
-
-                                                const valor =
-                                                    context.raw;
-
-                                                const porcentaje =
-                                                    total > 0
-
-                                                        ? (
-
-                                                            valor /
-                                                            total *
-                                                            100
-
-                                                        ).toFixed(1)
-
-                                                        : 0;
-
-                                                return (
-
-                                                    `${context.label}: ` +
-
-                                                    `${valor} (${porcentaje}%)`
-
-                                                );
-
-                                            }
-
-                                    }
-
                                 }
 
                             }
@@ -2309,9 +2219,7 @@
            GRÁFICA DE MESES
         ========================================================== */
 
-        function actualizarGraficaMeses(
-            datos
-        ) {
+        function actualizarGraficaMeses(datos) {
 
             const ahora =
                 new Date();
@@ -2356,9 +2264,7 @@
 
                     const fecha =
                         obtenerFechaSoloDia(
-
                             prestamo.fechaPrestamo
-
                         );
 
                     if (!fecha) {
@@ -2368,20 +2274,17 @@
                     }
 
                     if (
-
                         fecha.getFullYear() !==
                         anioActual
-
                     ) {
 
                         return;
 
                     }
 
-                    const mes =
-                        fecha.getMonth();
-
-                    conteoMeses[mes]++;
+                    conteoMeses[
+                        fecha.getMonth()
+                    ]++;
 
                 }
 
@@ -2486,13 +2389,6 @@
                                         }
 
                                     }
-
-                                },
-
-                                tooltip: {
-
-                                    padding:
-                                        7
 
                                 }
 
@@ -2718,7 +2614,7 @@
 
 
         /* =========================================================
-           CARGAR SITIOS
+           CARGAR SITIOS DE PRÉSTAMO
         ========================================================== */
 
         function cargarSitios() {
@@ -2735,7 +2631,7 @@
                     prestamos.map(
 
                         prestamo =>
-                            obtenerSitio(
+                            obtenerSitioPrestamo(
                                 prestamo
                             )
 
@@ -2817,7 +2713,9 @@
                                 String(
                                     libro.Biblioteca ??
                                     ""
-                                ).trim().toUpperCase()
+                                )
+                                    .trim()
+                                    .toUpperCase()
 
                         )
 
@@ -2831,11 +2729,17 @@
             ];
 
             const ordenFijo = [
+
                 "F",
+
                 "M",
+
                 "N",
+
                 "R",
+
                 "Z"
+
             ];
 
             bibliotecas.sort(
@@ -2957,6 +2861,7 @@
                     "fechaHasta"
                 ).value;
 
+
             if (
 
                 fechaDesde &&
@@ -2986,8 +2891,8 @@
                                 prestamo
                             );
 
-                        const sitio =
-                            obtenerSitio(
+                        const sitioPrestamo =
+                            obtenerSitioPrestamo(
                                 prestamo
                             );
 
@@ -3042,7 +2947,7 @@
 
                                     datosLibro.biblioteca,
 
-                                    sitio
+                                    sitioPrestamo
 
                                 ].join(" ")
 
@@ -3084,7 +2989,7 @@
                             sitioFiltro !==
                                 "Todos" &&
 
-                            sitio !==
+                            sitioPrestamo !==
                                 sitioFiltro
 
                         ) {
@@ -3372,7 +3277,7 @@
 
 
         /* =========================================================
-           RESULTADOS
+           ACTUALIZAR TABLA
         ========================================================== */
 
         function actualizarResultados() {
@@ -3497,8 +3402,8 @@
                         );
 
 
-                    const sitio =
-                        obtenerSitio(
+                    const sitioPrestamo =
+                        obtenerSitioPrestamo(
                             prestamo
                         );
 
@@ -3513,7 +3418,7 @@
                         <td>
 
                             ${escapeHtml(
-                                sitio
+                                sitioPrestamo
                             )}
 
                         </td>
@@ -3713,7 +3618,7 @@
                     "filtroEstado"
                 ).value;
 
-            const sitio =
+            const sitioPrestamo =
                 document.getElementById(
                     "filtroSitio"
                 ).value;
@@ -3760,13 +3665,13 @@
 
 
             if (
-                sitio !==
+                sitioPrestamo !==
                 "Todos"
             ) {
 
                 elementos.push(
 
-                    `Sitio: ${sitio}`
+                    `SitioPréstamo: ${sitioPrestamo}`
 
                 );
 
@@ -3894,9 +3799,9 @@
 
                         return {
 
-                            "Sitio":
+                            "SitioPréstamo":
 
-                                obtenerSitio(
+                                obtenerSitioPrestamo(
                                     prestamo
                                 ),
 
@@ -4027,7 +3932,7 @@
 
 
         /* =========================================================
-           LIMPIAR
+           LIMPIAR FILTROS
         ========================================================== */
 
         function limpiarFiltros() {
@@ -4036,40 +3941,33 @@
                 "busqueda"
             ).value = "";
 
-
             document.getElementById(
                 "filtroEstado"
             ).value =
                 "Todos";
-
 
             document.getElementById(
                 "filtroSitio"
             ).value =
                 "Todos";
 
-
             document.getElementById(
                 "filtroBiblioteca"
             ).value =
                 "Todos";
-
 
             document.getElementById(
                 "filtroOrden"
             ).value =
                 "reciente";
 
-
             document.getElementById(
                 "fechaDesde"
             ).value = "";
 
-
             document.getElementById(
                 "fechaHasta"
             ).value = "";
-
 
             aplicarFiltros();
 
@@ -4202,7 +4100,7 @@
 
 
         /* =========================================================
-           INICIAR REPORTES
+           INICIAR
         ========================================================== */
 
         async function iniciarReportes() {
@@ -4210,13 +4108,11 @@
             const accesoPermitido =
                 await window.reportesAuth;
 
-
             if (!accesoPermitido) {
 
                 return;
 
             }
-
 
             if (reportesIniciados) {
 
@@ -4224,9 +4120,7 @@
 
             }
 
-
             reportesIniciados = true;
-
 
             await cargarDatos();
 
