@@ -1,257 +1,705 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Devoluciones - Biblioteca</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script src="supabase.js"></script>
+
     <script src="auth.js"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
 
+
         body {
+
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #333;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                #f4f6f8;
+
+            color:
+                #333;
+
         }
+
 
         .encabezado {
-            background: #263238;
-            color: white;
-            padding: 18px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+
+            background:
+                #263238;
+
+            color:
+                white;
+
+            padding:
+                18px 25px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
         }
+
 
         .encabezado h1 {
-            margin: 0;
-            font-size: 22px;
+
+            margin:
+                0;
+
+            font-size:
+                22px;
+
         }
+
 
         .btn-volver {
-            background: #546e7a;
-            color: white;
-            text-decoration: none;
-            padding: 9px 14px;
-            border-radius: 6px;
-            font-size: 14px;
+
+            background:
+                #546e7a;
+
+            color:
+                white;
+
+            text-decoration:
+                none;
+
+            padding:
+                9px 14px;
+
+            border-radius:
+                6px;
+
+            font-size:
+                14px;
+
         }
+
 
         .contenedor {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
+
+            max-width:
+                1200px;
+
+            margin:
+                20px auto;
+
+            padding:
+                0 15px;
+
         }
+
 
         .resumen {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 18px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                12px;
+
+            margin-bottom:
+                18px;
+
         }
+
 
         .tarjeta {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,.08);
+
+            background:
+                white;
+
+            border-radius:
+                8px;
+
+            padding:
+                15px;
+
+            text-align:
+                center;
+
+            box-shadow:
+                0 2px 6px rgba(0,0,0,.08);
+
         }
+
 
         .tarjeta .numero {
-            font-size: 25px;
-            font-weight: bold;
-            margin-bottom: 4px;
+
+            font-size:
+                25px;
+
+            font-weight:
+                bold;
+
+            margin-bottom:
+                4px;
+
         }
+
 
         .tarjeta .texto {
-            font-size: 13px;
-            color: #666;
+
+            font-size:
+                13px;
+
+            color:
+                #666;
+
         }
+
 
         .seccion {
-            background: white;
-            border-radius: 8px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 6px rgba(0,0,0,.08);
+
+            background:
+                white;
+
+            border-radius:
+                8px;
+
+            padding:
+                18px;
+
+            margin-bottom:
+                18px;
+
+            box-shadow:
+                0 2px 6px rgba(0,0,0,.08);
+
         }
+
 
         .seccion h2 {
-            margin: 0 0 15px;
-            font-size: 18px;
+
+            margin:
+                0 0 15px;
+
+            font-size:
+                18px;
+
         }
+
 
         .fila-busqueda {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+
+            display:
+                flex;
+
+            gap:
+                10px;
+
+            align-items:
+                center;
+
         }
 
-        input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
+
+        input,
+        select {
+
+            flex:
+                1;
+
+            padding:
+                10px 12px;
+
+            border:
+                1px solid #ccc;
+
+            border-radius:
+                5px;
+
+            font-size:
+                14px;
+
+            background:
+                white;
+
         }
+
 
         button {
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 14px;
+
+            border:
+                none;
+
+            border-radius:
+                5px;
+
+            padding:
+                10px 15px;
+
+            cursor:
+                pointer;
+
+            font-size:
+                14px;
+
         }
+
 
         .btn-buscar {
-            background: #1976d2;
-            color: white;
+
+            background:
+                #1976d2;
+
+            color:
+                white;
+
         }
+
 
         .btn-devolver {
-            background: #2e7d32;
-            color: white;
-            padding: 7px 11px;
-            font-size: 12px;
+
+            background:
+                #2e7d32;
+
+            color:
+                white;
+
+            padding:
+                7px 11px;
+
+            font-size:
+                12px;
+
         }
+
 
         .mensaje {
-            margin-top: 12px;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
+
+            margin-top:
+                12px;
+
+            padding:
+                10px;
+
+            border-radius:
+                5px;
+
+            display:
+                none;
+
         }
+
 
         .mensaje.exito {
-            display: block;
-            background: #e8f5e9;
-            color: #2e7d32;
+
+            display:
+                block;
+
+            background:
+                #e8f5e9;
+
+            color:
+                #2e7d32;
+
         }
+
 
         .mensaje.error {
-            display: block;
-            background: #ffebee;
-            color: #c62828;
+
+            display:
+                block;
+
+            background:
+                #ffebee;
+
+            color:
+                #c62828;
+
         }
+
 
         .tabla-contenedor {
-            overflow-x: auto;
-            margin-top: 15px;
+
+            overflow-x:
+                auto;
+
+            margin-top:
+                15px;
+
         }
+
 
         table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
+
+            width:
+                100%;
+
+            min-width:
+                900px;
+
+            border-collapse:
+                collapse;
+
+            font-size:
+                13px;
+
         }
+
 
         th {
-            background: #eceff1;
-            padding: 9px;
-            border-bottom: 1px solid #ccc;
-            text-align: center;
+
+            background:
+                #eceff1;
+
+            padding:
+                9px;
+
+            border-bottom:
+                1px solid #ccc;
+
+            text-align:
+                center;
+
+            white-space:
+                nowrap;
+
         }
+
 
         td {
-            padding: 9px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
+
+            padding:
+                9px;
+
+            border-bottom:
+                1px solid #eee;
+
+            text-align:
+                center;
+
+            white-space:
+                nowrap;
+
         }
+
 
         td.nombre {
-            text-align: left;
+
+            text-align:
+                left;
+
         }
+
+
+        td.libro {
+
+            text-align:
+                left;
+
+            min-width:
+                190px;
+
+        }
+
+
+        td.comentarios {
+
+            min-width:
+                110px;
+
+        }
+
 
         tr.vencido {
-            background: #fff3f3;
+
+            background:
+                #fff3f3;
+
         }
+
 
         .estado-prestado {
-            color: #1565c0;
-            font-weight: bold;
+
+            color:
+                #1565c0;
+
+            font-weight:
+                bold;
+
         }
+
 
         .estado-vencido {
-            color: #c62828;
-            font-weight: bold;
+
+            color:
+                #c62828;
+
+            font-weight:
+                bold;
+
         }
+
+
+        .estado-devuelto {
+
+            color:
+                #2e7d32;
+
+            font-weight:
+                bold;
+
+        }
+
 
         .detalle {
-            background: #f7f9fa;
-            border-radius: 6px;
-            padding: 14px;
-            margin-top: 15px;
-            display: none;
+
+            background:
+                #f7f9fa;
+
+            border-radius:
+                6px;
+
+            padding:
+                14px;
+
+            margin-top:
+                15px;
+
+            display:
+                none;
+
         }
+
 
         .detalle p {
-            margin: 6px 0;
-            font-size: 14px;
+
+            margin:
+                6px 0;
+
+            font-size:
+                14px;
+
         }
+
+
+        .campo-comentario {
+
+            margin-top:
+                12px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                5px;
+
+        }
+
+
+        .campo-comentario label {
+
+            font-size:
+                13px;
+
+            font-weight:
+                bold;
+
+            color:
+                #455a64;
+
+        }
+
+
+        .campo-comentario select {
+
+            max-width:
+                280px;
+
+            padding:
+                8px 10px;
+
+            font-size:
+                13px;
+
+        }
+
+
+        .aviso-extraviado {
+
+            display:
+                none;
+
+            margin-top:
+                8px;
+
+            padding:
+                9px 10px;
+
+            background:
+                #fff3e0;
+
+            border:
+                1px solid #ffcc80;
+
+            border-radius:
+                5px;
+
+            color:
+                #e65100;
+
+            font-size:
+                12px;
+
+        }
+
 
         .confirmacion {
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 15px;
-            display: none;
+
+            background:
+                #fff8e1;
+
+            border:
+                1px solid #ffe082;
+
+            border-radius:
+                6px;
+
+            padding:
+                15px;
+
+            margin-top:
+                15px;
+
+            display:
+                none;
+
         }
+
 
         .confirmacion strong {
-            color: #e65100;
+
+            color:
+                #e65100;
+
         }
+
 
         .acciones-confirmacion {
-            margin-top: 12px;
-            display: flex;
-            gap: 8px;
+
+            margin-top:
+                12px;
+
+            display:
+                flex;
+
+            gap:
+                8px;
+
         }
+
 
         .btn-confirmar {
-            background: #2e7d32;
-            color: white;
+
+            background:
+                #2e7d32;
+
+            color:
+                white;
+
         }
 
+
         .btn-cancelar {
-            background: #757575;
-            color: white;
+
+            background:
+                #757575;
+
+            color:
+                white;
+
         }
+
 
         @media (max-width: 700px) {
 
             .resumen {
-                grid-template-columns: 1fr;
+
+                grid-template-columns:
+                    1fr;
+
             }
+
 
             .fila-busqueda {
-                flex-direction: column;
-                align-items: stretch;
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+
             }
 
+
             .encabezado {
-                gap: 10px;
-                flex-direction: column;
-                align-items: flex-start;
+
+                gap:
+                    10px;
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    flex-start;
+
             }
+
+
+            .campo-comentario select {
+
+                max-width:
+                    100%;
+
+            }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <header class="encabezado">
 
-    <h1>📚 Devoluciones</h1>
+    <h1>
+        📚 Devoluciones
+    </h1>
+
 
     <a
         href="index.html"
@@ -266,9 +714,12 @@
 <div class="contenedor">
 
 
-    <!-- RESUMEN -->
+    <!-- =====================================================
+         RESUMEN
+    ====================================================== -->
 
     <section class="resumen">
+
 
         <div class="tarjeta">
 
@@ -317,12 +768,16 @@
 
         </div>
 
+
     </section>
 
 
-    <!-- BUSCAR -->
+    <!-- =====================================================
+         BUSCAR
+    ====================================================== -->
 
     <section class="seccion">
+
 
         <h2>
             Buscar préstamo
@@ -331,11 +786,13 @@
 
         <div class="fila-busqueda">
 
+
             <input
                 type="text"
                 id="buscar"
                 placeholder="Familia, PersonaId, nombre, apellido o código de libro..."
             >
+
 
             <button
                 class="btn-buscar"
@@ -343,6 +800,7 @@
             >
                 Buscar
             </button>
+
 
         </div>
 
@@ -355,39 +813,71 @@
 
         <div class="tabla-contenedor">
 
+
             <table>
+
 
                 <thead>
 
                     <tr>
 
-                        <th>Familia</th>
-                        <th>Persona</th>
-                        <th>Libro</th>
-                        <th>Préstamo</th>
-                        <th>Devolución</th>
-                        <th>Estado</th>
-                        <th>Acción</th>
+                        <th>
+                            FamiliaId
+                        </th>
+
+                        <th>
+                            PersonaId
+                        </th>
+
+                        <th>
+                            Libro
+                        </th>
+
+                        <th>
+                            Préstamo
+                        </th>
+
+                        <th>
+                            Devolución
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Comentarios
+                        </th>
+
+                        <th>
+                            Acciones
+                        </th>
 
                     </tr>
 
                 </thead>
 
 
-                <tbody id="tablaPrestamos">
+                <tbody
+                    id="tablaPrestamos"
+                ></tbody>
 
-                </tbody>
 
             </table>
 
+
         </div>
+
 
     </section>
 
 
-    <!-- DETALLE -->
+    <!-- =====================================================
+         DETALLE
+    ====================================================== -->
 
     <section class="seccion">
+
 
         <h2>
             Detalle de devolución
@@ -405,12 +895,16 @@
             class="confirmacion"
         >
 
+
             <strong>
                 ¿Desea registrar la devolución de este libro?
             </strong>
 
 
-            <div class="acciones-confirmacion">
+            <div
+                class="acciones-confirmacion"
+            >
+
 
                 <button
                     class="btn-confirmar"
@@ -427,9 +921,12 @@
                     Cancelar
                 </button>
 
+
             </div>
 
+
         </div>
+
 
     </section>
 
@@ -438,6 +935,7 @@
 
 
 <script>
+
 
 /* =========================================================
    VARIABLES
@@ -457,20 +955,24 @@ const tablaPrestamos =
         "tablaPrestamos"
     );
 
+
 const buscarInput =
     document.getElementById(
         "buscar"
     );
+
 
 const mensaje =
     document.getElementById(
         "mensaje"
     );
 
+
 const detalle =
     document.getElementById(
         "detalle"
     );
+
 
 const confirmacion =
     document.getElementById(
@@ -483,8 +985,11 @@ const confirmacion =
 ========================================================= */
 
 document.addEventListener(
+
     "DOMContentLoaded",
+
     cargarDatos
+
 );
 
 
@@ -495,6 +1000,7 @@ document.addEventListener(
 async function cargarDatos() {
 
     try {
+
 
         const {
             data,
@@ -513,13 +1019,16 @@ async function cargarDatos() {
             .order(
                 "fechaPrestamo",
                 {
-                    ascending: false
+                    ascending:
+                        false
                 }
             );
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -529,6 +1038,7 @@ async function cargarDatos() {
 
         actualizarResumen();
 
+
         mostrarPrestamos(
             prestamos
         );
@@ -536,13 +1046,20 @@ async function cargarDatos() {
 
     } catch (error) {
 
+
         console.error(error);
 
+
         mostrarMensaje(
+
             "No fue posible cargar los préstamos.",
+
             "error"
+
         );
+
     }
+
 }
 
 
@@ -552,20 +1069,32 @@ async function cargarDatos() {
 
 async function actualizarResumen() {
 
+
     const totalActivos =
         prestamos.length;
 
 
-    const ahora =
-        new Date();
+    const hoy =
+        obtenerHoy();
 
 
     const totalVencidos =
         prestamos.filter(
-            prestamo =>
-                new Date(
-                    prestamo.fechaDevolucion
-                ) < ahora
+
+            prestamo => {
+
+                const fecha =
+                    obtenerFechaSoloDia(
+                        prestamo.fechaDevolucion
+                    );
+
+                return (
+                    fecha &&
+                    fecha < hoy
+                );
+
+            }
+
         ).length;
 
 
@@ -583,6 +1112,7 @@ async function actualizarResumen() {
 
     try {
 
+
         const {
             data,
             error
@@ -590,19 +1120,25 @@ async function actualizarResumen() {
 
             .from("libros")
 
-            .select("id, estado");
+            .select(
+                "id, estado"
+            );
 
 
         if (error) {
+
             throw error;
+
         }
 
 
         const disponibles =
             (data || []).filter(
+
                 libro =>
                     libro.estado ===
                     "Disponible"
+
             ).length;
 
 
@@ -614,13 +1150,17 @@ async function actualizarResumen() {
 
     } catch (error) {
 
+
         console.error(error);
+
 
         document.getElementById(
             "totalDisponibles"
         ).textContent =
             "—";
+
     }
+
 }
 
 
@@ -632,18 +1172,20 @@ function mostrarPrestamos(
     lista
 ) {
 
+
     tablaPrestamos.innerHTML =
         "";
 
 
     if (!lista.length) {
 
+
         tablaPrestamos.innerHTML = `
 
             <tr>
 
                 <td
-                    colspan="7"
+                    colspan="8"
                     style="padding:20px;"
                 >
                     No hay préstamos activos.
@@ -653,21 +1195,30 @@ function mostrarPrestamos(
 
         `;
 
+
         return;
+
     }
 
 
-    const ahora =
-        new Date();
+    const hoy =
+        obtenerHoy();
 
 
     lista.forEach(
+
         prestamo => {
 
-            const vencido =
-                new Date(
+
+            const fechaDevolucion =
+                obtenerFechaSoloDia(
                     prestamo.fechaDevolucion
-                ) < ahora;
+                );
+
+
+            const vencido =
+                fechaDevolucion &&
+                fechaDevolucion < hoy;
 
 
             const fila =
@@ -681,46 +1232,68 @@ function mostrarPrestamos(
                 fila.classList.add(
                     "vencido"
                 );
+
             }
 
+
+            /* FamiliaId */
 
             const tdFamilia =
                 document.createElement(
                     "td"
                 );
 
-            tdFamilia.textContent =
-                prestamo.FamiliaId;
 
+            tdFamilia.textContent =
+                prestamo.FamiliaId ||
+                "—";
+
+
+            /* PersonaId */
 
             const tdPersona =
                 document.createElement(
                     "td"
                 );
 
-            tdPersona.className =
-                "nombre";
 
             tdPersona.textContent =
-                `${prestamo.Nombres} ${prestamo.Apellidos}`;
+                prestamo.PersonaId ||
+                "—";
 
+
+            /* Libro */
 
             const tdLibro =
                 document.createElement(
                     "td"
                 );
 
+
             tdLibro.className =
-                "nombre";
+                "libro";
+
+
+            const codigo =
+                formatearCodigo(
+                    prestamo.codigoLibro
+                );
+
 
             tdLibro.textContent =
-                `${prestamo.codigoLibro} - ${prestamo.nombreLibro}`;
+                `${codigo} - ${
+                    prestamo.nombreLibro ||
+                    "Sin nombre"
+                }`;
 
+
+            /* Préstamo */
 
             const tdPrestamo =
                 document.createElement(
                     "td"
                 );
+
 
             tdPrestamo.textContent =
                 formatearFecha(
@@ -728,16 +1301,21 @@ function mostrarPrestamos(
                 );
 
 
+            /* Devolución */
+
             const tdDevolucion =
                 document.createElement(
                     "td"
                 );
+
 
             tdDevolucion.textContent =
                 formatearFecha(
                     prestamo.fechaDevolucion
                 );
 
+
+            /* Estado */
 
             const tdEstado =
                 document.createElement(
@@ -747,21 +1325,53 @@ function mostrarPrestamos(
 
             if (vencido) {
 
+
                 tdEstado.textContent =
                     "Vencido";
+
 
                 tdEstado.className =
                     "estado-vencido";
 
+
             } else {
+
 
                 tdEstado.textContent =
                     "Prestado";
 
+
                 tdEstado.className =
                     "estado-prestado";
+
             }
 
+
+            /* Comentarios */
+
+            const tdComentarios =
+                document.createElement(
+                    "td"
+                );
+
+
+            tdComentarios.className =
+                "comentarios";
+
+
+            const comentario =
+                String(
+                    prestamo.comentarios ||
+                    ""
+                ).trim();
+
+
+            tdComentarios.textContent =
+                comentario ||
+                "—";
+
+
+            /* Acciones */
 
             const tdAccion =
                 document.createElement(
@@ -778,15 +1388,19 @@ function mostrarPrestamos(
             boton.type =
                 "button";
 
+
             boton.className =
                 "btn-devolver";
+
 
             boton.textContent =
                 "Devolver";
 
 
             boton.addEventListener(
+
                 "click",
+
                 function() {
 
                     seleccionarPrestamo(
@@ -794,6 +1408,7 @@ function mostrarPrestamos(
                     );
 
                 }
+
             );
 
 
@@ -806,25 +1421,36 @@ function mostrarPrestamos(
                 tdFamilia
             );
 
+
             fila.appendChild(
                 tdPersona
             );
+
 
             fila.appendChild(
                 tdLibro
             );
 
+
             fila.appendChild(
                 tdPrestamo
             );
+
 
             fila.appendChild(
                 tdDevolucion
             );
 
+
             fila.appendChild(
                 tdEstado
             );
+
+
+            fila.appendChild(
+                tdComentarios
+            );
+
 
             fila.appendChild(
                 tdAccion
@@ -835,8 +1461,11 @@ function mostrarPrestamos(
                 fila
             );
 
+
         }
+
     );
+
 }
 
 
@@ -848,6 +1477,7 @@ function seleccionarPrestamo(
     prestamo
 ) {
 
+
     prestamoSeleccionado =
         prestamo;
 
@@ -855,56 +1485,153 @@ function seleccionarPrestamo(
     detalle.innerHTML = `
 
         <p>
-            <strong>Familia:</strong>
+
+            <strong>
+                FamiliaId:
+            </strong>
+
             ${escapeHtml(
-                prestamo.FamiliaId
+                prestamo.FamiliaId ||
+                "—"
             )}
+
         </p>
 
-        <p>
-            <strong>Persona:</strong>
-            ${escapeHtml(
-                prestamo.Nombres
-            )}
-            ${escapeHtml(
-                prestamo.Apellidos
-            )}
-        </p>
 
         <p>
-            <strong>PersonaId:</strong>
+
+            <strong>
+                PersonaId:
+            </strong>
+
             ${escapeHtml(
-                prestamo.PersonaId
+                prestamo.PersonaId ||
+                "—"
             )}
+
         </p>
 
-        <p>
-            <strong>Libro:</strong>
-            ${escapeHtml(
-                prestamo.nombreLibro
-            )}
-        </p>
 
         <p>
-            <strong>Código:</strong>
+
+            <strong>
+                Persona:
+            </strong>
+
             ${escapeHtml(
-                prestamo.codigoLibro
+                prestamo.Nombres ||
+                ""
             )}
+
+            ${escapeHtml(
+                prestamo.Apellidos ||
+                ""
+            )}
+
         </p>
 
+
         <p>
-            <strong>Fecha del préstamo:</strong>
+
+            <strong>
+                Libro:
+            </strong>
+
+            ${escapeHtml(
+                prestamo.nombreLibro ||
+                "—"
+            )}
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                Código:
+            </strong>
+
+            ${escapeHtml(
+                formatearCodigo(
+                    prestamo.codigoLibro
+                )
+            )}
+
+        </p>
+
+
+        <p>
+
+            <strong>
+                Fecha del préstamo:
+            </strong>
+
             ${formatearFecha(
                 prestamo.fechaPrestamo
             )}
+
         </p>
 
+
         <p>
-            <strong>Fecha límite:</strong>
+
+            <strong>
+                Fecha límite:
+            </strong>
+
             ${formatearFecha(
                 prestamo.fechaDevolucion
             )}
+
         </p>
+
+
+        <div class="campo-comentario">
+
+            <label
+                for="comentarioDevolucion"
+            >
+                Comentarios de la devolución
+            </label>
+
+
+            <select
+                id="comentarioDevolucion"
+            >
+
+                <option value="">
+                    Vacío
+                </option>
+
+                <option value="Roto">
+                    Roto
+                </option>
+
+                <option value="Mojado">
+                    Mojado
+                </option>
+
+                <option value="Manchado">
+                    Manchado
+                </option>
+
+                <option value="Extraviado">
+                    Extraviado
+                </option>
+
+            </select>
+
+
+            <div
+                id="avisoExtraviado"
+                class="aviso-extraviado"
+            >
+                ⚠️ Si selecciona <strong>Extraviado</strong>,
+                el libro quedará en estado <strong>Baja</strong>
+                y no estará disponible para nuevos préstamos.
+            </div>
+
+        </div>
 
     `;
 
@@ -917,10 +1644,58 @@ function seleccionarPrestamo(
         "block";
 
 
+    const selectComentario =
+        document.getElementById(
+            "comentarioDevolucion"
+        );
+
+
+    const avisoExtraviado =
+        document.getElementById(
+            "avisoExtraviado"
+        );
+
+
+    selectComentario.addEventListener(
+
+        "change",
+
+        function() {
+
+
+            if (
+                selectComentario.value ===
+                "Extraviado"
+            ) {
+
+
+                avisoExtraviado.style.display =
+                    "block";
+
+
+            } else {
+
+
+                avisoExtraviado.style.display =
+                    "none";
+
+            }
+
+        }
+
+    );
+
+
     detalle.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
+
+        behavior:
+            "smooth",
+
+        block:
+            "nearest"
+
     });
+
 }
 
 
@@ -930,18 +1705,38 @@ function seleccionarPrestamo(
 
 async function confirmarDevolucion() {
 
+
     if (!prestamoSeleccionado) {
 
+
         mostrarMensaje(
+
             "Seleccione un préstamo.",
+
             "error"
+
         );
 
+
         return;
+
     }
 
 
+    const selectComentario =
+        document.getElementById(
+            "comentarioDevolucion"
+        );
+
+
+    const comentario =
+        selectComentario
+            ? selectComentario.value
+            : "";
+
+
     try {
+
 
         const fechaReal =
             new Date();
@@ -963,18 +1758,27 @@ async function confirmarDevolucion() {
                     "Devuelto",
 
                 fechaDevolucionReal:
-                    fechaReal.toISOString()
+                    fechaReal.toISOString(),
+
+                comentarios:
+                    comentario ||
+                    null
 
             })
 
             .eq(
+
                 "id",
+
                 prestamoSeleccionado.id
+
             );
 
 
         if (errorPrestamo) {
+
             throw errorPrestamo;
+
         }
 
 
@@ -989,34 +1793,58 @@ async function confirmarDevolucion() {
 
             .from("libros")
 
-            .select("id, codigoLibro");
+            .select(
+                "id, codigoLibro"
+            );
 
 
         if (errorLibroConsulta) {
+
             throw errorLibroConsulta;
+
         }
 
 
         const codigoNormalizado =
             normalizarCodigo(
+
                 prestamoSeleccionado.codigoLibro
+
             );
 
 
         const libro =
             (libros || []).find(
+
                 item =>
+
                     normalizarCodigo(
                         item.codigoLibro
-                    ) === codigoNormalizado
+                    ) ===
+                    codigoNormalizado
+
             );
 
 
         /*
-         * 3. Cambiar libro a Disponible
+         * 3. Determinar el estado final
+         */
+
+        const estadoLibro =
+            comentario ===
+            "Extraviado"
+
+                ? "Baja"
+
+                : "Disponible";
+
+
+        /*
+         * 4. Cambiar estado del libro
          */
 
         if (libro) {
+
 
             const {
                 error: errorLibroUpdate
@@ -1027,26 +1855,59 @@ async function confirmarDevolucion() {
                 .update({
 
                     estado:
-                        "Disponible"
+                        estadoLibro
 
                 })
 
                 .eq(
+
                     "id",
+
                     libro.id
+
                 );
 
 
             if (errorLibroUpdate) {
+
                 throw errorLibroUpdate;
+
             }
+
         }
 
 
-        mostrarMensaje(
-            "Devolución registrada correctamente.",
-            "exito"
-        );
+        /*
+         * 5. Mensaje final
+         */
+
+        if (
+            comentario ===
+            "Extraviado"
+        ) {
+
+
+            mostrarMensaje(
+
+                "Devolución registrada. El libro fue marcado como Baja por extravío.",
+
+                "exito"
+
+            );
+
+
+        } else {
+
+
+            mostrarMensaje(
+
+                "Devolución registrada correctamente.",
+
+                "exito"
+
+            );
+
+        }
 
 
         prestamoSeleccionado =
@@ -1066,17 +1927,28 @@ async function confirmarDevolucion() {
 
     } catch (error) {
 
+
         console.error(error);
 
+
         mostrarMensaje(
+
             "No fue posible registrar la devolución: " +
+
             (
+
                 error.message ||
+
                 "error desconocido"
+
             ),
+
             "error"
+
         );
+
     }
+
 }
 
 
@@ -1086,14 +1958,18 @@ async function confirmarDevolucion() {
 
 function cancelarDevolucion() {
 
+
     prestamoSeleccionado =
         null;
+
 
     detalle.style.display =
         "none";
 
+
     confirmacion.style.display =
         "none";
+
 }
 
 
@@ -1103,78 +1979,81 @@ function cancelarDevolucion() {
 
 function buscar() {
 
+
     const texto =
-        buscarInput.value
-            .trim()
-            .toLowerCase();
+        normalizarTexto(
+            buscarInput.value
+        );
 
 
     if (!texto) {
+
 
         mostrarPrestamos(
             prestamos
         );
 
+
         limpiarMensaje();
 
+
         return;
+
     }
 
 
     const resultados =
         prestamos.filter(
+
             prestamo => {
+
 
                 return (
 
-                    String(
+                    normalizarTexto(
                         prestamo.FamiliaId
                     )
-                    .toLowerCase()
                     .includes(texto)
 
                     ||
 
-                    String(
+                    normalizarTexto(
                         prestamo.PersonaId
                     )
-                    .toLowerCase()
                     .includes(texto)
 
                     ||
 
-                    String(
+                    normalizarTexto(
                         prestamo.Nombres
                     )
-                    .toLowerCase()
                     .includes(texto)
 
                     ||
 
-                    String(
+                    normalizarTexto(
                         prestamo.Apellidos
                     )
-                    .toLowerCase()
                     .includes(texto)
 
                     ||
 
-                    String(
+                    normalizarTexto(
                         prestamo.codigoLibro
                     )
-                    .toLowerCase()
                     .includes(texto)
 
                     ||
 
-                    String(
+                    normalizarTexto(
                         prestamo.nombreLibro
                     )
-                    .toLowerCase()
                     .includes(texto)
 
                 );
+
             }
+
         );
 
 
@@ -1185,15 +2064,199 @@ function buscar() {
 
     if (!resultados.length) {
 
+
         mostrarMensaje(
+
             "No se encontraron préstamos con ese criterio.",
+
             "error"
+
         );
+
 
     } else {
 
+
         limpiarMensaje();
+
     }
+
+}
+
+
+/* =========================================================
+   NORMALIZAR TEXTO
+========================================================= */
+
+function normalizarTexto(
+    valor
+) {
+
+
+    return String(
+        valor ?? ""
+    )
+
+        .normalize(
+            "NFD"
+        )
+
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+
+        .toLowerCase()
+
+        .trim();
+
+}
+
+
+/* =========================================================
+   FECHA SOLO DÍA
+========================================================= */
+
+function obtenerFechaSoloDia(
+    fecha
+) {
+
+
+    if (!fecha) {
+
+        return null;
+
+    }
+
+
+    const texto =
+        String(
+            fecha
+        ).trim();
+
+
+    if (!texto) {
+
+        return null;
+
+    }
+
+
+    if (
+        /^\d{4}-\d{2}-\d{2}/
+            .test(texto)
+    ) {
+
+
+        const partes =
+            texto
+                .substring(
+                    0,
+                    10
+                )
+                .split("-");
+
+
+        return new Date(
+
+            Number(
+                partes[0]
+            ),
+
+            Number(
+                partes[1]
+            ) - 1,
+
+            Number(
+                partes[2]
+            )
+
+        );
+
+    }
+
+
+    const match =
+        texto.match(
+
+            /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
+
+        );
+
+
+    if (match) {
+
+
+        return new Date(
+
+            Number(
+                match[3]
+            ),
+
+            Number(
+                match[2]
+            ) - 1,
+
+            Number(
+                match[1]
+            )
+
+        );
+
+    }
+
+
+    const fechaConvertida =
+        new Date(
+            texto
+        );
+
+
+    if (
+        isNaN(
+            fechaConvertida.getTime()
+        )
+    ) {
+
+        return null;
+
+    }
+
+
+    return new Date(
+
+        fechaConvertida.getFullYear(),
+
+        fechaConvertida.getMonth(),
+
+        fechaConvertida.getDate()
+
+    );
+
+}
+
+
+/* =========================================================
+   OBTENER HOY
+========================================================= */
+
+function obtenerHoy() {
+
+
+    const ahora =
+        new Date();
+
+
+    return new Date(
+
+        ahora.getFullYear(),
+
+        ahora.getMonth(),
+
+        ahora.getDate()
+
+    );
+
 }
 
 
@@ -1205,21 +2268,46 @@ function formatearFecha(
     fecha
 ) {
 
-    if (!fecha) {
+
+    const fechaObj =
+        obtenerFechaSoloDia(
+            fecha
+        );
+
+
+    if (!fechaObj) {
+
         return "";
+
     }
 
 
-    return new Date(
-        fecha
-    ).toLocaleDateString(
-        "es-GT",
-        {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        }
-    );
+    const dia =
+        String(
+            fechaObj.getDate()
+        )
+        .padStart(
+            2,
+            "0"
+        );
+
+
+    const mes =
+        String(
+            fechaObj.getMonth() + 1
+        )
+        .padStart(
+            2,
+            "0"
+        );
+
+
+    const anio =
+        fechaObj.getFullYear();
+
+
+    return `${dia}/${mes}/${anio}`;
+
 }
 
 
@@ -1231,17 +2319,56 @@ function normalizarCodigo(
     codigo
 ) {
 
+
     return String(
-        codigo || ""
+        codigo ?? ""
     )
-    .replace(
-        /\D/g,
-        ""
-    )
-    .replace(
-        /^0+/,
-        ""
-    ) || "0";
+
+        .replace(
+            /\D/g,
+            ""
+        )
+
+        .replace(
+            /^0+/,
+            ""
+        )
+
+        || "0";
+
+}
+
+
+/* =========================================================
+   FORMATEAR CÓDIGO
+========================================================= */
+
+function formatearCodigo(
+    codigo
+) {
+
+
+    const valor =
+        normalizarCodigo(
+            codigo
+        );
+
+
+    if (
+        valor ===
+        "0"
+    ) {
+
+        return "—";
+
+    }
+
+
+    return valor.padStart(
+        8,
+        "0"
+    );
+
 }
 
 
@@ -1254,21 +2381,28 @@ function mostrarMensaje(
     tipo
 ) {
 
+
     mensaje.textContent =
         texto;
 
+
     mensaje.className =
-        "mensaje " + tipo;
+        "mensaje " +
+        tipo;
+
 }
 
 
 function limpiarMensaje() {
 
+
     mensaje.textContent =
         "";
 
+
     mensaje.className =
         "mensaje";
+
 }
 
 
@@ -1280,29 +2414,36 @@ function escapeHtml(
     valor
 ) {
 
+
     return String(
         valor ?? ""
     )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
 }
 
 
@@ -1315,8 +2456,11 @@ document
         "btnBuscar"
     )
     .addEventListener(
+
         "click",
+
         buscar
+
     );
 
 
@@ -1325,8 +2469,11 @@ document
         "btnConfirmar"
     )
     .addEventListener(
+
         "click",
+
         confirmarDevolucion
+
     );
 
 
@@ -1335,15 +2482,21 @@ document
         "btnCancelar"
     )
     .addEventListener(
+
         "click",
+
         cancelarDevolucion
+
     );
 
 
 buscarInput
     .addEventListener(
+
         "keydown",
+
         function(event) {
+
 
             if (
                 event.key ===
@@ -1351,12 +2504,17 @@ buscarInput
             ) {
 
                 buscar();
+
             }
 
         }
+
     );
+
 
 </script>
 
+
 </body>
+
 </html>
