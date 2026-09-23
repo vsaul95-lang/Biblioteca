@@ -153,28 +153,84 @@
             background: #2e7d32;
         }
 
-        .detalle {
-            background: #f7f9fa;
-            border-radius: 6px;
-            padding: 14px;
-            margin-top: 15px;
+        /* =====================================================
+           PASO 3 - RESUMEN
+        ===================================================== */
+
+        .resumen-prestamo {
             display: none;
         }
 
-        .detalle p {
-            margin: 6px 0;
+        .bloque-resumen {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .titulo-bloque {
+            background: #eceff1;
+            padding: 10px 13px;
             font-size: 14px;
+            font-weight: bold;
+            color: #37474f;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .contenido-resumen {
+            padding: 14px;
+        }
+
+        .datos-persona-libro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .tarjeta-dato {
+            background: #f7f9fa;
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid #e8ecee;
+        }
+
+        .tarjeta-dato h3 {
+            margin: 0 0 9px;
+            font-size: 14px;
+            color: #455a64;
+        }
+
+        .dato {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid #e5e8ea;
+            font-size: 13px;
+        }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+        .dato span:first-child {
+            color: #607d8b;
+        }
+
+        .dato span:last-child {
+            font-weight: 600;
+            text-align: right;
+            color: #333;
         }
 
         /* =====================================================
-           FECHAS DEL PRÉSTAMO
+           FECHAS
         ===================================================== */
 
         .fechas-prestamo {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 15px;
         }
 
         .campo-fecha {
@@ -201,22 +257,37 @@
             margin-top: 1px;
         }
 
+        /* =====================================================
+           CONFIRMACIÓN
+        ===================================================== */
+
         .confirmacion {
             background: #fff8e1;
             border: 1px solid #ffe082;
-            border-radius: 6px;
+            border-radius: 7px;
             padding: 15px;
-            margin-top: 15px;
+            margin-top: 18px;
             display: none;
         }
 
-        .confirmacion strong {
+        .confirmacion-titulo {
+            font-size: 15px;
+            font-weight: bold;
             color: #e65100;
+            margin-bottom: 5px;
+        }
+
+        .confirmacion-texto {
+            font-size: 13px;
+            color: #5d4037;
+            margin: 0;
+            line-height: 1.5;
         }
 
         .acciones-confirmacion {
-            margin-top: 12px;
+            margin-top: 13px;
             display: flex;
+            justify-content: flex-end;
             gap: 8px;
             flex-wrap: wrap;
         }
@@ -256,6 +327,10 @@
                 align-items: flex-start;
             }
 
+            .datos-persona-libro {
+                grid-template-columns: 1fr;
+            }
+
             .fechas-prestamo {
                 grid-template-columns: 1fr;
             }
@@ -266,6 +341,15 @@
 
             .acciones-confirmacion button {
                 width: 100%;
+            }
+
+            .dato {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .dato span:last-child {
+                text-align: left;
             }
         }
     </style>
@@ -280,7 +364,10 @@
 
 <div class="contenedor">
 
-    <!-- 1. FAMILIA -->
+    <!-- =====================================================
+         1. FAMILIA
+    ====================================================== -->
+
     <section class="seccion">
 
         <h2>1. Buscar familia</h2>
@@ -329,7 +416,10 @@
     </section>
 
 
-    <!-- 2. LIBRO -->
+    <!-- =====================================================
+         2. LIBRO
+    ====================================================== -->
+
     <section class="seccion">
 
         <h2>2. Buscar libro</h2>
@@ -360,84 +450,179 @@
     </section>
 
 
-    <!-- 3. CONFIRMAR -->
+    <!-- =====================================================
+         3. CONFIRMAR PRÉSTAMO
+    ====================================================== -->
+
     <section class="seccion">
 
         <h2>3. Confirmar préstamo</h2>
 
-        <!-- FECHAS -->
+
+        <!-- RESUMEN COMPLETO -->
+
         <div
-            id="fechasPrestamo"
-            class="fechas-prestamo"
-            style="display:none;"
+            id="resumenPrestamo"
+            class="resumen-prestamo"
         >
 
-            <div class="campo-fecha">
+            <!-- PERSONA Y LIBRO -->
 
-                <label for="fechaPrestamo">
-                    Fecha del préstamo
-                </label>
+            <div class="bloque-resumen">
 
-                <input
-                    type="date"
-                    id="fechaPrestamo"
-                >
+                <div class="titulo-bloque">
+                    Resumen del préstamo
+                </div>
 
-                <span class="ayuda-fecha">
-                    Se coloca automáticamente la fecha actual, pero puede modificarse.
-                </span>
+                <div class="contenido-resumen">
+
+                    <div class="datos-persona-libro">
+
+                        <!-- PERSONA -->
+
+                        <div class="tarjeta-dato">
+
+                            <h3>👤 Persona</h3>
+
+                            <div class="dato">
+                                <span>Familia</span>
+                                <span id="resumenFamilia"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span>PersonaId</span>
+                                <span id="resumenPersonaId"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span>Nombre</span>
+                                <span id="resumenNombre"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span>Sitio</span>
+                                <span id="resumenSitio"></span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- LIBRO -->
+
+                        <div class="tarjeta-dato">
+
+                            <h3>📚 Libro</h3>
+
+                            <div class="dato">
+                                <span>Código</span>
+                                <span id="resumenCodigoLibro"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span>Nombre</span>
+                                <span id="resumenNombreLibro"></span>
+                            </div>
+
+                            <div class="dato">
+                                <span>Estado</span>
+                                <span>Disponible</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
 
-            <div class="campo-fecha">
+            <!-- FECHAS -->
 
-                <label for="fechaDevolucion">
-                    Fecha de devolución prevista
-                </label>
+            <div class="bloque-resumen">
 
-                <input
-                    type="date"
-                    id="fechaDevolucion"
-                >
+                <div class="titulo-bloque">
+                    Fechas del préstamo
+                </div>
 
-                <span class="ayuda-fecha">
-                    Puede elegir libremente cuándo debe regresar el libro.
-                </span>
+                <div class="contenido-resumen">
+
+                    <div class="fechas-prestamo">
+
+                        <div class="campo-fecha">
+
+                            <label for="fechaPrestamo">
+                                Fecha del préstamo
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fechaPrestamo"
+                            >
+
+                            <span class="ayuda-fecha">
+                                Se coloca automáticamente la fecha actual, pero puede modificarse.
+                            </span>
+
+                        </div>
+
+
+                        <div class="campo-fecha">
+
+                            <label for="fechaDevolucion">
+                                Fecha de devolución prevista
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fechaDevolucion"
+                            >
+
+                            <span class="ayuda-fecha">
+                                Puede elegir libremente cuándo debe regresar el libro.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
 
+            <!-- CONFIRMACIÓN -->
 
-        <div
-            id="detallePrestamo"
-            class="detalle"
-        ></div>
+            <div
+                id="confirmacion"
+                class="confirmacion"
+            >
 
+                <div class="confirmacion-titulo">
+                    ¿Desea registrar este préstamo?
+                </div>
 
-        <div
-            id="confirmacion"
-            class="confirmacion"
-        >
+                <p class="confirmacion-texto">
+                    Revise que la persona, el libro y las fechas sean correctos antes de continuar.
+                </p>
 
-            <strong>¿Desea registrar este préstamo?</strong>
+                <div class="acciones-confirmacion">
 
-            <div class="acciones-confirmacion">
+                    <button
+                        class="btn-cancelar"
+                        id="btnCancelar"
+                    >
+                        Cancelar
+                    </button>
 
-                <button
-                    class="btn-confirmar"
-                    id="btnConfirmar"
-                >
-                    Sí, registrar préstamo
-                </button>
+                    <button
+                        class="btn-confirmar"
+                        id="btnConfirmar"
+                    >
+                        Sí, registrar préstamo
+                    </button>
 
-                <button
-                    class="btn-cancelar"
-                    id="btnCancelar"
-                >
-                    Cancelar
-                </button>
+                </div>
 
             </div>
 
@@ -463,10 +648,6 @@
 let personaSeleccionada = null;
 let libroSeleccionado = null;
 
-/*
-    Permite saber si la fecha de devolución
-    fue modificada manualmente por el usuario.
-*/
 let fechaDevolucionModificada = false;
 
 
@@ -498,20 +679,40 @@ const mensajeFinal =
 const libroInfo =
     document.getElementById("libroInfo");
 
-const detallePrestamo =
-    document.getElementById("detallePrestamo");
+const resumenPrestamo =
+    document.getElementById("resumenPrestamo");
 
 const confirmacion =
     document.getElementById("confirmacion");
-
-const fechasPrestamo =
-    document.getElementById("fechasPrestamo");
 
 const fechaPrestamoInput =
     document.getElementById("fechaPrestamo");
 
 const fechaDevolucionInput =
     document.getElementById("fechaDevolucion");
+
+
+/* =========================================================
+   ELEMENTOS DEL RESUMEN
+========================================================= */
+
+const resumenFamilia =
+    document.getElementById("resumenFamilia");
+
+const resumenPersonaId =
+    document.getElementById("resumenPersonaId");
+
+const resumenNombre =
+    document.getElementById("resumenNombre");
+
+const resumenSitio =
+    document.getElementById("resumenSitio");
+
+const resumenCodigoLibro =
+    document.getElementById("resumenCodigoLibro");
+
+const resumenNombreLibro =
+    document.getElementById("resumenNombreLibro");
 
 
 /* =========================================================
@@ -522,7 +723,8 @@ function mostrarMensaje(elemento, texto, tipo) {
 
     elemento.textContent = texto;
 
-    elemento.className = "mensaje " + tipo;
+    elemento.className =
+        "mensaje " + tipo;
 }
 
 
@@ -550,12 +752,6 @@ function normalizarCodigo(codigo) {
    FECHA LOCAL
 ========================================================= */
 
-/*
-    Devuelve la fecha local del equipo en formato YYYY-MM-DD.
-    Se utiliza en los campos de fecha para evitar problemas
-    con UTC y mantener correctamente la fecha de Guatemala.
-*/
-
 function obtenerFechaLocalInput() {
 
     const hoy = new Date();
@@ -577,9 +773,9 @@ function obtenerFechaLocalInput() {
 }
 
 
-/*
-    Agrega un mes a una fecha YYYY-MM-DD.
-*/
+/* =========================================================
+   AGREGAR UN MES
+========================================================= */
 
 function agregarUnMes(fechaTexto) {
 
@@ -615,12 +811,6 @@ function agregarUnMes(fechaTexto) {
         );
 
 
-    /*
-        Se utiliza setMonth para conservar la idea
-        de "un mes después", en lugar de sumar
-        simplemente 28 o 30 días.
-    */
-
     fecha.setMonth(
         fecha.getMonth() + 1
     );
@@ -644,10 +834,9 @@ function agregarUnMes(fechaTexto) {
 }
 
 
-/*
-    Convierte YYYY-MM-DD en una fecha local
-    sin depender de UTC.
-*/
+/* =========================================================
+   FECHA LOCAL DESDE INPUT
+========================================================= */
 
 function fechaLocalDesdeInput(fechaTexto) {
 
@@ -683,12 +872,9 @@ function fechaLocalDesdeInput(fechaTexto) {
 }
 
 
-/*
-    Convierte una fecha local en ISO para Supabase.
-    Se utiliza mediodía para evitar que el cambio de zona
-    horaria provoque que la fecha guardada termine siendo
-    el día anterior.
-*/
+/* =========================================================
+   FECHA INPUT A ISO
+========================================================= */
 
 function fechaInputAISO(fechaTexto) {
 
@@ -706,28 +892,8 @@ function fechaInputAISO(fechaTexto) {
 
 
 /* =========================================================
-   FORMATO FECHA
+   FORMATEAR FECHA INPUT
 ========================================================= */
-
-function formatearFecha(fecha) {
-
-    if (!fecha) return "";
-
-    return new Date(fecha).toLocaleDateString(
-        "es-GT",
-        {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        }
-    );
-}
-
-
-/*
-    Formatea directamente un valor YYYY-MM-DD
-    para mostrarlo sin problemas de zona horaria.
-*/
 
 function formatearFechaInput(fechaTexto) {
 
@@ -795,11 +961,6 @@ function obtenerSitio(persona) {
 
 function prepararFechas() {
 
-    /*
-        La fecha de préstamo se coloca solamente
-        si todavía no existe.
-    */
-
     if (!fechaPrestamoInput.value) {
 
         fechaPrestamoInput.value =
@@ -807,11 +968,6 @@ function prepararFechas() {
 
     }
 
-
-    /*
-        Si la devolución todavía no fue modificada
-        manualmente, se coloca un mes después.
-    */
 
     if (
         !fechaDevolucionModificada
@@ -823,10 +979,6 @@ function prepararFechas() {
             );
 
     }
-
-
-    fechasPrestamo.style.display =
-        "grid";
 
 }
 
@@ -931,11 +1083,13 @@ async function buscarFamilia() {
 
     cuerpoFamilia.innerHTML = "";
 
-    tablaFamilia.style.display = "none";
+    tablaFamilia.style.display =
+        "none";
 
     personaSeleccionada = null;
 
     actualizarDetalle();
+
 
     if (!familia) {
 
@@ -948,18 +1102,28 @@ async function buscarFamilia() {
         return;
     }
 
+
     try {
 
-        const { data, error } =
+        const {
+            data,
+            error
+        } =
             await supabaseClient
 
                 .from("afiliados")
 
                 .select("*")
 
-                .eq("FamiliaId", familia)
+                .eq(
+                    "FamiliaId",
+                    familia
+                )
 
-                .eq("estado", "Activo")
+                .eq(
+                    "estado",
+                    "Activo"
+                )
 
                 .order(
                     "Apellidos",
@@ -968,12 +1132,16 @@ async function buscarFamilia() {
                     }
                 );
 
+
         if (error) {
             throw error;
         }
 
 
-        if (!data || data.length === 0) {
+        if (
+            !data ||
+            data.length === 0
+        ) {
 
             mostrarMensaje(
                 mensajeFamilia,
@@ -1008,7 +1176,8 @@ async function buscarFamilia() {
             const tdNombre =
                 document.createElement("td");
 
-            tdNombre.className = "nombre";
+            tdNombre.className =
+                "nombre";
 
             tdNombre.textContent =
                 `${persona.Nombres} ${persona.Apellidos}`;
@@ -1028,7 +1197,8 @@ async function buscarFamilia() {
             const boton =
                 document.createElement("button");
 
-            boton.type = "button";
+            boton.type =
+                "button";
 
             boton.className =
                 "btn-seleccionar";
@@ -1051,22 +1221,41 @@ async function buscarFamilia() {
             );
 
 
-            tdAccion.appendChild(boton);
+            tdAccion.appendChild(
+                boton
+            );
 
 
-            fila.appendChild(tdPersona);
-            fila.appendChild(tdFamilia);
-            fila.appendChild(tdNombre);
-            fila.appendChild(tdEstado);
-            fila.appendChild(tdAccion);
+            fila.appendChild(
+                tdPersona
+            );
+
+            fila.appendChild(
+                tdFamilia
+            );
+
+            fila.appendChild(
+                tdNombre
+            );
+
+            fila.appendChild(
+                tdEstado
+            );
+
+            fila.appendChild(
+                tdAccion
+            );
 
 
-            cuerpoFamilia.appendChild(fila);
+            cuerpoFamilia.appendChild(
+                fila
+            );
 
         });
 
 
-        tablaFamilia.style.display = "table";
+        tablaFamilia.style.display =
+            "table";
 
 
     } catch (error) {
@@ -1093,13 +1282,21 @@ function seleccionarPersona(
 ) {
 
     document
-        .querySelectorAll("#cuerpoFamilia tr")
+        .querySelectorAll(
+            "#cuerpoFamilia tr"
+        )
         .forEach(fila => {
 
-            fila.classList.remove("seleccionada");
+            fila.classList.remove(
+                "seleccionada"
+            );
+
 
             const boton =
-                fila.querySelector(".btn-seleccionar");
+                fila.querySelector(
+                    ".btn-seleccionar"
+                );
+
 
             if (boton) {
 
@@ -1118,15 +1315,18 @@ function seleccionarPersona(
         "seleccionada"
     );
 
+
     botonSeleccionado.classList.add(
         "seleccionada"
     );
+
 
     botonSeleccionado.textContent =
         "✓ Seleccionada";
 
 
-    personaSeleccionada = persona;
+    personaSeleccionada =
+        persona;
 
 
     actualizarDetalle();
@@ -1144,7 +1344,8 @@ async function buscarLibro() {
 
     limpiarMensaje(mensajeLibro);
 
-    libroInfo.style.display = "none";
+    libroInfo.style.display =
+        "none";
 
     libroSeleccionado = null;
 
@@ -1164,12 +1365,17 @@ async function buscarLibro() {
 
 
     const codigoNormalizado =
-        normalizarCodigo(codigoIngresado);
+        normalizarCodigo(
+            codigoIngresado
+        );
 
 
     try {
 
-        const { data, error } =
+        const {
+            data,
+            error
+        } =
             await supabaseClient
 
                 .from("libros")
@@ -1203,7 +1409,9 @@ async function buscarLibro() {
         }
 
 
-        if (libro.estado === "Baja") {
+        if (
+            libro.estado === "Baja"
+        ) {
 
             mostrarMensaje(
                 mensajeLibro,
@@ -1218,13 +1426,17 @@ async function buscarLibro() {
         const {
             data: prestamosActivos,
             error: errorPrestamos
-        } = await supabaseClient
+        } =
+            await supabaseClient
 
-            .from("prestamos")
+                .from("prestamos")
 
-            .select("*")
+                .select("*")
 
-            .eq("estado", "Prestado");
+                .eq(
+                    "estado",
+                    "Prestado"
+                );
 
 
         if (errorPrestamos) {
@@ -1233,12 +1445,14 @@ async function buscarLibro() {
 
 
         const yaPrestado =
-            (prestamosActivos || []).some(
-                prestamo =>
-                    normalizarCodigo(
-                        prestamo.codigoLibro
-                    ) === codigoNormalizado
-            );
+            (prestamosActivos || [])
+                .some(
+                    prestamo =>
+                        normalizarCodigo(
+                            prestamo.codigoLibro
+                        ) ===
+                        codigoNormalizado
+                );
 
 
         if (
@@ -1256,7 +1470,8 @@ async function buscarLibro() {
         }
 
 
-        libroSeleccionado = libro;
+        libroSeleccionado =
+            libro;
 
 
         libroInfo.innerHTML = `
@@ -1298,10 +1513,7 @@ function actualizarDetalle() {
         !libroSeleccionado
     ) {
 
-        fechasPrestamo.style.display =
-            "none";
-
-        detallePrestamo.style.display =
+        resumenPrestamo.style.display =
             "none";
 
         confirmacion.style.display =
@@ -1314,74 +1526,35 @@ function actualizarDetalle() {
     prepararFechas();
 
 
-    detallePrestamo.innerHTML = `
-
-        <p>
-            <strong>Familia:</strong>
-            ${escapeHtml(
-                personaSeleccionada.FamiliaId
-            )}
-        </p>
-
-        <p>
-            <strong>Persona:</strong>
-            ${escapeHtml(
-                personaSeleccionada.Nombres
-            )}
-            ${escapeHtml(
-                personaSeleccionada.Apellidos
-            )}
-        </p>
-
-        <p>
-            <strong>PersonaId:</strong>
-            ${escapeHtml(
-                personaSeleccionada.PersonaId
-            )}
-        </p>
-
-        <p>
-            <strong>Sitio:</strong>
-            ${escapeHtml(
-                obtenerSitio(
-                    personaSeleccionada
-                ) || "No definido"
-            )}
-        </p>
-
-        <p>
-            <strong>Libro:</strong>
-            ${escapeHtml(
-                libroSeleccionado.nombreLibro
-            )}
-        </p>
-
-        <p>
-            <strong>Código:</strong>
-            ${escapeHtml(
-                libroSeleccionado.codigoLibro
-            )}
-        </p>
-
-        <p>
-            <strong>Fecha del préstamo:</strong>
-            ${formatearFechaInput(
-                fechaPrestamoInput.value
-            )}
-        </p>
-
-        <p>
-            <strong>Fecha de devolución prevista:</strong>
-            ${formatearFechaInput(
-                fechaDevolucionInput.value
-            )}
-        </p>
-
-    `;
+    resumenFamilia.textContent =
+        personaSeleccionada.FamiliaId || "";
 
 
-    detallePrestamo.style.display =
+    resumenPersonaId.textContent =
+        personaSeleccionada.PersonaId || "";
+
+
+    resumenNombre.textContent =
+        `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
+
+
+    resumenSitio.textContent =
+        obtenerSitio(
+            personaSeleccionada
+        ) || "No definido";
+
+
+    resumenCodigoLibro.textContent =
+        libroSeleccionado.codigoLibro || "";
+
+
+    resumenNombreLibro.textContent =
+        libroSeleccionado.nombreLibro || "";
+
+
+    resumenPrestamo.style.display =
         "block";
+
 
     confirmacion.style.display =
         "block";
@@ -1422,13 +1595,17 @@ async function confirmarPrestamo() {
         const {
             data: prestamosExistentes,
             error: errorConsulta
-        } = await supabaseClient
+        } =
+            await supabaseClient
 
-            .from("prestamos")
+                .from("prestamos")
 
-            .select("*")
+                .select("*")
 
-            .eq("estado", "Prestado");
+                .eq(
+                    "estado",
+                    "Prestado"
+                );
 
 
         if (errorConsulta) {
@@ -1443,12 +1620,14 @@ async function confirmarPrestamo() {
 
 
         const duplicado =
-            (prestamosExistentes || []).some(
-                prestamo =>
-                    normalizarCodigo(
-                        prestamo.codigoLibro
-                    ) === codigoNormalizado
-            );
+            (prestamosExistentes || [])
+                .some(
+                    prestamo =>
+                        normalizarCodigo(
+                            prestamo.codigoLibro
+                        ) ===
+                        codigoNormalizado
+                );
 
 
         if (duplicado) {
@@ -1464,7 +1643,9 @@ async function confirmarPrestamo() {
 
 
         const sitio =
-            obtenerSitio(personaSeleccionada);
+            obtenerSitio(
+                personaSeleccionada
+            );
 
 
         if (!sitio) {
@@ -1478,11 +1659,6 @@ async function confirmarPrestamo() {
             return;
         }
 
-
-        /*
-            Las fechas se toman exactamente de los
-            campos que seleccionó la persona que registra.
-        */
 
         const fechaPrestamo =
             fechaInputAISO(
@@ -1536,15 +1712,18 @@ async function confirmarPrestamo() {
         const {
             data: prestamoGuardado,
             error: errorInsertar
-        } = await supabaseClient
+        } =
+            await supabaseClient
 
-            .from("prestamos")
+                .from("prestamos")
 
-            .insert(nuevoPrestamo)
+                .insert(
+                    nuevoPrestamo
+                )
 
-            .select()
+                .select()
 
-            .single();
+                .single();
 
 
         if (errorInsertar) {
@@ -1554,18 +1733,19 @@ async function confirmarPrestamo() {
 
         const {
             error: errorLibro
-        } = await supabaseClient
+        } =
+            await supabaseClient
 
-            .from("libros")
+                .from("libros")
 
-            .update({
-                estado: "Prestado"
-            })
+                .update({
+                    estado: "Prestado"
+                })
 
-            .eq(
-                "id",
-                libroSeleccionado.id
-            );
+                .eq(
+                    "id",
+                    libroSeleccionado.id
+                );
 
 
         if (errorLibro) {
@@ -1580,15 +1760,17 @@ async function confirmarPrestamo() {
         );
 
 
-        personaSeleccionada = null;
+        personaSeleccionada =
+            null;
 
-        libroSeleccionado = null;
+        libroSeleccionado =
+            null;
 
         fechaDevolucionModificada =
             false;
 
 
-        fechasPrestamo.style.display =
+        resumenPrestamo.style.display =
             "none";
 
 
@@ -1596,24 +1778,13 @@ async function confirmarPrestamo() {
             "none";
 
 
-        detallePrestamo.style.display =
-            "none";
+        buscarLibroInput.value =
+            "";
 
-
-        confirmacion.style.display =
-            "none";
-
-
-        buscarLibroInput.value = "";
-
-
-        /*
-            Dejamos las fechas preparadas para
-            el siguiente registro.
-        */
 
         fechaPrestamoInput.value =
             obtenerFechaLocalInput();
+
 
         fechaDevolucionInput.value =
             agregarUnMes(
@@ -1631,10 +1802,12 @@ async function confirmarPrestamo() {
                     "seleccionada"
                 );
 
+
                 const boton =
                     fila.querySelector(
                         ".btn-seleccionar"
                     );
+
 
                 if (boton) {
 
@@ -1656,8 +1829,10 @@ async function confirmarPrestamo() {
         mostrarMensaje(
             mensajeFinal,
             "No fue posible registrar el préstamo: " +
-            (error.message ||
-                "error desconocido"),
+            (
+                error.message ||
+                "error desconocido"
+            ),
             "error"
         );
     }
@@ -1670,12 +1845,14 @@ async function confirmarPrestamo() {
 
 function cancelarPrestamo() {
 
-    libroSeleccionado = null;
+    libroSeleccionado =
+        null;
 
     libroInfo.style.display =
         "none";
 
-    buscarLibroInput.value = "";
+    buscarLibroInput.value =
+        "";
 
     actualizarDetalle();
 }
@@ -1688,12 +1865,6 @@ function cancelarPrestamo() {
 fechaPrestamoInput.addEventListener(
     "change",
     function() {
-
-        /*
-            Si la devolución todavía no ha sido
-            modificada manualmente, se mantiene
-            automáticamente un mes después.
-        */
 
         if (
             !fechaDevolucionModificada
@@ -1737,11 +1908,26 @@ fechaDevolucionInput.addEventListener(
 function escapeHtml(valor) {
 
     return String(valor ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
@@ -1750,7 +1936,9 @@ function escapeHtml(valor) {
 ========================================================= */
 
 document
-    .getElementById("btnBuscarFamilia")
+    .getElementById(
+        "btnBuscarFamilia"
+    )
     .addEventListener(
         "click",
         buscarFamilia
@@ -1758,7 +1946,9 @@ document
 
 
 document
-    .getElementById("btnBuscarLibro")
+    .getElementById(
+        "btnBuscarLibro"
+    )
     .addEventListener(
         "click",
         buscarLibro
@@ -1766,7 +1956,9 @@ document
 
 
 document
-    .getElementById("btnConfirmar")
+    .getElementById(
+        "btnConfirmar"
+    )
     .addEventListener(
         "click",
         confirmarPrestamo
@@ -1774,7 +1966,9 @@ document
 
 
 document
-    .getElementById("btnCancelar")
+    .getElementById(
+        "btnCancelar"
+    )
     .addEventListener(
         "click",
         cancelarPrestamo
@@ -1790,8 +1984,12 @@ buscarFamiliaInput
         "keydown",
         function(event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
+
                 buscarFamilia();
+
             }
 
         }
@@ -1807,8 +2005,12 @@ buscarLibroInput
         "keydown",
         function(event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
+
                 buscarLibro();
+
             }
 
         }
@@ -1826,8 +2028,14 @@ buscarLibroInput
 
             this.value =
                 this.value
-                    .replace(/\D/g, "")
-                    .slice(0, 8);
+                    .replace(
+                        /\D/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        8
+                    );
 
         }
     );
@@ -1839,6 +2047,7 @@ buscarLibroInput
 
 fechaPrestamoInput.value =
     obtenerFechaLocalInput();
+
 
 fechaDevolucionInput.value =
     agregarUnMes(
