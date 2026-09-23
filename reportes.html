@@ -185,21 +185,29 @@
 
             display: inline-block;
 
-            margin-bottom: 9px;
+            float: right;
 
-            color: #546e7a;
+            background: #37474f;
+
+            color: white;
 
             text-decoration: none;
 
-            font-size: 13px;
+            font-size: 12px;
+
+            font-weight: 600;
+
+            padding: 7px 12px;
+
+            border-radius: 5px;
+
+            margin-bottom: 9px;
 
         }
 
         .volver:hover {
 
-            text-decoration: underline;
-
-            color: #263238;
+            background: #263238;
 
         }
 
@@ -883,7 +891,7 @@
                 href="index.html"
                 class="volver"
             >
-                ← Volver al inicio
+                Volver
             </a>
 
             <h1>
@@ -1368,6 +1376,7 @@
                 .replace(
                     /[\u0300-\u036f]/g,
                     ""
+
                 )
 
                 .toLowerCase()
