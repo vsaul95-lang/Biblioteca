@@ -573,7 +573,7 @@
 
             width: 100%;
 
-            min-width: 1150px;
+            min-width: 1450px;
 
             border-collapse: collapse;
 
@@ -618,11 +618,12 @@
 
         }
 
-        .tabla-resultados td.nombre {
+        .tabla-resultados td.nombres,
+        .tabla-resultados td.apellidos {
 
             text-align: left;
 
-            min-width: 145px;
+            min-width: 120px;
 
         }
 
@@ -1132,7 +1133,7 @@
                             </option>
 
                             <option value="familia">
-                                Familia
+                                FamiliaId
                             </option>
 
                             <option value="persona">
@@ -1277,11 +1278,19 @@
                             </th>
 
                             <th>
-                                Familia
+                                FamiliaId
                             </th>
 
                             <th>
-                                Persona
+                                PersonaId
+                            </th>
+
+                            <th>
+                                Nombres
+                            </th>
+
+                            <th>
+                                Apellidos
                             </th>
 
                             <th>
@@ -1423,7 +1432,7 @@
 
 
         /* =========================================================
-           FORMATEAR CÓDIGO A 8 DÍGITOS
+           FORMATEAR CÓDIGO
         ========================================================== */
 
         function formatearCodigo(codigo) {
@@ -1692,29 +1701,62 @@
            PERSONA
         ========================================================== */
 
+        function obtenerNombres(prestamo) {
+
+            return String(
+
+                prestamo.Nombres ||
+
+                prestamo.nombres ||
+
+                ""
+
+            ).trim();
+
+        }
+
+
+        function obtenerApellidos(prestamo) {
+
+            return String(
+
+                prestamo.Apellidos ||
+
+                prestamo.apellidos ||
+
+                ""
+
+            ).trim();
+
+        }
+
+
+        function obtenerPersonaId(prestamo) {
+
+            return (
+
+                prestamo.PersonaId ||
+
+                prestamo.personaId ||
+
+                ""
+
+            );
+
+        }
+
+
         function obtenerNombrePersona(prestamo) {
 
             const nombres =
-                String(
-
-                    prestamo.Nombres ||
-
-                    prestamo.nombres ||
-
-                    ""
-
-                ).trim();
+                obtenerNombres(
+                    prestamo
+                );
 
             const apellidos =
-                String(
-
-                    prestamo.Apellidos ||
-
-                    prestamo.apellidos ||
-
-                    ""
-
-                ).trim();
+                obtenerApellidos(
+                    prestamo
+                );
 
             const nombreCompleto =
                 `${nombres} ${apellidos}`.trim();
@@ -1726,12 +1768,28 @@
             }
 
             return (
-
-                prestamo.PersonaId ||
-
-                prestamo.personaId ||
-
+                obtenerPersonaId(
+                    prestamo
+                ) ||
                 "Sin nombre"
+            );
+
+        }
+
+
+        /* =========================================================
+           FAMILIA ID
+        ========================================================== */
+
+        function obtenerFamiliaId(prestamo) {
+
+            return (
+
+                prestamo.FamiliaId ||
+
+                prestamo.familiaId ||
+
+                ""
 
             );
 
@@ -2614,7 +2672,7 @@
 
 
         /* =========================================================
-           CARGAR SITIOS DE PRÉSTAMO
+           CARGAR SITIOS
         ========================================================== */
 
         function cargarSitios() {
@@ -2896,11 +2954,6 @@
                                 prestamo
                             );
 
-                        const nombrePersona =
-                            obtenerNombrePersona(
-                                prestamo
-                            );
-
                         const datosLibro =
                             obtenerDatosLibro(
                                 prestamo
@@ -2911,23 +2964,21 @@
 
                                 [
 
-                                    prestamo.FamiliaId,
+                                    obtenerFamiliaId(
+                                        prestamo
+                                    ),
 
-                                    prestamo.familiaId,
+                                    obtenerPersonaId(
+                                        prestamo
+                                    ),
 
-                                    prestamo.PersonaId,
+                                    obtenerNombres(
+                                        prestamo
+                                    ),
 
-                                    prestamo.personaId,
-
-                                    prestamo.Nombres,
-
-                                    prestamo.nombres,
-
-                                    prestamo.Apellidos,
-
-                                    prestamo.apellidos,
-
-                                    nombrePersona,
+                                    obtenerApellidos(
+                                        prestamo
+                                    ),
 
                                     prestamo.codigoLibro,
 
@@ -3168,17 +3219,17 @@
 
                         return String(
 
-                            a.FamiliaId ||
-
-                            ""
+                            obtenerFamiliaId(
+                                a
+                            )
 
                         ).localeCompare(
 
                             String(
 
-                                b.FamiliaId ||
-
-                                ""
+                                obtenerFamiliaId(
+                                    b
+                                )
 
                             ),
 
@@ -3314,7 +3365,7 @@
                     <tr>
 
                         <td
-                            colspan="13"
+                            colspan="15"
                             class="sin-resultados"
                         >
                             🔎 No se encontraron préstamos con los filtros seleccionados.
@@ -3387,15 +3438,6 @@
                     }
 
 
-                    const familia =
-
-                        prestamo.FamiliaId ||
-
-                        prestamo.familiaId ||
-
-                        "—";
-
-
                     const datosLibro =
                         obtenerDatosLibro(
                             prestamo
@@ -3404,6 +3446,30 @@
 
                     const sitioPrestamo =
                         obtenerSitioPrestamo(
+                            prestamo
+                        );
+
+
+                    const familiaId =
+                        obtenerFamiliaId(
+                            prestamo
+                        );
+
+
+                    const personaId =
+                        obtenerPersonaId(
+                            prestamo
+                        );
+
+
+                    const nombres =
+                        obtenerNombres(
+                            prestamo
+                        );
+
+
+                    const apellidos =
+                        obtenerApellidos(
                             prestamo
                         );
 
@@ -3427,20 +3493,38 @@
                         <td>
 
                             ${escapeHtml(
-                                familia
+                                familiaId ||
+                                "—"
                             )}
 
                         </td>
 
 
-                        <td class="nombre">
+                        <td>
 
                             ${escapeHtml(
+                                personaId ||
+                                "—"
+                            )}
 
-                                obtenerNombrePersona(
-                                    prestamo
-                                )
+                        </td>
 
+
+                        <td class="nombres">
+
+                            ${escapeHtml(
+                                nombres ||
+                                "—"
+                            )}
+
+                        </td>
+
+
+                        <td class="apellidos">
+
+                            ${escapeHtml(
+                                apellidos ||
+                                "—"
                             )}
 
                         </td>
@@ -3806,39 +3890,42 @@
                                 ),
 
 
-                            "Familia":
+                            "FamiliaId":
 
-                                prestamo.FamiliaId ||
-
-                                prestamo.familiaId ||
-
-                                "",
-
-
-                            "Persona ID":
-
-                                prestamo.PersonaId ||
-
-                                prestamo.personaId ||
-
-                                "",
-
-
-                            "Persona":
-
-                                obtenerNombrePersona(
+                                obtenerFamiliaId(
                                     prestamo
                                 ),
 
 
-                            "Código del libro":
+                            "PersonaId":
+
+                                obtenerPersonaId(
+                                    prestamo
+                                ),
+
+
+                            "Nombres":
+
+                                obtenerNombres(
+                                    prestamo
+                                ),
+
+
+                            "Apellidos":
+
+                                obtenerApellidos(
+                                    prestamo
+                                ),
+
+
+                            "Código":
 
                                 formatearCodigo(
                                     datosLibro.codigo
                                 ),
 
 
-                            "Nombre del libro":
+                            "Libro":
 
                                 datosLibro.nombre ||
                                 "",
