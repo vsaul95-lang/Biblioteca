@@ -46,14 +46,6 @@
 
     <script>
 
-        /*
-         * Guardamos la comprobación como una promesa.
-         *
-         * Esto evita que el código de Reportes
-         * empiece a cargar información antes de
-         * confirmar que existe una sesión.
-         */
-
         window.reportesAuth = (async function () {
 
             try {
@@ -64,11 +56,6 @@
                 } =
                     await supabaseClient.auth.getSession();
 
-
-                /*
-                 * Si hay error o no existe sesión,
-                 * regresar al inicio.
-                 */
 
                 if (
                     error ||
@@ -84,11 +71,6 @@
 
                 }
 
-
-                /*
-                 * La sesión fue confirmada.
-                 * Ahora se puede mostrar la página.
-                 */
 
                 document.documentElement.style.visibility =
                     "visible";
@@ -634,6 +616,8 @@
 
             width: 100%;
 
+            min-width: 1150px;
+
             border-collapse: collapse;
 
             font-size: 11px;
@@ -667,6 +651,8 @@
 
             color: #455a64;
 
+            white-space: nowrap;
+
         }
 
         .tabla-resultados tbody tr:hover {
@@ -688,6 +674,30 @@
             text-align: left;
 
             min-width: 180px;
+
+        }
+
+        .tabla-resultados td.autor {
+
+            text-align: left;
+
+            min-width: 130px;
+
+        }
+
+        .tabla-resultados td.genero {
+
+            text-align: left;
+
+            min-width: 110px;
+
+        }
+
+        .tabla-resultados td.editorial {
+
+            text-align: left;
+
+            min-width: 120px;
 
         }
 
@@ -1117,7 +1127,7 @@
                         <input
                             type="text"
                             id="busqueda"
-                            placeholder="Familia, persona, código o libro..."
+                            placeholder="Familia, persona, código, libro, autor..."
                         >
 
                     </div>
@@ -1195,6 +1205,23 @@
 
                             <option value="Todos">
                                 Todos
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="filtroBiblioteca">
+                            Biblioteca
+                        </label>
+
+                        <select id="filtroBiblioteca">
+
+                            <option value="Todos">
+                                Todas
                             </option>
 
                         </select>
@@ -1305,7 +1332,31 @@
                             </th>
 
                             <th>
+                                Código
+                            </th>
+
+                            <th>
                                 Libro
+                            </th>
+
+                            <th>
+                                Autor
+                            </th>
+
+                            <th>
+                                Género
+                            </th>
+
+                            <th>
+                                Editorial
+                            </th>
+
+                            <th>
+                                Año
+                            </th>
+
+                            <th>
+                                Biblioteca
                             </th>
 
                             <th>
@@ -1376,7 +1427,6 @@
                 .replace(
                     /[\u0300-\u036f]/g,
                     ""
-
                 )
 
                 .toLowerCase()
@@ -1415,6 +1465,29 @@
                 );
 
             return valor;
+
+        }
+
+
+        /* =========================================================
+           CÓDIGO DE 8 DÍGITOS
+        ========================================================== */
+
+        function formatearCodigo(codigo) {
+
+            const valor =
+                normalizarCodigo(codigo);
+
+            if (!valor) {
+
+                return "—";
+
+            }
+
+            return valor.padStart(
+                8,
+                "0"
+            );
 
         }
 
@@ -1713,6 +1786,83 @@
 
 
         /* =========================================================
+           BUSCAR DATOS DEL LIBRO
+        ========================================================== */
+
+        function obtenerLibroPorCodigo(codigo) {
+
+            const codigoBuscado =
+                normalizarCodigo(codigo);
+
+            if (!codigoBuscado) {
+
+                return null;
+
+            }
+
+            return libros.find(
+
+                libro =>
+
+                    normalizarCodigo(
+                        libro.codigoLibro
+                    ) ===
+                    codigoBuscado
+
+            ) || null;
+
+        }
+
+
+        /* =========================================================
+           DATOS COMPLETOS DEL LIBRO
+        ========================================================== */
+
+        function obtenerDatosLibro(prestamo) {
+
+            const libro =
+                obtenerLibroPorCodigo(
+                    prestamo.codigoLibro
+                );
+
+            return {
+
+                codigo:
+                    libro?.codigoLibro ||
+                    prestamo.codigoLibro ||
+                    "",
+
+                nombre:
+                    libro?.nombreLibro ||
+                    prestamo.nombreLibro ||
+                    "",
+
+                autor:
+                    libro?.autor ||
+                    "",
+
+                genero:
+                    libro?.genero ||
+                    "",
+
+                editorial:
+                    libro?.editorial ||
+                    "",
+
+                anio:
+                    libro?.año ??
+                    "",
+
+                biblioteca:
+                    libro?.Biblioteca ||
+                    ""
+
+            };
+
+        }
+
+
+        /* =========================================================
            CARGAR LIBROS
         ========================================================== */
 
@@ -1891,6 +2041,8 @@
                 actualizarEstadisticas();
 
                 cargarSitios();
+
+                cargarBibliotecas();
 
                 aplicarFiltros();
 
@@ -2643,6 +2795,124 @@
 
 
         /* =========================================================
+           CARGAR BIBLIOTECAS
+        ========================================================== */
+
+        function cargarBibliotecas() {
+
+            const select =
+                document.getElementById(
+                    "filtroBiblioteca"
+                );
+
+            const bibliotecas = [
+
+                ...new Set(
+
+                    libros
+
+                        .map(
+
+                            libro =>
+                                String(
+                                    libro.Biblioteca ??
+                                    ""
+                                ).trim().toUpperCase()
+
+                        )
+
+                        .filter(
+                            biblioteca =>
+                                biblioteca
+                        )
+
+                )
+
+            ];
+
+            const ordenFijo = [
+                "F",
+                "M",
+                "N",
+                "R",
+                "Z"
+            ];
+
+            bibliotecas.sort(
+
+                (a, b) => {
+
+                    const posicionA =
+                        ordenFijo.indexOf(a);
+
+                    const posicionB =
+                        ordenFijo.indexOf(b);
+
+                    if (
+                        posicionA !== -1 &&
+                        posicionB !== -1
+                    ) {
+
+                        return posicionA -
+                            posicionB;
+
+                    }
+
+                    if (
+                        posicionA !== -1
+                    ) {
+
+                        return -1;
+
+                    }
+
+                    if (
+                        posicionB !== -1
+                    ) {
+
+                        return 1;
+
+                    }
+
+                    return a.localeCompare(
+                        b,
+                        "es"
+                    );
+
+                }
+
+            );
+
+            select.innerHTML =
+                `<option value="Todos">Todas</option>`;
+
+            bibliotecas.forEach(
+
+                biblioteca => {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        biblioteca;
+
+                    option.textContent =
+                        biblioteca;
+
+                    select.appendChild(
+                        option
+                    );
+
+                }
+
+            );
+
+        }
+
+
+        /* =========================================================
            APLICAR FILTROS
         ========================================================== */
 
@@ -2665,6 +2935,11 @@
             const sitioFiltro =
                 document.getElementById(
                     "filtroSitio"
+                ).value;
+
+            const bibliotecaFiltro =
+                document.getElementById(
+                    "filtroBiblioteca"
                 ).value;
 
             const orden =
@@ -2700,6 +2975,7 @@
 
             }
 
+
             prestamosFiltrados =
                 prestamos.filter(
 
@@ -2717,6 +2993,11 @@
 
                         const nombrePersona =
                             obtenerNombrePersona(
+                                prestamo
+                            );
+
+                        const datosLibro =
+                            obtenerDatosLibro(
                                 prestamo
                             );
 
@@ -2745,13 +3026,28 @@
 
                                     prestamo.codigoLibro,
 
+                                    datosLibro.codigo,
+
                                     prestamo.nombreLibro,
+
+                                    datosLibro.nombre,
+
+                                    datosLibro.autor,
+
+                                    datosLibro.genero,
+
+                                    datosLibro.editorial,
+
+                                    datosLibro.anio,
+
+                                    datosLibro.biblioteca,
 
                                     sitio
 
                                 ].join(" ")
 
                             );
+
 
                         if (
 
@@ -2767,6 +3063,7 @@
 
                         }
 
+
                         if (
 
                             estadoFiltro !==
@@ -2780,6 +3077,7 @@
                             return false;
 
                         }
+
 
                         if (
 
@@ -2795,12 +3093,43 @@
 
                         }
 
+
+                        const biblioteca =
+                            String(
+
+                                datosLibro.biblioteca ||
+
+                                ""
+
+                            )
+
+                                .trim()
+
+                                .toUpperCase();
+
+
+                        if (
+
+                            bibliotecaFiltro !==
+                                "Todos" &&
+
+                            biblioteca !==
+                                bibliotecaFiltro
+
+                        ) {
+
+                            return false;
+
+                        }
+
+
                         const fechaPrestamo =
                             obtenerFechaSoloDia(
 
                                 prestamo.fechaPrestamo
 
                             );
+
 
                         if (
 
@@ -2831,6 +3160,7 @@
 
                         }
 
+
                         if (
 
                             fechaHasta &&
@@ -2859,6 +3189,7 @@
                             }
 
                         }
+
 
                         return true;
 
@@ -2991,9 +3322,15 @@
                         "libro"
                     ) {
 
+                        const libroA =
+                            obtenerDatosLibro(a);
+
+                        const libroB =
+                            obtenerDatosLibro(b);
+
                         return String(
 
-                            a.nombreLibro ||
+                            libroA.nombre ||
 
                             ""
 
@@ -3001,7 +3338,7 @@
 
                             String(
 
-                                b.nombreLibro ||
+                                libroB.nombre ||
 
                                 ""
 
@@ -3062,6 +3399,7 @@
                         : "resultados"
                 }`;
 
+
             if (
                 prestamosFiltrados.length === 0
             ) {
@@ -3071,7 +3409,7 @@
                     <tr>
 
                         <td
-                            colspan="7"
+                            colspan="13"
                             class="sin-resultados"
                         >
                             🔎 No se encontraron préstamos con los filtros seleccionados.
@@ -3153,24 +3491,21 @@
                         "—";
 
 
-                    const codigoLibro =
-
-                        prestamo.codigoLibro ||
-
-                        "—";
-
-
-                    const nombreLibro =
-
-                        prestamo.nombreLibro ||
-
-                        "Sin nombre";
+                    const datosLibro =
+                        obtenerDatosLibro(
+                            prestamo
+                        );
 
 
                     const sitio =
                         obtenerSitio(
                             prestamo
                         );
+
+
+                    const biblioteca =
+                        datosLibro.biblioteca ||
+                        "—";
 
 
                     fila.innerHTML = `
@@ -3206,20 +3541,87 @@
                         </td>
 
 
-                        <td class="libro">
+                        <td>
 
                             <strong>
 
                                 ${escapeHtml(
-                                    codigoLibro
+
+                                    formatearCodigo(
+                                        datosLibro.codigo
+                                    )
+
                                 )}
 
                             </strong>
 
-                            <br>
+                        </td>
+
+
+                        <td class="libro">
 
                             ${escapeHtml(
-                                nombreLibro
+
+                                datosLibro.nombre ||
+                                "Sin nombre"
+
+                            )}
+
+                        </td>
+
+
+                        <td class="autor">
+
+                            ${escapeHtml(
+
+                                datosLibro.autor ||
+                                "—"
+
+                            )}
+
+                        </td>
+
+
+                        <td class="genero">
+
+                            ${escapeHtml(
+
+                                datosLibro.genero ||
+                                "—"
+
+                            )}
+
+                        </td>
+
+
+                        <td class="editorial">
+
+                            ${escapeHtml(
+
+                                datosLibro.editorial ||
+                                "—"
+
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+
+                                datosLibro.anio ||
+                                "—"
+
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+                                biblioteca
                             )}
 
                         </td>
@@ -3316,6 +3718,11 @@
                     "filtroSitio"
                 ).value;
 
+            const biblioteca =
+                document.getElementById(
+                    "filtroBiblioteca"
+                ).value;
+
             const desde =
                 document.getElementById(
                     "fechaDesde"
@@ -3326,6 +3733,7 @@
                     "fechaHasta"
                 ).value;
 
+
             if (busqueda) {
 
                 elementos.push(
@@ -3335,6 +3743,7 @@
                 );
 
             }
+
 
             if (
                 estado !==
@@ -3349,6 +3758,7 @@
 
             }
 
+
             if (
                 sitio !==
                 "Todos"
@@ -3362,6 +3772,21 @@
 
             }
 
+
+            if (
+                biblioteca !==
+                "Todos"
+            ) {
+
+                elementos.push(
+
+                    `Biblioteca: ${biblioteca}`
+
+                );
+
+            }
+
+
             if (desde) {
 
                 elementos.push(
@@ -3373,6 +3798,7 @@
                 );
 
             }
+
 
             if (hasta) {
 
@@ -3386,10 +3812,12 @@
 
             }
 
+
             const contenedor =
                 document.getElementById(
                     "filtrosActivos"
                 );
+
 
             if (
                 elementos.length === 0
@@ -3401,6 +3829,7 @@
                 return;
 
             }
+
 
             contenedor.textContent =
                 elementos.join(" • ");
@@ -3437,8 +3866,10 @@
                                 prestamo
                             );
 
+
                         let fechaDevolucion =
                             prestamo.fechaDevolucion;
+
 
                         if (
 
@@ -3453,6 +3884,13 @@
                                 prestamo.fechaDevolucionReal;
 
                         }
+
+
+                        const datosLibro =
+                            obtenerDatosLibro(
+                                prestamo
+                            );
+
 
                         return {
 
@@ -3490,15 +3928,44 @@
 
                             "Código del libro":
 
-                                prestamo.codigoLibro ||
-
-                                "",
+                                formatearCodigo(
+                                    datosLibro.codigo
+                                ),
 
 
                             "Nombre del libro":
 
-                                prestamo.nombreLibro ||
+                                datosLibro.nombre ||
+                                "",
 
+
+                            "Autor":
+
+                                datosLibro.autor ||
+                                "",
+
+
+                            "Género":
+
+                                datosLibro.genero ||
+                                "",
+
+
+                            "Editorial":
+
+                                datosLibro.editorial ||
+                                "",
+
+
+                            "Año":
+
+                                datosLibro.anio ||
+                                "",
+
+
+                            "Biblioteca":
+
+                                datosLibro.biblioteca ||
                                 "",
 
 
@@ -3532,8 +3999,10 @@
                     datos
                 );
 
+
             const libroExcel =
                 XLSX.utils.book_new();
+
 
             XLSX.utils.book_append_sheet(
 
@@ -3544,6 +4013,7 @@
                 "Reporte"
 
             );
+
 
             XLSX.writeFile(
 
@@ -3566,28 +4036,40 @@
                 "busqueda"
             ).value = "";
 
+
             document.getElementById(
                 "filtroEstado"
             ).value =
                 "Todos";
+
 
             document.getElementById(
                 "filtroSitio"
             ).value =
                 "Todos";
 
+
+            document.getElementById(
+                "filtroBiblioteca"
+            ).value =
+                "Todos";
+
+
             document.getElementById(
                 "filtroOrden"
             ).value =
                 "reciente";
 
+
             document.getElementById(
                 "fechaDesde"
             ).value = "";
 
+
             document.getElementById(
                 "fechaHasta"
             ).value = "";
+
 
             aplicarFiltros();
 
@@ -3676,6 +4158,17 @@
 
 
         document.getElementById(
+            "filtroBiblioteca"
+        ).addEventListener(
+
+            "change",
+
+            aplicarFiltros
+
+        );
+
+
+        document.getElementById(
             "filtroOrden"
         ).addEventListener(
 
@@ -3713,11 +4206,6 @@
         ========================================================== */
 
         async function iniciarReportes() {
-
-            /*
-             * Esperar a que la comprobación de acceso
-             * termine antes de cargar cualquier dato.
-             */
 
             const accesoPermitido =
                 await window.reportesAuth;
