@@ -166,6 +166,41 @@
             font-size: 14px;
         }
 
+        /* =====================================================
+           FECHAS DEL PRÉSTAMO
+        ===================================================== */
+
+        .fechas-prestamo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .campo-fecha {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo-fecha label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #455a64;
+        }
+
+        .campo-fecha input {
+            width: 100%;
+            flex: none;
+            background: white;
+        }
+
+        .ayuda-fecha {
+            font-size: 11px;
+            color: #78909c;
+            margin-top: 1px;
+        }
+
         .confirmacion {
             background: #fff8e1;
             border: 1px solid #ffe082;
@@ -183,6 +218,7 @@
             margin-top: 12px;
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .btn-confirmar {
@@ -208,6 +244,7 @@
         }
 
         @media (max-width: 700px) {
+
             .fila-busqueda {
                 flex-direction: column;
                 align-items: stretch;
@@ -217,6 +254,18 @@
                 gap: 10px;
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .fechas-prestamo {
+                grid-template-columns: 1fr;
+            }
+
+            .acciones-confirmacion {
+                flex-direction: column;
+            }
+
+            .acciones-confirmacion button {
+                width: 100%;
             }
         }
     </style>
@@ -316,10 +365,56 @@
 
         <h2>3. Confirmar préstamo</h2>
 
+        <!-- FECHAS -->
+        <div
+            id="fechasPrestamo"
+            class="fechas-prestamo"
+            style="display:none;"
+        >
+
+            <div class="campo-fecha">
+
+                <label for="fechaPrestamo">
+                    Fecha del préstamo
+                </label>
+
+                <input
+                    type="date"
+                    id="fechaPrestamo"
+                >
+
+                <span class="ayuda-fecha">
+                    Se coloca automáticamente la fecha actual, pero puede modificarse.
+                </span>
+
+            </div>
+
+
+            <div class="campo-fecha">
+
+                <label for="fechaDevolucion">
+                    Fecha de devolución prevista
+                </label>
+
+                <input
+                    type="date"
+                    id="fechaDevolucion"
+                >
+
+                <span class="ayuda-fecha">
+                    Puede elegir libremente cuándo debe regresar el libro.
+                </span>
+
+            </div>
+
+        </div>
+
+
         <div
             id="detallePrestamo"
             class="detalle"
         ></div>
+
 
         <div
             id="confirmacion"
@@ -348,6 +443,7 @@
 
         </div>
 
+
         <div
             id="mensajeFinal"
             class="mensaje"
@@ -366,6 +462,12 @@
 
 let personaSeleccionada = null;
 let libroSeleccionado = null;
+
+/*
+    Permite saber si la fecha de devolución
+    fue modificada manualmente por el usuario.
+*/
+let fechaDevolucionModificada = false;
 
 
 /* =========================================================
@@ -402,6 +504,15 @@ const detallePrestamo =
 const confirmacion =
     document.getElementById("confirmacion");
 
+const fechasPrestamo =
+    document.getElementById("fechasPrestamo");
+
+const fechaPrestamoInput =
+    document.getElementById("fechaPrestamo");
+
+const fechaDevolucionInput =
+    document.getElementById("fechaDevolucion");
+
 
 /* =========================================================
    MENSAJES
@@ -436,6 +547,165 @@ function normalizarCodigo(codigo) {
 
 
 /* =========================================================
+   FECHA LOCAL
+========================================================= */
+
+/*
+    Devuelve la fecha local del equipo en formato YYYY-MM-DD.
+    Se utiliza en los campos de fecha para evitar problemas
+    con UTC y mantener correctamente la fecha de Guatemala.
+*/
+
+function obtenerFechaLocalInput() {
+
+    const hoy = new Date();
+
+    const año =
+        hoy.getFullYear();
+
+    const mes =
+        String(
+            hoy.getMonth() + 1
+        ).padStart(2, "0");
+
+    const dia =
+        String(
+            hoy.getDate()
+        ).padStart(2, "0");
+
+    return `${año}-${mes}-${dia}`;
+}
+
+
+/*
+    Agrega un mes a una fecha YYYY-MM-DD.
+*/
+
+function agregarUnMes(fechaTexto) {
+
+    if (!fechaTexto) {
+        return "";
+    }
+
+    const partes =
+        fechaTexto.split("-");
+
+    if (partes.length !== 3) {
+        return "";
+    }
+
+    const año =
+        Number(partes[0]);
+
+    const mes =
+        Number(partes[1]);
+
+    const dia =
+        Number(partes[2]);
+
+
+    const fecha =
+        new Date(
+            año,
+            mes - 1,
+            dia,
+            12,
+            0,
+            0
+        );
+
+
+    /*
+        Se utiliza setMonth para conservar la idea
+        de "un mes después", en lugar de sumar
+        simplemente 28 o 30 días.
+    */
+
+    fecha.setMonth(
+        fecha.getMonth() + 1
+    );
+
+
+    const nuevoAño =
+        fecha.getFullYear();
+
+    const nuevoMes =
+        String(
+            fecha.getMonth() + 1
+        ).padStart(2, "0");
+
+    const nuevoDia =
+        String(
+            fecha.getDate()
+        ).padStart(2, "0");
+
+
+    return `${nuevoAño}-${nuevoMes}-${nuevoDia}`;
+}
+
+
+/*
+    Convierte YYYY-MM-DD en una fecha local
+    sin depender de UTC.
+*/
+
+function fechaLocalDesdeInput(fechaTexto) {
+
+    if (!fechaTexto) {
+        return null;
+    }
+
+    const partes =
+        fechaTexto.split("-");
+
+    if (partes.length !== 3) {
+        return null;
+    }
+
+    const año =
+        Number(partes[0]);
+
+    const mes =
+        Number(partes[1]);
+
+    const dia =
+        Number(partes[2]);
+
+
+    return new Date(
+        año,
+        mes - 1,
+        dia,
+        12,
+        0,
+        0
+    );
+}
+
+
+/*
+    Convierte una fecha local en ISO para Supabase.
+    Se utiliza mediodía para evitar que el cambio de zona
+    horaria provoque que la fecha guardada termine siendo
+    el día anterior.
+*/
+
+function fechaInputAISO(fechaTexto) {
+
+    const fecha =
+        fechaLocalDesdeInput(
+            fechaTexto
+        );
+
+    if (!fecha) {
+        return null;
+    }
+
+    return fecha.toISOString();
+}
+
+
+/* =========================================================
    FORMATO FECHA
 ========================================================= */
 
@@ -451,6 +721,28 @@ function formatearFecha(fecha) {
             year: "numeric"
         }
     );
+}
+
+
+/*
+    Formatea directamente un valor YYYY-MM-DD
+    para mostrarlo sin problemas de zona horaria.
+*/
+
+function formatearFechaInput(fechaTexto) {
+
+    if (!fechaTexto) {
+        return "";
+    }
+
+    const partes =
+        fechaTexto.split("-");
+
+    if (partes.length !== 3) {
+        return "";
+    }
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
 
@@ -494,6 +786,135 @@ function obtenerSitio(persona) {
 
 
     return null;
+}
+
+
+/* =========================================================
+   PREPARAR FECHAS
+========================================================= */
+
+function prepararFechas() {
+
+    /*
+        La fecha de préstamo se coloca solamente
+        si todavía no existe.
+    */
+
+    if (!fechaPrestamoInput.value) {
+
+        fechaPrestamoInput.value =
+            obtenerFechaLocalInput();
+
+    }
+
+
+    /*
+        Si la devolución todavía no fue modificada
+        manualmente, se coloca un mes después.
+    */
+
+    if (
+        !fechaDevolucionModificada
+    ) {
+
+        fechaDevolucionInput.value =
+            agregarUnMes(
+                fechaPrestamoInput.value
+            );
+
+    }
+
+
+    fechasPrestamo.style.display =
+        "grid";
+
+}
+
+
+/* =========================================================
+   VALIDAR FECHAS
+========================================================= */
+
+function validarFechas() {
+
+    const fechaPrestamo =
+        fechaPrestamoInput.value;
+
+    const fechaDevolucion =
+        fechaDevolucionInput.value;
+
+
+    if (!fechaPrestamo) {
+
+        mostrarMensaje(
+            mensajeFinal,
+            "Seleccione la fecha del préstamo.",
+            "error"
+        );
+
+        fechaPrestamoInput.focus();
+
+        return false;
+    }
+
+
+    if (!fechaDevolucion) {
+
+        mostrarMensaje(
+            mensajeFinal,
+            "Seleccione la fecha de devolución.",
+            "error"
+        );
+
+        fechaDevolucionInput.focus();
+
+        return false;
+    }
+
+
+    const fechaInicio =
+        fechaLocalDesdeInput(
+            fechaPrestamo
+        );
+
+    const fechaFin =
+        fechaLocalDesdeInput(
+            fechaDevolucion
+        );
+
+
+    if (
+        !fechaInicio ||
+        !fechaFin
+    ) {
+
+        mostrarMensaje(
+            mensajeFinal,
+            "Las fechas seleccionadas no son válidas.",
+            "error"
+        );
+
+        return false;
+    }
+
+
+    if (
+        fechaFin < fechaInicio
+    ) {
+
+        mostrarMensaje(
+            mensajeFinal,
+            "La fecha de devolución no puede ser anterior a la fecha del préstamo.",
+            "error"
+        );
+
+        fechaDevolucionInput.focus();
+
+        return false;
+    }
+
+
+    return true;
 }
 
 
@@ -877,6 +1298,9 @@ function actualizarDetalle() {
         !libroSeleccionado
     ) {
 
+        fechasPrestamo.style.display =
+            "none";
+
         detallePrestamo.style.display =
             "none";
 
@@ -887,16 +1311,7 @@ function actualizarDetalle() {
     }
 
 
-    const hoy = new Date();
-
-
-    const devolucion =
-        new Date(hoy);
-
-
-    devolucion.setDate(
-        devolucion.getDate() + 28
-    );
+    prepararFechas();
 
 
     detallePrestamo.innerHTML = `
@@ -926,6 +1341,15 @@ function actualizarDetalle() {
         </p>
 
         <p>
+            <strong>Sitio:</strong>
+            ${escapeHtml(
+                obtenerSitio(
+                    personaSeleccionada
+                ) || "No definido"
+            )}
+        </p>
+
+        <p>
             <strong>Libro:</strong>
             ${escapeHtml(
                 libroSeleccionado.nombreLibro
@@ -941,12 +1365,16 @@ function actualizarDetalle() {
 
         <p>
             <strong>Fecha del préstamo:</strong>
-            ${formatearFecha(hoy)}
+            ${formatearFechaInput(
+                fechaPrestamoInput.value
+            )}
         </p>
 
         <p>
-            <strong>Fecha de devolución:</strong>
-            ${formatearFecha(devolucion)}
+            <strong>Fecha de devolución prevista:</strong>
+            ${formatearFechaInput(
+                fechaDevolucionInput.value
+            )}
         </p>
 
     `;
@@ -976,6 +1404,14 @@ async function confirmarPrestamo() {
             "Debe seleccionar una persona y un libro.",
             "error"
         );
+
+        return;
+    }
+
+
+    if (
+        !validarFechas()
+    ) {
 
         return;
     }
@@ -1043,17 +1479,21 @@ async function confirmarPrestamo() {
         }
 
 
+        /*
+            Las fechas se toman exactamente de los
+            campos que seleccionó la persona que registra.
+        */
+
         const fechaPrestamo =
-            new Date();
+            fechaInputAISO(
+                fechaPrestamoInput.value
+            );
 
 
         const fechaDevolucion =
-            new Date(fechaPrestamo);
-
-
-        fechaDevolucion.setDate(
-            fechaDevolucion.getDate() + 28
-        );
+            fechaInputAISO(
+                fechaDevolucionInput.value
+            );
 
 
         const nuevoPrestamo = {
@@ -1080,10 +1520,10 @@ async function confirmarPrestamo() {
                 libroSeleccionado.nombreLibro,
 
             fechaPrestamo:
-                fechaPrestamo.toISOString(),
+                fechaPrestamo,
 
             fechaDevolucion:
-                fechaDevolucion.toISOString(),
+                fechaDevolucion,
 
             estado:
                 "Prestado",
@@ -1144,6 +1584,13 @@ async function confirmarPrestamo() {
 
         libroSeleccionado = null;
 
+        fechaDevolucionModificada =
+            false;
+
+
+        fechasPrestamo.style.display =
+            "none";
+
 
         libroInfo.style.display =
             "none";
@@ -1158,6 +1605,20 @@ async function confirmarPrestamo() {
 
 
         buscarLibroInput.value = "";
+
+
+        /*
+            Dejamos las fechas preparadas para
+            el siguiente registro.
+        */
+
+        fechaPrestamoInput.value =
+            obtenerFechaLocalInput();
+
+        fechaDevolucionInput.value =
+            agregarUnMes(
+                fechaPrestamoInput.value
+            );
 
 
         document
@@ -1218,6 +1679,55 @@ function cancelarPrestamo() {
 
     actualizarDetalle();
 }
+
+
+/* =========================================================
+   CAMBIO DE FECHA DE PRÉSTAMO
+========================================================= */
+
+fechaPrestamoInput.addEventListener(
+    "change",
+    function() {
+
+        /*
+            Si la devolución todavía no ha sido
+            modificada manualmente, se mantiene
+            automáticamente un mes después.
+        */
+
+        if (
+            !fechaDevolucionModificada
+        ) {
+
+            fechaDevolucionInput.value =
+                agregarUnMes(
+                    fechaPrestamoInput.value
+                );
+
+        }
+
+
+        actualizarDetalle();
+
+    }
+);
+
+
+/* =========================================================
+   CAMBIO DE FECHA DE DEVOLUCIÓN
+========================================================= */
+
+fechaDevolucionInput.addEventListener(
+    "change",
+    function() {
+
+        fechaDevolucionModificada =
+            true;
+
+        actualizarDetalle();
+
+    }
+);
 
 
 /* =========================================================
@@ -1320,6 +1830,19 @@ buscarLibroInput
                     .slice(0, 8);
 
         }
+    );
+
+
+/* =========================================================
+   FECHAS INICIALES
+========================================================= */
+
+fechaPrestamoInput.value =
+    obtenerFechaLocalInput();
+
+fechaDevolucionInput.value =
+    agregarUnMes(
+        fechaPrestamoInput.value
     );
 
 </script>
