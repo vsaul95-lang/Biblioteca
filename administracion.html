@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Biblioteca</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            visibility: hidden;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #263238;
+        }
+
+        header {
+            background: #263238;
+            color: white;
+            padding: 14px 20px;
+            position: relative;
+        }
+
+        .encabezado-contenido {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icono {
+            font-size: 28px;
+        }
+
+        .titulo-header {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .subtitulo-header {
+            font-size: 12px;
+            color: #cfd8dc;
+            margin-top: 2px;
+        }
+
+        .boton-volver {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #7f8c8d;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .boton-volver:hover {
+            background: #6d7b7c;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px 30px;
+        }
+
+        .titulo-principal {
+            font-size: 24px;
+            margin: 0 0 5px;
+        }
+
+        .descripcion-principal {
+            margin: 0 0 22px;
+            color: #607d8b;
+            font-size: 14px;
+        }
+
+        .seccion {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .titulo-seccion {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .descripcion-seccion {
+            color: #607d8b;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .tarjeta {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 16px;
+        }
+
+        .tarjeta-titulo {
+            font-size: 12px;
+            color: #607d8b;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .tarjeta-valor {
+            font-size: 22px;
+            font-weight: bold;
+            color: #263238;
+        }
+
+        .tarjeta-detalle {
+            font-size: 12px;
+            color: #78909c;
+            margin-top: 5px;
+        }
+
+        .estado-conexion {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #eceff1;
+            color: #546e7a;
+        }
+
+        .estado-conexion.correcto {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .estado-conexion.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .sitios {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .sitio {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 15px;
+            background: #fafafa;
+        }
+
+        .sitio-codigo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #37474f;
+        }
+
+        .sitio-nombre {
+            font-size: 13px;
+            color: #455a64;
+        }
+
+        .tabla-diagnostico {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabla-diagnostico th,
+        .tabla-diagnostico td {
+            padding: 11px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .tabla-diagnostico th {
+            background: #eceff1;
+            font-weight: bold;
+            color: #37474f;
+        }
+
+        .tabla-diagnostico tr:last-child td {
+            border-bottom: none;
+        }
+
+        .estado-tabla {
+            display: inline-block;
+            padding: 4px 9px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .estado-tabla.correcto {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .estado-tabla.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .estado-tabla.procesando {
+            background: #eceff1;
+            color: #546e7a;
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .boton {
+            border: none;
+            border-radius: 5px;
+            padding: 9px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .boton-principal {
+            background: #37474f;
+            color: white;
+        }
+
+        .boton-principal:hover {
+            background: #263238;
+        }
+
+        .boton-secundario {
+            background: #eceff1;
+            color: #37474f;
+        }
+
+        .boton-secundario:hover {
+            background: #cfd8dc;
+        }
+
+        .informacion {
+            background: #f7f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .informacion strong {
+            color: #37474f;
+        }
+
+        .lista-caracteristicas {
+            margin: 0;
+            padding-left: 20px;
+            color: #455a64;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            color: #78909c;
+            font-size: 11px;
+            padding: 10px 20px 25px;
+        }
+
+        /* Modal de mensajes */
+        .modal-fondo {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-fondo.mostrar {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background: #263238;
+            color: white;
+            padding: 13px 16px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .modal-contenido {
+            padding: 20px;
+            color: #455a64;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .modal-botones {
+            padding: 0 20px 18px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .modal-boton {
+            border: none;
+            border-radius: 5px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .modal-boton-principal {
+            background: #37474f;
+            color: white;
+        }
+
+        .modal-boton-secundario {
+            background: #eceff1;
+            color: #37474f;
+        }
+
+        @media (max-width: 900px) {
+            .tarjetas {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sitios {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 12px 10px;
+            }
+
+            .titulo-header {
+                font-size: 17px;
+            }
+
+            .subtitulo-header {
+                font-size: 11px;
+            }
+
+            .boton-volver {
+                right: 10px;
+                padding: 7px 10px;
+            }
+
+            main {
+                margin-top: 18px;
+                padding: 0 10px 25px;
+            }
+
+            .titulo-principal {
+                font-size: 21px;
+            }
+
+            .tarjetas {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .sitios {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .seccion {
+                padding: 15px;
+            }
+
+            .tabla-diagnostico {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="encabezado-contenido">
+        <div class="icono">⚙️</div>
+
+        <div>
+            <div class="titulo-header">Biblioteca</div>
+            <div class="subtitulo-header">Administración del sistema</div>
+        </div>
+    </div>
+
+    <button class="boton-volver" onclick="volverAtras()">
+        Volver atrás
+    </button>
+</header>
+
+<main>
+
+    <h1 class="titulo-principal">Administración</h1>
+
+    <p class="descripcion-principal">
+        Configuración general, estado del sistema y herramientas de diagnóstico.
+    </p>
+
+
+    <!-- INFORMACIÓN DEL SISTEMA -->
+    <section class="seccion">
+
+        <div class="titulo-seccion">
+            Información del sistema
+        </div>
+
+        <div class="descripcion-seccion">
+            Información general de la aplicación y de la conexión con la base de datos.
+        </div>
+
+        <div class="tarjetas">
+
+            <div class="tarjeta">
+                <div class="tarjeta-titulo">
+                    SISTEMA
+                </div>
+
+                <div class="tarjeta-valor">
+                    Biblioteca
+                </div>
+
+                <div class="tarjeta-detalle">
+                    Gestión de biblioteca
+                </div>
+            </div>
+
+
+            <div class="tarjeta">
+                <div class="tarjeta-titulo">
+                    VERSIÓN
+                </div>
+
+                <div class="tarjeta-valor">
+                    1.0
+                </div>
+
+                <div class="tarjeta-detalle">
+                    Versión actual
+                </div>
+            </div>
+
+
+            <div class="tarjeta">
+                <div class="tarjeta-titulo">
+                    BASE DE DATOS
+                </div>
+
+                <div class="tarjeta-valor">
+                    Supabase
+                </div>
+
+                <div class="tarjeta-detalle">
+                    Base de datos compartida
+                </div>
+            </div>
+
+
+            <div class="tarjeta">
+                <div class="tarjeta-titulo">
+                    CONEXIÓN
+                </div>
+
+                <div id="estadoConexion" class="estado-conexion">
+                    Verificando...
+                </div>
+
+                <div id="detalleConexion" class="tarjeta-detalle">
+                    Comprobando conexión
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SESIÓN -->
+    <section class="seccion">
+
+        <div class="titulo-seccion">
+            Sesión actual
+        </div>
+
+        <div class="descripcion-seccion">
+            Información de la cuenta que está utilizando el sistema.
+        </div>
+
+        <div class="informacion">
+
+            <div>
+                <strong>Usuario:</strong>
+                <span id="usuarioActual">Verificando...</span>
+            </div>
+
+            <div>
+                <strong>Estado:</strong>
+                <span id="estadoSesion">Verificando...</span>
+            </div>
+
+            <div>
+                <strong>Acceso:</strong>
+                <span id="tipoAcceso">Usuario autenticado</span>
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="botones">
+
+            <button
+                class="boton boton-secundario"
+                onclick="cerrarSesion()">
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SITIOS -->
+    <section class="seccion">
+
+        <div class="titulo-seccion">
+            Sitios de la Fundación
+        </div>
+
+        <div class="descripcion-seccion">
+            Códigos utilizados para identificar los diferentes sitios dentro del sistema.
+        </div>
+
+        <div class="sitios">
+
+            <div class="sitio">
+                <div class="sitio-codigo">F</div>
+                <div class="sitio-nombre">
+                    Antigua
+                </div>
+            </div>
+
+            <div class="sitio">
+                <div class="sitio-codigo">M</div>
+                <div class="sitio-nombre">
+                    San Miguel Milpas Altas
+                </div>
+            </div>
+
+            <div class="sitio">
+                <div class="sitio-codigo">R</div>
+                <div class="sitio-nombre">
+                    San Rafael el Arado
+                </div>
+            </div>
+
+            <div class="sitio">
+                <div class="sitio-codigo">N</div>
+                <div class="sitio-nombre">
+                    Nueva Esperanza
+                </div>
+            </div>
+
+            <div class="sitio">
+                <div class="sitio-codigo">Z</div>
+                <div class="sitio-nombre">
+                    Zapote
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DIAGNÓSTICO -->
+    <section class="seccion">
+
+        <div class="titulo-seccion">
+            Diagnóstico del sistema
+        </div>
+
+        <div class="descripcion-seccion">
+            Comprueba que las principales tablas de la base de datos estén disponibles.
+        </div>
+
+        <table class="tabla-diagnostico">
+
+            <thead>
+                <tr>
+                    <th>Componente</th>
+                    <th>Estado</th>
+                    <th>Registros</th>
+                    <th>Información</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Afiliados</td>
+
+                    <td>
+                        <span
+                            id="estadoAfiliados"
+                            class="estado-tabla procesando">
+                            Verificando
+                        </span>
+                    </td>
+
+                    <td id="cantidadAfiliados">
+                        —
+                    </td>
+
+                    <td id="detalleAfiliados">
+                        Consultando tabla
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>Libros</td>
+
+                    <td>
+                        <span
+                            id="estadoLibros"
+                            class="estado-tabla procesando">
+                            Verificando
+                        </span>
+                    </td>
+
+                    <td id="cantidadLibros">
+                        —
+                    </td>
+
+                    <td id="detalleLibros">
+                        Consultando tabla
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>Colaboradores</td>
+
+                    <td>
+                        <span
+                            id="estadoColaboradores"
+                            class="estado-tabla procesando">
+                            Verificando
+                        </span>
+                    </td>
+
+                    <td id="cantidadColaboradores">
+                        —
+                    </td>
+
+                    <td id="detalleColaboradores">
+                        Consultando tabla
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>Préstamos</td>
+
+                    <td>
+                        <span
+                            id="estadoPrestamos"
+                            class="estado-tabla procesando">
+                            Verificando
+                        </span>
+                    </td>
+
+                    <td id="cantidadPrestamos">
+                        —
+                    </td>
+
+                    <td id="detallePrestamos">
+                        Consultando tabla
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <br>
+
+        <div class="botones">
+
+            <button
+                class="boton boton-principal"
+                onclick="ejecutarDiagnostico()">
+                Ejecutar diagnóstico
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- INFORMACIÓN TÉCNICA -->
+    <section class="seccion">
+
+        <div class="titulo-seccion">
+            Información técnica
+        </div>
+
+        <div class="descripcion-seccion">
+            Características principales de la plataforma.
+        </div>
+
+        <ul class="lista-caracteristicas">
+
+            <li>
+                Sistema web para la administración de la biblioteca.
+            </li>
+
+            <li>
+                Base de datos centralizada mediante Supabase.
+            </li>
+
+            <li>
+                Los datos pueden ser consultados por usuarios autenticados.
+            </li>
+
+            <li>
+                Los módulos de familias, libros, colaboradores y préstamos trabajan sobre la misma base de datos.
+            </li>
+
+            <li>
+                Los respaldos y las acciones de limpieza de información se encuentran en el módulo Respaldo.
+            </li>
+
+            <li>
+                Los códigos de sitio utilizados actualmente son F, M, N, R y Z.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ACCIONES -->
+    <section class="seccion">
+
+        <div class="titulo-seccion">
+            Acciones administrativas
+        </div>
+
+        <div class="descripcion-seccion">
+            Acciones relacionadas con la sesión y revisión del sistema.
+        </div>
+
+        <div class="botones">
+
+            <button
+                class="boton boton-principal"
+                onclick="ejecutarDiagnostico()">
+                Comprobar sistema
+            </button>
+
+            <button
+                class="boton boton-secundario"
+                onclick="volverAtras()">
+                Volver al inicio
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Sistema de Biblioteca
+</footer>
+
+
+<!-- MODAL -->
+<div id="modalFondo" class="modal-fondo">
+
+    <div class="modal">
+
+        <div class="modal-header" id="modalTitulo">
+            Administración
+        </div>
+
+        <div class="modal-contenido" id="modalMensaje">
+            Mensaje
+        </div>
+
+        <div class="modal-botones">
+
+            <button
+                class="modal-boton modal-boton-principal"
+                onclick="cerrarModal()">
+                Aceptar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+
+<script>
+
+    window.administracionAutorizado = false;
+
+
+    /* =========================================================
+       PROTECCIÓN DE LA PÁGINA
+    ========================================================= */
+
+    window.administracionAuth = (async function protegerAdministracion() {
+
+        try {
+
+            const {
+                data: { session },
+                error
+            } = await supabaseClient.auth.getSession();
+
+
+            if (error || !session) {
+
+                window.location.href = "index.html";
+
+                return false;
+            }
+
+
+            window.administracionAutorizado = true;
+
+            document.documentElement.style.visibility = "visible";
+
+
+            mostrarInformacionSesion(session);
+
+
+            return true;
+
+        } catch (error) {
+
+            console.error("Error verificando sesión:", error);
+
+            window.location.href = "index.html";
+
+            return false;
+        }
+
+    })();
+
+
+    /* =========================================================
+       VOLVER
+    ========================================================= */
+
+    function volverAtras() {
+
+        window.location.href = "index.html";
+    }
+
+
+    /* =========================================================
+       INFORMACIÓN DE SESIÓN
+    ========================================================= */
+
+    function mostrarInformacionSesion(session) {
+
+        const usuario =
+            session?.user?.email ||
+            session?.user?.user_metadata?.name ||
+            "Usuario autenticado";
+
+
+        document.getElementById("usuarioActual").textContent =
+            usuario;
+
+
+        document.getElementById("estadoSesion").textContent =
+            "Sesión activa";
+    }
+
+
+    /* =========================================================
+       VERIFICAR CONEXIÓN
+    ========================================================= */
+
+    async function verificarConexion() {
+
+        const estado =
+            document.getElementById("estadoConexion");
+
+        const detalle =
+            document.getElementById("detalleConexion");
+
+
+        estado.className =
+            "estado-conexion";
+
+
+        estado.textContent =
+            "Verificando...";
+
+
+        detalle.textContent =
+            "Comprobando conexión con Supabase";
+
+
+        try {
+
+            const { error } =
+                await supabaseClient
+                    .from("afiliados")
+                    .select("id", { count: "exact", head: true });
+
+
+            if (error) {
+
+                throw error;
+            }
+
+
+            estado.className =
+                "estado-conexion correcto";
+
+            estado.textContent =
+                "Conectado";
+
+
+            detalle.textContent =
+                "Conexión disponible";
+
+
+        } catch (error) {
+
+            console.error(
+                "Error de conexión:",
+                error
+            );
+
+
+            estado.className =
+                "estado-conexion error";
+
+            estado.textContent =
+                "Error";
+
+
+            detalle.textContent =
+                "No fue posible consultar la base de datos";
+        }
+    }
+
+
+    /* =========================================================
+       DIAGNÓSTICO GENERAL
+    ========================================================= */
+
+    async function ejecutarDiagnostico() {
+
+        await verificarConexion();
+
+
+        await verificarTabla(
+            "afiliados",
+            "estadoAfiliados",
+            "cantidadAfiliados",
+            "detalleAfiliados"
+        );
+
+
+        await verificarTabla(
+            "libros",
+            "estadoLibros",
+            "cantidadLibros",
+            "detalleLibros"
+        );
+
+
+        await verificarTabla(
+            "colaboradores",
+            "estadoColaboradores",
+            "cantidadColaboradores",
+            "detalleColaboradores"
+        );
+
+
+        await verificarTabla(
+            "prestamos",
+            "estadoPrestamos",
+            "cantidadPrestamos",
+            "detallePrestamos"
+        );
+
+
+        mostrarModal(
+            "Diagnóstico",
+            "La comprobación del sistema ha finalizado."
+        );
+    }
+
+
+    /* =========================================================
+       VERIFICAR TABLA
+    ========================================================= */
+
+    async function verificarTabla(
+        tabla,
+        idEstado,
+        idCantidad,
+        idDetalle
+    ) {
+
+        const estado =
+            document.getElementById(idEstado);
+
+        const cantidad =
+            document.getElementById(idCantidad);
+
+        const detalle =
+            document.getElementById(idDetalle);
+
+
+        estado.className =
+            "estado-tabla procesando";
+
+        estado.textContent =
+            "Verificando";
+
+
+        cantidad.textContent =
+            "—";
+
+
+        detalle.textContent =
+            "Consultando tabla";
+
+
+        try {
+
+            const {
+                count,
+                error
+            } =
+                await supabaseClient
+                    .from(tabla)
+                    .select("id", {
+                        count: "exact",
+                        head: true
+                    });
+
+
+            if (error) {
+
+                throw error;
+            }
+
+
+            estado.className =
+                "estado-tabla correcto";
+
+            estado.textContent =
+                "Disponible";
+
+
+            cantidad.textContent =
+                Number(count || 0).toLocaleString(
+                    "es-GT"
+                );
+
+
+            detalle.textContent =
+                "Tabla disponible";
+
+
+        } catch (error) {
+
+            console.error(
+                `Error en tabla ${tabla}:`,
+                error
+            );
+
+
+            estado.className =
+                "estado-tabla error";
+
+            estado.textContent =
+                "Error";
+
+
+            cantidad.textContent =
+                "—";
+
+
+            detalle.textContent =
+                "No fue posible consultar la tabla";
+        }
+    }
+
+
+    /* =========================================================
+       CERRAR SESIÓN
+    ========================================================= */
+
+    async function cerrarSesion() {
+
+        try {
+
+            const {
+                error
+            } =
+                await supabaseClient.auth.signOut();
+
+
+            if (error) {
+
+                throw error;
+            }
+
+
+            window.location.href =
+                "index.html";
+
+
+        } catch (error) {
+
+            console.error(
+                "Error cerrando sesión:",
+                error
+            );
+
+
+            mostrarModal(
+                "Administración",
+                "No fue posible cerrar la sesión."
+            );
+        }
+    }
+
+
+    /* =========================================================
+       MODAL
+    ========================================================= */
+
+    function mostrarModal(
+        titulo,
+        mensaje
+    ) {
+
+        document.getElementById(
+            "modalTitulo"
+        ).textContent = titulo;
+
+
+        document.getElementById(
+            "modalMensaje"
+        ).textContent = mensaje;
+
+
+        document.getElementById(
+            "modalFondo"
+        ).classList.add("mostrar");
+    }
+
+
+    function cerrarModal() {
+
+        document.getElementById(
+            "modalFondo"
+        ).classList.remove("mostrar");
+    }
+
+
+    /* =========================================================
+       CARGA INICIAL
+    ========================================================= */
+
+    window.addEventListener(
+        "load",
+        async function() {
+
+            if (
+                !window.administracionAutorizado
+            ) {
+
+                return;
+            }
+
+
+            await verificarConexion();
+
+
+            await verificarTabla(
+                "afiliados",
+                "estadoAfiliados",
+                "cantidadAfiliados",
+                "detalleAfiliados"
+            );
+
+
+            await verificarTabla(
+                "libros",
+                "estadoLibros",
+                "cantidadLibros",
+                "detalleLibros"
+            );
+
+
+            await verificarTabla(
+                "colaboradores",
+                "estadoColaboradores",
+                "cantidadColaboradores",
+                "detalleColaboradores"
+            );
+
+
+            await verificarTabla(
+                "prestamos",
+                "estadoPrestamos",
+                "cantidadPrestamos",
+                "detallePrestamos"
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       CERRAR MODAL AL HACER CLIC FUERA
+    ========================================================= */
+
+    document.getElementById(
+        "modalFondo"
+    ).addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                cerrarModal();
+            }
+        }
+    );
+
+</script>
+
+</body>
+</html>
