@@ -167,10 +167,6 @@
             color: #455a64;
         }
 
-        /*
-         * REGISTRO MANUAL
-         */
-
         .formulario-colaborador {
             display: grid;
             grid-template-columns:
@@ -241,10 +237,6 @@
             background: #cfd8dc;
         }
 
-        /*
-         * BUSQUEDA
-         */
-
         .busqueda {
             display: flex;
             gap: 12px;
@@ -268,10 +260,6 @@
             font-size: 13px;
             background: white;
         }
-
-        /*
-         * TABLA
-         */
 
         .tabla-contenedor {
             overflow-x: auto;
@@ -322,10 +310,6 @@
             background: white;
         }
 
-        /*
-         * ESTADO
-         */
-
         .estado {
             display: inline-block;
             padding: 4px 8px;
@@ -343,10 +327,6 @@
             background: #eceff1;
             color: #546e7a;
         }
-
-        /*
-         * ACCIONES
-         */
 
         .acciones {
             display: flex;
@@ -382,20 +362,12 @@
             background: #b71c1c;
         }
 
-        /*
-         * RESULTADOS
-         */
-
         .sin-resultados {
             text-align: center;
             padding: 30px;
             color: #78909c;
             display: none;
         }
-
-        /*
-         * PAGINACION
-         */
 
         .paginacion {
             display: flex;
@@ -427,10 +399,6 @@
             font-size: 12px;
             color: #607d8b;
         }
-
-        /*
-         * MENSAJES
-         */
 
         .mensaje-exito {
             background: #d4edda;
@@ -590,8 +558,144 @@
         }
 
         /*
-         * FOOTER
+         * ALERTA PERSONALIZADA
          */
+
+        .alerta-fondo {
+            position: fixed;
+            inset: 0;
+            background: rgba(38, 50, 56, 0.35);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 3000;
+        }
+
+        .alerta-fondo.mostrar {
+            display: flex;
+        }
+
+        .alerta-ventana {
+            width: 100%;
+            max-width: 440px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 9px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+            animation: aparecerAlerta 0.18s ease-out;
+        }
+
+        @keyframes aparecerAlerta {
+
+            from {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+        .alerta-encabezado {
+            background: #263238;
+            color: white;
+            padding: 13px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .alerta-titulo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .alerta-icono {
+            font-size: 18px;
+        }
+
+        .alerta-cerrar {
+            background: transparent;
+            color: white;
+            font-size: 22px;
+            line-height: 1;
+            padding: 0 3px;
+            cursor: pointer;
+        }
+
+        .alerta-cerrar:hover {
+            color: #cfd8dc;
+        }
+
+        .alerta-contenido {
+            padding: 18px 18px 15px;
+        }
+
+        .alerta-mensaje {
+            margin: 0;
+            color: #455a64;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        .alerta-pie {
+            padding: 12px 18px 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .boton-alerta {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .boton-alerta-principal {
+            background: #37474f;
+            color: white;
+        }
+
+        .boton-alerta-principal:hover {
+            background: #263238;
+        }
+
+        .boton-alerta-cancelar {
+            background: #eceff1;
+            color: #37474f;
+        }
+
+        .boton-alerta-cancelar:hover {
+            background: #cfd8dc;
+        }
+
+        .alerta-tipo-exito .alerta-encabezado {
+            background: #2e7d32;
+        }
+
+        .alerta-tipo-advertencia .alerta-encabezado {
+            background: #ef6c00;
+        }
+
+        .alerta-tipo-error .alerta-encabezado {
+            background: #c62828;
+        }
+
+        .alerta-tipo-confirmacion .alerta-encabezado {
+            background: #37474f;
+        }
 
         footer {
             text-align: center;
@@ -599,10 +703,6 @@
             font-size: 12px;
             padding: 25px;
         }
-
-        /*
-         * RESPONSIVE
-         */
 
         @media (max-width: 1100px) {
 
@@ -663,6 +763,14 @@
                 padding: 15px;
             }
 
+            .alerta-fondo {
+                padding: 12px;
+            }
+
+            .alerta-ventana {
+                max-width: 100%;
+            }
+
         }
 
     </style>
@@ -717,8 +825,6 @@
     </div>
 
 
-    <!-- MENSAJES -->
-
     <div
         id="mensajeExito"
         class="mensaje-exito"
@@ -730,8 +836,6 @@
         class="mensaje-error"
     ></div>
 
-
-    <!-- ESTADISTICAS -->
 
     <div class="estadisticas">
 
@@ -802,8 +906,6 @@
 
     </div>
 
-
-    <!-- REGISTRAR NUEVO COLABORADOR -->
 
     <div class="seccion">
 
@@ -951,8 +1053,6 @@
     </div>
 
 
-    <!-- IMPORTAR EXCEL -->
-
     <div class="seccion">
 
         <h3>
@@ -987,8 +1087,6 @@
 
     </div>
 
-
-    <!-- BUSCAR -->
 
     <div class="seccion">
 
@@ -1027,8 +1125,6 @@
 
     </div>
 
-
-    <!-- TABLA -->
 
     <div class="seccion">
 
@@ -1186,8 +1282,6 @@
         </div>
 
 
-        <!-- PAGINACION -->
-
         <div class="paginacion">
 
             <button
@@ -1226,7 +1320,7 @@
 
 
 <!-- =====================================================
-     VENTANA DE EDICION
+     MODAL DE EDICION
      ===================================================== -->
 
 <div
@@ -1384,6 +1478,87 @@
 
         </div>
 
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ALERTA PERSONALIZADA
+     ===================================================== -->
+
+<div
+    id="alertaFondo"
+    class="alerta-fondo"
+>
+
+    <div
+        id="alertaVentana"
+        class="alerta-ventana"
+    >
+
+        <div class="alerta-encabezado">
+
+            <div class="alerta-titulo">
+
+                <span
+                    id="alertaIcono"
+                    class="alerta-icono"
+                >
+                    ℹ️
+                </span>
+
+                <span id="alertaTitulo">
+                    Aviso
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="alerta-cerrar"
+                id="botonCerrarAlerta"
+                title="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="alerta-contenido">
+
+            <p
+                id="alertaMensaje"
+                class="alerta-mensaje"
+            ></p>
+
+        </div>
+
+
+        <div class="alerta-pie">
+
+            <button
+                type="button"
+                id="botonCancelarAlerta"
+                class="boton-alerta boton-alerta-cancelar"
+                style="display:none;"
+            >
+                Cancelar
+            </button>
+
+
+            <button
+                type="button"
+                id="botonAceptarAlerta"
+                class="boton-alerta boton-alerta-principal"
+            >
+                Aceptar
+            </button>
+
+        </div>
 
     </div>
 
@@ -1598,7 +1773,361 @@
 
 
     /*
-     * MENSAJES
+     * ALERTAS PERSONALIZADAS
+     */
+
+    let alertaResolver = null;
+
+
+    function mostrarAlerta(
+        mensaje,
+        tipo = "info",
+        titulo = null
+    ) {
+
+        return new Promise(
+            resolve => {
+
+                alertaResolver = resolve;
+
+
+                const fondo =
+                    document.getElementById(
+                        "alertaFondo"
+                    );
+
+
+                const ventana =
+                    document.getElementById(
+                        "alertaVentana"
+                    );
+
+
+                const icono =
+                    document.getElementById(
+                        "alertaIcono"
+                    );
+
+
+                const tituloElemento =
+                    document.getElementById(
+                        "alertaTitulo"
+                    );
+
+
+                const mensajeElemento =
+                    document.getElementById(
+                        "alertaMensaje"
+                    );
+
+
+                const botonAceptar =
+                    document.getElementById(
+                        "botonAceptarAlerta"
+                    );
+
+
+                const botonCancelar =
+                    document.getElementById(
+                        "botonCancelarAlerta"
+                    );
+
+
+                ventana.className =
+                    "alerta-ventana";
+
+
+                if (
+                    tipo === "exito"
+                ) {
+
+                    ventana.classList.add(
+                        "alerta-tipo-exito"
+                    );
+
+                    icono.textContent =
+                        "✓";
+
+                    tituloElemento.textContent =
+                        titulo ||
+                        "Operación completada";
+
+                } else if (
+                    tipo === "advertencia"
+                ) {
+
+                    ventana.classList.add(
+                        "alerta-tipo-advertencia"
+                    );
+
+                    icono.textContent =
+                        "⚠";
+
+                    tituloElemento.textContent =
+                        titulo ||
+                        "Advertencia";
+
+                } else if (
+                    tipo === "error"
+                ) {
+
+                    ventana.classList.add(
+                        "alerta-tipo-error"
+                    );
+
+                    icono.textContent =
+                        "✕";
+
+                    tituloElemento.textContent =
+                        titulo ||
+                        "Error";
+
+                } else {
+
+                    ventana.classList.add(
+                        "alerta-tipo-confirmacion"
+                    );
+
+                    icono.textContent =
+                        "ℹ";
+
+                    tituloElemento.textContent =
+                        titulo ||
+                        "Aviso";
+
+                }
+
+
+                mensajeElemento.textContent =
+                    mensaje;
+
+
+                botonCancelar.style.display =
+                    "none";
+
+
+                botonAceptar.textContent =
+                    "Aceptar";
+
+
+                fondo.classList.add(
+                    "mostrar"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        botonAceptar.focus();
+
+                    },
+                    50
+                );
+
+            }
+        );
+
+    }
+
+
+    function mostrarConfirmacion(
+        mensaje,
+        titulo = "Confirmar acción"
+    ) {
+
+        return new Promise(
+            resolve => {
+
+                alertaResolver = resolve;
+
+
+                const fondo =
+                    document.getElementById(
+                        "alertaFondo"
+                    );
+
+
+                const ventana =
+                    document.getElementById(
+                        "alertaVentana"
+                    );
+
+
+                const icono =
+                    document.getElementById(
+                        "alertaIcono"
+                    );
+
+
+                const tituloElemento =
+                    document.getElementById(
+                        "alertaTitulo"
+                    );
+
+
+                const mensajeElemento =
+                    document.getElementById(
+                        "alertaMensaje"
+                    );
+
+
+                const botonAceptar =
+                    document.getElementById(
+                        "botonAceptarAlerta"
+                    );
+
+
+                const botonCancelar =
+                    document.getElementById(
+                        "botonCancelarAlerta"
+                    );
+
+
+                ventana.className =
+                    "alerta-ventana alerta-tipo-confirmacion";
+
+
+                icono.textContent =
+                    "❓";
+
+
+                tituloElemento.textContent =
+                    titulo;
+
+
+                mensajeElemento.textContent =
+                    mensaje;
+
+
+                botonCancelar.style.display =
+                    "inline-block";
+
+
+                botonAceptar.textContent =
+                    "Confirmar";
+
+
+                fondo.classList.add(
+                    "mostrar"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        botonAceptar.focus();
+
+                    },
+                    50
+                );
+
+            }
+        );
+
+    }
+
+
+    function cerrarAlerta(
+        resultado
+    ) {
+
+        const fondo =
+            document.getElementById(
+                "alertaFondo"
+            );
+
+
+        fondo.classList.remove(
+            "mostrar"
+        );
+
+
+        if (
+            alertaResolver
+        ) {
+
+            const resolver =
+                alertaResolver;
+
+
+            alertaResolver =
+                null;
+
+
+            resolver(
+                resultado
+            );
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "botonAceptarAlerta"
+    ).addEventListener(
+        "click",
+        function() {
+
+            cerrarAlerta(
+                true
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "botonCancelarAlerta"
+    ).addEventListener(
+        "click",
+        function() {
+
+            cerrarAlerta(
+                false
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "botonCerrarAlerta"
+    ).addEventListener(
+        "click",
+        function() {
+
+            cerrarAlerta(
+                false
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "alertaFondo"
+    ).addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                cerrarAlerta(
+                    false
+                );
+
+            }
+
+        }
+    );
+
+
+    /*
+     * MENSAJES INTERNOS
      */
 
     function mostrarMensajeExito(
@@ -1724,11 +2253,14 @@
 
 
                 todos =
-                    todos.concat(data);
+                    todos.concat(
+                        data
+                    );
 
 
                 if (
-                    data.length < cantidad
+                    data.length <
+                    cantidad
                 ) {
 
                     break;
@@ -1736,7 +2268,8 @@
                 }
 
 
-                desde += cantidad;
+                desde +=
+                    cantidad;
 
             }
 
@@ -1804,7 +2337,8 @@
 
                 const area =
                     String(
-                        colaborador.Area ?? ""
+                        colaborador.Area ??
+                        ""
                     ).trim();
 
 
@@ -1813,7 +2347,9 @@
                 ) {
 
                     areas.add(
-                        normalizar(area)
+                        normalizar(
+                            area
+                        )
                     );
 
                 }
@@ -1916,7 +2452,6 @@
         colaboradoresFiltrados =
             colaboradores.filter(
                 colaborador => {
-
 
                     const codigo =
                         normalizar(
@@ -2049,7 +2584,9 @@
             );
 
 
-        paginaActual = 1;
+        paginaActual =
+            1;
+
 
         renderizarTabla();
 
@@ -2129,7 +2666,8 @@
 
         const inicio =
             (
-                paginaActual - 1
+                paginaActual -
+                1
             ) *
             registrosPorPagina;
 
@@ -2148,7 +2686,6 @@
 
         registrosPagina.forEach(
             colaborador => {
-
 
                 const fila =
                     document.createElement(
@@ -2219,9 +2756,9 @@
                             <button
                                 type="button"
                                 class="boton-accion boton-editar"
-                                onclick="editarColaborador('${escapeHtml(
+                                data-codigo-editar="${escapeHtml(
                                     colaborador.CodigoColaborador
-                                )}')"
+                                )}"
                             >
                                 Editar
                             </button>
@@ -2229,9 +2766,9 @@
                             <button
                                 type="button"
                                 class="boton-accion boton-eliminar"
-                                onclick="eliminarColaborador('${escapeHtml(
+                                data-codigo-eliminar="${escapeHtml(
                                     colaborador.CodigoColaborador
-                                )}')"
+                                )}"
                             >
                                 Eliminar
                             </button>
@@ -2241,6 +2778,42 @@
                     </td>
 
                 `;
+
+
+                const botonEditar =
+                    fila.querySelector(
+                        "[data-codigo-editar]"
+                    );
+
+
+                const botonEliminar =
+                    fila.querySelector(
+                        "[data-codigo-eliminar]"
+                    );
+
+
+                botonEditar.addEventListener(
+                    "click",
+                    function() {
+
+                        editarColaborador(
+                            colaborador.CodigoColaborador
+                        );
+
+                    }
+                );
+
+
+                botonEliminar.addEventListener(
+                    "click",
+                    function() {
+
+                        eliminarColaborador(
+                            colaborador.CodigoColaborador
+                        );
+
+                    }
+                );
 
 
                 tablaColaboradores.appendChild(
@@ -2332,7 +2905,7 @@
         "botonAnterior"
     ).addEventListener(
         "click",
-        function () {
+        function() {
 
             if (
                 paginaActual > 1
@@ -2352,7 +2925,7 @@
         "botonSiguiente"
     ).addEventListener(
         "click",
-        function () {
+        function() {
 
             const totalPaginas =
                 Math.ceil(
@@ -2406,9 +2979,13 @@
 
 
         const claveEncontrada =
-            Object.keys(fila).find(
+            Object.keys(
+                fila
+            ).find(
                 clave =>
-                    normalizar(clave) ===
+                    normalizar(
+                        clave
+                    ) ===
                     claveBuscada
             );
 
@@ -2442,7 +3019,6 @@
 
         filas.forEach(
             fila => {
-
 
                 const codigo =
                     String(
@@ -2555,10 +3131,14 @@
             );
 
 
-        if (!archivo) {
+        if (
+            !archivo
+        ) {
 
-            alert(
-                "Selecciona primero el archivo de Excel."
+            await mostrarAlerta(
+                "Selecciona primero el archivo de Excel.",
+                "advertencia",
+                "Archivo requerido"
             );
 
             return;
@@ -2692,7 +3272,6 @@
             actuales.forEach(
                 actual => {
 
-
                     const codigo =
                         normalizar(
                             actual.CodigoColaborador
@@ -2764,7 +3343,6 @@
             nuevosDatos.forEach(
                 nuevo => {
 
-
                     const codigo =
                         normalizar(
                             nuevo.CodigoColaborador
@@ -2776,7 +3354,8 @@
                             actual =>
                                 normalizar(
                                     actual.CodigoColaborador
-                                ) === codigo
+                                ) ===
+                                codigo
                         );
 
 
@@ -2932,8 +3511,10 @@
             codigo === ""
         ) {
 
-            alert(
-                "Ingresa el código del colaborador."
+            await mostrarAlerta(
+                "Ingresa el código del colaborador.",
+                "advertencia",
+                "Dato requerido"
             );
 
             return;
@@ -2945,8 +3526,10 @@
             nombre === ""
         ) {
 
-            alert(
-                "Ingresa el nombre del colaborador."
+            await mostrarAlerta(
+                "Ingresa el nombre del colaborador.",
+                "advertencia",
+                "Dato requerido"
             );
 
             return;
@@ -2970,8 +3553,10 @@
             existe
         ) {
 
-            alert(
-                "Ya existe un colaborador con ese código."
+            await mostrarAlerta(
+                "Ya existe un colaborador con ese código.",
+                "advertencia",
+                "Código duplicado"
             );
 
             return;
@@ -3116,7 +3701,7 @@
      * ABRIR VENTANA DE EDICION
      */
 
-    function editarColaborador(
+    async function editarColaborador(
         codigo
     ) {
 
@@ -3136,8 +3721,10 @@
             !colaborador
         ) {
 
-            alert(
-                "No se encontró el colaborador."
+            await mostrarAlerta(
+                "No se encontró el colaborador.",
+                "error",
+                "Colaborador no encontrado"
             );
 
             return;
@@ -3145,46 +3732,43 @@
         }
 
 
-        /*
-         * Guardamos el código original.
-         */
-
         codigoColaboradorEditando =
             colaborador.CodigoColaborador;
 
 
-        /*
-         * CARGAR TODOS LOS CAMPOS
-         */
-
         document.getElementById(
             "editarCodigo"
         ).value =
-            colaborador.CodigoColaborador ?? "";
+            colaborador.CodigoColaborador ??
+            "";
 
 
         document.getElementById(
             "editarNombre"
         ).value =
-            colaborador.Nombre ?? "";
+            colaborador.Nombre ??
+            "";
 
 
         document.getElementById(
             "editarArea"
         ).value =
-            colaborador.Area ?? "";
+            colaborador.Area ??
+            "";
 
 
         document.getElementById(
             "editarTelefono"
         ).value =
-            colaborador.Telefono ?? "";
+            colaborador.Telefono ??
+            "";
 
 
         document.getElementById(
             "editarCorreo"
         ).value =
-            colaborador.Correo ?? "";
+            colaborador.Correo ??
+            "";
 
 
         document.getElementById(
@@ -3196,10 +3780,6 @@
                 ? "Inactivo"
                 : "Activo";
 
-
-        /*
-         * MOSTRAR MODAL
-         */
 
         document.getElementById(
             "modalEdicion"
@@ -3257,11 +3837,6 @@
     );
 
 
-    /*
-     * CERRAR AL HACER CLIC
-     * FUERA DE LA VENTANA
-     */
-
     document.getElementById(
         "modalEdicion"
     ).addEventListener(
@@ -3304,10 +3879,6 @@
         }
 
 
-        /*
-         * OBTENER TODOS LOS CAMPOS
-         */
-
         const nuevoCodigo =
             document.getElementById(
                 "editarCodigo"
@@ -3344,16 +3915,14 @@
             ).value;
 
 
-        /*
-         * VALIDACIONES
-         */
-
         if (
             nuevoCodigo === ""
         ) {
 
-            alert(
-                "El código del colaborador no puede quedar vacío."
+            await mostrarAlerta(
+                "El código del colaborador no puede quedar vacío.",
+                "advertencia",
+                "Dato requerido"
             );
 
             document.getElementById(
@@ -3369,8 +3938,10 @@
             nuevoNombre === ""
         ) {
 
-            alert(
-                "El nombre del colaborador no puede quedar vacío."
+            await mostrarAlerta(
+                "El nombre del colaborador no puede quedar vacío.",
+                "advertencia",
+                "Dato requerido"
             );
 
             document.getElementById(
@@ -3382,9 +3953,17 @@
         }
 
 
-        /*
-         * COMPROBAR DUPLICADO
-         */
+        const codigoOriginalNormalizado =
+            normalizar(
+                codigoColaboradorEditando
+            );
+
+
+        const nuevoCodigoNormalizado =
+            normalizar(
+                nuevoCodigo
+            );
+
 
         const codigoDuplicado =
             colaboradores.some(
@@ -3396,19 +3975,11 @@
                         );
 
 
-                    const codigoOriginal =
-                        normalizar(
-                            codigoColaboradorEditando
-                        );
-
-
                     return (
                         codigo ===
-                        normalizar(
-                            nuevoCodigo
-                        ) &&
+                        nuevoCodigoNormalizado &&
                         codigo !==
-                        codigoOriginal
+                        codigoOriginalNormalizado
                     );
 
                 }
@@ -3419,8 +3990,10 @@
             codigoDuplicado
         ) {
 
-            alert(
-                "El nuevo código ya pertenece a otro colaborador."
+            await mostrarAlerta(
+                "El nuevo código ya pertenece a otro colaborador.",
+                "advertencia",
+                "Código duplicado"
             );
 
             document.getElementById(
@@ -3432,11 +4005,105 @@
         }
 
 
-        try {
+        /*
+         * PROTEGER EL HISTORIAL
+         *
+         * Si se intenta cambiar el código,
+         * comprobamos si el colaborador tiene
+         * préstamos registrados.
+         */
 
-            /*
-             * GUARDAR TODOS LOS CAMPOS
-             */
+        if (
+            nuevoCodigoNormalizado !==
+            codigoOriginalNormalizado
+        ) {
+
+            try {
+
+                const {
+                    data: prestamosColaborador,
+                    error: errorPrestamos
+                } =
+                    await supabaseClient
+                        .from(
+                            "prestamos"
+                        )
+                        .select(
+                            "id,estado"
+                        )
+                        .eq(
+                            "CodigoColaborador",
+                            codigoColaboradorEditando
+                        );
+
+
+                if (
+                    errorPrestamos
+                ) {
+
+                    console.error(
+                        "Error al comprobar préstamos del colaborador:",
+                        errorPrestamos
+                    );
+
+
+                    await mostrarAlerta(
+                        "No se pudo comprobar el historial de préstamos del colaborador. Por seguridad, no se modificó el código.",
+                        "error",
+                        "No se puede cambiar el código"
+                    );
+
+                    return;
+
+                }
+
+
+                const prestamos =
+                    prestamosColaborador ||
+                    [];
+
+
+                if (
+                    prestamos.length >
+                    0
+                ) {
+
+                    await mostrarAlerta(
+                        "No se puede cambiar el código de este colaborador porque tiene préstamos registrados.\n\nEl código se utiliza para conservar la relación con el historial de préstamos. Puede modificar los demás datos del colaborador sin cambiar su código.",
+                        "advertencia",
+                        "Código protegido"
+                    );
+
+                    document.getElementById(
+                        "editarCodigo"
+                    ).focus();
+
+                    return;
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Error al comprobar historial:",
+                    error
+                );
+
+
+                await mostrarAlerta(
+                    "No se pudo comprobar el historial de préstamos. Por seguridad, no se modificó el código.",
+                    "error",
+                    "No se puede cambiar el código"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        try {
 
             const {
                 error
@@ -3481,16 +4148,8 @@
             }
 
 
-            /*
-             * CERRAR VENTANA
-             */
-
             cerrarModalEdicion();
 
-
-            /*
-             * RECARGAR DATOS
-             */
 
             await cargarBase();
 
@@ -3533,11 +4192,11 @@
      * ELIMINAR COLABORADOR
      *
      * REGLA:
+     *
      * Un colaborador solamente puede eliminarse
      * si NO tiene ningún préstamo histórico.
      *
-     * Si existe cualquier préstamo, el colaborador
-     * se conserva para proteger el historial.
+     * Si tiene cualquier préstamo, se conserva.
      */
 
     async function eliminarColaborador(
@@ -3560,22 +4219,16 @@
             !colaborador
         ) {
 
-            alert(
-                "No se encontró el colaborador."
+            await mostrarAlerta(
+                "No se encontró el colaborador.",
+                "error",
+                "Colaborador no encontrado"
             );
 
             return;
 
         }
 
-
-        /*
-         * COMPROBAR SI EXISTE CUALQUIER
-         * PRÉSTAMO HISTÓRICO
-         *
-         * No usamos solamente estado = Prestado.
-         * Se buscan todos los préstamos asociados.
-         */
 
         try {
 
@@ -3597,7 +4250,7 @@
 
 
             /*
-             * Si no podemos comprobar el historial,
+             * Si no podemos consultar el historial,
              * NO permitimos eliminar.
              */
 
@@ -3611,10 +4264,11 @@
                 );
 
 
-                mostrarMensajeError(
-                    "No se pudo comprobar el historial de préstamos del colaborador. Por seguridad, no se realizó la eliminación."
+                await mostrarAlerta(
+                    "No se pudo comprobar el historial de préstamos del colaborador.\n\nPor seguridad, no se realizó la eliminación.",
+                    "error",
+                    "No se puede eliminar"
                 );
-
 
                 return;
 
@@ -3622,11 +4276,12 @@
 
 
             const prestamos =
-                prestamosColaborador || [];
+                prestamosColaborador ||
+                [];
 
 
             /*
-             * SI TIENE PRÉSTAMOS ACTIVOS
+             * PRÉSTAMOS ACTIVOS
              */
 
             const prestamosActivos =
@@ -3634,16 +4289,20 @@
                     prestamo =>
                         normalizar(
                             prestamo.estado
-                        ) === "PRESTADO"
+                        ) ===
+                        "PRESTADO"
                 );
 
 
             if (
-                prestamosActivos.length > 0
+                prestamosActivos.length >
+                0
             ) {
 
-                alert(
-                    "No se puede eliminar este colaborador porque tiene un préstamo activo. Primero debe registrarse la devolución del libro."
+                await mostrarAlerta(
+                    "No se puede eliminar este colaborador porque tiene un préstamo activo.\n\nPrimero debe registrarse la devolución del libro.",
+                    "advertencia",
+                    "Préstamo activo"
                 );
 
                 return;
@@ -3652,18 +4311,18 @@
 
 
             /*
-             * SI TIENE PRÉSTAMOS HISTÓRICOS
-             *
-             * Aunque estén devueltos, se conserva
-             * el colaborador para proteger el historial.
+             * PRÉSTAMOS HISTÓRICOS
              */
 
             if (
-                prestamos.length > 0
+                prestamos.length >
+                0
             ) {
 
-                alert(
-                    `No se puede eliminar a "${colaborador.Nombre}" porque tiene ${prestamos.length} préstamo(s) registrado(s) en el historial. Para conservar el historial de la biblioteca, debe mantenerse en la base y puede cambiarse a estado Inactivo.`
+                await mostrarAlerta(
+                    `No se puede eliminar a "${colaborador.Nombre}" porque tiene ${prestamos.length} préstamo(s) registrado(s) en el historial.\n\nPara conservar el historial de la biblioteca, debe mantenerse en la base. Si ya no trabaja en la organización, puede cambiar su estado a Inactivo.`,
+                    "advertencia",
+                    "Historial protegido"
                 );
 
                 return;
@@ -3672,14 +4331,13 @@
 
 
             /*
-             * SOLAMENTE AQUÍ SE PIDE CONFIRMACIÓN
-             *
-             * El colaborador no tiene ningún préstamo.
+             * CONFIRMACION PERSONALIZADA
              */
 
             const confirmar =
-                confirm(
-                    `¿Está seguro de eliminar al colaborador "${colaborador.Nombre}" con código ${colaborador.CodigoColaborador}?`
+                await mostrarConfirmacion(
+                    `¿Está seguro de eliminar al colaborador "${colaborador.Nombre}" con código ${colaborador.CodigoColaborador}?`,
+                    "Confirmar eliminación"
                 );
 
 
@@ -3745,7 +4403,7 @@
 
 
     /*
-     * TECLA ESC PARA CERRAR
+     * TECLA ESC
      */
 
     document.addEventListener(
@@ -3753,24 +4411,49 @@
         function(event) {
 
             if (
-                event.key === "Escape"
+                event.key !==
+                "Escape"
             ) {
 
-                const modal =
-                    document.getElementById(
-                        "modalEdicion"
-                    );
+                return;
+
+            }
 
 
-                if (
-                    modal.classList.contains(
-                        "mostrar"
-                    )
-                ) {
+            const alerta =
+                document.getElementById(
+                    "alertaFondo"
+                );
 
-                    cerrarModalEdicion();
 
-                }
+            if (
+                alerta.classList.contains(
+                    "mostrar"
+                )
+            ) {
+
+                cerrarAlerta(
+                    false
+                );
+
+                return;
+
+            }
+
+
+            const modal =
+                document.getElementById(
+                    "modalEdicion"
+                );
+
+
+            if (
+                modal.classList.contains(
+                    "mostrar"
+                )
+            ) {
+
+                cerrarModalEdicion();
 
             }
 
