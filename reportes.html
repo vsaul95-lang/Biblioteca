@@ -624,7 +624,7 @@
 
             width: 100%;
 
-            min-width: 1650px;
+            min-width: 1350px;
 
             border-collapse: collapse;
 
@@ -687,27 +687,11 @@
 
         }
 
-        .tabla-resultados td.autor {
-
-            text-align: left;
-
-            min-width: 130px;
-
-        }
-
         .tabla-resultados td.genero {
 
             text-align: left;
 
             min-width: 110px;
-
-        }
-
-        .tabla-resultados td.editorial {
-
-            text-align: left;
-
-            min-width: 120px;
 
         }
 
@@ -1110,7 +1094,7 @@
             <div class="grafico-card">
 
                 <h2>
-                    🍩 Estado actual de los libros
+                    Estado actual de los libros
                 </h2>
 
                 <div class="grafico-contenedor">
@@ -1412,19 +1396,7 @@
                             </th>
 
                             <th>
-                                Autor
-                            </th>
-
-                            <th>
                                 Género
-                            </th>
-
-                            <th>
-                                Editorial
-                            </th>
-
-                            <th>
-                                Año
                             </th>
 
                             <th>
@@ -3698,7 +3670,7 @@
                     <tr>
 
                         <td
-                            colspan="17"
+                            colspan="14"
                             class="sin-resultados"
                         >
                             🔎 No se encontraron préstamos con los filtros seleccionados.
@@ -3970,47 +3942,11 @@
                         </td>
 
 
-                        <td class="autor">
-
-                            ${escapeHtml(
-
-                                datosLibro.autor ||
-                                "—"
-
-                            )}
-
-                        </td>
-
-
                         <td class="genero">
 
                             ${escapeHtml(
 
                                 datosLibro.genero ||
-                                "—"
-
-                            )}
-
-                        </td>
-
-
-                        <td class="editorial">
-
-                            ${escapeHtml(
-
-                                datosLibro.editorial ||
-                                "—"
-
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHtml(
-
-                                datosLibro.anio ||
                                 "—"
 
                             )}
@@ -4435,27 +4371,9 @@
                                 "",
 
 
-                            "Autor":
-
-                                datosLibro.autor ||
-                                "",
-
-
                             "Género":
 
                                 datosLibro.genero ||
-                                "",
-
-
-                            "Editorial":
-
-                                datosLibro.editorial ||
-                                "",
-
-
-                            "Año":
-
-                                datosLibro.anio ||
                                 "",
 
 
