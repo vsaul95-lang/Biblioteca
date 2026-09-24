@@ -119,11 +119,36 @@
             color: white;
         }
 
-        .btn-devolver {
-            background: #2e7d32;
+        .btn-devolver,
+        .btn-eliminar {
             color: white;
             padding: 7px 11px;
             font-size: 12px;
+            min-width: 65px;
+        }
+
+        .btn-devolver {
+            background: #2e7d32;
+        }
+
+        .btn-devolver:hover {
+            background: #1b5e20;
+        }
+
+        .btn-eliminar {
+            background: #c62828;
+        }
+
+        .btn-eliminar:hover {
+            background: #b71c1c;
+        }
+
+        .acciones-tabla {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
         }
 
         .mensaje {
@@ -143,6 +168,12 @@
             display: block;
             background: #ffebee;
             color: #c62828;
+        }
+
+        .mensaje.advertencia {
+            display: block;
+            background: #fff8e1;
+            color: #e65100;
         }
 
         .tabla-contenedor {
@@ -187,9 +218,9 @@
             font-weight: bold;
         }
 
-        /* ================================
+        /* ==========================================
            DETALLE DE DEVOLUCIÓN
-           ================================ */
+           ========================================== */
 
         .detalle {
             background: #f7f9fa;
@@ -321,7 +352,62 @@
             border: 1px solid #ffcdd2;
         }
 
+        /* ==========================================
+           CONFIRMACIÓN DE ELIMINACIÓN
+           ========================================== */
+
+        .confirmacion-eliminar {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            border-radius: 6px;
+        }
+
+        .confirmacion-eliminar-contenido {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .confirmacion-eliminar-texto {
+            font-size: 13px;
+            color: #b71c1c;
+            line-height: 1.4;
+        }
+
+        .confirmacion-eliminar-texto strong {
+            color: #c62828;
+        }
+
+        .acciones-eliminar {
+            display: flex;
+            gap: 7px;
+            flex-shrink: 0;
+        }
+
+        .btn-confirmar-eliminar {
+            background: #c62828;
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .btn-confirmar-eliminar:hover {
+            background: #b71c1c;
+        }
+
+        .btn-cancelar-eliminar {
+            background: #757575;
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
         @media (max-width: 850px) {
+
             .detalle-grid {
                 grid-template-columns: 1fr 1fr;
             }
@@ -330,17 +416,20 @@
                 grid-column: span 2;
             }
 
-            .confirmacion-contenido {
+            .confirmacion-contenido,
+            .confirmacion-eliminar-contenido {
                 align-items: flex-start;
                 flex-direction: column;
             }
 
-            .acciones-confirmacion {
+            .acciones-confirmacion,
+            .acciones-eliminar {
                 width: 100%;
             }
         }
 
         @media (max-width: 700px) {
+
             .resumen {
                 grid-template-columns: 1fr;
             }
@@ -374,11 +463,13 @@
                 width: 100%;
             }
 
-            .acciones-confirmacion {
+            .acciones-confirmacion,
+            .acciones-eliminar {
                 flex-direction: column;
             }
 
-            .acciones-confirmacion button {
+            .acciones-confirmacion button,
+            .acciones-eliminar button {
                 width: 100%;
             }
         }
@@ -392,7 +483,12 @@
     <a href="index.html" class="btn-volver">← Volver</a>
 </header>
 
+
 <div class="contenedor">
+
+    <!-- ==========================================
+         RESUMEN
+         ========================================== -->
 
     <section class="resumen">
 
@@ -414,6 +510,10 @@
     </section>
 
 
+    <!-- ==========================================
+         BUSCAR PRÉSTAMO
+         ========================================== -->
+
     <section class="seccion">
 
         <h2>Buscar préstamo</h2>
@@ -426,7 +526,10 @@
                 placeholder="Familia, PersonaId, nombre, apellido o código de libro..."
             >
 
-            <button class="btn-buscar" id="btnBuscar">
+            <button
+                class="btn-buscar"
+                id="btnBuscar"
+            >
                 Buscar
             </button>
 
@@ -434,11 +537,13 @@
 
         <div id="mensaje" class="mensaje"></div>
 
+
         <div class="tabla-contenedor">
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>FamiliaId</th>
                         <th>PersonaId</th>
@@ -449,7 +554,9 @@
                         <th>Comentarios</th>
                         <th>Acciones</th>
                     </tr>
+
                 </thead>
+
 
                 <tbody id="tablaPrestamos"></tbody>
 
@@ -460,9 +567,14 @@
     </section>
 
 
+    <!-- ==========================================
+         DETALLE DE DEVOLUCIÓN
+         ========================================== -->
+
     <section class="seccion">
 
         <h2>Detalle de devolución</h2>
+
 
         <div id="detalle" class="detalle">
 
@@ -605,23 +717,35 @@
                 id="avisoExtraviado"
                 class="aviso-extraviado"
             >
-                ⚠️ Al registrar el libro como <strong>Extraviado</strong>,
-                su estado cambiará a <strong>Baja</strong> y no volverá
-                a aparecer como disponible.
+                ⚠️ Al registrar el libro como
+                <strong>Extraviado</strong>,
+                su estado cambiará a
+                <strong>Baja</strong>
+                y no volverá a aparecer como disponible.
             </div>
 
         </div>
 
 
-        <div id="confirmacion" class="confirmacion">
+        <!-- ==========================================
+             CONFIRMACIÓN DEVOLUCIÓN
+             ========================================== -->
+
+        <div
+            id="confirmacion"
+            class="confirmacion"
+        >
 
             <div class="confirmacion-contenido">
 
                 <div class="confirmacion-texto">
+
                     <strong>
                         ¿Desea registrar la devolución de este libro?
                     </strong>
+
                 </div>
+
 
                 <div class="acciones-confirmacion">
 
@@ -645,6 +769,55 @@
 
         </div>
 
+
+        <!-- ==========================================
+             CONFIRMACIÓN ELIMINACIÓN
+             ========================================== -->
+
+        <div
+            id="confirmacionEliminar"
+            class="confirmacion-eliminar"
+        >
+
+            <div class="confirmacion-eliminar-contenido">
+
+                <div class="confirmacion-eliminar-texto">
+
+                    <strong>
+                        ⚠️ ¿Está seguro de eliminar este registro?
+                    </strong>
+
+                    <br>
+
+                    El préstamo será eliminado y el libro volverá a estar
+                    disponible. Esta acción hará que el préstamo desaparezca
+                    del historial como si nunca se hubiera realizado.
+
+                </div>
+
+
+                <div class="acciones-eliminar">
+
+                    <button
+                        class="btn-cancelar-eliminar"
+                        id="btnCancelarEliminar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        class="btn-confirmar-eliminar"
+                        id="btnConfirmarEliminar"
+                    >
+                        Sí, eliminar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </section>
 
 </div>
@@ -654,28 +827,48 @@
 
 let prestamos = [];
 let prestamoSeleccionado = null;
+let prestamoEliminar = null;
 
 
 const tablaPrestamos =
-    document.getElementById("tablaPrestamos");
+    document.getElementById(
+        "tablaPrestamos"
+    );
 
 const buscarInput =
-    document.getElementById("buscar");
+    document.getElementById(
+        "buscar"
+    );
 
 const mensaje =
-    document.getElementById("mensaje");
+    document.getElementById(
+        "mensaje"
+    );
 
 const detalle =
-    document.getElementById("detalle");
+    document.getElementById(
+        "detalle"
+    );
 
 const confirmacion =
-    document.getElementById("confirmacion");
+    document.getElementById(
+        "confirmacion"
+    );
+
+const confirmacionEliminar =
+    document.getElementById(
+        "confirmacionEliminar"
+    );
 
 const comentarioDevolucion =
-    document.getElementById("comentarioDevolucion");
+    document.getElementById(
+        "comentarioDevolucion"
+    );
 
 const avisoExtraviado =
-    document.getElementById("avisoExtraviado");
+    document.getElementById(
+        "avisoExtraviado"
+    );
 
 
 document.addEventListener(
@@ -698,7 +891,10 @@ async function cargarDatos() {
         } = await supabaseClient
             .from("prestamos")
             .select("*")
-            .eq("estado", "Prestado")
+            .eq(
+                "estado",
+                "Prestado"
+            )
             .order(
                 "fechaPrestamo",
                 {
@@ -706,15 +902,21 @@ async function cargarDatos() {
                 }
             );
 
+
         if (error) {
             throw error;
         }
 
-        prestamos = data || [];
+
+        prestamos =
+            data || [];
+
 
         actualizarResumen();
 
-        mostrarPrestamos(prestamos);
+        mostrarPrestamos(
+            prestamos
+        );
 
     } catch (error) {
 
@@ -737,8 +939,10 @@ async function actualizarResumen() {
     const totalActivos =
         prestamos.length;
 
+
     const ahora =
         new Date();
+
 
     const totalVencidos =
         prestamos.filter(
@@ -751,12 +955,14 @@ async function actualizarResumen() {
 
     document.getElementById(
         "totalActivos"
-    ).textContent = totalActivos;
+    ).textContent =
+        totalActivos;
 
 
     document.getElementById(
         "totalVencidos"
-    ).textContent = totalVencidos;
+    ).textContent =
+        totalVencidos;
 
 
     try {
@@ -766,22 +972,28 @@ async function actualizarResumen() {
             error
         } = await supabaseClient
             .from("libros")
-            .select("id, estado");
+            .select(
+                "id, estado"
+            );
+
 
         if (error) {
             throw error;
         }
 
+
         const disponibles =
             (data || []).filter(
                 libro =>
-                    libro.estado === "Disponible"
+                    libro.estado ===
+                    "Disponible"
             ).length;
 
 
         document.getElementById(
             "totalDisponibles"
-        ).textContent = disponibles;
+        ).textContent =
+            disponibles;
 
     } catch (error) {
 
@@ -789,7 +1001,8 @@ async function actualizarResumen() {
 
         document.getElementById(
             "totalDisponibles"
-        ).textContent = "—";
+        ).textContent =
+            "—";
     }
 }
 
@@ -800,7 +1013,8 @@ async function actualizarResumen() {
 
 function mostrarPrestamos(lista) {
 
-    tablaPrestamos.innerHTML = "";
+    tablaPrestamos.innerHTML =
+        "";
 
 
     if (!lista.length) {
@@ -821,187 +1035,276 @@ function mostrarPrestamos(lista) {
         new Date();
 
 
-    lista.forEach(prestamo => {
+    lista.forEach(
+        prestamo => {
 
-        const vencido =
-            new Date(
-                prestamo.fechaDevolucion
-            ) < ahora;
-
-
-        const fila =
-            document.createElement("tr");
+            const vencido =
+                new Date(
+                    prestamo.fechaDevolucion
+                ) < ahora;
 
 
-        if (vencido) {
-            fila.classList.add("vencido");
-        }
-
-
-        const tdFamilia =
-            document.createElement("td");
-
-        tdFamilia.textContent =
-            prestamo.FamiliaId;
-
-
-        const tdPersonaId =
-            document.createElement("td");
-
-        tdPersonaId.textContent =
-            prestamo.PersonaId;
-
-
-        const tdLibro =
-            document.createElement("td");
-
-        tdLibro.className =
-            "nombre";
-
-        tdLibro.textContent =
-            `${formatearCodigo(
-                prestamo.codigoLibro
-            )} - ${prestamo.nombreLibro}`;
-
-
-        const tdPrestamo =
-            document.createElement("td");
-
-        tdPrestamo.textContent =
-            formatearFecha(
-                prestamo.fechaPrestamo
-            );
-
-
-        const tdDevolucion =
-            document.createElement("td");
-
-        tdDevolucion.textContent =
-            formatearFecha(
-                prestamo.fechaDevolucion
-            );
-
-
-        const tdEstado =
-            document.createElement("td");
-
-
-        if (vencido) {
-
-            tdEstado.textContent =
-                "Vencido";
-
-            tdEstado.className =
-                "estado-vencido";
-
-        } else {
-
-            tdEstado.textContent =
-                "Prestado";
-
-            tdEstado.className =
-                "estado-prestado";
-        }
-
-
-        const tdComentarios =
-            document.createElement("td");
-
-        tdComentarios.textContent =
-            prestamo.comentarios ||
-            "—";
-
-
-        const tdAccion =
-            document.createElement("td");
-
-
-        const boton =
-            document.createElement("button");
-
-
-        boton.type =
-            "button";
-
-        boton.className =
-            "btn-devolver";
-
-        boton.textContent =
-            "Devolver";
-
-
-        boton.addEventListener(
-            "click",
-            function() {
-
-                seleccionarPrestamo(
-                    prestamo
+            const fila =
+                document.createElement(
+                    "tr"
                 );
 
+
+            if (vencido) {
+                fila.classList.add(
+                    "vencido"
+                );
             }
-        );
 
 
-        tdAccion.appendChild(
-            boton
-        );
+            const tdFamilia =
+                document.createElement(
+                    "td"
+                );
+
+            tdFamilia.textContent =
+                prestamo.FamiliaId;
 
 
-        fila.appendChild(
-            tdFamilia
-        );
+            const tdPersonaId =
+                document.createElement(
+                    "td"
+                );
 
-        fila.appendChild(
-            tdPersonaId
-        );
-
-        fila.appendChild(
-            tdLibro
-        );
-
-        fila.appendChild(
-            tdPrestamo
-        );
-
-        fila.appendChild(
-            tdDevolucion
-        );
-
-        fila.appendChild(
-            tdEstado
-        );
-
-        fila.appendChild(
-            tdComentarios
-        );
-
-        fila.appendChild(
-            tdAccion
-        );
+            tdPersonaId.textContent =
+                prestamo.PersonaId;
 
 
-        tablaPrestamos.appendChild(
-            fila
-        );
+            const tdLibro =
+                document.createElement(
+                    "td"
+                );
 
-    });
+            tdLibro.className =
+                "nombre";
+
+            tdLibro.textContent =
+                `${formatearCodigo(
+                    prestamo.codigoLibro
+                )} - ${prestamo.nombreLibro}`;
+
+
+            const tdPrestamo =
+                document.createElement(
+                    "td"
+                );
+
+            tdPrestamo.textContent =
+                formatearFecha(
+                    prestamo.fechaPrestamo
+                );
+
+
+            const tdDevolucion =
+                document.createElement(
+                    "td"
+                );
+
+            tdDevolucion.textContent =
+                formatearFecha(
+                    prestamo.fechaDevolucion
+                );
+
+
+            const tdEstado =
+                document.createElement(
+                    "td"
+                );
+
+
+            if (vencido) {
+
+                tdEstado.textContent =
+                    "Vencido";
+
+                tdEstado.className =
+                    "estado-vencido";
+
+            } else {
+
+                tdEstado.textContent =
+                    "Prestado";
+
+                tdEstado.className =
+                    "estado-prestado";
+            }
+
+
+            const tdComentarios =
+                document.createElement(
+                    "td"
+                );
+
+            tdComentarios.textContent =
+                prestamo.comentarios ||
+                "—";
+
+
+            /* ==================================
+               BOTONES DE ACCIONES
+               ================================== */
+
+            const tdAccion =
+                document.createElement(
+                    "td"
+                );
+
+
+            const acciones =
+                document.createElement(
+                    "div"
+                );
+
+            acciones.className =
+                "acciones-tabla";
+
+
+            /* BOTÓN DEVOLVER */
+
+            const botonDevolver =
+                document.createElement(
+                    "button"
+                );
+
+            botonDevolver.type =
+                "button";
+
+            botonDevolver.className =
+                "btn-devolver";
+
+            botonDevolver.textContent =
+                "Devolver";
+
+
+            botonDevolver.addEventListener(
+                "click",
+                function() {
+
+                    seleccionarPrestamo(
+                        prestamo
+                    );
+
+                }
+            );
+
+
+            /* BOTÓN ELIMINAR */
+
+            const botonEliminar =
+                document.createElement(
+                    "button"
+                );
+
+            botonEliminar.type =
+                "button";
+
+            botonEliminar.className =
+                "btn-eliminar";
+
+            botonEliminar.textContent =
+                "Eliminar";
+
+
+            botonEliminar.addEventListener(
+                "click",
+                function() {
+
+                    seleccionarParaEliminar(
+                        prestamo
+                    );
+
+                }
+            );
+
+
+            acciones.appendChild(
+                botonDevolver
+            );
+
+            acciones.appendChild(
+                botonEliminar
+            );
+
+
+            tdAccion.appendChild(
+                acciones
+            );
+
+
+            /* AGREGAR FILA */
+
+            fila.appendChild(
+                tdFamilia
+            );
+
+            fila.appendChild(
+                tdPersonaId
+            );
+
+            fila.appendChild(
+                tdLibro
+            );
+
+            fila.appendChild(
+                tdPrestamo
+            );
+
+            fila.appendChild(
+                tdDevolucion
+            );
+
+            fila.appendChild(
+                tdEstado
+            );
+
+            fila.appendChild(
+                tdComentarios
+            );
+
+            fila.appendChild(
+                tdAccion
+            );
+
+
+            tablaPrestamos.appendChild(
+                fila
+            );
+
+        }
+    );
 }
 
 
 /* ==========================================
-   SELECCIONAR PRÉSTAMO
+   SELECCIONAR PARA DEVOLVER
    ========================================== */
 
-function seleccionarPrestamo(prestamo) {
+function seleccionarPrestamo(
+    prestamo
+) {
 
     prestamoSeleccionado =
         prestamo;
 
 
+    prestamoEliminar =
+        null;
+
+
+    confirmacionEliminar.style.display =
+        "none";
+
+
     document.getElementById(
         "detalleFamilia"
     ).textContent =
-        prestamo.FamiliaId || "";
+        prestamo.FamiliaId ||
+        "";
 
 
     document.getElementById(
@@ -1015,13 +1318,15 @@ function seleccionarPrestamo(prestamo) {
     document.getElementById(
         "detallePersonaId"
     ).textContent =
-        prestamo.PersonaId || "";
+        prestamo.PersonaId ||
+        "";
 
 
     document.getElementById(
         "detalleLibro"
     ).textContent =
-        prestamo.nombreLibro || "";
+        prestamo.nombreLibro ||
+        "";
 
 
     document.getElementById(
@@ -1068,7 +1373,41 @@ function seleccionarPrestamo(prestamo) {
         behavior: "smooth",
         block: "nearest"
     });
+}
 
+
+/* ==========================================
+   SELECCIONAR PARA ELIMINAR
+   ========================================== */
+
+function seleccionarParaEliminar(
+    prestamo
+) {
+
+    prestamoEliminar =
+        prestamo;
+
+
+    prestamoSeleccionado =
+        null;
+
+
+    detalle.style.display =
+        "none";
+
+
+    confirmacion.style.display =
+        "none";
+
+
+    confirmacionEliminar.style.display =
+        "block";
+
+
+    confirmacionEliminar.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
 }
 
 
@@ -1125,9 +1464,7 @@ async function confirmarDevolucion() {
             comentarioDevolucion.value.trim();
 
 
-        /* ------------------------------------
-           ACTUALIZAR PRÉSTAMO
-           ------------------------------------ */
+        /* ACTUALIZAR PRÉSTAMO */
 
         const {
             error: errorPrestamo
@@ -1135,13 +1472,15 @@ async function confirmarDevolucion() {
             .from("prestamos")
             .update({
 
-                estado: "Devuelto",
+                estado:
+                    "Devuelto",
 
                 fechaDevolucionReal:
                     fechaReal.toISOString(),
 
                 comentarios:
-                    comentario || null
+                    comentario ||
+                    null
 
             })
             .eq(
@@ -1155,9 +1494,7 @@ async function confirmarDevolucion() {
         }
 
 
-        /* ------------------------------------
-           BUSCAR LIBRO
-           ------------------------------------ */
+        /* BUSCAR LIBRO */
 
         const {
             data: libros,
@@ -1190,20 +1527,20 @@ async function confirmarDevolucion() {
             );
 
 
-        /* ------------------------------------
-           ACTUALIZAR ESTADO DEL LIBRO
-           ------------------------------------ */
+        /* ACTUALIZAR LIBRO */
 
         if (libro) {
 
             const nuevoEstado =
-                comentario === "Extraviado"
+                comentario ===
+                "Extraviado"
                     ? "Baja"
                     : "Disponible";
 
 
             const {
-                error: errorLibroUpdate
+                error:
+                    errorLibroUpdate
             } = await supabaseClient
                 .from("libros")
                 .update({
@@ -1221,15 +1558,13 @@ async function confirmarDevolucion() {
             if (errorLibroUpdate) {
                 throw errorLibroUpdate;
             }
-
         }
 
 
-        /* ------------------------------------
-           MENSAJE FINAL
-           ------------------------------------ */
-
-        if (comentario === "Extraviado") {
+        if (
+            comentario ===
+            "Extraviado"
+        ) {
 
             mostrarMensaje(
                 "Devolución registrada. El libro fue marcado como Baja por extravío.",
@@ -1242,7 +1577,6 @@ async function confirmarDevolucion() {
                 "Devolución registrada correctamente.",
                 "exito"
             );
-
         }
 
 
@@ -1281,13 +1615,151 @@ async function confirmarDevolucion() {
             ),
             "error"
         );
-
     }
 }
 
 
 /* ==========================================
-   CANCELAR
+   CONFIRMAR ELIMINACIÓN
+   ========================================== */
+
+async function confirmarEliminacion() {
+
+    if (!prestamoEliminar) {
+
+        mostrarMensaje(
+            "Seleccione un préstamo para eliminar.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const codigoNormalizado =
+            normalizarCodigo(
+                prestamoEliminar.codigoLibro
+            );
+
+
+        /* ======================================
+           BUSCAR EL LIBRO
+           ====================================== */
+
+        const {
+            data: libros,
+            error: errorLibroConsulta
+        } = await supabaseClient
+            .from("libros")
+            .select(
+                "id, codigoLibro"
+            );
+
+
+        if (errorLibroConsulta) {
+            throw errorLibroConsulta;
+        }
+
+
+        const libro =
+            (libros || []).find(
+                item =>
+                    normalizarCodigo(
+                        item.codigoLibro
+                    ) ===
+                    codigoNormalizado
+            );
+
+
+        /* ======================================
+           REGRESAR LIBRO A DISPONIBLE
+           ====================================== */
+
+        if (libro) {
+
+            const {
+                error: errorLibroUpdate
+            } = await supabaseClient
+                .from("libros")
+                .update({
+
+                    estado:
+                        "Disponible"
+
+                })
+                .eq(
+                    "id",
+                    libro.id
+                );
+
+
+            if (errorLibroUpdate) {
+                throw errorLibroUpdate;
+            }
+        }
+
+
+        /* ======================================
+           ELIMINAR PRÉSTAMO
+           ====================================== */
+
+        const {
+            error: errorEliminar
+        } = await supabaseClient
+            .from("prestamos")
+            .delete()
+            .eq(
+                "id",
+                prestamoEliminar.id
+            );
+
+
+        if (errorEliminar) {
+            throw errorEliminar;
+        }
+
+
+        /* ======================================
+           LIMPIAR SELECCIÓN
+           ====================================== */
+
+        prestamoEliminar =
+            null;
+
+
+        confirmacionEliminar.style.display =
+            "none";
+
+
+        mostrarMensaje(
+            "El registro fue eliminado correctamente. El libro volvió a estar disponible.",
+            "exito"
+        );
+
+
+        await cargarDatos();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            "No fue posible eliminar el registro: " +
+            (
+                error.message ||
+                "error desconocido"
+            ),
+            "error"
+        );
+    }
+}
+
+
+/* ==========================================
+   CANCELAR DEVOLUCIÓN
    ========================================== */
 
 function cancelarDevolucion() {
@@ -1309,6 +1781,21 @@ function cancelarDevolucion() {
 
 
     avisoExtraviado.style.display =
+        "none";
+}
+
+
+/* ==========================================
+   CANCELAR ELIMINACIÓN
+   ========================================== */
+
+function cancelarEliminacion() {
+
+    prestamoEliminar =
+        null;
+
+
+    confirmacionEliminar.style.display =
         "none";
 }
 
@@ -1424,10 +1911,12 @@ function buscar() {
 
 
 /* ==========================================
-   FECHAS
+   FORMATEAR FECHA
    ========================================== */
 
-function formatearFecha(fecha) {
+function formatearFecha(
+    fecha
+) {
 
     if (!fecha) {
         return "";
@@ -1450,11 +1939,21 @@ function formatearFecha(fecha) {
    NORMALIZAR CÓDIGO
    ========================================== */
 
-function normalizarCodigo(codigo) {
+function normalizarCodigo(
+    codigo
+) {
 
-    return String(codigo || "")
-        .replace(/\D/g, "")
-        .replace(/^0+/, "") || "0";
+    return String(
+        codigo || ""
+    )
+        .replace(
+            /\D/g,
+            ""
+        )
+        .replace(
+            /^0+/,
+            ""
+        ) || "0";
 }
 
 
@@ -1462,11 +1961,18 @@ function normalizarCodigo(codigo) {
    FORMATEAR CÓDIGO
    ========================================== */
 
-function formatearCodigo(codigo) {
+function formatearCodigo(
+    codigo
+) {
 
     const numero =
-        String(codigo || "")
-            .replace(/\D/g, "");
+        String(
+            codigo || ""
+        )
+            .replace(
+                /\D/g,
+                ""
+            );
 
 
     if (!numero) {
@@ -1482,7 +1988,7 @@ function formatearCodigo(codigo) {
 
 
 /* ==========================================
-   MENSAJES
+   MOSTRAR MENSAJE
    ========================================== */
 
 function mostrarMensaje(
@@ -1494,9 +2000,14 @@ function mostrarMensaje(
         texto;
 
     mensaje.className =
-        "mensaje " + tipo;
+        "mensaje " +
+        tipo;
 }
 
+
+/* ==========================================
+   LIMPIAR MENSAJE
+   ========================================== */
 
 function limpiarMensaje() {
 
@@ -1505,38 +2016,6 @@ function limpiarMensaje() {
 
     mensaje.className =
         "mensaje";
-}
-
-
-/* ==========================================
-   SEGURIDAD HTML
-   ========================================== */
-
-function escapeHtml(valor) {
-
-    return String(
-        valor ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
 }
 
 
@@ -1574,11 +2053,34 @@ document
     );
 
 
+document
+    .getElementById(
+        "btnConfirmarEliminar"
+    )
+    .addEventListener(
+        "click",
+        confirmarEliminacion
+    );
+
+
+document
+    .getElementById(
+        "btnCancelarEliminar"
+    )
+    .addEventListener(
+        "click",
+        cancelarEliminacion
+    );
+
+
 buscarInput.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key ===
+            "Enter"
+        ) {
 
             buscar();
 
