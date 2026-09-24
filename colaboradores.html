@@ -167,6 +167,84 @@
             color: #455a64;
         }
 
+        /*
+         * REGISTRO MANUAL
+         */
+
+        .formulario-colaborador {
+            display: grid;
+            grid-template-columns:
+                1fr
+                2fr
+                1.4fr
+                1.3fr
+                2fr
+                1fr;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #546e7a;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            padding: 9px 10px;
+            border: 1px solid #cfd8dc;
+            border-radius: 5px;
+            font-size: 13px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+            outline: none;
+            border-color: #78909c;
+        }
+
+        .boton-registrar {
+            background: #37474f;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            height: 36px;
+        }
+
+        .boton-registrar:hover {
+            background: #263238;
+        }
+
+        .boton-limpiar {
+            background: #eceff1;
+            color: #37474f;
+            padding: 9px 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            height: 36px;
+        }
+
+        .boton-limpiar:hover {
+            background: #cfd8dc;
+        }
+
+        /*
+         * BUSQUEDA
+         */
+
         .busqueda {
             display: flex;
             gap: 12px;
@@ -190,6 +268,10 @@
             font-size: 13px;
             background: white;
         }
+
+        /*
+         * TABLA
+         */
 
         .tabla-contenedor {
             overflow-x: auto;
@@ -240,6 +322,10 @@
             background: white;
         }
 
+        /*
+         * ESTADO
+         */
+
         .estado {
             display: inline-block;
             padding: 4px 8px;
@@ -257,6 +343,10 @@
             background: #eceff1;
             color: #546e7a;
         }
+
+        /*
+         * ACCIONES
+         */
 
         .acciones {
             display: flex;
@@ -292,13 +382,9 @@
             background: #b71c1c;
         }
 
-        .boton-reactivar {
-            background: #2e7d32;
-        }
-
-        .boton-reactivar:hover {
-            background: #1b5e20;
-        }
+        /*
+         * RESULTADOS
+         */
 
         .sin-resultados {
             text-align: center;
@@ -306,6 +392,10 @@
             color: #78909c;
             display: none;
         }
+
+        /*
+         * PAGINACION
+         */
 
         .paginacion {
             display: flex;
@@ -338,12 +428,9 @@
             color: #607d8b;
         }
 
-        footer {
-            text-align: center;
-            color: #90a4ae;
-            font-size: 12px;
-            padding: 25px;
-        }
+        /*
+         * MENSAJES
+         */
 
         .mensaje-exito {
             background: #d4edda;
@@ -367,6 +454,26 @@
             font-size: 13px;
         }
 
+        footer {
+            text-align: center;
+            color: #90a4ae;
+            font-size: 12px;
+            padding: 25px;
+        }
+
+        /*
+         * RESPONSIVE
+         */
+
+        @media (max-width: 1100px) {
+
+            .formulario-colaborador {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+        }
+
         @media (max-width: 900px) {
 
             .estadisticas {
@@ -376,6 +483,11 @@
             .barra-superior {
                 align-items: flex-start;
                 flex-direction: column;
+            }
+
+            .formulario-colaborador {
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
 
         }
@@ -394,13 +506,19 @@
                 padding: 15px;
             }
 
+            .formulario-colaborador {
+                grid-template-columns: 1fr;
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -429,6 +547,7 @@
 
 <main>
 
+
     <div class="barra-superior">
 
         <h2>
@@ -445,10 +564,13 @@
     </div>
 
 
+    <!-- MENSAJES -->
+
     <div
         id="mensajeExito"
         class="mensaje-exito"
     ></div>
+
 
     <div
         id="mensajeError"
@@ -459,6 +581,7 @@
     <!-- ESTADISTICAS -->
 
     <div class="estadisticas">
+
 
         <div class="tarjeta-estadistica">
 
@@ -523,16 +646,166 @@
 
         </div>
 
+
     </div>
 
 
-    <!-- IMPORTACION -->
+    <!-- REGISTRAR NUEVO COLABORADOR -->
+
+    <div class="seccion">
+
+        <h3>
+            Registrar nuevo colaborador
+        </h3>
+
+
+        <div class="formulario-colaborador">
+
+
+            <div class="campo">
+
+                <label for="nuevoCodigo">
+                    Código
+                </label>
+
+                <input
+                    type="text"
+                    id="nuevoCodigo"
+                    placeholder="Ej. C001"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="nuevoNombre">
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="nuevoNombre"
+                    placeholder="Nombre completo"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="nuevoArea">
+                    Área
+                </label>
+
+                <input
+                    type="text"
+                    id="nuevoArea"
+                    placeholder="Área"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="nuevoTelefono">
+                    Teléfono
+                </label>
+
+                <input
+                    type="text"
+                    id="nuevoTelefono"
+                    placeholder="Teléfono"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="nuevoCorreo">
+                    Correo
+                </label>
+
+                <input
+                    type="email"
+                    id="nuevoCorreo"
+                    placeholder="Correo electrónico"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="nuevoEstado">
+                    Estado
+                </label>
+
+                <select id="nuevoEstado">
+
+                    <option value="Activo">
+                        Activo
+                    </option>
+
+                    <option value="Inactivo">
+                        Inactivo
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <div
+            style="
+                display:flex;
+                gap:8px;
+                margin-top:15px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <button
+                type="button"
+                class="boton-registrar"
+                id="botonRegistrar"
+            >
+                + Registrar colaborador
+            </button>
+
+
+            <button
+                type="button"
+                class="boton-limpiar"
+                id="botonLimpiarFormulario"
+            >
+                Limpiar
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- IMPORTAR EXCEL -->
 
     <div class="seccion">
 
         <h3>
             Actualizar base de colaboradores
         </h3>
+
 
         <div class="importacion">
 
@@ -541,6 +814,7 @@
                 id="archivoExcel"
                 accept=".xlsx,.xls"
             >
+
 
             <button
                 type="button"
@@ -552,6 +826,7 @@
 
         </div>
 
+
         <div
             id="mensajeImportacion"
             class="mensaje-importacion"
@@ -560,13 +835,14 @@
     </div>
 
 
-    <!-- BUSQUEDA -->
+    <!-- BUSCAR -->
 
     <div class="seccion">
 
         <h3>
             Buscar colaboradores
         </h3>
+
 
         <div class="busqueda">
 
@@ -576,6 +852,7 @@
                 placeholder="Buscar por código, nombre, área, teléfono o correo..."
                 autocomplete="off"
             >
+
 
             <select id="filtroEstado">
 
@@ -643,6 +920,7 @@
 
                     <tr class="fila-filtros">
 
+
                         <th>
 
                             <input
@@ -654,6 +932,7 @@
                             >
 
                         </th>
+
 
                         <th>
 
@@ -667,6 +946,7 @@
 
                         </th>
 
+
                         <th>
 
                             <input
@@ -678,6 +958,7 @@
                             >
 
                         </th>
+
 
                         <th>
 
@@ -691,6 +972,7 @@
 
                         </th>
 
+
                         <th>
 
                             <input
@@ -702,6 +984,7 @@
                             >
 
                         </th>
+
 
                         <th>
 
@@ -726,14 +1009,19 @@
 
                         </th>
 
+
                         <th></th>
+
 
                     </tr>
 
                 </thead>
 
 
-                <tbody id="tablaColaboradores"></tbody>
+                <tbody
+                    id="tablaColaboradores"
+                ></tbody>
+
 
             </table>
 
@@ -745,12 +1033,14 @@
                 No se encontraron colaboradores.
             </div>
 
+
         </div>
 
 
         <!-- PAGINACION -->
 
         <div class="paginacion">
+
 
             <button
                 type="button"
@@ -759,9 +1049,13 @@
                 ← Anterior
             </button>
 
-            <span id="informacionPagina">
+
+            <span
+                id="informacionPagina"
+            >
                 Página 1
             </span>
+
 
             <button
                 type="button"
@@ -770,9 +1064,12 @@
                 Siguiente →
             </button>
 
+
         </div>
 
+
     </div>
+
 
 </main>
 
@@ -798,51 +1095,66 @@
 
 <script>
 
+
+    /*
+     * PROTECCION
+     */
+
     window.colaboradoresAutorizado = false;
 
 
-    /*
-     * PROTECCION DE PAGINA
-     */
+    window.colaboradoresAuth =
+        (async function protegerColaboradores() {
 
-    window.colaboradoresAuth = (async function protegerColaboradores() {
+            try {
 
-        try {
-
-            const {
-                data: { session },
-                error
-            } = await supabaseClient.auth.getSession();
+                const {
+                    data: { session },
+                    error
+                } =
+                    await supabaseClient.auth.getSession();
 
 
-            if (error || !session) {
+                if (
+                    error ||
+                    !session
+                ) {
 
-                window.location.replace("index.html");
+                    window.location.replace(
+                        "index.html"
+                    );
 
-                return;
+                    return;
+
+                }
+
+
+                window.colaboradoresAutorizado =
+                    true;
+
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+
+                cargarBase();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al comprobar la sesión:",
+                    error
+                );
+
+
+                window.location.replace(
+                    "index.html"
+                );
 
             }
 
-
-            window.colaboradoresAutorizado = true;
-
-            document.documentElement.style.visibility = "visible";
-
-
-            cargarBase();
-
-        } catch (error) {
-
-            console.error(
-                "Error al comprobar la sesión:",
-                error
-            );
-
-            window.location.replace("index.html");
-
-        }
-
-    })();
+        })();
 
 
     /*
@@ -863,44 +1175,78 @@
      */
 
     const tablaColaboradores =
-        document.getElementById("tablaColaboradores");
+        document.getElementById(
+            "tablaColaboradores"
+        );
+
 
     const buscarColaborador =
-        document.getElementById("buscarColaborador");
+        document.getElementById(
+            "buscarColaborador"
+        );
+
 
     const filtroEstado =
-        document.getElementById("filtroEstado");
+        document.getElementById(
+            "filtroEstado"
+        );
+
 
     const filtroCodigoTabla =
-        document.getElementById("filtroCodigoTabla");
+        document.getElementById(
+            "filtroCodigoTabla"
+        );
+
 
     const filtroNombreTabla =
-        document.getElementById("filtroNombreTabla");
+        document.getElementById(
+            "filtroNombreTabla"
+        );
+
 
     const filtroAreaTabla =
-        document.getElementById("filtroAreaTabla");
+        document.getElementById(
+            "filtroAreaTabla"
+        );
+
 
     const filtroTelefonoTabla =
-        document.getElementById("filtroTelefonoTabla");
+        document.getElementById(
+            "filtroTelefonoTabla"
+        );
+
 
     const filtroCorreoTabla =
-        document.getElementById("filtroCorreoTabla");
+        document.getElementById(
+            "filtroCorreoTabla"
+        );
+
 
     const filtroEstadoTabla =
-        document.getElementById("filtroEstadoTabla");
+        document.getElementById(
+            "filtroEstadoTabla"
+        );
 
 
     /*
-     * NORMALIZAR TEXTO
+     * NORMALIZAR
      */
 
     function normalizar(valor) {
 
-        return String(valor ?? "")
-            .trim()
-            .replace(/\u200B/g, "")
-            .replace(/\uFEFF/g, "")
-            .toUpperCase();
+        return String(
+            valor ?? ""
+        )
+        .trim()
+        .replace(
+            /\u200B/g,
+            ""
+        )
+        .replace(
+            /\uFEFF/g,
+            ""
+        )
+        .toUpperCase();
 
     }
 
@@ -911,56 +1257,104 @@
 
     function escapeHtml(valor) {
 
-        return String(valor ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        return String(
+            valor ?? ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
     }
 
 
     /*
-     * MOSTRAR MENSAJES
+     * MENSAJES
      */
 
-    function mostrarMensajeExito(mensaje) {
+    function mostrarMensajeExito(
+        mensaje
+    ) {
 
         const elemento =
-            document.getElementById("mensajeExito");
+            document.getElementById(
+                "mensajeExito"
+            );
+
 
         const error =
-            document.getElementById("mensajeError");
+            document.getElementById(
+                "mensajeError"
+            );
 
-        error.style.display = "none";
 
-        elemento.textContent = mensaje;
+        error.style.display =
+            "none";
 
-        elemento.style.display = "block";
 
-        setTimeout(() => {
+        elemento.textContent =
+            mensaje;
 
-            elemento.style.display = "none";
 
-        }, 5000);
+        elemento.style.display =
+            "block";
+
+
+        setTimeout(
+            () => {
+
+                elemento.style.display =
+                    "none";
+
+            },
+            5000
+        );
 
     }
 
 
-    function mostrarMensajeError(mensaje) {
+    function mostrarMensajeError(
+        mensaje
+    ) {
 
         const elemento =
-            document.getElementById("mensajeError");
+            document.getElementById(
+                "mensajeError"
+            );
+
 
         const exito =
-            document.getElementById("mensajeExito");
+            document.getElementById(
+                "mensajeExito"
+            );
 
-        exito.style.display = "none";
 
-        elemento.textContent = mensaje;
+        exito.style.display =
+            "none";
 
-        elemento.style.display = "block";
+
+        elemento.textContent =
+            mensaje;
+
+
+        elemento.style.display =
+            "block";
 
     }
 
@@ -982,9 +1376,14 @@
 
             while (true) {
 
-                const { data, error } =
+                const {
+                    data,
+                    error
+                } =
                     await supabaseClient
-                        .from("colaboradores")
+                        .from(
+                            "colaboradores"
+                        )
                         .select(
                             "CodigoColaborador,Nombre,Area,Telefono,Correo,estado,fechaRegistro"
                         )
@@ -996,24 +1395,28 @@
 
                 if (error) {
 
-                    console.error(error);
-
                     throw error;
 
                 }
 
 
-                if (!data || data.length === 0) {
+                if (
+                    !data ||
+                    data.length === 0
+                ) {
 
                     break;
 
                 }
 
 
-                todos = todos.concat(data);
+                todos =
+                    todos.concat(data);
 
 
-                if (data.length < cantidad) {
+                if (
+                    data.length < cantidad
+                ) {
 
                     break;
 
@@ -1025,7 +1428,8 @@
             }
 
 
-            colaboradores = todos;
+            colaboradores =
+                todos;
 
 
             actualizarEstadisticas();
@@ -1039,6 +1443,7 @@
                 "Error al cargar colaboradores:",
                 error
             );
+
 
             mostrarMensajeError(
                 "No fue posible cargar la base de colaboradores."
@@ -1062,58 +1467,76 @@
         const activos =
             colaboradores.filter(
                 colaborador =>
-                    normalizar(colaborador.estado) === "ACTIVO"
+                    normalizar(
+                        colaborador.estado
+                    ) === "ACTIVO"
             ).length;
 
 
         const inactivos =
             colaboradores.filter(
                 colaborador =>
-                    normalizar(colaborador.estado) === "INACTIVO"
+                    normalizar(
+                        colaborador.estado
+                    ) === "INACTIVO"
             ).length;
 
 
-        const areas = new Set();
+        const areas =
+            new Set();
 
 
-        colaboradores.forEach(colaborador => {
+        colaboradores.forEach(
+            colaborador => {
 
-            const area =
-                String(colaborador.Area ?? "").trim();
+                const area =
+                    String(
+                        colaborador.Area ?? ""
+                    ).trim();
 
-            if (area !== "") {
 
-                areas.add(normalizar(area));
+                if (
+                    area !== ""
+                ) {
+
+                    areas.add(
+                        normalizar(area)
+                    );
+
+                }
 
             }
-
-        });
+        );
 
 
         document.getElementById(
             "totalColaboradores"
-        ).textContent = total;
+        ).textContent =
+            total;
 
 
         document.getElementById(
             "totalActivos"
-        ).textContent = activos;
+        ).textContent =
+            activos;
 
 
         document.getElementById(
             "totalInactivos"
-        ).textContent = inactivos;
+        ).textContent =
+            inactivos;
 
 
         document.getElementById(
             "totalAreas"
-        ).textContent = areas.size;
+        ).textContent =
+            areas.size;
 
     }
 
 
     /*
-     * FILTROS DE TABLA
+     * FILTROS
      */
 
     function obtenerFiltrosTabla() {
@@ -1178,122 +1601,139 @@
 
 
         colaboradoresFiltrados =
-            colaboradores.filter(colaborador => {
+            colaboradores.filter(
+                colaborador => {
 
 
-                const codigo =
-                    normalizar(
-                        colaborador.CodigoColaborador
+                    const codigo =
+                        normalizar(
+                            colaborador.CodigoColaborador
+                        );
+
+
+                    const nombre =
+                        normalizar(
+                            colaborador.Nombre
+                        );
+
+
+                    const area =
+                        normalizar(
+                            colaborador.Area
+                        );
+
+
+                    const telefono =
+                        normalizar(
+                            colaborador.Telefono
+                        );
+
+
+                    const correo =
+                        normalizar(
+                            colaborador.Correo
+                        );
+
+
+                    const estado =
+                        normalizar(
+                            colaborador.estado
+                        );
+
+
+                    const coincideTexto =
+                        textoGeneral === "" ||
+
+                        codigo.includes(
+                            textoGeneral
+                        ) ||
+
+                        nombre.includes(
+                            textoGeneral
+                        ) ||
+
+                        area.includes(
+                            textoGeneral
+                        ) ||
+
+                        telefono.includes(
+                            textoGeneral
+                        ) ||
+
+                        correo.includes(
+                            textoGeneral
+                        );
+
+
+                    const coincideEstadoGeneral =
+                        estadoGeneral === "" ||
+                        estado ===
+                            estadoGeneral;
+
+
+                    const coincideCodigo =
+                        filtros.codigo === "" ||
+                        codigo.includes(
+                            filtros.codigo
+                        );
+
+
+                    const coincideNombre =
+                        filtros.nombre === "" ||
+                        nombre.includes(
+                            filtros.nombre
+                        );
+
+
+                    const coincideArea =
+                        filtros.area === "" ||
+                        area.includes(
+                            filtros.area
+                        );
+
+
+                    const coincideTelefono =
+                        filtros.telefono === "" ||
+                        telefono.includes(
+                            filtros.telefono
+                        );
+
+
+                    const coincideCorreo =
+                        filtros.correo === "" ||
+                        correo.includes(
+                            filtros.correo
+                        );
+
+
+                    const coincideEstadoTabla =
+                        filtros.estado === "" ||
+                        estado ===
+                            filtros.estado;
+
+
+                    return (
+
+                        coincideTexto &&
+
+                        coincideEstadoGeneral &&
+
+                        coincideCodigo &&
+
+                        coincideNombre &&
+
+                        coincideArea &&
+
+                        coincideTelefono &&
+
+                        coincideCorreo &&
+
+                        coincideEstadoTabla
+
                     );
 
-
-                const nombre =
-                    normalizar(
-                        colaborador.Nombre
-                    );
-
-
-                const area =
-                    normalizar(
-                        colaborador.Area
-                    );
-
-
-                const telefono =
-                    normalizar(
-                        colaborador.Telefono
-                    );
-
-
-                const correo =
-                    normalizar(
-                        colaborador.Correo
-                    );
-
-
-                const estado =
-                    normalizar(
-                        colaborador.estado
-                    );
-
-
-                /*
-                 * FILTRO GENERAL
-                 */
-
-                const coincideTexto =
-                    textoGeneral === "" ||
-                    codigo.includes(textoGeneral) ||
-                    nombre.includes(textoGeneral) ||
-                    area.includes(textoGeneral) ||
-                    telefono.includes(textoGeneral) ||
-                    correo.includes(textoGeneral);
-
-
-                /*
-                 * ESTADO GENERAL
-                 */
-
-                const coincideEstadoGeneral =
-                    estadoGeneral === "" ||
-                    estado === estadoGeneral;
-
-
-                /*
-                 * FILTROS DE COLUMNA
-                 */
-
-                const coincideCodigo =
-                    filtros.codigo === "" ||
-                    codigo.includes(filtros.codigo);
-
-
-                const coincideNombre =
-                    filtros.nombre === "" ||
-                    nombre.includes(filtros.nombre);
-
-
-                const coincideArea =
-                    filtros.area === "" ||
-                    area.includes(filtros.area);
-
-
-                const coincideTelefono =
-                    filtros.telefono === "" ||
-                    telefono.includes(filtros.telefono);
-
-
-                const coincideCorreo =
-                    filtros.correo === "" ||
-                    correo.includes(filtros.correo);
-
-
-                const coincideEstadoTabla =
-                    filtros.estado === "" ||
-                    estado === filtros.estado;
-
-
-                return (
-
-                    coincideTexto &&
-
-                    coincideEstadoGeneral &&
-
-                    coincideCodigo &&
-
-                    coincideNombre &&
-
-                    coincideArea &&
-
-                    coincideTelefono &&
-
-                    coincideCorreo &&
-
-                    coincideEstadoTabla
-
-                );
-
-            });
+                }
+            );
 
 
         paginaActual = 1;
@@ -1304,12 +1744,13 @@
 
 
     /*
-     * RENDERIZAR TABLA
+     * TABLA
      */
 
     function renderizarTabla() {
 
-        tablaColaboradores.innerHTML = "";
+        tablaColaboradores.innerHTML =
+            "";
 
 
         const total =
@@ -1318,7 +1759,8 @@
 
         const totalPaginas =
             Math.ceil(
-                total / registrosPorPagina
+                total /
+                registrosPorPagina
             );
 
 
@@ -1328,7 +1770,8 @@
 
             document.getElementById(
                 "sinResultados"
-            ).style.display = "block";
+            ).style.display =
+                "block";
 
 
             document.getElementById(
@@ -1339,12 +1782,14 @@
 
             document.getElementById(
                 "botonAnterior"
-            ).disabled = true;
+            ).disabled =
+                true;
 
 
             document.getElementById(
                 "botonSiguiente"
-            ).disabled = true;
+            ).disabled =
+                true;
 
 
             return;
@@ -1354,14 +1799,17 @@
 
         document.getElementById(
             "sinResultados"
-        ).style.display = "none";
+        ).style.display =
+            "none";
 
 
         if (
-            paginaActual > totalPaginas
+            paginaActual >
+            totalPaginas
         ) {
 
-            paginaActual = totalPaginas;
+            paginaActual =
+                totalPaginas;
 
         }
 
@@ -1369,11 +1817,13 @@
         const inicio =
             (
                 paginaActual - 1
-            ) * registrosPorPagina;
+            ) *
+            registrosPorPagina;
 
 
         const fin =
-            inicio + registrosPorPagina;
+            inicio +
+            registrosPorPagina;
 
 
         const registrosPagina =
@@ -1383,100 +1833,109 @@
             );
 
 
-        registrosPagina.forEach(colaborador => {
-
-            const fila =
-                document.createElement("tr");
+        registrosPagina.forEach(
+            colaborador => {
 
 
-            const estado =
-                normalizar(
-                    colaborador.estado
-                ) === "ACTIVO"
-                    ? "Activo"
-                    : "Inactivo";
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
 
 
-            const claseEstado =
-                estado === "Activo"
-                    ? "estado-activo"
-                    : "estado-inactivo";
+                const estado =
+                    normalizar(
+                        colaborador.estado
+                    ) === "ACTIVO"
+                        ? "Activo"
+                        : "Inactivo";
 
 
-            fila.innerHTML = `
+                const claseEstado =
+                    estado === "Activo"
+                        ? "estado-activo"
+                        : "estado-inactivo";
 
-                <td>
-                    ${escapeHtml(
-                        colaborador.CodigoColaborador
-                    )}
-                </td>
 
-                <td style="text-align:left;">
-                    ${escapeHtml(
-                        colaborador.Nombre
-                    )}
-                </td>
+                fila.innerHTML = `
 
-                <td>
-                    ${escapeHtml(
-                        colaborador.Area
-                    )}
-                </td>
+                    <td>
+                        ${escapeHtml(
+                            colaborador.CodigoColaborador
+                        )}
+                    </td>
 
-                <td>
-                    ${escapeHtml(
-                        colaborador.Telefono
-                    )}
-                </td>
+                    <td style="text-align:left;">
+                        ${escapeHtml(
+                            colaborador.Nombre
+                        )}
+                    </td>
 
-                <td style="text-align:left;">
-                    ${escapeHtml(
-                        colaborador.Correo
-                    )}
-                </td>
+                    <td>
+                        ${escapeHtml(
+                            colaborador.Area
+                        )}
+                    </td>
 
-                <td>
+                    <td>
+                        ${escapeHtml(
+                            colaborador.Telefono
+                        )}
+                    </td>
 
-                    <span class="estado ${claseEstado}">
-                        ${estado}
-                    </span>
+                    <td style="text-align:left;">
+                        ${escapeHtml(
+                            colaborador.Correo
+                        )}
+                    </td>
 
-                </td>
+                    <td>
 
-                <td>
-
-                    <div class="acciones">
-
-                        <button
-                            type="button"
-                            class="boton-accion boton-editar"
-                            onclick="editarColaborador('${escapeHtml(
-                                colaborador.CodigoColaborador
-                            )}')"
+                        <span
+                            class="estado ${claseEstado}"
                         >
-                            Editar
-                        </button>
+                            ${estado}
+                        </span>
 
-                        <button
-                            type="button"
-                            class="boton-accion boton-eliminar"
-                            onclick="eliminarColaborador('${escapeHtml(
-                                colaborador.CodigoColaborador
-                            )}')"
-                        >
-                            Eliminar
-                        </button>
+                    </td>
 
-                    </div>
+                    <td>
 
-                </td>
+                        <div class="acciones">
 
-            `;
+                            <button
+                                type="button"
+                                class="boton-accion boton-editar"
+                                onclick="editarColaborador('${escapeHtml(
+                                    colaborador.CodigoColaborador
+                                )}')"
+                            >
+                                Editar
+                            </button>
+
+                            <button
+                                type="button"
+                                class="boton-accion boton-eliminar"
+                                onclick="eliminarColaborador('${escapeHtml(
+                                    colaborador.CodigoColaborador
+                                )}')"
+                            >
+                                Eliminar
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
 
 
-            tablaColaboradores.appendChild(fila);
+                tablaColaboradores.appendChild(
+                    fila
+                );
 
-        });
+            }
+        );
 
 
         document.getElementById(
@@ -1494,13 +1953,14 @@
         document.getElementById(
             "botonSiguiente"
         ).disabled =
-            paginaActual >= totalPaginas;
+            paginaActual >=
+            totalPaginas;
 
     }
 
 
     /*
-     * BUSQUEDA
+     * EVENTOS DE BUSQUEDA
      */
 
     buscarColaborador.addEventListener(
@@ -1561,7 +2021,9 @@
         "click",
         function () {
 
-            if (paginaActual > 1) {
+            if (
+                paginaActual > 1
+            ) {
 
                 paginaActual--;
 
@@ -1587,7 +2049,8 @@
 
 
             if (
-                paginaActual < totalPaginas
+                paginaActual <
+                totalPaginas
             ) {
 
                 paginaActual++;
@@ -1601,10 +2064,13 @@
 
 
     /*
-     * BUSCAR COLUMNA DEL EXCEL
+     * LEER EXCEL
      */
 
-    function obtenerValorExcel(fila, nombreColumna) {
+    function obtenerValorExcel(
+        fila,
+        nombreColumna
+    ) {
 
         if (
             Object.prototype.hasOwnProperty.call(
@@ -1613,19 +2079,17 @@
             )
         ) {
 
-            return fila[nombreColumna];
+            return fila[
+                nombreColumna
+            ];
 
         }
 
 
-        /*
-         * También permite encontrar
-         * los encabezados aunque Excel
-         * tenga espacios invisibles.
-         */
-
         const claveBuscada =
-            normalizar(nombreColumna);
+            normalizar(
+                nombreColumna
+            );
 
 
         const claveEncontrada =
@@ -1636,9 +2100,13 @@
             );
 
 
-        if (claveEncontrada) {
+        if (
+            claveEncontrada
+        ) {
 
-            return fila[claveEncontrada];
+            return fila[
+                claveEncontrada
+            ];
 
         }
 
@@ -1649,98 +2117,98 @@
 
 
     /*
-     * PREPARAR DATOS DEL EXCEL
+     * PREPARAR EXCEL
      */
 
-    function prepararDatosExcel(filas) {
+    function prepararDatosExcel(
+        filas
+    ) {
 
         const datos = [];
 
 
-        filas.forEach(fila => {
-
-            const codigo =
-                String(
-                    obtenerValorExcel(
-                        fila,
-                        "CodigoColaborador"
-                    ) ?? ""
-                ).trim();
+        filas.forEach(
+            fila => {
 
 
-            const nombre =
-                String(
-                    obtenerValorExcel(
-                        fila,
-                        "Nombre"
-                    ) ?? ""
-                ).trim();
+                const codigo =
+                    String(
+                        obtenerValorExcel(
+                            fila,
+                            "CodigoColaborador"
+                        ) ?? ""
+                    ).trim();
 
 
-            const area =
-                String(
-                    obtenerValorExcel(
-                        fila,
-                        "Area"
-                    ) ?? ""
-                ).trim();
+                const nombre =
+                    String(
+                        obtenerValorExcel(
+                            fila,
+                            "Nombre"
+                        ) ?? ""
+                    ).trim();
 
 
-            const telefono =
-                String(
-                    obtenerValorExcel(
-                        fila,
-                        "Telefono"
-                    ) ?? ""
-                ).trim();
+                const area =
+                    String(
+                        obtenerValorExcel(
+                            fila,
+                            "Area"
+                        ) ?? ""
+                    ).trim();
 
 
-            const correo =
-                String(
-                    obtenerValorExcel(
-                        fila,
-                        "Correo"
-                    ) ?? ""
-                ).trim();
+                const telefono =
+                    String(
+                        obtenerValorExcel(
+                            fila,
+                            "Telefono"
+                        ) ?? ""
+                    ).trim();
 
 
-            /*
-             * No se acepta un registro
-             * sin código.
-             */
+                const correo =
+                    String(
+                        obtenerValorExcel(
+                            fila,
+                            "Correo"
+                        ) ?? ""
+                    ).trim();
 
-            if (
-                codigo === ""
-            ) {
 
-                return;
+                if (
+                    codigo === ""
+                ) {
+
+                    return;
+
+                }
+
+
+                datos.push({
+
+                    CodigoColaborador:
+                        codigo,
+
+                    Nombre:
+                        nombre,
+
+                    Area:
+                        area,
+
+                    Telefono:
+                        telefono,
+
+                    Correo:
+                        correo,
+
+                    estado:
+                        "Activo"
+
+                });
 
             }
-
-
-            datos.push({
-
-                CodigoColaborador:
-                    codigo,
-
-                Nombre:
-                    nombre,
-
-                Area:
-                    area,
-
-                Telefono:
-                    telefono,
-
-                Correo:
-                    correo,
-
-                estado:
-                    "Activo"
-
-            });
-
-        });
+        );
 
 
         return datos;
@@ -1749,7 +2217,7 @@
 
 
     /*
-     * ACTUALIZAR BASE DESDE EXCEL
+     * ACTUALIZAR DESDE EXCEL
      */
 
     document.getElementById(
@@ -1804,12 +2272,6 @@
                 );
 
 
-            /*
-             * LA HOJA DEBE LLAMARSE
-             * EXACTAMENTE:
-             * Colaboradores
-             */
-
             if (
                 !workbook.SheetNames.includes(
                     "Colaboradores"
@@ -1850,7 +2312,9 @@
 
 
             const nuevosDatos =
-                prepararDatosExcel(filas);
+                prepararDatosExcel(
+                    filas
+                );
 
 
             if (
@@ -1868,22 +2332,22 @@
                 `Se encontraron ${nuevosDatos.length} colaboradores. Comparando con la base...`;
 
 
-            /*
-             * OBTENER BASE ACTUAL
-             */
-
             const {
                 data: actuales,
                 error: errorActuales
             } =
                 await supabaseClient
-                    .from("colaboradores")
+                    .from(
+                        "colaboradores"
+                    )
                     .select(
                         "CodigoColaborador,Nombre,Area,Telefono,Correo,estado,fechaRegistro"
                     );
 
 
-            if (errorActuales) {
+            if (
+                errorActuales
+            ) {
 
                 throw errorActuales;
 
@@ -1894,134 +2358,131 @@
                 new Map();
 
 
-            nuevosDatos.forEach(colaborador => {
+            nuevosDatos.forEach(
+                colaborador => {
 
-                mapaExcel.set(
-                    normalizar(
-                        colaborador.CodigoColaborador
-                    ),
-                    colaborador
-                );
-
-            });
-
-
-            /*
-             * PREPARAR TODOS LOS REGISTROS
-             *
-             * Existente:
-             * actualizar información
-             *
-             * Nuevo:
-             * agregar como Activo
-             *
-             * No presente en Excel:
-             * marcar como Inactivo
-             */
-
-            const registrosFinales = [];
-
-
-            actuales.forEach(actual => {
-
-                const codigo =
-                    normalizar(
-                        actual.CodigoColaborador
+                    mapaExcel.set(
+                        normalizar(
+                            colaborador.CodigoColaborador
+                        ),
+                        colaborador
                     );
-
-
-                const nuevo =
-                    mapaExcel.get(codigo);
-
-
-                if (nuevo) {
-
-                    registrosFinales.push({
-
-                        CodigoColaborador:
-                            nuevo.CodigoColaborador,
-
-                        Nombre:
-                            nuevo.Nombre,
-
-                        Area:
-                            nuevo.Area,
-
-                        Telefono:
-                            nuevo.Telefono,
-
-                        Correo:
-                            nuevo.Correo,
-
-                        estado:
-                            "Activo"
-
-                    });
-
-                } else {
-
-                    registrosFinales.push({
-
-                        CodigoColaborador:
-                            actual.CodigoColaborador,
-
-                        Nombre:
-                            actual.Nombre,
-
-                        Area:
-                            actual.Area,
-
-                        Telefono:
-                            actual.Telefono,
-
-                        Correo:
-                            actual.Correo,
-
-                        estado:
-                            "Inactivo"
-
-                    });
 
                 }
-
-            });
-
-
-            /*
-             * AGREGAR NUEVOS CÓDIGOS
-             */
-
-            nuevosDatos.forEach(nuevo => {
-
-                const codigo =
-                    normalizar(
-                        nuevo.CodigoColaborador
-                    );
+            );
 
 
-                const existe =
-                    actuales.some(
-                        actual =>
-                            normalizar(
-                                actual.CodigoColaborador
-                            ) === codigo
-                    );
+            const registrosFinales =
+                [];
 
 
-                if (!existe) {
+            actuales.forEach(
+                actual => {
 
-                    registrosFinales.push(nuevo);
+
+                    const codigo =
+                        normalizar(
+                            actual.CodigoColaborador
+                        );
+
+
+                    const nuevo =
+                        mapaExcel.get(
+                            codigo
+                        );
+
+
+                    if (
+                        nuevo
+                    ) {
+
+                        registrosFinales.push({
+
+                            CodigoColaborador:
+                                nuevo.CodigoColaborador,
+
+                            Nombre:
+                                nuevo.Nombre,
+
+                            Area:
+                                nuevo.Area,
+
+                            Telefono:
+                                nuevo.Telefono,
+
+                            Correo:
+                                nuevo.Correo,
+
+                            estado:
+                                "Activo"
+
+                        });
+
+                    } else {
+
+                        registrosFinales.push({
+
+                            CodigoColaborador:
+                                actual.CodigoColaborador,
+
+                            Nombre:
+                                actual.Nombre,
+
+                            Area:
+                                actual.Area,
+
+                            Telefono:
+                                actual.Telefono,
+
+                            Correo:
+                                actual.Correo,
+
+                            estado:
+                                "Inactivo"
+
+                        });
+
+                    }
 
                 }
+            );
 
-            });
+
+            nuevosDatos.forEach(
+                nuevo => {
 
 
-            /*
-             * GUARDAR EN BLOQUES
-             */
+                    const codigo =
+                        normalizar(
+                            nuevo.CodigoColaborador
+                        );
 
-            const tamañoBloque = 500;
+
+                    const existe =
+                        actuales.some(
+                            actual =>
+                                normalizar(
+                                    actual.CodigoColaborador
+                                ) === codigo
+                        );
+
+
+                    if (
+                        !existe
+                    ) {
+
+                        registrosFinales.push(
+                            nuevo
+                        );
+
+                    }
+
+                }
+            );
+
+
+            const tamañoBloque =
+                500;
 
 
             for (
@@ -2041,7 +2502,9 @@
                     error
                 } =
                     await supabaseClient
-                        .from("colaboradores")
+                        .from(
+                            "colaboradores"
+                        )
                         .upsert(
                             bloque,
                             {
@@ -2051,7 +2514,9 @@
                         );
 
 
-                if (error) {
+                if (
+                    error
+                ) {
 
                     throw error;
 
@@ -2066,7 +2531,8 @@
 
             document.getElementById(
                 "archivoExcel"
-            ).value = "";
+            ).value =
+                "";
 
 
             await cargarBase();
@@ -2100,24 +2566,343 @@
 
 
     /*
-     * EDITAR COLABORADOR
+     * REGISTRAR NUEVO COLABORADOR
      */
 
-    async function editarColaborador(codigo) {
+    document.getElementById(
+        "botonRegistrar"
+    ).addEventListener(
+        "click",
+        registrarColaborador
+    );
+
+
+    async function registrarColaborador() {
+
+        const codigo =
+            document.getElementById(
+                "nuevoCodigo"
+            ).value.trim();
+
+
+        const nombre =
+            document.getElementById(
+                "nuevoNombre"
+            ).value.trim();
+
+
+        const area =
+            document.getElementById(
+                "nuevoArea"
+            ).value.trim();
+
+
+        const telefono =
+            document.getElementById(
+                "nuevoTelefono"
+            ).value.trim();
+
+
+        const correo =
+            document.getElementById(
+                "nuevoCorreo"
+            ).value.trim();
+
+
+        const estado =
+            document.getElementById(
+                "nuevoEstado"
+            ).value;
+
+
+        if (
+            codigo === ""
+        ) {
+
+            alert(
+                "Ingresa el código del colaborador."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            nombre === ""
+        ) {
+
+            alert(
+                "Ingresa el nombre del colaborador."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * COMPROBAR SI EL CODIGO YA EXISTE
+         */
+
+        const existe =
+            colaboradores.some(
+                colaborador =>
+                    normalizar(
+                        colaborador.CodigoColaborador
+                    ) ===
+                    normalizar(codigo)
+            );
+
+
+        if (
+            existe
+        ) {
+
+            alert(
+                "Ya existe un colaborador con ese código."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "colaboradores"
+                    )
+                    .insert({
+
+                        CodigoColaborador:
+                            codigo,
+
+                        Nombre:
+                            nombre,
+
+                        Area:
+                            area,
+
+                        Telefono:
+                            telefono,
+
+                        Correo:
+                            correo,
+
+                        estado:
+                            estado
+
+                    });
+
+
+            if (
+                error
+            ) {
+
+                throw error;
+
+            }
+
+
+            limpiarFormulario();
+
+
+            await cargarBase();
+
+
+            mostrarMensajeExito(
+                "El nuevo colaborador fue registrado correctamente."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Error al registrar colaborador:",
+                error
+            );
+
+
+            if (
+                error.code === "23505"
+            ) {
+
+                mostrarMensajeError(
+                    "El código del colaborador ya existe."
+                );
+
+            } else {
+
+                mostrarMensajeError(
+                    "No fue posible registrar el colaborador."
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /*
+     * LIMPIAR FORMULARIO
+     */
+
+    function limpiarFormulario() {
+
+        document.getElementById(
+            "nuevoCodigo"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nuevoNombre"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nuevoArea"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nuevoTelefono"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nuevoCorreo"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nuevoEstado"
+        ).value =
+            "Activo";
+
+    }
+
+
+    document.getElementById(
+        "botonLimpiarFormulario"
+    ).addEventListener(
+        "click",
+        limpiarFormulario
+    );
+
+
+    /*
+     * EDITAR COLABORADOR
+     *
+     * Ahora permite modificar:
+     * Código
+     * Nombre
+     * Área
+     * Teléfono
+     * Correo
+     * Estado
+     */
+
+    async function editarColaborador(
+        codigoActual
+    ) {
 
         const colaborador =
             colaboradores.find(
                 item =>
                     normalizar(
                         item.CodigoColaborador
-                    ) === normalizar(codigo)
+                    ) ===
+                    normalizar(
+                        codigoActual
+                    )
             );
 
 
-        if (!colaborador) {
+        if (
+            !colaborador
+        ) {
 
             alert(
                 "No se encontró el colaborador."
+            );
+
+            return;
+
+        }
+
+
+        const nuevoCodigo =
+            prompt(
+                "Código del colaborador:",
+                colaborador.CodigoColaborador ?? ""
+            );
+
+
+        if (
+            nuevoCodigo === null
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            nuevoCodigo.trim() === ""
+        ) {
+
+            alert(
+                "El código no puede quedar vacío."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * SI CAMBIA EL CODIGO,
+         * COMPROBAR QUE EL NUEVO
+         * NO EXISTA.
+         */
+
+        const codigoDuplicado =
+            colaboradores.some(
+                item =>
+
+                    normalizar(
+                        item.CodigoColaborador
+                    ) ===
+                    normalizar(
+                        nuevoCodigo
+                    ) &&
+
+                    normalizar(
+                        item.CodigoColaborador
+                    ) !==
+                    normalizar(
+                        codigoActual
+                    )
+            );
+
+
+        if (
+            codigoDuplicado
+        ) {
+
+            alert(
+                "El nuevo código ya pertenece a otro colaborador."
             );
 
             return;
@@ -2135,6 +2920,19 @@
         if (
             nuevoNombre === null
         ) {
+
+            return;
+
+        }
+
+
+        if (
+            nuevoNombre.trim() === ""
+        ) {
+
+            alert(
+                "El nombre no puede quedar vacío."
+            );
 
             return;
 
@@ -2233,14 +3031,23 @@
         }
 
 
+        /*
+         * ACTUALIZAR
+         */
+
         try {
 
             const {
                 error
             } =
                 await supabaseClient
-                    .from("colaboradores")
+                    .from(
+                        "colaboradores"
+                    )
                     .update({
+
+                        CodigoColaborador:
+                            nuevoCodigo.trim(),
 
                         Nombre:
                             nuevoNombre.trim(),
@@ -2266,7 +3073,9 @@
                     );
 
 
-            if (error) {
+            if (
+                error
+            ) {
 
                 throw error;
 
@@ -2289,9 +3098,21 @@
             );
 
 
-            mostrarMensajeError(
-                "No fue posible actualizar los datos del colaborador."
-            );
+            if (
+                error.code === "23505"
+            ) {
+
+                mostrarMensajeError(
+                    "No se puede utilizar ese código porque ya existe."
+                );
+
+            } else {
+
+                mostrarMensajeError(
+                    "No fue posible actualizar los datos del colaborador."
+                );
+
+            }
 
         }
 
@@ -2302,18 +3123,23 @@
      * ELIMINAR COLABORADOR
      */
 
-    async function eliminarColaborador(codigo) {
+    async function eliminarColaborador(
+        codigo
+    ) {
 
         const colaborador =
             colaboradores.find(
                 item =>
                     normalizar(
                         item.CodigoColaborador
-                    ) === normalizar(codigo)
+                    ) ===
+                    normalizar(codigo)
             );
 
 
-        if (!colaborador) {
+        if (
+            !colaborador
+        ) {
 
             alert(
                 "No se encontró el colaborador."
@@ -2330,7 +3156,9 @@
             );
 
 
-        if (!confirmar) {
+        if (
+            !confirmar
+        ) {
 
             return;
 
@@ -2340,12 +3168,7 @@
         try {
 
             /*
-             * PRIMERO COMPROBAR SI EXISTEN
-             * PRÉSTAMOS ACTIVOS PARA ESTE
-             * COLABORADOR.
-             *
-             * Esto evita eliminar accidentalmente
-             * a alguien que tenga un préstamo pendiente.
+             * COMPROBAR PRESTAMOS ACTIVOS
              */
 
             const {
@@ -2353,8 +3176,12 @@
                 error: errorPrestamos
             } =
                 await supabaseClient
-                    .from("prestamos")
-                    .select("id")
+                    .from(
+                        "prestamos"
+                    )
+                    .select(
+                        "id"
+                    )
                     .eq(
                         "CodigoColaborador",
                         colaborador.CodigoColaborador
@@ -2366,13 +3193,9 @@
                     .limit(1);
 
 
-            if (errorPrestamos) {
-
-                /*
-                 * Si la columna todavía no existe
-                 * en préstamos, no detenemos la
-                 * eliminación por esta comprobación.
-                 */
+            if (
+                errorPrestamos
+            ) {
 
                 console.warn(
                     "No se pudo comprobar préstamos del colaborador:",
@@ -2397,7 +3220,9 @@
                 error
             } =
                 await supabaseClient
-                    .from("colaboradores")
+                    .from(
+                        "colaboradores"
+                    )
                     .delete()
                     .eq(
                         "CodigoColaborador",
@@ -2405,7 +3230,9 @@
                     );
 
 
-            if (error) {
+            if (
+                error
+            ) {
 
                 throw error;
 
@@ -2438,6 +3265,7 @@
 
 
 </script>
+
 
 </body>
 
