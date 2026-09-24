@@ -523,7 +523,7 @@
             <input
                 type="text"
                 id="buscar"
-                placeholder="Familia, PersonaId, nombre, apellido o código de libro..."
+                placeholder="Familia, PersonaId, colaborador, nombre, apellido o código de libro..."
             >
 
             <button
@@ -545,8 +545,10 @@
                 <thead>
 
                     <tr>
-                        <th>FamiliaId</th>
-                        <th>PersonaId</th>
+                        <th>Tipo</th>
+                        <th>Familia / Código</th>
+                        <th>Persona / Colaborador</th>
+                        <th>Área</th>
                         <th>Libro</th>
                         <th>Préstamo</th>
                         <th>Devolución</th>
@@ -582,7 +584,27 @@
 
                 <div class="detalle-item">
 
-                    <span class="detalle-etiqueta">
+                    <span
+                        class="detalle-etiqueta"
+                        id="detalleEtiquetaTipo"
+                    >
+                        Tipo
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detalleTipo"
+                    ></span>
+
+                </div>
+
+
+                <div class="detalle-item">
+
+                    <span
+                        class="detalle-etiqueta"
+                        id="detalleEtiquetaIdentificador"
+                    >
                         FamiliaId
                     </span>
 
@@ -596,7 +618,10 @@
 
                 <div class="detalle-item">
 
-                    <span class="detalle-etiqueta">
+                    <span
+                        class="detalle-etiqueta"
+                        id="detalleEtiquetaPersona"
+                    >
                         Persona
                     </span>
 
@@ -608,15 +633,39 @@
                 </div>
 
 
-                <div class="detalle-item">
+                <div
+                    class="detalle-item"
+                    id="detalleItemPersonaId"
+                >
 
-                    <span class="detalle-etiqueta">
+                    <span
+                        class="detalle-etiqueta"
+                        id="detalleEtiquetaPersonaId"
+                    >
                         PersonaId
                     </span>
 
                     <span
                         class="detalle-valor"
                         id="detallePersonaId"
+                    ></span>
+
+                </div>
+
+
+                <div
+                    class="detalle-item"
+                    id="detalleItemArea"
+                    style="display:none;"
+                >
+
+                    <span class="detalle-etiqueta">
+                        Área
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detalleArea"
                     ></span>
 
                 </div>
@@ -830,6 +879,10 @@ let prestamoSeleccionado = null;
 let prestamoEliminar = null;
 
 
+/* ==========================================
+   ELEMENTOS
+   ========================================== */
+
 const tablaPrestamos =
     document.getElementById(
         "tablaPrestamos"
@@ -875,6 +928,48 @@ document.addEventListener(
     "DOMContentLoaded",
     cargarDatos
 );
+
+
+/* ==========================================
+   NORMALIZAR CÓDIGO DE COLABORADOR
+   ========================================== */
+
+function normalizarCodigoColaborador(codigo) {
+
+    let valor =
+        String(codigo || "")
+            .trim()
+            .toUpperCase();
+
+
+    valor =
+        valor.replace(
+            /^C/,
+            ""
+        );
+
+
+    valor =
+        valor.replace(
+            /\D/g,
+            ""
+        );
+
+
+    valor =
+        valor.replace(
+            /^0+/,
+            ""
+        );
+
+
+    if (!valor) {
+        return "";
+    }
+
+
+    return "C" + valor;
+}
 
 
 /* ==========================================
@@ -946,10 +1041,17 @@ async function actualizarResumen() {
 
     const totalVencidos =
         prestamos.filter(
-            prestamo =>
-                new Date(
+            prestamo => {
+
+                if (!prestamo.fechaDevolucion) {
+                    return false;
+                }
+
+                return new Date(
                     prestamo.fechaDevolucion
-                ) < ahora
+                ) < ahora;
+
+            }
         ).length;
 
 
@@ -1021,7 +1123,7 @@ function mostrarPrestamos(lista) {
 
         tablaPrestamos.innerHTML = `
             <tr>
-                <td colspan="8" style="padding:20px;">
+                <td colspan="10" style="padding:20px;">
                     No hay préstamos activos.
                 </td>
             </tr>
@@ -1039,9 +1141,11 @@ function mostrarPrestamos(lista) {
         prestamo => {
 
             const vencido =
-                new Date(
-                    prestamo.fechaDevolucion
-                ) < ahora;
+                prestamo.fechaDevolucion
+                    ? new Date(
+                        prestamo.fechaDevolucion
+                    ) < ahora
+                    : false;
 
 
             const fila =
@@ -1057,23 +1161,114 @@ function mostrarPrestamos(lista) {
             }
 
 
-            const tdFamilia =
+            /* ==================================
+               TIPO
+               ================================== */
+
+            const tdTipo =
                 document.createElement(
                     "td"
                 );
 
-            tdFamilia.textContent =
-                prestamo.FamiliaId;
+
+            const tipo =
+                prestamo.tipoPrestamo ||
+                (
+                    prestamo.CodigoColaborador
+                        ? "Colaborador"
+                        : "Afiliado"
+                );
 
 
-            const tdPersonaId =
+            tdTipo.textContent =
+                tipo;
+
+
+            /* ==================================
+               FAMILIA / CÓDIGO
+               ================================== */
+
+            const tdIdentificador =
                 document.createElement(
                     "td"
                 );
 
-            tdPersonaId.textContent =
-                prestamo.PersonaId;
 
+            if (
+                tipo === "Colaborador"
+            ) {
+
+                tdIdentificador.textContent =
+                    prestamo.CodigoColaborador ||
+                    "";
+
+            } else {
+
+                tdIdentificador.textContent =
+                    prestamo.FamiliaId ||
+                    "";
+            }
+
+
+            /* ==================================
+               PERSONA / COLABORADOR
+               ================================== */
+
+            const tdPersona =
+                document.createElement(
+                    "td"
+                );
+
+            tdPersona.className =
+                "nombre";
+
+
+            if (
+                tipo === "Colaborador"
+            ) {
+
+                tdPersona.textContent =
+                    prestamo.NombreColaborador ||
+                    "";
+
+            } else {
+
+                tdPersona.textContent =
+                    `${prestamo.Nombres || ""} ${
+                        prestamo.Apellidos || ""
+                    }`.trim();
+
+            }
+
+
+            /* ==================================
+               ÁREA
+               ================================== */
+
+            const tdArea =
+                document.createElement(
+                    "td"
+                );
+
+
+            if (
+                tipo === "Colaborador"
+            ) {
+
+                tdArea.textContent =
+                    prestamo.AreaColaborador ||
+                    "—";
+
+            } else {
+
+                tdArea.textContent =
+                    "—";
+            }
+
+
+            /* ==================================
+               LIBRO
+               ================================== */
 
             const tdLibro =
                 document.createElement(
@@ -1089,6 +1284,10 @@ function mostrarPrestamos(lista) {
                 )} - ${prestamo.nombreLibro}`;
 
 
+            /* ==================================
+               FECHA PRÉSTAMO
+               ================================== */
+
             const tdPrestamo =
                 document.createElement(
                     "td"
@@ -1100,6 +1299,10 @@ function mostrarPrestamos(lista) {
                 );
 
 
+            /* ==================================
+               FECHA DEVOLUCIÓN
+               ================================== */
+
             const tdDevolucion =
                 document.createElement(
                     "td"
@@ -1110,6 +1313,10 @@ function mostrarPrestamos(lista) {
                     prestamo.fechaDevolucion
                 );
 
+
+            /* ==================================
+               ESTADO
+               ================================== */
 
             const tdEstado =
                 document.createElement(
@@ -1135,6 +1342,10 @@ function mostrarPrestamos(lista) {
             }
 
 
+            /* ==================================
+               COMENTARIOS
+               ================================== */
+
             const tdComentarios =
                 document.createElement(
                     "td"
@@ -1146,7 +1357,7 @@ function mostrarPrestamos(lista) {
 
 
             /* ==================================
-               BOTONES DE ACCIONES
+               ACCIONES
                ================================== */
 
             const tdAccion =
@@ -1236,14 +1447,24 @@ function mostrarPrestamos(lista) {
             );
 
 
-            /* AGREGAR FILA */
+            /* ==================================
+               AGREGAR FILA
+               ================================== */
 
             fila.appendChild(
-                tdFamilia
+                tdTipo
             );
 
             fila.appendChild(
-                tdPersonaId
+                tdIdentificador
+            );
+
+            fila.appendChild(
+                tdPersona
+            );
+
+            fila.appendChild(
+                tdArea
             );
 
             fila.appendChild(
@@ -1300,26 +1521,116 @@ function seleccionarPrestamo(
         "none";
 
 
-    document.getElementById(
-        "detalleFamilia"
-    ).textContent =
-        prestamo.FamiliaId ||
-        "";
+    const tipo =
+        prestamo.tipoPrestamo ||
+        (
+            prestamo.CodigoColaborador
+                ? "Colaborador"
+                : "Afiliado"
+        );
 
 
     document.getElementById(
-        "detallePersona"
+        "detalleTipo"
     ).textContent =
-        `${prestamo.Nombres || ""} ${
-            prestamo.Apellidos || ""
-        }`.trim();
+        tipo;
 
 
-    document.getElementById(
-        "detallePersonaId"
-    ).textContent =
-        prestamo.PersonaId ||
-        "";
+    if (
+        tipo === "Colaborador"
+    ) {
+
+        document.getElementById(
+            "detalleEtiquetaIdentificador"
+        ).textContent =
+            "Código colaborador";
+
+
+        document.getElementById(
+            "detalleFamilia"
+        ).textContent =
+            prestamo.CodigoColaborador ||
+            "";
+
+
+        document.getElementById(
+            "detalleEtiquetaPersona"
+        ).textContent =
+            "Colaborador";
+
+
+        document.getElementById(
+            "detallePersona"
+        ).textContent =
+            prestamo.NombreColaborador ||
+            "";
+
+
+        document.getElementById(
+            "detalleItemPersonaId"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "detalleItemArea"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "detalleArea"
+        ).textContent =
+            prestamo.AreaColaborador ||
+            "No definida";
+
+    } else {
+
+        document.getElementById(
+            "detalleEtiquetaIdentificador"
+        ).textContent =
+            "FamiliaId";
+
+
+        document.getElementById(
+            "detalleFamilia"
+        ).textContent =
+            prestamo.FamiliaId ||
+            "";
+
+
+        document.getElementById(
+            "detalleEtiquetaPersona"
+        ).textContent =
+            "Persona";
+
+
+        document.getElementById(
+            "detallePersona"
+        ).textContent =
+            `${prestamo.Nombres || ""} ${
+                prestamo.Apellidos || ""
+            }`.trim();
+
+
+        document.getElementById(
+            "detalleItemPersonaId"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "detallePersonaId"
+        ).textContent =
+            prestamo.PersonaId ||
+            "";
+
+
+        document.getElementById(
+            "detalleItemArea"
+        ).style.display =
+            "none";
+    }
 
 
     document.getElementById(
@@ -1464,7 +1775,9 @@ async function confirmarDevolucion() {
             comentarioDevolucion.value.trim();
 
 
-        /* ACTUALIZAR PRÉSTAMO */
+        /* ======================================
+           ACTUALIZAR PRÉSTAMO
+           ====================================== */
 
         const {
             error: errorPrestamo
@@ -1494,7 +1807,9 @@ async function confirmarDevolucion() {
         }
 
 
-        /* BUSCAR LIBRO */
+        /* ======================================
+           BUSCAR LIBRO
+           ====================================== */
 
         const {
             data: libros,
@@ -1527,7 +1842,9 @@ async function confirmarDevolucion() {
             );
 
 
-        /* ACTUALIZAR LIBRO */
+        /* ======================================
+           ACTUALIZAR LIBRO
+           ====================================== */
 
         if (libro) {
 
@@ -1824,14 +2141,44 @@ function buscar() {
     }
 
 
+    const textoColaborador =
+        normalizarCodigoColaborador(
+            texto
+        );
+
+
     const resultados =
         prestamos.filter(
             prestamo => {
 
+                const codigoColaborador =
+                    normalizarCodigoColaborador(
+                        prestamo.CodigoColaborador
+                    );
+
+
+                const nombreCompletoAfiliado =
+                    `${prestamo.Nombres || ""} ${
+                        prestamo.Apellidos || ""
+                    }`.toLowerCase();
+
+
+                const nombreColaborador =
+                    String(
+                        prestamo.NombreColaborador || ""
+                    ).toLowerCase();
+
+
+                const areaColaborador =
+                    String(
+                        prestamo.AreaColaborador || ""
+                    ).toLowerCase();
+
+
                 return (
 
                     String(
-                        prestamo.FamiliaId
+                        prestamo.FamiliaId || ""
                     )
                         .toLowerCase()
                         .includes(texto)
@@ -1839,7 +2186,38 @@ function buscar() {
                     ||
 
                     String(
-                        prestamo.PersonaId
+                        prestamo.PersonaId || ""
+                    )
+                        .toLowerCase()
+                        .includes(texto)
+
+                    ||
+
+                    nombreCompletoAfiliado
+                        .includes(texto)
+
+                    ||
+
+                    nombreColaborador
+                        .includes(texto)
+
+                    ||
+
+                    areaColaborador
+                        .includes(texto)
+
+                    ||
+
+                    (
+                        textoColaborador &&
+                        codigoColaborador ===
+                        textoColaborador
+                    )
+
+                    ||
+
+                    String(
+                        prestamo.CodigoColaborador || ""
                     )
                         .toLowerCase()
                         .includes(texto)
@@ -1847,7 +2225,7 @@ function buscar() {
                     ||
 
                     String(
-                        prestamo.Nombres
+                        prestamo.codigoLibro || ""
                     )
                         .toLowerCase()
                         .includes(texto)
@@ -1855,7 +2233,7 @@ function buscar() {
                     ||
 
                     String(
-                        prestamo.Apellidos
+                        prestamo.nombreLibro || ""
                     )
                         .toLowerCase()
                         .includes(texto)
@@ -1863,23 +2241,7 @@ function buscar() {
                     ||
 
                     String(
-                        prestamo.codigoLibro
-                    )
-                        .toLowerCase()
-                        .includes(texto)
-
-                    ||
-
-                    String(
-                        prestamo.nombreLibro
-                    )
-                        .toLowerCase()
-                        .includes(texto)
-
-                    ||
-
-                    String(
-                        prestamo.comentarios
+                        prestamo.comentarios || ""
                     )
                         .toLowerCase()
                         .includes(texto)
@@ -1936,7 +2298,7 @@ function formatearFecha(
 
 
 /* ==========================================
-   NORMALIZAR CÓDIGO
+   NORMALIZAR CÓDIGO DE LIBRO
    ========================================== */
 
 function normalizarCodigo(
@@ -1958,7 +2320,7 @@ function normalizarCodigo(
 
 
 /* ==========================================
-   FORMATEAR CÓDIGO
+   FORMATEAR CÓDIGO DE LIBRO
    ========================================== */
 
 function formatearCodigo(
