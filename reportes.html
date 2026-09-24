@@ -265,6 +265,57 @@
 
         }
 
+        .grafico-titulo-fila {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .grafico-titulo-fila h2 {
+
+            margin: 0;
+
+            font-size: 15px;
+
+            color: #37474f;
+
+        }
+
+        .selector-grafica {
+
+            border:
+                1px solid #cfd8dc;
+
+            border-radius: 5px;
+
+            background: white;
+
+            color: #37474f;
+
+            font-size: 11px;
+
+            padding: 5px 7px;
+
+            outline: none;
+
+            cursor: pointer;
+
+        }
+
+        .selector-grafica:focus {
+
+            border-color: #78909c;
+
+        }
+
         .grafico-contenedor {
 
             position: relative;
@@ -573,7 +624,7 @@
 
             width: 100%;
 
-            min-width: 1450px;
+            min-width: 1650px;
 
             border-collapse: collapse;
 
@@ -619,7 +670,8 @@
         }
 
         .tabla-resultados td.nombres,
-        .tabla-resultados td.apellidos {
+        .tabla-resultados td.apellidos,
+        .tabla-resultados td.colaborador {
 
             text-align: left;
 
@@ -656,6 +708,14 @@
             text-align: left;
 
             min-width: 120px;
+
+        }
+
+        .tabla-resultados td.area {
+
+            text-align: left;
+
+            min-width: 110px;
 
         }
 
@@ -798,6 +858,12 @@
             .btn {
 
                 width: 100%;
+
+            }
+
+            .grafico-titulo-fila {
+
+                align-items: flex-start;
 
             }
 
@@ -990,9 +1056,45 @@
 
             <div class="grafico-card">
 
-                <h2>
-                    📈 Préstamos por mes
-                </h2>
+                <div class="grafico-titulo-fila">
+
+                    <h2>
+                        📈 Préstamos por mes
+                    </h2>
+
+                    <select
+                        id="filtroSitioGraficaMeses"
+                        class="selector-grafica"
+                        title="Filtrar gráfica por sitio"
+                    >
+
+                        <option value="Todos">
+                            Todos
+                        </option>
+
+                        <option value="F">
+                            F
+                        </option>
+
+                        <option value="M">
+                            M
+                        </option>
+
+                        <option value="N">
+                            N
+                        </option>
+
+                        <option value="R">
+                            R
+                        </option>
+
+                        <option value="Z">
+                            Z
+                        </option>
+
+                    </select>
+
+                </div>
 
                 <div class="grafico-contenedor">
 
@@ -1081,7 +1183,7 @@
                         <input
                             type="text"
                             id="busqueda"
-                            placeholder="Familia, persona, código, libro, autor..."
+                            placeholder="Familia, persona, colaborador, código, libro..."
                         >
 
                     </div>
@@ -1274,6 +1376,10 @@
                         <tr>
 
                             <th>
+                                Tipo
+                            </th>
+
+                            <th>
                                 SitioPréstamo
                             </th>
 
@@ -1282,15 +1388,19 @@
                             </th>
 
                             <th>
-                                PersonaId
+                                PersonaId / Código
                             </th>
 
                             <th>
-                                Nombres
+                                Nombres / Colaborador
                             </th>
 
                             <th>
                                 Apellidos
+                            </th>
+
+                            <th>
+                                Área
                             </th>
 
                             <th>
@@ -1356,6 +1466,7 @@
 
     <script>
 
+
         /* =========================================================
            VARIABLES
         ========================================================== */
@@ -1382,12 +1493,16 @@
         function normalizarTexto(valor) {
 
             return String(valor ?? "")
+
                 .normalize("NFD")
+
                 .replace(
                     /[\u0300-\u036f]/g,
                     ""
                 )
+
                 .toLowerCase()
+
                 .trim();
 
         }
@@ -1401,7 +1516,9 @@
 
             let valor =
                 String(codigo ?? "")
+
                     .trim()
+
                     .replace(
                         /\D/g,
                         ""
@@ -1454,22 +1571,27 @@
         function escapeHtml(valor) {
 
             return String(valor ?? "")
+
                 .replace(
                     /&/g,
                     "&amp;"
                 )
+
                 .replace(
                     /</g,
                     "&lt;"
                 )
+
                 .replace(
                     />/g,
                     "&gt;"
                 )
+
                 .replace(
                     /"/g,
                     "&quot;"
                 )
+
                 .replace(
                     /'/g,
                     "&#039;"
@@ -1500,7 +1622,8 @@
             }
 
             if (
-                /^\d{4}-\d{2}-\d{2}/.test(texto)
+                /^\d{4}-\d{2}-\d{2}/
+                    .test(texto)
             ) {
 
                 const partes =
@@ -1509,9 +1632,13 @@
                         .split("-");
 
                 return new Date(
+
                     Number(partes[0]),
+
                     Number(partes[1]) - 1,
+
                     Number(partes[2])
+
                 );
 
             }
@@ -1524,9 +1651,13 @@
             if (match) {
 
                 return new Date(
+
                     Number(match[3]),
+
                     Number(match[2]) - 1,
+
                     Number(match[1])
+
                 );
 
             }
@@ -1545,9 +1676,13 @@
             }
 
             return new Date(
+
                 fechaConvertida.getFullYear(),
+
                 fechaConvertida.getMonth(),
+
                 fechaConvertida.getDate()
+
             );
 
         }
@@ -1588,9 +1723,13 @@
                 new Date();
 
             return new Date(
+
                 ahora.getFullYear(),
+
                 ahora.getMonth(),
+
                 ahora.getDate()
+
             );
 
         }
@@ -1603,7 +1742,8 @@
         function obtenerEstado(prestamo) {
 
             if (
-                prestamo.estado === "Devuelto"
+                prestamo.estado ===
+                "Devuelto"
             ) {
 
                 return "Devuelto";
@@ -1633,12 +1773,106 @@
 
 
         /* =========================================================
+           TIPO DE PRÉSTAMO
+        ========================================================== */
+
+        function esColaborador(prestamo) {
+
+            return (
+
+                normalizarTexto(
+                    prestamo.tipoPrestamo
+                ) ===
+                "colaborador"
+
+                ||
+
+                !!String(
+                    prestamo.CodigoColaborador ??
+                    prestamo.codigoColaborador ??
+                    ""
+                ).trim()
+
+            );
+
+        }
+
+
+        function obtenerTipoPrestamo(prestamo) {
+
+            if (
+                esColaborador(prestamo)
+            ) {
+
+                return "Colaborador";
+
+            }
+
+            return "Afiliado";
+
+        }
+
+
+        /* =========================================================
+           DATOS DEL COLABORADOR
+        ========================================================== */
+
+        function obtenerCodigoColaborador(prestamo) {
+
+            return String(
+
+                prestamo.CodigoColaborador ??
+
+                prestamo.codigoColaborador ??
+
+                ""
+
+            ).trim();
+
+        }
+
+
+        function obtenerNombreColaborador(prestamo) {
+
+            return String(
+
+                prestamo.NombreColaborador ??
+
+                prestamo.nombreColaborador ??
+
+                ""
+
+            ).trim();
+
+        }
+
+
+        function obtenerAreaColaborador(prestamo) {
+
+            return String(
+
+                prestamo.AreaColaborador ??
+
+                prestamo.areaColaborador ??
+
+                ""
+
+            ).trim();
+
+        }
+
+
+        /* =========================================================
            SITIO DEL PRÉSTAMO
         ========================================================== */
 
         function obtenerSitioPrestamo(prestamo) {
 
             return (
+
+                prestamo.sitioPrestamo ||
+
+                prestamo.SitioPrestamo ||
 
                 prestamo.sitio ||
 
@@ -1663,6 +1897,33 @@
                 "Sin sitio registrado"
 
             );
+
+        }
+
+
+        /* =========================================================
+           CÓDIGO DE SITIO
+        ========================================================== */
+
+        function obtenerCodigoSitio(sitio) {
+
+            const valor =
+                String(
+                    sitio ?? ""
+                )
+                    .trim()
+                    .toUpperCase();
+
+            if (
+                ["F", "M", "N", "R", "Z"]
+                    .includes(valor)
+            ) {
+
+                return valor;
+
+            }
+
+            return valor;
 
         }
 
@@ -1718,11 +1979,35 @@
 
         function obtenerNombrePersona(prestamo) {
 
+            if (
+                esColaborador(prestamo)
+            ) {
+
+                return (
+
+                    obtenerNombreColaborador(
+                        prestamo
+                    ) ||
+
+                    obtenerCodigoColaborador(
+                        prestamo
+                    ) ||
+
+                    "Sin nombre"
+
+                );
+
+            }
+
             const nombres =
-                obtenerNombres(prestamo);
+                obtenerNombres(
+                    prestamo
+                );
 
             const apellidos =
-                obtenerApellidos(prestamo);
+                obtenerApellidos(
+                    prestamo
+                );
 
             const nombreCompleto =
                 `${nombres} ${apellidos}`.trim();
@@ -1734,7 +2019,9 @@
             }
 
             return (
-                obtenerPersonaId(prestamo) ||
+                obtenerPersonaId(
+                    prestamo
+                ) ||
                 "Sin nombre"
             );
 
@@ -1778,9 +2065,11 @@
             return libros.find(
 
                 libro =>
+
                     normalizarCodigo(
                         libro.codigoLibro
-                    ) === codigoBuscado
+                    ) ===
+                    codigoBuscado
 
             ) || null;
 
@@ -1854,17 +2143,27 @@
                     error
                 } =
                     await supabaseClient
+
                         .from("libros")
+
                         .select("*")
+
                         .order(
                             "id",
                             {
-                                ascending: true
+                                ascending:
+                                    true
                             }
                         )
+
                         .range(
+
                             desde,
-                            desde + cantidad - 1
+
+                            desde +
+                            cantidad -
+                            1
+
                         );
 
                 if (error) {
@@ -1890,7 +2189,8 @@
                 libros.push(...data);
 
                 if (
-                    data.length < cantidad
+                    data.length <
+                    cantidad
                 ) {
 
                     break;
@@ -1923,17 +2223,27 @@
                     error
                 } =
                     await supabaseClient
+
                         .from("prestamos")
+
                         .select("*")
+
                         .order(
                             "fechaPrestamo",
                             {
-                                ascending: false
+                                ascending:
+                                    false
                             }
                         )
+
                         .range(
+
                             desde,
-                            desde + cantidad - 1
+
+                            desde +
+                            cantidad -
+                            1
+
                         );
 
                 if (error) {
@@ -1959,7 +2269,8 @@
                 prestamos.push(...data);
 
                 if (
-                    data.length < cantidad
+                    data.length <
+                    cantidad
                 ) {
 
                     break;
@@ -2020,7 +2331,8 @@
                 libros.filter(
 
                     libro =>
-                        libro.estado !== "Baja"
+                        libro.estado !==
+                        "Baja"
 
                 );
 
@@ -2028,7 +2340,8 @@
                 prestamos.filter(
 
                     prestamo =>
-                        prestamo.estado === "Prestado"
+                        prestamo.estado ===
+                        "Prestado"
 
                 );
 
@@ -2036,7 +2349,10 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(prestamo) === "Vencido"
+                        obtenerEstado(
+                            prestamo
+                        ) ===
+                        "Vencido"
 
                 );
 
@@ -2094,8 +2410,11 @@
                 prestamos.length;
 
             actualizarGraficaLibros(
+
                 disponibles.length,
+
                 prestamosActivos.length
+
             );
 
             actualizarGraficaActividad();
@@ -2117,12 +2436,6 @@
                     "graficaLibros"
                 );
 
-            if (!canvas) {
-
-                return;
-
-            }
-
             if (graficaLibros) {
 
                 graficaLibros.destroy();
@@ -2131,15 +2444,21 @@
 
             graficaLibros =
                 new Chart(
+
                     canvas,
+
                     {
+
                         type: "doughnut",
 
                         data: {
 
                             labels: [
+
                                 "Disponibles",
+
                                 "Prestados"
+
                             ],
 
                             datasets: [
@@ -2147,8 +2466,11 @@
                                 {
 
                                     data: [
+
                                         disponibles,
+
                                         prestados
+
                                     ],
 
                                     borderWidth: 2
@@ -2163,7 +2485,8 @@
 
                             responsive: true,
 
-                            maintainAspectRatio: false,
+                            maintainAspectRatio:
+                                false,
 
                             cutout: "60%",
 
@@ -2171,7 +2494,8 @@
 
                                 legend: {
 
-                                    position: "bottom",
+                                    position:
+                                        "bottom",
 
                                     labels: {
 
@@ -2180,7 +2504,9 @@
                                         boxWidth: 11,
 
                                         font: {
+
                                             size: 10
+
                                         }
 
                                     }
@@ -2192,6 +2518,7 @@
                         }
 
                     }
+
                 );
 
         }
@@ -2277,12 +2604,6 @@
                     "graficaMeses"
                 );
 
-            if (!canvas) {
-
-                return;
-
-            }
-
             if (graficaMeses) {
 
                 graficaMeses.destroy();
@@ -2291,8 +2612,11 @@
 
             graficaMeses =
                 new Chart(
+
                     canvas,
+
                     {
+
                         type: "line",
 
                         data: {
@@ -2335,13 +2659,16 @@
 
                             responsive: true,
 
-                            maintainAspectRatio: false,
+                            maintainAspectRatio:
+                                false,
 
                             interaction: {
 
-                                intersect: false,
+                                intersect:
+                                    false,
 
-                                mode: "index"
+                                mode:
+                                    "index"
 
                             },
 
@@ -2349,18 +2676,25 @@
 
                                 legend: {
 
-                                    display: true,
+                                    display:
+                                        true,
 
-                                    position: "bottom",
+                                    position:
+                                        "bottom",
 
                                     labels: {
 
-                                        boxWidth: 12,
+                                        boxWidth:
+                                            12,
 
-                                        padding: 8,
+                                        padding:
+                                            8,
 
                                         font: {
-                                            size: 10
+
+                                            size:
+                                                10
+
                                         }
 
                                     }
@@ -2373,14 +2707,19 @@
 
                                 y: {
 
-                                    beginAtZero: true,
+                                    beginAtZero:
+                                        true,
 
                                     ticks: {
 
-                                        precision: 0,
+                                        precision:
+                                            0,
 
                                         font: {
-                                            size: 9
+
+                                            size:
+                                                9
+
                                         }
 
                                     }
@@ -2392,12 +2731,17 @@
                                     ticks: {
 
                                         font: {
-                                            size: 8
+
+                                            size:
+                                                8
+
                                         },
 
-                                        maxRotation: 0,
+                                        maxRotation:
+                                            0,
 
-                                        minRotation: 0
+                                        minRotation:
+                                            0
 
                                     }
 
@@ -2408,7 +2752,62 @@
                         }
 
                     }
+
                 );
+
+        }
+
+
+        /* =========================================================
+           GRÁFICA DE MESES POR SITIO
+        ========================================================== */
+
+        function actualizarGraficaMesesPorSitio() {
+
+            const select =
+                document.getElementById(
+                    "filtroSitioGraficaMeses"
+                );
+
+            const sitioSeleccionado =
+                select.value;
+
+            let datosGrafica =
+                prestamos;
+
+            if (
+                sitioSeleccionado !==
+                "Todos"
+            ) {
+
+                datosGrafica =
+                    prestamos.filter(
+
+                        prestamo => {
+
+                            const sitio =
+                                obtenerSitioPrestamo(
+                                    prestamo
+                                );
+
+                            return (
+
+                                obtenerCodigoSitio(
+                                    sitio
+                                ) ===
+                                sitioSeleccionado
+
+                            );
+
+                        }
+
+                    );
+
+            }
+
+            actualizarGraficaMeses(
+                datosGrafica
+            );
 
         }
 
@@ -2423,7 +2822,9 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(prestamo) ===
+                        obtenerEstado(
+                            prestamo
+                        ) ===
                         "Prestado"
 
                 ).length;
@@ -2432,7 +2833,9 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(prestamo) ===
+                        obtenerEstado(
+                            prestamo
+                        ) ===
                         "Vencido"
 
                 ).length;
@@ -2441,7 +2844,9 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(prestamo) ===
+                        obtenerEstado(
+                            prestamo
+                        ) ===
                         "Devuelto"
 
                 ).length;
@@ -2451,12 +2856,6 @@
                     "graficaActividad"
                 );
 
-            if (!canvas) {
-
-                return;
-
-            }
-
             if (graficaActividad) {
 
                 graficaActividad.destroy();
@@ -2465,8 +2864,11 @@
 
             graficaActividad =
                 new Chart(
+
                     canvas,
+
                     {
+
                         type: "bar",
 
                         data: {
@@ -2498,7 +2900,8 @@
 
                                     ],
 
-                                    borderWidth: 1
+                                    borderWidth:
+                                        1
 
                                 }
 
@@ -2510,13 +2913,15 @@
 
                             responsive: true,
 
-                            maintainAspectRatio: false,
+                            maintainAspectRatio:
+                                false,
 
                             plugins: {
 
                                 legend: {
 
-                                    display: false
+                                    display:
+                                        false
 
                                 }
 
@@ -2526,14 +2931,19 @@
 
                                 y: {
 
-                                    beginAtZero: true,
+                                    beginAtZero:
+                                        true,
 
                                     ticks: {
 
-                                        precision: 0,
+                                        precision:
+                                            0,
 
                                         font: {
-                                            size: 9
+
+                                            size:
+                                                9
+
                                         }
 
                                     }
@@ -2545,7 +2955,10 @@
                                     ticks: {
 
                                         font: {
-                                            size: 10
+
+                                            size:
+                                                10
+
                                         }
 
                                     }
@@ -2557,6 +2970,7 @@
                         }
 
                     }
+
                 );
 
         }
@@ -2572,12 +2986,6 @@
                 document.getElementById(
                     "filtroSitio"
                 );
-
-            if (!select) {
-
-                return;
-
-            }
 
             const sitios = [
 
@@ -2600,11 +3008,18 @@
 
                 (a, b) =>
                     a.localeCompare(
+
                         b,
+
                         "es",
+
                         {
-                            sensitivity: "base"
+
+                            sensitivity:
+                                "base"
+
                         }
+
                     )
 
             );
@@ -2649,12 +3064,6 @@
                     "filtroBiblioteca"
                 );
 
-            if (!select) {
-
-                return;
-
-            }
-
             const bibliotecas = [
 
                 ...new Set(
@@ -2665,7 +3074,8 @@
 
                             libro =>
                                 String(
-                                    libro.Biblioteca ?? ""
+                                    libro.Biblioteca ??
+                                    ""
                                 )
                                     .trim()
                                     .toUpperCase()
@@ -2816,9 +3226,13 @@
 
 
             if (
+
                 fechaDesde &&
+
                 fechaHasta &&
+
                 fechaDesde > fechaHasta
+
             ) {
 
                 alert(
@@ -2850,10 +3264,32 @@
                                 prestamo
                             );
 
+                        const colaboradorCodigo =
+                            obtenerCodigoColaborador(
+                                prestamo
+                            );
+
+                        const colaboradorNombre =
+                            obtenerNombreColaborador(
+                                prestamo
+                            );
+
+                        const colaboradorArea =
+                            obtenerAreaColaborador(
+                                prestamo
+                            );
+
+                        const tipoPrestamo =
+                            obtenerTipoPrestamo(
+                                prestamo
+                            );
+
                         const textoCompleto =
                             normalizarTexto(
 
                                 [
+
+                                    tipoPrestamo,
 
                                     obtenerFamiliaId(
                                         prestamo
@@ -2870,6 +3306,12 @@
                                     obtenerApellidos(
                                         prestamo
                                     ),
+
+                                    colaboradorCodigo,
+
+                                    colaboradorNombre,
+
+                                    colaboradorArea,
 
                                     prestamo.codigoLibro,
 
@@ -2897,10 +3339,13 @@
 
 
                         if (
+
                             busqueda &&
+
                             !textoCompleto.includes(
                                 busqueda
                             )
+
                         ) {
 
                             return false;
@@ -2909,8 +3354,13 @@
 
 
                         if (
-                            estadoFiltro !== "Todos" &&
-                            estado !== estadoFiltro
+
+                            estadoFiltro !==
+                                "Todos" &&
+
+                            estado !==
+                                estadoFiltro
+
                         ) {
 
                             return false;
@@ -2919,8 +3369,13 @@
 
 
                         if (
-                            sitioFiltro !== "Todos" &&
-                            sitioPrestamo !== sitioFiltro
+
+                            sitioFiltro !==
+                                "Todos" &&
+
+                            sitioPrestamo !==
+                                sitioFiltro
+
                         ) {
 
                             return false;
@@ -2930,15 +3385,26 @@
 
                         const biblioteca =
                             String(
-                                datosLibro.biblioteca || ""
+
+                                datosLibro.biblioteca ||
+
+                                ""
+
                             )
+
                                 .trim()
+
                                 .toUpperCase();
 
 
                         if (
-                            bibliotecaFiltro !== "Todos" &&
-                            biblioteca !== bibliotecaFiltro
+
+                            bibliotecaFiltro !==
+                                "Todos" &&
+
+                            biblioteca !==
+                                bibliotecaFiltro
+
                         ) {
 
                             return false;
@@ -2948,23 +3414,33 @@
 
                         const fechaPrestamo =
                             obtenerFechaSoloDia(
+
                                 prestamo.fechaPrestamo
+
                             );
 
 
                         if (
+
                             fechaDesde &&
+
                             fechaPrestamo
+
                         ) {
 
                             const desde =
                                 new Date(
+
                                     fechaDesde +
                                     "T00:00:00"
+
                                 );
 
                             if (
-                                fechaPrestamo < desde
+
+                                fechaPrestamo <
+                                desde
+
                             ) {
 
                                 return false;
@@ -2975,18 +3451,26 @@
 
 
                         if (
+
                             fechaHasta &&
+
                             fechaPrestamo
+
                         ) {
 
                             const hasta =
                                 new Date(
+
                                     fechaHasta +
                                     "T00:00:00"
+
                                 );
 
                             if (
-                                fechaPrestamo > hasta
+
+                                fechaPrestamo >
+                                hasta
+
                             ) {
 
                                 return false;
@@ -3012,7 +3496,8 @@
                 (a, b) => {
 
                     if (
-                        orden === "reciente"
+                        orden ===
+                        "reciente"
                     ) {
 
                         const fechaA =
@@ -3026,15 +3511,18 @@
                             );
 
                         return (
+
                             (fechaB || 0) -
                             (fechaA || 0)
+
                         );
 
                     }
 
 
                     if (
-                        orden === "antiguo"
+                        orden ===
+                        "antiguo"
                     ) {
 
                         const fechaA =
@@ -3048,48 +3536,79 @@
                             );
 
                         return (
+
                             (fechaA || 0) -
                             (fechaB || 0)
+
                         );
 
                     }
 
 
                     if (
-                        orden === "familia"
+                        orden ===
+                        "familia"
                     ) {
 
                         return String(
-                            obtenerFamiliaId(a)
+
+                            obtenerFamiliaId(
+                                a
+                            )
+
                         ).localeCompare(
+
                             String(
-                                obtenerFamiliaId(b)
+
+                                obtenerFamiliaId(
+                                    b
+                                )
+
                             ),
+
                             "es"
+
                         );
 
                     }
 
 
                     if (
-                        orden === "persona"
+                        orden ===
+                        "persona"
                     ) {
 
-                        return obtenerNombrePersona(
-                            a
-                        ).localeCompare(
-                            obtenerNombrePersona(b),
-                            "es",
-                            {
-                                sensitivity: "base"
-                            }
+                        return (
+
+                            obtenerNombrePersona(
+                                a
+                            )
+
+                            .localeCompare(
+
+                                obtenerNombrePersona(
+                                    b
+                                ),
+
+                                "es",
+
+                                {
+
+                                    sensitivity:
+                                        "base"
+
+                                }
+
+                            )
+
                         );
 
                     }
 
 
                     if (
-                        orden === "libro"
+                        orden ===
+                        "libro"
                     ) {
 
                         const libroA =
@@ -3099,15 +3618,30 @@
                             obtenerDatosLibro(b);
 
                         return String(
-                            libroA.nombre || ""
+
+                            libroA.nombre ||
+
+                            ""
+
                         ).localeCompare(
+
                             String(
-                                libroB.nombre || ""
+
+                                libroB.nombre ||
+
+                                ""
+
                             ),
+
                             "es",
+
                             {
-                                sensitivity: "base"
+
+                                sensitivity:
+                                    "base"
+
                             }
+
                         );
 
                     }
@@ -3148,7 +3682,9 @@
 
                 `${prestamosFiltrados.length} ${
                     prestamosFiltrados.length === 1
+
                         ? "resultado"
+
                         : "resultados"
                 }`;
 
@@ -3162,7 +3698,7 @@
                     <tr>
 
                         <td
-                            colspan="15"
+                            colspan="17"
                             class="sin-resultados"
                         >
                             🔎 No se encontraron préstamos con los filtros seleccionados.
@@ -3197,7 +3733,8 @@
                         "estado-prestado";
 
                     if (
-                        estado === "Vencido"
+                        estado ===
+                        "Vencido"
                     ) {
 
                         claseEstado =
@@ -3206,7 +3743,8 @@
                     }
 
                     if (
-                        estado === "Devuelto"
+                        estado ===
+                        "Devuelto"
                     ) {
 
                         claseEstado =
@@ -3219,8 +3757,12 @@
                         prestamo.fechaDevolucion;
 
                     if (
-                        estado === "Devuelto" &&
+
+                        estado ===
+                            "Devuelto" &&
+
                         prestamo.fechaDevolucionReal
+
                     ) {
 
                         fechaDevolucion =
@@ -3241,28 +3783,72 @@
                         );
 
 
-                    const familiaId =
-                        obtenerFamiliaId(
+                    const colaborador =
+                        esColaborador(
                             prestamo
                         );
 
 
-                    const personaId =
-                        obtenerPersonaId(
+                    const tipoPrestamo =
+                        obtenerTipoPrestamo(
                             prestamo
                         );
 
 
-                    const nombres =
-                        obtenerNombres(
-                            prestamo
-                        );
+                    let familiaId = "";
+
+                    let personaId = "";
+
+                    let nombres = "";
+
+                    let apellidos = "";
+
+                    let area = "";
+
+                    let codigoPersona =
+                        "";
 
 
-                    const apellidos =
-                        obtenerApellidos(
-                            prestamo
-                        );
+                    if (colaborador) {
+
+                        codigoPersona =
+                            obtenerCodigoColaborador(
+                                prestamo
+                            );
+
+                        nombres =
+                            obtenerNombreColaborador(
+                                prestamo
+                            );
+
+                        area =
+                            obtenerAreaColaborador(
+                                prestamo
+                            );
+
+                    } else {
+
+                        familiaId =
+                            obtenerFamiliaId(
+                                prestamo
+                            );
+
+                        personaId =
+                            obtenerPersonaId(
+                                prestamo
+                            );
+
+                        nombres =
+                            obtenerNombres(
+                                prestamo
+                            );
+
+                        apellidos =
+                            obtenerApellidos(
+                                prestamo
+                            );
+
+                    }
 
 
                     const biblioteca =
@@ -3273,106 +3859,208 @@
                     fila.innerHTML = `
 
                         <td>
+
+                            ${escapeHtml(
+                                tipoPrestamo
+                            )}
+
+                        </td>
+
+
+                        <td>
+
                             ${escapeHtml(
                                 sitioPrestamo
                             )}
+
                         </td>
+
 
                         <td>
+
                             ${escapeHtml(
-                                familiaId || "—"
+                                familiaId ||
+                                "—"
                             )}
+
                         </td>
+
 
                         <td>
+
                             ${escapeHtml(
-                                personaId || "—"
+
+                                colaborador
+
+                                    ? (
+                                        codigoPersona ||
+                                        "—"
+                                    )
+
+                                    : (
+                                        personaId ||
+                                        "—"
+                                    )
+
                             )}
+
                         </td>
 
-                        <td class="nombres">
+
+                        <td class="${
+                            colaborador
+                                ? "colaborador"
+                                : "nombres"
+                        }">
+
                             ${escapeHtml(
-                                nombres || "—"
+                                nombres ||
+                                "—"
                             )}
+
                         </td>
+
 
                         <td class="apellidos">
+
                             ${escapeHtml(
-                                apellidos || "—"
+                                apellidos ||
+                                "—"
                             )}
+
                         </td>
 
+
+                        <td class="area">
+
+                            ${escapeHtml(
+                                area ||
+                                "—"
+                            )}
+
+                        </td>
+
+
                         <td>
+
                             <strong>
+
                                 ${escapeHtml(
+
                                     formatearCodigo(
                                         datosLibro.codigo
                                     )
+
                                 )}
+
                             </strong>
+
                         </td>
+
 
                         <td class="libro">
+
                             ${escapeHtml(
+
                                 datosLibro.nombre ||
                                 "Sin nombre"
+
                             )}
+
                         </td>
+
 
                         <td class="autor">
+
                             ${escapeHtml(
+
                                 datosLibro.autor ||
                                 "—"
+
                             )}
+
                         </td>
+
 
                         <td class="genero">
+
                             ${escapeHtml(
+
                                 datosLibro.genero ||
                                 "—"
+
                             )}
+
                         </td>
+
 
                         <td class="editorial">
+
                             ${escapeHtml(
+
                                 datosLibro.editorial ||
                                 "—"
+
                             )}
+
                         </td>
 
+
                         <td>
+
                             ${escapeHtml(
+
                                 datosLibro.anio ||
                                 "—"
+
                             )}
+
                         </td>
 
+
                         <td>
+
                             ${escapeHtml(
                                 biblioteca
                             )}
+
                         </td>
 
+
                         <td>
+
                             ${formatearFecha(
+
                                 prestamo.fechaPrestamo
+
                             )}
+
                         </td>
 
+
                         <td>
+
                             ${formatearFecha(
+
                                 fechaDevolucion
+
                             )}
+
                         </td>
 
+
                         <td>
+
                             <span
                                 class="estado ${claseEstado}"
                             >
+
                                 ${escapeHtml(
                                     estado
                                 )}
+
                             </span>
+
                         </td>
 
                     `;
@@ -3398,8 +4086,59 @@
 
         function actualizarGraficosFiltrados() {
 
+            const selector =
+                document.getElementById(
+                    "filtroSitioGraficaMeses"
+                );
+
+            if (!selector) {
+
+                actualizarGraficaMeses(
+                    prestamosFiltrados
+                );
+
+                return;
+
+            }
+
+            const sitioSeleccionado =
+                selector.value;
+
+            let datosGrafica =
+                prestamosFiltrados;
+
+            if (
+                sitioSeleccionado !==
+                "Todos"
+            ) {
+
+                datosGrafica =
+                    prestamosFiltrados.filter(
+
+                        prestamo => {
+
+                            const sitio =
+                                obtenerSitioPrestamo(
+                                    prestamo
+                                );
+
+                            return (
+
+                                obtenerCodigoSitio(
+                                    sitio
+                                ) ===
+                                sitioSeleccionado
+
+                            );
+
+                        }
+
+                    );
+
+            }
+
             actualizarGraficaMeses(
-                prestamosFiltrados
+                datosGrafica
             );
 
         }
@@ -3447,34 +4186,51 @@
             if (busqueda) {
 
                 elementos.push(
+
                     `Buscar: "${busqueda}"`
+
                 );
 
             }
 
 
-            if (estado !== "Todos") {
+            if (
+                estado !==
+                "Todos"
+            ) {
 
                 elementos.push(
+
                     `Estado: ${estado}`
+
                 );
 
             }
 
 
-            if (sitioPrestamo !== "Todos") {
+            if (
+                sitioPrestamo !==
+                "Todos"
+            ) {
 
                 elementos.push(
+
                     `SitioPréstamo: ${sitioPrestamo}`
+
                 );
 
             }
 
 
-            if (biblioteca !== "Todos") {
+            if (
+                biblioteca !==
+                "Todos"
+            ) {
 
                 elementos.push(
+
                     `Biblioteca: ${biblioteca}`
+
                 );
 
             }
@@ -3483,9 +4239,11 @@
             if (desde) {
 
                 elementos.push(
+
                     `Desde: ${formatearFecha(
                         desde
                     )}`
+
                 );
 
             }
@@ -3494,9 +4252,11 @@
             if (hasta) {
 
                 elementos.push(
+
                     `Hasta: ${formatearFecha(
                         hasta
                     )}`
+
                 );
 
             }
@@ -3561,8 +4321,12 @@
 
 
                         if (
-                            estado === "Devuelto" &&
+
+                            estado ===
+                                "Devuelto" &&
+
                             prestamo.fechaDevolucionReal
+
                         ) {
 
                             fechaDevolucion =
@@ -3577,67 +4341,146 @@
                             );
 
 
+                        const colaborador =
+                            esColaborador(
+                                prestamo
+                            );
+
+
                         return {
 
+                            "Tipo":
+
+                                obtenerTipoPrestamo(
+                                    prestamo
+                                ),
+
+
                             "SitioPréstamo":
+
                                 obtenerSitioPrestamo(
                                     prestamo
                                 ),
 
+
                             "FamiliaId":
-                                obtenerFamiliaId(
-                                    prestamo
-                                ),
 
-                            "PersonaId":
-                                obtenerPersonaId(
-                                    prestamo
-                                ),
+                                colaborador
 
-                            "Nombres":
-                                obtenerNombres(
-                                    prestamo
-                                ),
+                                    ? ""
+
+                                    : obtenerFamiliaId(
+                                        prestamo
+                                    ),
+
+
+                            "PersonaId / Código":
+
+                                colaborador
+
+                                    ? obtenerCodigoColaborador(
+                                        prestamo
+                                    )
+
+                                    : obtenerPersonaId(
+                                        prestamo
+                                    ),
+
+
+                            "Nombres / Colaborador":
+
+                                colaborador
+
+                                    ? obtenerNombreColaborador(
+                                        prestamo
+                                    )
+
+                                    : obtenerNombres(
+                                        prestamo
+                                    ),
+
 
                             "Apellidos":
-                                obtenerApellidos(
-                                    prestamo
-                                ),
+
+                                colaborador
+
+                                    ? ""
+
+                                    : obtenerApellidos(
+                                        prestamo
+                                    ),
+
+
+                            "Área":
+
+                                colaborador
+
+                                    ? obtenerAreaColaborador(
+                                        prestamo
+                                    )
+
+                                    : "",
+
 
                             "Código":
+
                                 formatearCodigo(
                                     datosLibro.codigo
                                 ),
 
+
                             "Libro":
-                                datosLibro.nombre || "",
+
+                                datosLibro.nombre ||
+                                "",
+
 
                             "Autor":
-                                datosLibro.autor || "",
+
+                                datosLibro.autor ||
+                                "",
+
 
                             "Género":
-                                datosLibro.genero || "",
+
+                                datosLibro.genero ||
+                                "",
+
 
                             "Editorial":
-                                datosLibro.editorial || "",
+
+                                datosLibro.editorial ||
+                                "",
+
 
                             "Año":
-                                datosLibro.anio || "",
+
+                                datosLibro.anio ||
+                                "",
+
 
                             "Biblioteca":
-                                datosLibro.biblioteca || "",
+
+                                datosLibro.biblioteca ||
+                                "",
+
 
                             "Préstamo":
+
                                 formatearFecha(
                                     prestamo.fechaPrestamo
                                 ),
 
+
                             "Devolución":
+
                                 formatearFecha(
                                     fechaDevolucion
                                 ),
 
+
                             "Estado":
+
                                 estado
 
                         };
@@ -3658,15 +4501,22 @@
 
 
             XLSX.utils.book_append_sheet(
+
                 libroExcel,
+
                 hoja,
+
                 "Reporte"
+
             );
 
 
             XLSX.writeFile(
+
                 libroExcel,
+
                 "Reporte_Biblioteca.xlsx"
+
             );
 
         }
@@ -3716,174 +4566,139 @@
 
 
         /* =========================================================
-           REGISTRAR EVENTOS
-           Se ejecuta después de que el DOM esté disponible.
+           EVENTOS
         ========================================================== */
 
-        function registrarEventosReportes() {
+        document.getElementById(
+            "btnBuscar"
+        ).addEventListener(
 
-            const btnBuscar =
-                document.getElementById(
-                    "btnBuscar"
-                );
+            "click",
 
-            const btnLimpiar =
-                document.getElementById(
-                    "btnLimpiar"
-                );
+            aplicarFiltros
 
-            const btnExcel =
-                document.getElementById(
-                    "btnExcel"
-                );
-
-            const busqueda =
-                document.getElementById(
-                    "busqueda"
-                );
-
-            const filtroEstado =
-                document.getElementById(
-                    "filtroEstado"
-                );
-
-            const filtroSitio =
-                document.getElementById(
-                    "filtroSitio"
-                );
-
-            const filtroBiblioteca =
-                document.getElementById(
-                    "filtroBiblioteca"
-                );
-
-            const filtroOrden =
-                document.getElementById(
-                    "filtroOrden"
-                );
-
-            const fechaDesde =
-                document.getElementById(
-                    "fechaDesde"
-                );
-
-            const fechaHasta =
-                document.getElementById(
-                    "fechaHasta"
-                );
+        );
 
 
-            if (btnBuscar) {
+        document.getElementById(
+            "btnLimpiar"
+        ).addEventListener(
 
-                btnBuscar.addEventListener(
-                    "click",
-                    aplicarFiltros
-                );
+            "click",
+
+            limpiarFiltros
+
+        );
+
+
+        document.getElementById(
+            "btnExcel"
+        ).addEventListener(
+
+            "click",
+
+            exportarExcel
+
+        );
+
+
+        document.getElementById(
+            "busqueda"
+        ).addEventListener(
+
+            "keydown",
+
+            function(event) {
+
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    aplicarFiltros();
+
+                }
 
             }
 
-
-            if (btnLimpiar) {
-
-                btnLimpiar.addEventListener(
-                    "click",
-                    limpiarFiltros
-                );
-
-            }
+        );
 
 
-            if (btnExcel) {
+        document.getElementById(
+            "filtroEstado"
+        ).addEventListener(
 
-                btnExcel.addEventListener(
-                    "click",
-                    exportarExcel
-                );
+            "change",
 
-            }
+            aplicarFiltros
 
-
-            if (busqueda) {
-
-                busqueda.addEventListener(
-                    "keydown",
-                    function(event) {
-
-                        if (
-                            event.key ===
-                            "Enter"
-                        ) {
-
-                            aplicarFiltros();
-
-                        }
-
-                    }
-                );
-
-            }
+        );
 
 
-            if (filtroEstado) {
+        document.getElementById(
+            "filtroSitio"
+        ).addEventListener(
 
-                filtroEstado.addEventListener(
-                    "change",
-                    aplicarFiltros
-                );
+            "change",
 
-            }
+            aplicarFiltros
 
-
-            if (filtroSitio) {
-
-                filtroSitio.addEventListener(
-                    "change",
-                    aplicarFiltros
-                );
-
-            }
+        );
 
 
-            if (filtroBiblioteca) {
+        document.getElementById(
+            "filtroBiblioteca"
+        ).addEventListener(
 
-                filtroBiblioteca.addEventListener(
-                    "change",
-                    aplicarFiltros
-                );
+            "change",
 
-            }
+            aplicarFiltros
 
-
-            if (filtroOrden) {
-
-                filtroOrden.addEventListener(
-                    "change",
-                    aplicarFiltros
-                );
-
-            }
+        );
 
 
-            if (fechaDesde) {
+        document.getElementById(
+            "filtroOrden"
+        ).addEventListener(
 
-                fechaDesde.addEventListener(
-                    "change",
-                    aplicarFiltros
-                );
+            "change",
 
-            }
+            aplicarFiltros
+
+        );
 
 
-            if (fechaHasta) {
+        document.getElementById(
+            "fechaDesde"
+        ).addEventListener(
 
-                fechaHasta.addEventListener(
-                    "change",
-                    aplicarFiltros
-                );
+            "change",
 
-            }
+            aplicarFiltros
 
-        }
+        );
+
+
+        document.getElementById(
+            "fechaHasta"
+        ).addEventListener(
+
+            "change",
+
+            aplicarFiltros
+
+        );
+
+
+        document.getElementById(
+            "filtroSitioGraficaMeses"
+        ).addEventListener(
+
+            "change",
+
+            actualizarGraficosFiltrados
+
+        );
 
 
         /* =========================================================
@@ -3909,14 +4724,13 @@
 
             reportesIniciados = true;
 
-            registrarEventosReportes();
-
             await cargarDatos();
 
         }
 
 
         iniciarReportes();
+
 
     </script>
 
