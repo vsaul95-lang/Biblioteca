@@ -3147,8 +3147,6 @@
 
         /*
          * Guardamos el código original.
-         * Esto es importante porque el
-         * usuario puede cambiar el código.
          */
 
         codigoColaboradorEditando =
@@ -3209,11 +3207,6 @@
             "mostrar"
         );
 
-
-        /*
-         * Colocar el cursor en
-         * el primer campo.
-         */
 
         setTimeout(
             () => {
@@ -3538,6 +3531,13 @@
 
     /*
      * ELIMINAR COLABORADOR
+     *
+     * REGLA:
+     * Un colaborador solamente puede eliminarse
+     * si NO tiene ningún préstamo histórico.
+     *
+     * Si existe cualquier préstamo, el colaborador
+     * se conserva para proteger el historial.
      */
 
     async function eliminarColaborador(
@@ -3569,29 +3569,18 @@
         }
 
 
-        const confirmar =
-            confirm(
-                `¿Está seguro de eliminar al colaborador "${colaborador.Nombre}" con código ${colaborador.CodigoColaborador}?`
-            );
-
-
-        if (
-            !confirmar
-        ) {
-
-            return;
-
-        }
-
+        /*
+         * COMPROBAR SI EXISTE CUALQUIER
+         * PRÉSTAMO HISTÓRICO
+         *
+         * No usamos solamente estado = Prestado.
+         * Se buscan todos los préstamos asociados.
+         */
 
         try {
 
-            /*
-             * COMPROBAR PRESTAMOS ACTIVOS
-             */
-
             const {
-                data: prestamosActivos,
+                data: prestamosColaborador,
                 error: errorPrestamos
             } =
                 await supabaseClient
@@ -3599,41 +3588,113 @@
                         "prestamos"
                     )
                     .select(
-                        "id"
+                        "id,estado"
                     )
                     .eq(
                         "CodigoColaborador",
                         colaborador.CodigoColaborador
-                    )
-                    .eq(
-                        "estado",
-                        "Prestado"
-                    )
-                    .limit(1);
+                    );
 
+
+            /*
+             * Si no podemos comprobar el historial,
+             * NO permitimos eliminar.
+             */
 
             if (
                 errorPrestamos
             ) {
 
-                console.warn(
-                    "No se pudo comprobar préstamos del colaborador:",
+                console.error(
+                    "No se pudo comprobar el historial del colaborador:",
                     errorPrestamos
                 );
 
-            } else if (
-                prestamosActivos &&
+
+                mostrarMensajeError(
+                    "No se pudo comprobar el historial de préstamos del colaborador. Por seguridad, no se realizó la eliminación."
+                );
+
+
+                return;
+
+            }
+
+
+            const prestamos =
+                prestamosColaborador || [];
+
+
+            /*
+             * SI TIENE PRÉSTAMOS ACTIVOS
+             */
+
+            const prestamosActivos =
+                prestamos.filter(
+                    prestamo =>
+                        normalizar(
+                            prestamo.estado
+                        ) === "PRESTADO"
+                );
+
+
+            if (
                 prestamosActivos.length > 0
             ) {
 
                 alert(
-                    "No se puede eliminar este colaborador porque tiene un préstamo activo."
+                    "No se puede eliminar este colaborador porque tiene un préstamo activo. Primero debe registrarse la devolución del libro."
                 );
 
                 return;
 
             }
 
+
+            /*
+             * SI TIENE PRÉSTAMOS HISTÓRICOS
+             *
+             * Aunque estén devueltos, se conserva
+             * el colaborador para proteger el historial.
+             */
+
+            if (
+                prestamos.length > 0
+            ) {
+
+                alert(
+                    `No se puede eliminar a "${colaborador.Nombre}" porque tiene ${prestamos.length} préstamo(s) registrado(s) en el historial. Para conservar el historial de la biblioteca, debe mantenerse en la base y puede cambiarse a estado Inactivo.`
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * SOLAMENTE AQUÍ SE PIDE CONFIRMACIÓN
+             *
+             * El colaborador no tiene ningún préstamo.
+             */
+
+            const confirmar =
+                confirm(
+                    `¿Está seguro de eliminar al colaborador "${colaborador.Nombre}" con código ${colaborador.CodigoColaborador}?`
+                );
+
+
+            if (
+                !confirmar
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * ELIMINAR
+             */
 
             const {
                 error
