@@ -598,8 +598,6 @@
             class="resumen-prestamo"
         >
 
-            <!-- PERSONA Y LIBRO -->
-
             <div class="bloque-resumen">
 
                 <div class="titulo-bloque">
@@ -642,7 +640,11 @@
                                 <span id="resumenNombre"></span>
                             </div>
 
-                            <div class="dato" id="filaAreaResumen" style="display:none;">
+                            <div
+                                class="dato"
+                                id="filaAreaResumen"
+                                style="display:none;"
+                            >
                                 <span>Área</span>
                                 <span id="resumenArea"></span>
                             </div>
@@ -980,6 +982,61 @@ function normalizarCodigo(codigo) {
 
 
 /* =========================================================
+   NORMALIZAR CÓDIGO DE COLABORADOR
+=========================================================
+
+   Ejemplos:
+
+   C014 -> C14
+   c014 -> C14
+   C14  -> C14
+   c14  -> C14
+   014  -> C14
+   14   -> C14
+
+   De esta forma la búsqueda no depende de mayúsculas
+   ni de los ceros que tenga el código.
+========================================================= */
+
+function normalizarCodigoColaborador(codigo) {
+
+    let valor =
+        String(codigo || "")
+            .trim()
+            .toUpperCase();
+
+
+    valor =
+        valor.replace(
+            /^C/,
+            ""
+        );
+
+
+    valor =
+        valor.replace(
+            /\D/g,
+            ""
+        );
+
+
+    valor =
+        valor.replace(
+            /^0+/,
+            ""
+        );
+
+
+    if (!valor) {
+        return "";
+    }
+
+
+    return "C" + valor;
+}
+
+
+/* =========================================================
    FECHA LOCAL
 ========================================================= */
 
@@ -1030,6 +1087,7 @@ function agregarUnMes(fechaTexto) {
     const dia =
         Number(partes[2]);
 
+
     const fecha =
         new Date(
             año,
@@ -1040,9 +1098,11 @@ function agregarUnMes(fechaTexto) {
             0
         );
 
+
     fecha.setMonth(
         fecha.getMonth() + 1
     );
+
 
     const nuevoAño =
         fecha.getFullYear();
@@ -1056,6 +1116,7 @@ function agregarUnMes(fechaTexto) {
         String(
             fecha.getDate()
         ).padStart(2, "0");
+
 
     return `${nuevoAño}-${nuevoMes}-${nuevoDia}`;
 }
@@ -1086,6 +1147,7 @@ function fechaLocalDesdeInput(fechaTexto) {
 
     const dia =
         Number(partes[2]);
+
 
     return new Date(
         año,
@@ -1138,6 +1200,7 @@ function obtenerSitio(persona) {
         }
     }
 
+
     if (persona && persona.FamiliaId) {
 
         const sitio =
@@ -1153,6 +1216,7 @@ function obtenerSitio(persona) {
             return sitio;
         }
     }
+
 
     return null;
 }
@@ -1171,12 +1235,14 @@ function obtenerSitioPrestamo() {
         .trim()
         .toUpperCase();
 
+
     if (
         ["F", "M", "R", "N", "Z"]
             .includes(sitio)
     ) {
         return sitio;
     }
+
 
     return null;
 }
@@ -1195,7 +1261,10 @@ function prepararFechas() {
 
     }
 
-    if (!fechaDevolucionModificada) {
+
+    if (
+        !fechaDevolucionModificada
+    ) {
 
         fechaDevolucionInput.value =
             agregarUnMes(
@@ -1203,6 +1272,7 @@ function prepararFechas() {
             );
 
     }
+
 }
 
 
@@ -1218,6 +1288,7 @@ function validarFechas() {
     const fechaDevolucion =
         fechaDevolucionInput.value;
 
+
     if (!fechaPrestamo) {
 
         mostrarMensaje(
@@ -1230,6 +1301,7 @@ function validarFechas() {
 
         return false;
     }
+
 
     if (!fechaDevolucion) {
 
@@ -1244,6 +1316,7 @@ function validarFechas() {
         return false;
     }
 
+
     const fechaInicio =
         fechaLocalDesdeInput(
             fechaPrestamo
@@ -1253,6 +1326,7 @@ function validarFechas() {
         fechaLocalDesdeInput(
             fechaDevolucion
         );
+
 
     if (
         !fechaInicio ||
@@ -1267,6 +1341,7 @@ function validarFechas() {
 
         return false;
     }
+
 
     if (
         fechaFin < fechaInicio
@@ -1283,18 +1358,20 @@ function validarFechas() {
         return false;
     }
 
+
     return true;
 }
 
 
 /* =========================================================
-   VALIDAR SITIO
+   VALIDAR SITIO DE PRÉSTAMO
 ========================================================= */
 
 function validarSitioPrestamo() {
 
     const sitio =
         obtenerSitioPrestamo();
+
 
     if (!sitio) {
 
@@ -1308,6 +1385,7 @@ function validarSitioPrestamo() {
 
         return false;
     }
+
 
     return true;
 }
@@ -1417,8 +1495,7 @@ async function buscarFamilia() {
     tablaFamilia.style.display =
         "none";
 
-    personaSeleccionada =
-        null;
+    personaSeleccionada = null;
 
     actualizarDetalle();
 
@@ -1623,10 +1700,12 @@ function seleccionarPersona(
                 "seleccionada"
             );
 
+
             const boton =
                 fila.querySelector(
                     ".btn-seleccionar"
                 );
+
 
             if (boton) {
 
@@ -1672,7 +1751,7 @@ function seleccionarPersona(
 
 async function buscarColaborador() {
 
-    const codigo =
+    const codigoIngresado =
         buscarColaboradorInput.value.trim();
 
 
@@ -1695,7 +1774,7 @@ async function buscarColaborador() {
     actualizarDetalle();
 
 
-    if (!codigo) {
+    if (!codigoIngresado) {
 
         mostrarMensaje(
             mensajeColaborador,
@@ -1707,7 +1786,44 @@ async function buscarColaborador() {
     }
 
 
+    /*
+       Normalizamos lo que escribió el usuario.
+
+       Ejemplos:
+
+       c14  -> C14
+       C14  -> C14
+       c014 -> C14
+       C014 -> C14
+    */
+
+    const codigoNormalizado =
+        normalizarCodigoColaborador(
+            codigoIngresado
+        );
+
+
+    if (!codigoNormalizado) {
+
+        mostrarMensaje(
+            mensajeColaborador,
+            "Ingrese un código de colaborador válido.",
+            "error"
+        );
+
+        return;
+    }
+
+
     try {
+
+        /*
+           No hacemos .eq() directamente porque Supabase
+           distingue el formato almacenado.
+
+           Traemos los colaboradores activos y después
+           comparamos sus códigos ya normalizados.
+        */
 
         const {
             data,
@@ -1720,11 +1836,6 @@ async function buscarColaborador() {
                 .select("*")
 
                 .eq(
-                    "CodigoColaborador",
-                    codigo
-                )
-
-                .eq(
                     "estado",
                     "Activo"
                 );
@@ -1735,9 +1846,18 @@ async function buscarColaborador() {
         }
 
 
+        const colaboradoresEncontrados =
+            (data || []).filter(
+                colaborador =>
+                    normalizarCodigoColaborador(
+                        colaborador.CodigoColaborador
+                    ) ===
+                    codigoNormalizado
+            );
+
+
         if (
-            !data ||
-            data.length === 0
+            colaboradoresEncontrados.length === 0
         ) {
 
             mostrarMensaje(
@@ -1750,105 +1870,107 @@ async function buscarColaborador() {
         }
 
 
-        data.forEach(colaborador => {
+        colaboradoresEncontrados.forEach(
+            colaborador => {
 
-            const fila =
-                document.createElement("tr");
-
-
-            const tdCodigo =
-                document.createElement("td");
-
-            tdCodigo.textContent =
-                colaborador.CodigoColaborador;
+                const fila =
+                    document.createElement("tr");
 
 
-            const tdNombre =
-                document.createElement("td");
+                const tdCodigo =
+                    document.createElement("td");
 
-            tdNombre.className =
-                "nombre";
-
-            tdNombre.textContent =
-                colaborador.Nombre || "";
+                tdCodigo.textContent =
+                    colaborador.CodigoColaborador;
 
 
-            const tdArea =
-                document.createElement("td");
+                const tdNombre =
+                    document.createElement("td");
 
-            tdArea.textContent =
-                colaborador.Area || "";
+                tdNombre.className =
+                    "nombre";
 
-
-            const tdEstado =
-                document.createElement("td");
-
-            tdEstado.textContent =
-                colaborador.estado;
+                tdNombre.textContent =
+                    colaborador.Nombre || "";
 
 
-            const tdAccion =
-                document.createElement("td");
+                const tdArea =
+                    document.createElement("td");
+
+                tdArea.textContent =
+                    colaborador.Area || "";
 
 
-            const boton =
-                document.createElement("button");
+                const tdEstado =
+                    document.createElement("td");
 
-            boton.type =
-                "button";
-
-            boton.className =
-                "btn-seleccionar";
-
-            boton.textContent =
-                "Seleccionar";
+                tdEstado.textContent =
+                    colaborador.estado;
 
 
-            boton.addEventListener(
-                "click",
-                function() {
-
-                    seleccionarColaborador(
-                        colaborador,
-                        fila,
-                        boton
-                    );
-
-                }
-            );
+                const tdAccion =
+                    document.createElement("td");
 
 
-            tdAccion.appendChild(
-                boton
-            );
+                const boton =
+                    document.createElement("button");
+
+                boton.type =
+                    "button";
+
+                boton.className =
+                    "btn-seleccionar";
+
+                boton.textContent =
+                    "Seleccionar";
 
 
-            fila.appendChild(
-                tdCodigo
-            );
+                boton.addEventListener(
+                    "click",
+                    function() {
 
-            fila.appendChild(
-                tdNombre
-            );
+                        seleccionarColaborador(
+                            colaborador,
+                            fila,
+                            boton
+                        );
 
-            fila.appendChild(
-                tdArea
-            );
-
-            fila.appendChild(
-                tdEstado
-            );
-
-            fila.appendChild(
-                tdAccion
-            );
+                    }
+                );
 
 
-            cuerpoColaborador.appendChild(
-                fila
-            );
+                tdAccion.appendChild(
+                    boton
+                );
 
-        });
+
+                fila.appendChild(
+                    tdCodigo
+                );
+
+                fila.appendChild(
+                    tdNombre
+                );
+
+                fila.appendChild(
+                    tdArea
+                );
+
+                fila.appendChild(
+                    tdEstado
+                );
+
+                fila.appendChild(
+                    tdAccion
+                );
+
+
+                cuerpoColaborador.appendChild(
+                    fila
+                );
+
+            }
+        );
 
 
         tablaColaborador.style.display =
@@ -1888,10 +2010,12 @@ function seleccionarColaborador(
                 "seleccionada"
             );
 
+
             const boton =
                 fila.querySelector(
                     ".btn-seleccionar"
                 );
+
 
             if (boton) {
 
@@ -1939,7 +2063,6 @@ async function buscarLibro() {
 
     const codigoIngresado =
         buscarLibroInput.value.trim();
-
 
     limpiarMensaje(mensajeLibro);
 
@@ -2269,12 +2392,18 @@ async function confirmarPrestamo() {
     }
 
 
-    if (!validarFechas()) {
+    if (
+        !validarFechas()
+    ) {
+
         return;
     }
 
 
-    if (!validarSitioPrestamo()) {
+    if (
+        !validarSitioPrestamo()
+    ) {
+
         return;
     }
 
@@ -2439,7 +2568,6 @@ async function confirmarPrestamo() {
 
                 fechaDevolucionReal:
                     null
-
             };
 
 
@@ -2454,10 +2582,6 @@ async function confirmarPrestamo() {
                 tipoPrestamo:
                     "Colaborador",
 
-                /*
-                   En este caso Sitio representa el sitio
-                   donde se realiza el préstamo.
-                */
                 Sitio:
                     sitioPrestamo,
 
@@ -2502,7 +2626,6 @@ async function confirmarPrestamo() {
 
                 fechaDevolucionReal:
                     null
-
             };
 
         }
@@ -2605,10 +2728,9 @@ async function confirmarPrestamo() {
             "";
 
 
-        /* LIMPIAR RESULTADOS FAMILIA */
-
         cuerpoFamilia.innerHTML =
             "";
+
 
         tablaFamilia.style.display =
             "none";
@@ -2628,6 +2750,7 @@ async function confirmarPrestamo() {
         cuerpoColaborador.innerHTML =
             "";
 
+
         tablaColaborador.style.display =
             "none";
 
@@ -2645,6 +2768,7 @@ async function confirmarPrestamo() {
 
         libroInfo.innerHTML =
             "";
+
 
         libroInfo.style.display =
             "none";
@@ -2704,11 +2828,14 @@ function cancelarPrestamo() {
     libroSeleccionado =
         null;
 
+
     libroInfo.style.display =
         "none";
 
+
     buscarLibroInput.value =
         "";
+
 
     actualizarDetalle();
 }
@@ -2733,6 +2860,7 @@ fechaPrestamoInput.addEventListener(
 
         }
 
+
         actualizarDetalle();
 
     }
@@ -2749,6 +2877,7 @@ fechaDevolucionInput.addEventListener(
 
         fechaDevolucionModificada =
             true;
+
 
         actualizarDetalle();
 
