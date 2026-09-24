@@ -122,6 +122,10 @@
         }
 
 
+        /* =========================================================
+           ENCABEZADO
+        ========================================================== */
+
         .encabezado {
             background: #263238;
             color: white;
@@ -185,12 +189,20 @@
         }
 
 
+        /* =========================================================
+           CONTENEDOR
+        ========================================================== */
+
         .contenedor {
             max-width: 900px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
+
+        /* =========================================================
+           SECCIONES
+        ========================================================== */
 
         .seccion {
             background: white;
@@ -214,14 +226,46 @@
         }
 
 
-        .acciones {
+        /* =========================================================
+           BLOQUE DE ACCIONES
+        ========================================================== */
+
+        .bloque-acciones {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+
+        .acciones-principales {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
 
 
+        .accion-secundaria {
+            border-top: 1px solid #e4e8eb;
+            padding-top: 18px;
+        }
+
+
+        .accion-secundaria-titulo {
+            margin: 0 0 10px;
+            color: #607d8b;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+
+        /* =========================================================
+           BOTONES
+        ========================================================== */
+
         .boton {
+            width: 100%;
             border: none;
             border-radius: 9px;
             padding: 15px 18px;
@@ -277,23 +321,29 @@
         }
 
 
+        /* =========================================================
+           INFORMACIÓN ACTUAL
+        ========================================================== */
+
         .informacion {
             background: #f8fafb;
             border: 1px solid #e0e6e9;
-            border-radius: 9px;
+            border-radius: 10px;
             padding: 18px;
         }
 
 
-        .informacion h3 {
-            margin: 0 0 12px;
-            font-size: 17px;
+        .informacion-titulo {
+            margin: 0 0 14px;
+            color: #455a64;
+            font-size: 14px;
+            font-weight: bold;
         }
 
 
         .datos {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 10px;
         }
 
@@ -302,23 +352,56 @@
             background: white;
             border: 1px solid #e4e8eb;
             border-radius: 8px;
-            padding: 12px;
+            padding: 14px 10px;
+            min-width: 0;
+            text-align: center;
+        }
+
+
+        .dato:nth-child(1) {
+            grid-column: span 2;
+        }
+
+
+        .dato:nth-child(2) {
+            grid-column: span 2;
+        }
+
+
+        .dato:nth-child(3) {
+            grid-column: span 2;
+        }
+
+
+        .dato:nth-child(4) {
+            grid-column: span 3;
+        }
+
+
+        .dato:nth-child(5) {
+            grid-column: span 3;
         }
 
 
         .dato-numero {
-            font-size: 22px;
+            font-size: 23px;
             font-weight: bold;
             color: #263238;
+            line-height: 1.2;
         }
 
 
         .dato-texto {
-            margin-top: 3px;
-            font-size: 13px;
+            margin-top: 5px;
+            font-size: 12px;
             color: #607d8b;
+            line-height: 1.3;
         }
 
+
+        /* =========================================================
+           MENSAJES
+        ========================================================== */
 
         .mensaje {
             display: none;
@@ -353,6 +436,10 @@
         }
 
 
+        /* =========================================================
+           NOTAS
+        ========================================================== */
+
         .nota {
             margin-top: 18px;
             padding: 14px;
@@ -377,6 +464,10 @@
         }
 
 
+        /* =========================================================
+           PIE
+        ========================================================== */
+
         .pie {
             text-align: center;
             color: #78909c;
@@ -389,6 +480,170 @@
             display: none;
         }
 
+
+        /* =========================================================
+           MODAL DE CONFIRMACIÓN
+        ========================================================== */
+
+        .modal-fondo {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(38, 50, 56, 0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+
+        .modal-fondo.mostrar {
+            display: flex;
+        }
+
+
+        .modal {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+
+        .modal-encabezado {
+            background: #263238;
+            color: white;
+            padding: 17px 20px;
+        }
+
+
+        .modal-encabezado h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+
+        .modal-contenido {
+            padding: 20px;
+        }
+
+
+        .modal-contenido p {
+            margin: 0 0 12px;
+            color: #455a64;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+
+        .modal-cantidad {
+            background: #f8fafb;
+            border: 1px solid #e0e6e9;
+            border-radius: 8px;
+            padding: 14px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+
+        .modal-cantidad-numero {
+            font-size: 26px;
+            font-weight: bold;
+            color: #c62828;
+        }
+
+
+        .modal-cantidad-texto {
+            margin-top: 4px;
+            color: #607d8b;
+            font-size: 12px;
+        }
+
+
+        .modal-advertencia {
+            background: #ffebee;
+            border-left: 4px solid #e53935;
+            border-radius: 5px;
+            padding: 12px 14px;
+            color: #b71c1c;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        .modal-botones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 0 20px 20px;
+        }
+
+
+        .modal-boton {
+            border: none;
+            border-radius: 7px;
+            padding: 11px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .modal-boton-cancelar {
+            background: #eceff1;
+            color: #455a64;
+        }
+
+
+        .modal-boton-cancelar:hover {
+            background: #dfe4e6;
+        }
+
+
+        .modal-boton-confirmar {
+            background: #37474f;
+            color: white;
+        }
+
+
+        .modal-boton-confirmar:hover {
+            background: #263238;
+        }
+
+
+        .modal-boton-eliminar {
+            background: #c62828;
+            color: white;
+        }
+
+
+        .modal-boton-eliminar:hover {
+            background: #b71c1c;
+        }
+
+
+        /* =========================================================
+           MODAL DE PROCESAMIENTO
+        ========================================================== */
+
+        .modal-progreso {
+            text-align: center;
+            padding: 10px 0 4px;
+        }
+
+
+        .modal-progreso-texto {
+            color: #607d8b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================== */
 
         @media (max-width: 700px) {
 
@@ -429,18 +684,42 @@
             }
 
 
-            .acciones {
+            .acciones-principales {
                 grid-template-columns: 1fr;
             }
 
 
             .datos {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .dato:nth-child(1),
+            .dato:nth-child(2),
+            .dato:nth-child(3),
+            .dato:nth-child(4),
+            .dato:nth-child(5) {
+                grid-column: span 1;
+            }
+
+
+            .dato:nth-child(5) {
+                grid-column: span 2;
             }
 
 
             .contenedor {
                 margin-top: 20px;
+            }
+
+
+            .modal-fondo {
+                padding: 12px;
+            }
+
+
+            .modal-botones {
+                grid-template-columns: 1fr;
             }
 
         }
@@ -451,6 +730,10 @@
 
 
 <body>
+
+    <!-- =========================================================
+         ENCABEZADO
+    ========================================================== -->
 
     <header class="encabezado">
 
@@ -491,7 +774,15 @@
     </header>
 
 
+    <!-- =========================================================
+         CONTENIDO PRINCIPAL
+    ========================================================== -->
+
     <main class="contenedor">
+
+        <!-- =====================================================
+             SECCIÓN DE RESPALDO
+        ====================================================== -->
 
         <section class="seccion">
 
@@ -506,33 +797,54 @@
             </p>
 
 
-            <div class="acciones">
+            <div class="bloque-acciones">
 
-                <button
-                    type="button"
-                    class="boton boton-respaldo"
-                    id="btnCrearRespaldo"
-                >
-                    💾 Crear respaldo
-                </button>
+                <!-- =================================================
+                     ACCIONES PRINCIPALES
+                ================================================== -->
 
+                <div class="acciones-principales">
 
-                <button
-                    type="button"
-                    class="boton boton-restaurar"
-                    id="btnSeleccionarRespaldo"
-                >
-                    📥 Restaurar respaldo
-                </button>
+                    <button
+                        type="button"
+                        class="boton boton-respaldo"
+                        id="btnCrearRespaldo"
+                    >
+                        💾 Crear respaldo
+                    </button>
 
 
-                <button
-                    type="button"
-                    class="boton boton-limpiar"
-                    id="btnLimpiarPrestamos"
-                >
-                    🗑️ Limpiar préstamos
-                </button>
+                    <button
+                        type="button"
+                        class="boton boton-restaurar"
+                        id="btnSeleccionarRespaldo"
+                    >
+                        📥 Restaurar respaldo
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     ACCIÓN DELICADA
+                ================================================== -->
+
+                <div class="accion-secundaria">
+
+                    <p class="accion-secundaria-titulo">
+                        Acción de mantenimiento
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="boton boton-limpiar"
+                        id="btnLimpiarPrestamos"
+                    >
+                        🗑️ Limpiar préstamos
+                    </button>
+
+                </div>
 
             </div>
 
@@ -552,6 +864,10 @@
         </section>
 
 
+        <!-- =====================================================
+             INFORMACIÓN ACTUAL
+        ====================================================== -->
+
         <section class="seccion">
 
             <h2>
@@ -565,6 +881,11 @@
 
 
             <div class="informacion">
+
+                <div class="informacion-titulo">
+                    Resumen de registros almacenados
+                </div>
+
 
                 <div class="datos">
 
@@ -695,6 +1016,179 @@
     </footer>
 
 
+    <!-- =========================================================
+         MODAL LIMPIAR PRÉSTAMOS
+    ========================================================== -->
+
+    <div
+        id="modalLimpiar"
+        class="modal-fondo"
+    >
+
+        <div class="modal">
+
+            <div class="modal-encabezado">
+
+                <h3 id="modalLimpiarTitulo">
+                    Limpiar préstamos
+                </h3>
+
+            </div>
+
+
+            <div class="modal-contenido">
+
+                <p id="modalLimpiarMensaje">
+                    Se consultarán los registros actuales de préstamos
+                    y devoluciones.
+                </p>
+
+
+                <div
+                    id="modalCantidad"
+                    class="modal-cantidad"
+                    style="display:none;"
+                >
+
+                    <div
+                        id="modalCantidadNumero"
+                        class="modal-cantidad-numero"
+                    >
+                        0
+                    </div>
+
+
+                    <div class="modal-cantidad-texto">
+                        registros de préstamos y devoluciones
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="modalAdvertencia"
+                    class="modal-advertencia"
+                    style="display:none;"
+                >
+                    Esta acción eliminará todos los registros de préstamos
+                    y devoluciones. Los libros, afiliados y colaboradores
+                    permanecerán intactos.
+                </div>
+
+            </div>
+
+
+            <div
+                id="modalLimpiarBotones"
+                class="modal-botones"
+            >
+
+                <button
+                    type="button"
+                    class="modal-boton modal-boton-cancelar"
+                    id="btnCancelarLimpiar"
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="button"
+                    class="modal-boton modal-boton-confirmar"
+                    id="btnContinuarLimpiar"
+                >
+                    Continuar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         MODAL DE RESTAURACIÓN
+    ========================================================== -->
+
+    <div
+        id="modalRestaurar"
+        class="modal-fondo"
+    >
+
+        <div class="modal">
+
+            <div class="modal-encabezado">
+
+                <h3>
+                    Confirmar restauración
+                </h3>
+
+            </div>
+
+
+            <div class="modal-contenido">
+
+                <p>
+                    La restauración reemplazará los datos actuales de
+                    Supabase por los datos contenidos en este respaldo.
+                </p>
+
+
+                <div class="modal-cantidad">
+
+                    <div
+                        id="modalRestaurarFecha"
+                        class="modal-cantidad-texto"
+                    >
+                        Fecha del respaldo: No indicada
+                    </div>
+
+
+                    <div
+                        id="modalRestaurarDatos"
+                        class="modal-cantidad-texto"
+                        style="margin-top:10px;"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="modal-advertencia">
+                    Esta acción reemplazará los datos actuales y no se puede
+                    deshacer automáticamente.
+                </div>
+
+            </div>
+
+
+            <div class="modal-botones">
+
+                <button
+                    type="button"
+                    class="modal-boton modal-boton-cancelar"
+                    id="btnCancelarRestaurar"
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="button"
+                    class="modal-boton modal-boton-confirmar"
+                    id="btnConfirmarRestaurar"
+                >
+                    Restaurar datos
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <script>
 
         /* =========================================================
@@ -705,7 +1199,7 @@
 
 
         /* =========================================================
-           ELEMENTOS
+           ELEMENTOS PRINCIPALES
         ========================================================== */
 
         const btnCrearRespaldo =
@@ -730,6 +1224,110 @@
             document.getElementById(
                 "archivoRespaldo"
             );
+
+
+        /* =========================================================
+           ELEMENTOS DEL MODAL DE LIMPIEZA
+        ========================================================== */
+
+        const modalLimpiar =
+            document.getElementById(
+                "modalLimpiar"
+            );
+
+
+        const modalLimpiarTitulo =
+            document.getElementById(
+                "modalLimpiarTitulo"
+            );
+
+
+        const modalLimpiarMensaje =
+            document.getElementById(
+                "modalLimpiarMensaje"
+            );
+
+
+        const modalCantidad =
+            document.getElementById(
+                "modalCantidad"
+            );
+
+
+        const modalCantidadNumero =
+            document.getElementById(
+                "modalCantidadNumero"
+            );
+
+
+        const modalAdvertencia =
+            document.getElementById(
+                "modalAdvertencia"
+            );
+
+
+        const modalLimpiarBotones =
+            document.getElementById(
+                "modalLimpiarBotones"
+            );
+
+
+        const btnCancelarLimpiar =
+            document.getElementById(
+                "btnCancelarLimpiar"
+            );
+
+
+        const btnContinuarLimpiar =
+            document.getElementById(
+                "btnContinuarLimpiar"
+            );
+
+
+        /* =========================================================
+           ELEMENTOS DEL MODAL DE RESTAURACIÓN
+        ========================================================== */
+
+        const modalRestaurar =
+            document.getElementById(
+                "modalRestaurar"
+            );
+
+
+        const btnCancelarRestaurar =
+            document.getElementById(
+                "btnCancelarRestaurar"
+            );
+
+
+        const btnConfirmarRestaurar =
+            document.getElementById(
+                "btnConfirmarRestaurar"
+            );
+
+
+        const modalRestaurarFecha =
+            document.getElementById(
+                "modalRestaurarFecha"
+            );
+
+
+        const modalRestaurarDatos =
+            document.getElementById(
+                "modalRestaurarDatos"
+            );
+
+
+        /* =========================================================
+           VARIABLES DE ESTADO
+        ========================================================== */
+
+        let cantidadPrestamosPendiente =
+            0;
+
+
+        let datosRestauracionPendiente =
+            null;
 
 
         /* =========================================================
@@ -1217,10 +1815,10 @@
 
 
         /* =========================================================
-           LIMPIAR PRÉSTAMOS
+           ABRIR MODAL DE LIMPIEZA
         ========================================================== */
 
-        async function limpiarPrestamos() {
+        async function abrirModalLimpiar() {
 
             if (
                 !window.respaldoAutorizado
@@ -1235,13 +1833,48 @@
             }
 
 
+            btnCrearRespaldo.disabled =
+                true;
+
+
+            btnSeleccionarRespaldo.disabled =
+                true;
+
+
+            btnLimpiarPrestamos.disabled =
+                true;
+
+
+            modalLimpiarTitulo.textContent =
+                "Limpiar préstamos";
+
+
+            modalLimpiarMensaje.textContent =
+                "Consultando los registros actuales de préstamos y devoluciones...";
+
+
+            modalCantidad.style.display =
+                "none";
+
+
+            modalAdvertencia.style.display =
+                "none";
+
+
+            modalLimpiarBotones.style.display =
+                "none";
+
+
+            modalLimpiar.classList.add(
+                "mostrar"
+            );
+
+
+            document.body.style.overflow =
+                "hidden";
+
+
             try {
-
-                mostrarMensaje(
-                    "Consultando los préstamos actuales...",
-                    "aviso"
-                );
-
 
                 const prestamos =
                     await cargarTabla(
@@ -1249,99 +1882,179 @@
                     );
 
 
-                const cantidad =
+                cantidadPrestamosPendiente =
                     prestamos.length;
 
 
                 if (
-                    cantidad === 0
+                    cantidadPrestamosPendiente === 0
                 ) {
 
-                    mostrarMensaje(
-                        "No existen registros de préstamos para eliminar.",
-                        "aviso"
-                    );
+                    modalLimpiarTitulo.textContent =
+                        "Sin registros para limpiar";
+
+
+                    modalLimpiarMensaje.textContent =
+                        "No existen registros de préstamos o devoluciones para eliminar.";
+
+
+                    modalLimpiarBotones.style.display =
+                        "grid";
+
+
+                    btnContinuarLimpiar.style.display =
+                        "none";
+
+
+                    btnCancelarLimpiar.textContent =
+                        "Cerrar";
+
 
                     return;
 
                 }
 
 
-                const primeraConfirmacion =
-                    confirm(
+                modalLimpiarTitulo.textContent =
+                    "Limpiar préstamos";
 
-                        "LIMPIAR PRÉSTAMOS\n\n" +
 
-                        `Actualmente existen ${cantidad.toLocaleString("es-GT")} registros de préstamos y devoluciones.\n\n` +
+                modalLimpiarMensaje.textContent =
+                    "Actualmente existen los siguientes registros que serán eliminados:";
 
-                        "Esta acción eliminará TODOS esos registros.\n\n" +
 
-                        "Los LIBROS, AFILIADOS y COLABORADORES NO serán eliminados.\n\n" +
+                modalCantidad.style.display =
+                    "block";
 
-                        "¿Deseas continuar?"
 
+                modalCantidadNumero.textContent =
+                    cantidadPrestamosPendiente.toLocaleString(
+                        "es-GT"
                     );
 
 
-                if (
-                    !primeraConfirmacion
-                ) {
-
-                    mostrarMensaje(
-                        "Limpieza cancelada. No se eliminó ningún registro.",
-                        "aviso"
-                    );
-
-                    return;
-
-                }
+                modalAdvertencia.style.display =
+                    "block";
 
 
-                const segundaConfirmacion =
-                    confirm(
-
-                        "ÚLTIMA CONFIRMACIÓN\n\n" +
-
-                        `Se eliminarán ${cantidad.toLocaleString("es-GT")} registros de la tabla de préstamos.\n\n` +
-
-                        "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
-
-                        "¿Confirmas que deseas eliminarlos?"
-
-                    );
+                modalLimpiarBotones.style.display =
+                    "grid";
 
 
-                if (
-                    !segundaConfirmacion
-                ) {
-
-                    mostrarMensaje(
-                        "Limpieza cancelada. No se eliminó ningún registro.",
-                        "aviso"
-                    );
-
-                    return;
-
-                }
+                btnContinuarLimpiar.style.display =
+                    "block";
 
 
-                btnCrearRespaldo.disabled =
-                    true;
+                btnCancelarLimpiar.textContent =
+                    "Cancelar";
 
 
-                btnSeleccionarRespaldo.disabled =
-                    true;
+                btnContinuarLimpiar.textContent =
+                    "Continuar";
 
 
-                btnLimpiarPrestamos.disabled =
-                    true;
+            } catch (error) {
+
+                console.error(
+                    "Error consultando préstamos:",
+                    error
+                );
+
+
+                cerrarModalLimpiar();
 
 
                 mostrarMensaje(
-                    "Eliminando los registros de préstamos. No cierre esta página...",
-                    "aviso"
+                    "No fue posible consultar los registros de préstamos.",
+                    "error"
                 );
 
+            }
+
+        }
+
+
+        /* =========================================================
+           SEGUNDA CONFIRMACIÓN DENTRO DEL MODAL
+        ========================================================== */
+
+        function mostrarSegundaConfirmacion() {
+
+            modalLimpiarTitulo.textContent =
+                "Confirmar limpieza";
+
+
+            modalLimpiarMensaje.textContent =
+                "Está a punto de eliminar todos los registros de préstamos y devoluciones.";
+
+
+            modalCantidad.style.display =
+                "block";
+
+
+            modalAdvertencia.style.display =
+                "block";
+
+
+            modalAdvertencia.textContent =
+                "Esta acción no se puede deshacer desde esta pantalla. Los libros, afiliados y colaboradores no serán eliminados.";
+
+
+            btnCancelarLimpiar.textContent =
+                "Cancelar";
+
+
+            btnContinuarLimpiar.textContent =
+                "Eliminar registros";
+
+
+            btnContinuarLimpiar.classList.remove(
+                "modal-boton-confirmar"
+            );
+
+
+            btnContinuarLimpiar.classList.add(
+                "modal-boton-eliminar"
+            );
+
+        }
+
+
+        /* =========================================================
+           EJECUTAR LIMPIEZA
+        ========================================================== */
+
+        async function ejecutarLimpieza() {
+
+            btnCancelarLimpiar.disabled =
+                true;
+
+
+            btnContinuarLimpiar.disabled =
+                true;
+
+
+            modalLimpiarTitulo.textContent =
+                "Limpiando préstamos";
+
+
+            modalLimpiarMensaje.textContent =
+                "Eliminando los registros de préstamos y devoluciones. No cierre esta página.";
+
+
+            modalCantidad.style.display =
+                "none";
+
+
+            modalAdvertencia.style.display =
+                "none";
+
+
+            modalLimpiarBotones.style.display =
+                "none";
+
+
+            try {
 
                 const {
                     error
@@ -1369,11 +2082,14 @@
                 }
 
 
+                cerrarModalLimpiar();
+
+
                 await actualizarInformacion();
 
 
                 mostrarMensaje(
-                    `Limpieza completada correctamente. Se eliminaron ${cantidad.toLocaleString("es-GT")} registros de préstamos y devoluciones. Los libros, afiliados y colaboradores permanecen intactos.`,
+                    `Limpieza completada correctamente. Se eliminaron ${cantidadPrestamosPendiente.toLocaleString("es-GT")} registros de préstamos y devoluciones. Los libros, afiliados y colaboradores permanecen intactos.`,
                     "exito"
                 );
 
@@ -1386,26 +2102,74 @@
                 );
 
 
+                cerrarModalLimpiar();
+
+
                 mostrarMensaje(
                     "No fue posible eliminar los registros de préstamos. Revise la consola para obtener más información.",
                     "error"
                 );
 
-
-            } finally {
-
-                btnCrearRespaldo.disabled =
-                    false;
-
-
-                btnSeleccionarRespaldo.disabled =
-                    false;
-
-
-                btnLimpiarPrestamos.disabled =
-                    false;
-
             }
+
+        }
+
+
+        /* =========================================================
+           CERRAR MODAL DE LIMPIEZA
+        ========================================================== */
+
+        function cerrarModalLimpiar() {
+
+            modalLimpiar.classList.remove(
+                "mostrar"
+            );
+
+
+            document.body.style.overflow =
+                "";
+
+
+            btnCrearRespaldo.disabled =
+                false;
+
+
+            btnSeleccionarRespaldo.disabled =
+                false;
+
+
+            btnLimpiarPrestamos.disabled =
+                false;
+
+
+            btnCancelarLimpiar.disabled =
+                false;
+
+
+            btnContinuarLimpiar.disabled =
+                false;
+
+
+            btnContinuarLimpiar.style.display =
+                "block";
+
+
+            btnCancelarLimpiar.textContent =
+                "Cancelar";
+
+
+            btnContinuarLimpiar.textContent =
+                "Continuar";
+
+
+            btnContinuarLimpiar.classList.remove(
+                "modal-boton-eliminar"
+            );
+
+
+            btnContinuarLimpiar.classList.add(
+                "modal-boton-confirmar"
+            );
 
         }
 
@@ -1607,6 +2371,126 @@
 
 
         /* =========================================================
+           MOSTRAR MODAL DE RESTAURACIÓN
+        ========================================================== */
+
+        function mostrarModalRestauracion(
+            respaldo
+        ) {
+
+            const afiliados =
+                respaldo.tablas.afiliados;
+
+
+            const libros =
+                respaldo.tablas.libros;
+
+
+            const colaboradores =
+                respaldo.tablas.colaboradores;
+
+
+            const prestamos =
+                respaldo.tablas.prestamos;
+
+
+            const total =
+                afiliados.length +
+                libros.length +
+                colaboradores.length +
+                prestamos.length;
+
+
+            const fechaRespaldo =
+                respaldo.fechaRespaldo
+                    ? new Date(
+                        respaldo.fechaRespaldo
+                    ).toLocaleString(
+                        "es-GT"
+                    )
+                    : "No indicada";
+
+
+            modalRestaurarFecha.textContent =
+                `Fecha del respaldo: ${fechaRespaldo}`;
+
+
+            modalRestaurarDatos.innerHTML =
+                `Afiliados: ${afiliados.length.toLocaleString("es-GT")} · ` +
+                `Libros: ${libros.length.toLocaleString("es-GT")} · ` +
+                `Colaboradores: ${colaboradores.length.toLocaleString("es-GT")} · ` +
+                `Préstamos: ${prestamos.length.toLocaleString("es-GT")} · ` +
+                `Total: ${total.toLocaleString("es-GT")}`;
+
+
+            datosRestauracionPendiente = {
+
+                respaldo:
+                    respaldo,
+
+                afiliados:
+                    afiliados,
+
+                libros:
+                    libros,
+
+                colaboradores:
+                    colaboradores,
+
+                prestamos:
+                    prestamos,
+
+                total:
+                    total
+
+            };
+
+
+            modalRestaurar.classList.add(
+                "mostrar"
+            );
+
+
+            document.body.style.overflow =
+                "hidden";
+
+        }
+
+
+        /* =========================================================
+           CERRAR MODAL DE RESTAURACIÓN
+        ========================================================== */
+
+        function cerrarModalRestauracion() {
+
+            modalRestaurar.classList.remove(
+                "mostrar"
+            );
+
+
+            document.body.style.overflow =
+                "";
+
+
+            datosRestauracionPendiente =
+                null;
+
+
+            btnCrearRespaldo.disabled =
+                false;
+
+
+            btnSeleccionarRespaldo.disabled =
+                false;
+
+
+            btnLimpiarPrestamos.disabled =
+                false;
+
+        }
+
+
+        /* =========================================================
            RESTAURAR RESPALDO
         ========================================================== */
 
@@ -1677,78 +2561,16 @@
                             );
 
 
-                            return;
-
-                        }
-
-
-                        const afiliados =
-                            respaldo.tablas.afiliados;
+                            btnCrearRespaldo.disabled =
+                                false;
 
 
-                        const libros =
-                            respaldo.tablas.libros;
+                            btnSeleccionarRespaldo.disabled =
+                                false;
 
 
-                        const colaboradores =
-                            respaldo.tablas.colaboradores;
-
-
-                        const prestamos =
-                            respaldo.tablas.prestamos;
-
-
-                        const total =
-                            afiliados.length +
-                            libros.length +
-                            colaboradores.length +
-                            prestamos.length;
-
-
-                        const fechaRespaldo =
-                            respaldo.fechaRespaldo
-                                ? new Date(
-                                    respaldo.fechaRespaldo
-                                ).toLocaleString(
-                                    "es-GT"
-                                )
-                                : "No indicada";
-
-
-                        const confirmacion =
-                            confirm(
-
-                                "ADVERTENCIA\n\n" +
-
-                                "La restauración reemplazará los datos actuales de Supabase por los datos contenidos en este respaldo.\n\n" +
-
-                                `Fecha del respaldo: ${fechaRespaldo}\n\n` +
-
-                                `Afiliados: ${afiliados.length.toLocaleString("es-GT")}\n` +
-
-                                `Libros: ${libros.length.toLocaleString("es-GT")}\n` +
-
-                                `Colaboradores: ${colaboradores.length.toLocaleString("es-GT")}\n` +
-
-                                `Préstamos: ${prestamos.length.toLocaleString("es-GT")}\n\n` +
-
-                                `Total de registros: ${total.toLocaleString("es-GT")}\n\n` +
-
-                                "Esta acción no se puede deshacer automáticamente.\n\n" +
-
-                                "¿Desea continuar?"
-
-                            );
-
-
-                        if (
-                            !confirmacion
-                        ) {
-
-                            mostrarMensaje(
-                                "Restauración cancelada. Los datos actuales no fueron modificados.",
-                                "aviso"
-                            );
+                            btnLimpiarPrestamos.disabled =
+                                false;
 
 
                             return;
@@ -1756,80 +2578,24 @@
                         }
 
 
-                        mostrarMensaje(
-                            "Restaurando datos en Supabase. No cierre esta página...",
-                            "aviso"
-                        );
-
-
-                        await eliminarTabla(
-                            "prestamos"
-                        );
-
-
-                        await eliminarTabla(
-                            "colaboradores"
-                        );
-
-
-                        await eliminarTabla(
-                            "libros"
-                        );
-
-
-                        await eliminarTabla(
-                            "afiliados"
-                        );
-
-
-                        await insertarPorLotes(
-                            "afiliados",
-                            afiliados
-                        );
-
-
-                        await insertarPorLotes(
-                            "libros",
-                            libros
-                        );
-
-
-                        await insertarPorLotes(
-                            "colaboradores",
-                            colaboradores
-                        );
-
-
-                        await insertarPorLotes(
-                            "prestamos",
-                            prestamos
-                        );
-
-
-                        await actualizarInformacion();
-
-
-                        mostrarMensaje(
-                            `Restauración completada correctamente. Se restauraron ${total.toLocaleString("es-GT")} registros.`,
-                            "exito"
+                        mostrarModalRestauracion(
+                            respaldo
                         );
 
 
                     } catch (error) {
 
                         console.error(
-                            "Error restaurando respaldo:",
+                            "Error leyendo respaldo:",
                             error
                         );
 
 
                         mostrarMensaje(
-                            "Ocurrió un error durante la restauración. Revise la consola y verifique los datos de Supabase.",
+                            "No fue posible leer el archivo seleccionado.",
                             "error"
                         );
 
-
-                    } finally {
 
                         btnCrearRespaldo.disabled =
                             false;
@@ -1881,6 +2647,172 @@
 
 
         /* =========================================================
+           EJECUTAR RESTAURACIÓN
+        ========================================================== */
+
+        async function ejecutarRestauracion() {
+
+            if (
+                !datosRestauracionPendiente
+            ) {
+
+                return;
+
+            }
+
+
+            const {
+
+                afiliados,
+                libros,
+                colaboradores,
+                prestamos,
+                total
+
+            } =
+                datosRestauracionPendiente;
+
+
+            btnCancelarRestaurar.disabled =
+                true;
+
+
+            btnConfirmarRestaurar.disabled =
+                true;
+
+
+            modalRestaurar.classList.remove(
+                "mostrar"
+            );
+
+
+            document.body.style.overflow =
+                "";
+
+
+            mostrarMensaje(
+                "Restaurando datos en Supabase. No cierre esta página...",
+                "aviso"
+            );
+
+
+            try {
+
+                /*
+                 * Primero eliminamos los préstamos.
+                 */
+
+                await eliminarTabla(
+                    "prestamos"
+                );
+
+
+                /*
+                 * Después eliminamos colaboradores,
+                 * libros y afiliados.
+                 */
+
+                await eliminarTabla(
+                    "colaboradores"
+                );
+
+
+                await eliminarTabla(
+                    "libros"
+                );
+
+
+                await eliminarTabla(
+                    "afiliados"
+                );
+
+
+                /*
+                 * Restauramos las entidades principales.
+                 */
+
+                await insertarPorLotes(
+                    "afiliados",
+                    afiliados
+                );
+
+
+                await insertarPorLotes(
+                    "libros",
+                    libros
+                );
+
+
+                await insertarPorLotes(
+                    "colaboradores",
+                    colaboradores
+                );
+
+
+                /*
+                 * Finalmente restauramos los préstamos.
+                 */
+
+                await insertarPorLotes(
+                    "prestamos",
+                    prestamos
+                );
+
+
+                await actualizarInformacion();
+
+
+                mostrarMensaje(
+                    `Restauración completada correctamente. Se restauraron ${total.toLocaleString("es-GT")} registros.`,
+                    "exito"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error restaurando respaldo:",
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "Ocurrió un error durante la restauración. Revise la consola y verifique los datos de Supabase.",
+                    "error"
+                );
+
+
+            } finally {
+
+                datosRestauracionPendiente =
+                    null;
+
+
+                btnCrearRespaldo.disabled =
+                    false;
+
+
+                btnSeleccionarRespaldo.disabled =
+                    false;
+
+
+                btnLimpiarPrestamos.disabled =
+                    false;
+
+
+                btnCancelarRestaurar.disabled =
+                    false;
+
+
+                btnConfirmarRestaurar.disabled =
+                    false;
+
+            }
+
+        }
+
+
+        /* =========================================================
            EVENTOS
         ========================================================== */
 
@@ -1898,13 +2830,96 @@
 
         btnLimpiarPrestamos.addEventListener(
             "click",
-            limpiarPrestamos
+            abrirModalLimpiar
         );
 
 
-        archivoRespaldo.addEventListener(
-            "change",
-            restaurarRespaldo
+        btnCancelarLimpiar.addEventListener(
+            "click",
+            cerrarModalLimpiar
+        );
+
+
+        btnContinuarLimpiar.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    cantidadPrestamosPendiente <= 0
+                ) {
+
+                    cerrarModalLimpiar();
+
+                    return;
+
+                }
+
+
+                if (
+                    btnContinuarLimpiar.textContent ===
+                    "Eliminar registros"
+                ) {
+
+                    ejecutarLimpieza();
+
+                    return;
+
+                }
+
+
+                mostrarSegundaConfirmacion();
+
+            }
+        );
+
+
+        btnCancelarRestaurar.addEventListener(
+            "click",
+            cerrarModalRestauracion
+        );
+
+
+        btnConfirmarRestaurar.addEventListener(
+            "click",
+            ejecutarRestauracion
+        );
+
+
+        /* =========================================================
+           CERRAR MODALES AL HACER CLIC EN EL FONDO
+        ========================================================== */
+
+        modalLimpiar.addEventListener(
+            "click",
+            function(evento) {
+
+                if (
+                    evento.target ===
+                    modalLimpiar
+                ) {
+
+                    cerrarModalLimpiar();
+
+                }
+
+            }
+        );
+
+
+        modalRestaurar.addEventListener(
+            "click",
+            function(evento) {
+
+                if (
+                    evento.target ===
+                    modalRestaurar
+                ) {
+
+                    cerrarModalRestauracion();
+
+                }
+
+            }
         );
 
 
