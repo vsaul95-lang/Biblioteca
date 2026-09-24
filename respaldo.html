@@ -164,33 +164,31 @@
         }
 
 
-        .contenedor {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-
         /* =========================================================
            BOTÓN VOLVER
         ========================================================== */
 
         .volver {
-            display: inline-block;
-            float: right;
-            background: #37474f;
+            background: #7f8c8d;
             color: white;
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 9px 16px;
-            border-radius: 6px;
-            margin-bottom: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 7px 12px;
+            border-radius: 5px;
+            white-space: nowrap;
         }
 
 
         .volver:hover {
-            background: #263238;
+            background: #607174;
+        }
+
+
+        .contenedor {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
 
 
@@ -394,8 +392,40 @@
 
         @media (max-width: 700px) {
 
+            .encabezado {
+                padding: 14px 10px;
+            }
+
+
             .encabezado-contenido {
-                align-items: flex-start;
+                align-items: center;
+                gap: 10px;
+            }
+
+
+            .marca {
+                gap: 8px;
+            }
+
+
+            .icono-marca {
+                font-size: 26px;
+            }
+
+
+            .marca h1 {
+                font-size: 20px;
+            }
+
+
+            .marca p {
+                font-size: 11px;
+            }
+
+
+            .volver {
+                font-size: 11px;
+                padding: 7px 10px;
             }
 
 
@@ -448,20 +478,20 @@
 
             </div>
 
+
+            <a
+                href="index.html"
+                class="volver"
+            >
+                Volver atrás
+            </a>
+
         </div>
 
     </header>
 
 
     <main class="contenedor">
-
-        <a
-            href="index.html"
-            class="volver"
-        >
-            ← Volver
-        </a>
-
 
         <section class="seccion">
 
@@ -1732,22 +1762,10 @@
                         );
 
 
-                        /*
-                         * Primero eliminamos los préstamos.
-                         * Esto permite posteriormente reemplazar
-                         * afiliados, libros y colaboradores sin
-                         * dejar préstamos antiguos relacionados.
-                         */
-
                         await eliminarTabla(
                             "prestamos"
                         );
 
-
-                        /*
-                         * Después eliminamos colaboradores,
-                         * libros y afiliados.
-                         */
 
                         await eliminarTabla(
                             "colaboradores"
@@ -1763,11 +1781,6 @@
                             "afiliados"
                         );
 
-
-                        /*
-                         * Restauramos primero las entidades
-                         * principales.
-                         */
 
                         await insertarPorLotes(
                             "afiliados",
@@ -1786,12 +1799,6 @@
                             colaboradores
                         );
 
-
-                        /*
-                         * Finalmente restauramos préstamos.
-                         * De esta manera los datos de afiliados,
-                         * libros y colaboradores ya están presentes.
-                         */
 
                         await insertarPorLotes(
                             "prestamos",
