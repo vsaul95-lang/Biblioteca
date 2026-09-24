@@ -454,6 +454,145 @@
             font-size: 13px;
         }
 
+        /*
+         * VENTANA DE EDICION
+         */
+
+        .modal-fondo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal-fondo.mostrar {
+            display: flex;
+        }
+
+        .modal-edicion {
+            width: 100%;
+            max-width: 850px;
+            background: white;
+            border-radius: 9px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .modal-encabezado {
+            background: #263238;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-encabezado h3 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .boton-cerrar-modal {
+            background: transparent;
+            color: white;
+            font-size: 24px;
+            line-height: 1;
+            padding: 0 3px;
+            cursor: pointer;
+        }
+
+        .boton-cerrar-modal:hover {
+            color: #cfd8dc;
+        }
+
+        .modal-contenido {
+            padding: 20px;
+        }
+
+        .formulario-edicion {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .campo-edicion {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo-edicion.campo-completo {
+            grid-column: 1 / -1;
+        }
+
+        .campo-edicion label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #546e7a;
+        }
+
+        .campo-edicion input,
+        .campo-edicion select {
+            width: 100%;
+            padding: 10px 11px;
+            border: 1px solid #cfd8dc;
+            border-radius: 5px;
+            font-size: 13px;
+            font-family: inherit;
+            background: white;
+        }
+
+        .campo-edicion input:focus,
+        .campo-edicion select:focus {
+            outline: none;
+            border-color: #78909c;
+        }
+
+        .modal-pie {
+            padding: 15px 20px;
+            border-top: 1px solid #eceff1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .boton-cancelar {
+            background: #eceff1;
+            color: #37474f;
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .boton-cancelar:hover {
+            background: #cfd8dc;
+        }
+
+        .boton-guardar {
+            background: #37474f;
+            color: white;
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .boton-guardar:hover {
+            background: #263238;
+        }
+
+        /*
+         * FOOTER
+         */
+
         footer {
             text-align: center;
             color: #90a4ae;
@@ -468,8 +607,7 @@
         @media (max-width: 1100px) {
 
             .formulario-colaborador {
-                grid-template-columns:
-                    repeat(3, 1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
 
         }
@@ -486,8 +624,7 @@
             }
 
             .formulario-colaborador {
-                grid-template-columns:
-                    repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
 
         }
@@ -508,6 +645,22 @@
 
             .formulario-colaborador {
                 grid-template-columns: 1fr;
+            }
+
+            .formulario-edicion {
+                grid-template-columns: 1fr;
+            }
+
+            .campo-edicion.campo-completo {
+                grid-column: auto;
+            }
+
+            .modal-fondo {
+                padding: 10px;
+            }
+
+            .modal-contenido {
+                padding: 15px;
             }
 
         }
@@ -920,7 +1073,6 @@
 
                     <tr class="fila-filtros">
 
-
                         <th>
 
                             <input
@@ -1012,7 +1164,6 @@
 
                         <th></th>
 
-
                     </tr>
 
                 </thead>
@@ -1021,7 +1172,6 @@
                 <tbody
                     id="tablaColaboradores"
                 ></tbody>
-
 
             </table>
 
@@ -1033,14 +1183,12 @@
                 No se encontraron colaboradores.
             </div>
 
-
         </div>
 
 
         <!-- PAGINACION -->
 
         <div class="paginacion">
-
 
             <button
                 type="button"
@@ -1064,9 +1212,7 @@
                 Siguiente →
             </button>
 
-
         </div>
-
 
     </div>
 
@@ -1077,6 +1223,171 @@
 <footer>
     Sistema de Biblioteca
 </footer>
+
+
+<!-- =====================================================
+     VENTANA DE EDICION
+     ===================================================== -->
+
+<div
+    id="modalEdicion"
+    class="modal-fondo"
+>
+
+    <div class="modal-edicion">
+
+
+        <div class="modal-encabezado">
+
+            <h3>
+                Editar colaborador
+            </h3>
+
+
+            <button
+                type="button"
+                class="boton-cerrar-modal"
+                id="botonCerrarModal"
+                title="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-contenido">
+
+
+            <div class="formulario-edicion">
+
+
+                <div class="campo-edicion">
+
+                    <label for="editarCodigo">
+                        Código del colaborador
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editarCodigo"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="campo-edicion">
+
+                    <label for="editarNombre">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editarNombre"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="campo-edicion">
+
+                    <label for="editarArea">
+                        Área
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editarArea"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="campo-edicion">
+
+                    <label for="editarTelefono">
+                        Teléfono
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editarTelefono"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="campo-edicion">
+
+                    <label for="editarCorreo">
+                        Correo
+                    </label>
+
+                    <input
+                        type="email"
+                        id="editarCorreo"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="campo-edicion">
+
+                    <label for="editarEstado">
+                        Estado
+                    </label>
+
+                    <select id="editarEstado">
+
+                        <option value="Activo">
+                            Activo
+                        </option>
+
+                        <option value="Inactivo">
+                            Inactivo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton-cancelar"
+                id="botonCancelarEdicion"
+            >
+                Cancelar
+            </button>
+
+
+            <button
+                type="button"
+                class="boton-guardar"
+                id="botonGuardarEdicion"
+            >
+                Guardar cambios
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
 
 
 <!-- SUPABASE -->
@@ -1168,6 +1479,8 @@
     let paginaActual = 1;
 
     const registrosPorPagina = 25;
+
+    let codigoColaboradorEditando = null;
 
 
     /*
@@ -1744,7 +2057,7 @@
 
 
     /*
-     * TABLA
+     * RENDERIZAR TABLA
      */
 
     function renderizarTabla() {
@@ -2641,17 +2954,15 @@
         }
 
 
-        /*
-         * COMPROBAR SI EL CODIGO YA EXISTE
-         */
-
         const existe =
             colaboradores.some(
                 colaborador =>
                     normalizar(
                         colaborador.CodigoColaborador
                     ) ===
-                    normalizar(codigo)
+                    normalizar(
+                        codigo
+                    )
             );
 
 
@@ -2802,19 +3113,11 @@
 
 
     /*
-     * EDITAR COLABORADOR
-     *
-     * Ahora permite modificar:
-     * Código
-     * Nombre
-     * Área
-     * Teléfono
-     * Correo
-     * Estado
+     * ABRIR VENTANA DE EDICION
      */
 
-    async function editarColaborador(
-        codigoActual
+    function editarColaborador(
+        codigo
     ) {
 
         const colaborador =
@@ -2824,7 +3127,7 @@
                         item.CodigoColaborador
                     ) ===
                     normalizar(
-                        codigoActual
+                        codigo
                     )
             );
 
@@ -2842,29 +3145,166 @@
         }
 
 
-        const nuevoCodigo =
-            prompt(
-                "Código del colaborador:",
-                colaborador.CodigoColaborador ?? ""
-            );
+        /*
+         * Guardamos el código original.
+         * Esto es importante porque el
+         * usuario puede cambiar el código.
+         */
+
+        codigoColaboradorEditando =
+            colaborador.CodigoColaborador;
 
 
-        if (
-            nuevoCodigo === null
-        ) {
+        /*
+         * CARGAR TODOS LOS CAMPOS
+         */
 
-            return;
+        document.getElementById(
+            "editarCodigo"
+        ).value =
+            colaborador.CodigoColaborador ?? "";
+
+
+        document.getElementById(
+            "editarNombre"
+        ).value =
+            colaborador.Nombre ?? "";
+
+
+        document.getElementById(
+            "editarArea"
+        ).value =
+            colaborador.Area ?? "";
+
+
+        document.getElementById(
+            "editarTelefono"
+        ).value =
+            colaborador.Telefono ?? "";
+
+
+        document.getElementById(
+            "editarCorreo"
+        ).value =
+            colaborador.Correo ?? "";
+
+
+        document.getElementById(
+            "editarEstado"
+        ).value =
+            normalizar(
+                colaborador.estado
+            ) === "INACTIVO"
+                ? "Inactivo"
+                : "Activo";
+
+
+        /*
+         * MOSTRAR MODAL
+         */
+
+        document.getElementById(
+            "modalEdicion"
+        ).classList.add(
+            "mostrar"
+        );
+
+
+        /*
+         * Colocar el cursor en
+         * el primer campo.
+         */
+
+        setTimeout(
+            () => {
+
+                document.getElementById(
+                    "editarCodigo"
+                ).focus();
+
+            },
+            100
+        );
+
+    }
+
+
+    /*
+     * CERRAR MODAL
+     */
+
+    function cerrarModalEdicion() {
+
+        document.getElementById(
+            "modalEdicion"
+        ).classList.remove(
+            "mostrar"
+        );
+
+
+        codigoColaboradorEditando =
+            null;
+
+    }
+
+
+    document.getElementById(
+        "botonCerrarModal"
+    ).addEventListener(
+        "click",
+        cerrarModalEdicion
+    );
+
+
+    document.getElementById(
+        "botonCancelarEdicion"
+    ).addEventListener(
+        "click",
+        cerrarModalEdicion
+    );
+
+
+    /*
+     * CERRAR AL HACER CLIC
+     * FUERA DE LA VENTANA
+     */
+
+    document.getElementById(
+        "modalEdicion"
+    ).addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                cerrarModalEdicion();
+
+            }
 
         }
+    );
 
+
+    /*
+     * GUARDAR CAMBIOS
+     */
+
+    document.getElementById(
+        "botonGuardarEdicion"
+    ).addEventListener(
+        "click",
+        guardarEdicion
+    );
+
+
+    async function guardarEdicion() {
 
         if (
-            nuevoCodigo.trim() === ""
+            !codigoColaboradorEditando
         ) {
-
-            alert(
-                "El código no puede quedar vacío."
-            );
 
             return;
 
@@ -2872,28 +3312,113 @@
 
 
         /*
-         * SI CAMBIA EL CODIGO,
-         * COMPROBAR QUE EL NUEVO
-         * NO EXISTA.
+         * OBTENER TODOS LOS CAMPOS
+         */
+
+        const nuevoCodigo =
+            document.getElementById(
+                "editarCodigo"
+            ).value.trim();
+
+
+        const nuevoNombre =
+            document.getElementById(
+                "editarNombre"
+            ).value.trim();
+
+
+        const nuevaArea =
+            document.getElementById(
+                "editarArea"
+            ).value.trim();
+
+
+        const nuevoTelefono =
+            document.getElementById(
+                "editarTelefono"
+            ).value.trim();
+
+
+        const nuevoCorreo =
+            document.getElementById(
+                "editarCorreo"
+            ).value.trim();
+
+
+        const nuevoEstado =
+            document.getElementById(
+                "editarEstado"
+            ).value;
+
+
+        /*
+         * VALIDACIONES
+         */
+
+        if (
+            nuevoCodigo === ""
+        ) {
+
+            alert(
+                "El código del colaborador no puede quedar vacío."
+            );
+
+            document.getElementById(
+                "editarCodigo"
+            ).focus();
+
+            return;
+
+        }
+
+
+        if (
+            nuevoNombre === ""
+        ) {
+
+            alert(
+                "El nombre del colaborador no puede quedar vacío."
+            );
+
+            document.getElementById(
+                "editarNombre"
+            ).focus();
+
+            return;
+
+        }
+
+
+        /*
+         * COMPROBAR DUPLICADO
          */
 
         const codigoDuplicado =
             colaboradores.some(
-                item =>
+                colaborador => {
 
-                    normalizar(
-                        item.CodigoColaborador
-                    ) ===
-                    normalizar(
-                        nuevoCodigo
-                    ) &&
+                    const codigo =
+                        normalizar(
+                            colaborador.CodigoColaborador
+                        );
 
-                    normalizar(
-                        item.CodigoColaborador
-                    ) !==
-                    normalizar(
-                        codigoActual
-                    )
+
+                    const codigoOriginal =
+                        normalizar(
+                            codigoColaboradorEditando
+                        );
+
+
+                    return (
+                        codigo ===
+                        normalizar(
+                            nuevoCodigo
+                        ) &&
+                        codigo !==
+                        codigoOriginal
+                    );
+
+                }
             );
 
 
@@ -2905,137 +3430,20 @@
                 "El nuevo código ya pertenece a otro colaborador."
             );
 
-            return;
-
-        }
-
-
-        const nuevoNombre =
-            prompt(
-                "Nombre del colaborador:",
-                colaborador.Nombre ?? ""
-            );
-
-
-        if (
-            nuevoNombre === null
-        ) {
+            document.getElementById(
+                "editarCodigo"
+            ).focus();
 
             return;
 
         }
 
-
-        if (
-            nuevoNombre.trim() === ""
-        ) {
-
-            alert(
-                "El nombre no puede quedar vacío."
-            );
-
-            return;
-
-        }
-
-
-        const nuevaArea =
-            prompt(
-                "Área:",
-                colaborador.Area ?? ""
-            );
-
-
-        if (
-            nuevaArea === null
-        ) {
-
-            return;
-
-        }
-
-
-        const nuevoTelefono =
-            prompt(
-                "Teléfono:",
-                colaborador.Telefono ?? ""
-            );
-
-
-        if (
-            nuevoTelefono === null
-        ) {
-
-            return;
-
-        }
-
-
-        const nuevoCorreo =
-            prompt(
-                "Correo:",
-                colaborador.Correo ?? ""
-            );
-
-
-        if (
-            nuevoCorreo === null
-        ) {
-
-            return;
-
-        }
-
-
-        const estadoActual =
-            normalizar(
-                colaborador.estado
-            ) === "INACTIVO"
-                ? "Inactivo"
-                : "Activo";
-
-
-        const nuevoEstado =
-            prompt(
-                "Estado: escriba Activo o Inactivo",
-                estadoActual
-            );
-
-
-        if (
-            nuevoEstado === null
-        ) {
-
-            return;
-
-        }
-
-
-        const estadoNormalizado =
-            normalizar(
-                nuevoEstado
-            );
-
-
-        if (
-            estadoNormalizado !== "ACTIVO" &&
-            estadoNormalizado !== "INACTIVO"
-        ) {
-
-            alert(
-                "El estado debe ser Activo o Inactivo."
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * ACTUALIZAR
-         */
 
         try {
+
+            /*
+             * GUARDAR TODOS LOS CAMPOS
+             */
 
             const {
                 error
@@ -3047,29 +3455,27 @@
                     .update({
 
                         CodigoColaborador:
-                            nuevoCodigo.trim(),
+                            nuevoCodigo,
 
                         Nombre:
-                            nuevoNombre.trim(),
+                            nuevoNombre,
 
                         Area:
-                            nuevaArea.trim(),
+                            nuevaArea,
 
                         Telefono:
-                            nuevoTelefono.trim(),
+                            nuevoTelefono,
 
                         Correo:
-                            nuevoCorreo.trim(),
+                            nuevoCorreo,
 
                         estado:
-                            estadoNormalizado === "ACTIVO"
-                                ? "Activo"
-                                : "Inactivo"
+                            nuevoEstado
 
                     })
                     .eq(
                         "CodigoColaborador",
-                        colaborador.CodigoColaborador
+                        codigoColaboradorEditando
                     );
 
 
@@ -3081,6 +3487,17 @@
 
             }
 
+
+            /*
+             * CERRAR VENTANA
+             */
+
+            cerrarModalEdicion();
+
+
+            /*
+             * RECARGAR DATOS
+             */
 
             await cargarBase();
 
@@ -3133,7 +3550,9 @@
                     normalizar(
                         item.CodigoColaborador
                     ) ===
-                    normalizar(codigo)
+                    normalizar(
+                        codigo
+                    )
             );
 
 
@@ -3262,6 +3681,40 @@
         }
 
     }
+
+
+    /*
+     * TECLA ESC PARA CERRAR
+     */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                const modal =
+                    document.getElementById(
+                        "modalEdicion"
+                    );
+
+
+                if (
+                    modal.classList.contains(
+                        "mostrar"
+                    )
+                ) {
+
+                    cerrarModalEdicion();
+
+                }
+
+            }
+
+        }
+    );
 
 
 </script>
