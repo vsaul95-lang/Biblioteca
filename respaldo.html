@@ -119,9 +119,9 @@
             line-height: 1.5;
         }
 
-        /* =========================
-           INFORMACIÓN DEL RESPALDO
-        ========================= */
+        /* =========================================
+           INFORMACIÓN ACTUAL
+        ========================================= */
 
         .datos {
             display: grid;
@@ -178,9 +178,9 @@
             color: #546e7a;
         }
 
-        /* =========================
-           BOTONES DE RESPALDO
-        ========================= */
+        /* =========================================
+           BOTONES
+        ========================================= */
 
         .acciones-principales {
             display: grid;
@@ -199,6 +199,8 @@
             transition: background 0.2s ease;
         }
 
+        /* Crear respaldo */
+
         .boton-respaldo {
             background: #37474f;
             color: white;
@@ -208,14 +210,18 @@
             background: #263238;
         }
 
+        /* Restaurar respaldo */
+
         .boton-restaurar {
-            background: #607d8b;
+            background: #2e7d32;
             color: white;
         }
 
         .boton-restaurar:hover {
-            background: #546e7a;
+            background: #256b29;
         }
+
+        /* Zonas de mantenimiento */
 
         .zona-mantenimiento {
             margin-top: 18px;
@@ -237,6 +243,8 @@
             line-height: 1.5;
         }
 
+        /* Limpiar préstamos */
+
         .boton-limpiar {
             background: #c0392b;
             color: white;
@@ -246,19 +254,21 @@
             background: #a93226;
         }
 
+        /* Limpiar todo */
+
         .boton-limpiar-todo {
-            background: #263238;
+            background: #b71c1c;
             color: white;
             margin-top: 12px;
         }
 
         .boton-limpiar-todo:hover {
-            background: #1b2529;
+            background: #8f1515;
         }
 
-        /* =========================
+        /* =========================================
            INFORMACIÓN
-        ========================= */
+        ========================================= */
 
         .informacion {
             background: #f7f9fa;
@@ -273,6 +283,10 @@
         .informacion strong {
             color: #37474f;
         }
+
+        /* =========================================
+           MENSAJES
+        ========================================= */
 
         #mensaje {
             display: none;
@@ -297,9 +311,9 @@
             border: 1px solid #f5c6cb;
         }
 
-        /* =========================
+        /* =========================================
            MODAL DE CONFIRMACIÓN
-        ========================= */
+        ========================================= */
 
         .modal-overlay {
             display: none;
@@ -389,7 +403,12 @@
             padding: 20px 0 30px;
         }
 
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
         @media (max-width: 750px) {
+
             .datos {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -409,6 +428,7 @@
         }
 
         @media (max-width: 480px) {
+
             header {
                 padding: 12px 10px;
             }
@@ -463,12 +483,14 @@
     <div class="encabezado-contenido">
 
         <div class="marca">
+
             <div class="marca-icono">💾</div>
 
             <div class="marca-texto">
                 <h1>Biblioteca</h1>
                 <p>Respaldo y administración de datos</p>
             </div>
+
         </div>
 
         <a href="index.html" class="volver">Volver atrás</a>
@@ -476,18 +498,26 @@
     </div>
 </header>
 
+
 <main>
 
     <div class="titulo-seccion">
+
         <h2>Respaldo y restauración</h2>
-        <p>Administración de la información almacenada en la biblioteca.</p>
+
+        <p>
+            Administración de la información almacenada en la biblioteca.
+        </p>
+
     </div>
+
 
     <div id="mensaje"></div>
 
-    <!-- =========================
+
+    <!-- =========================================
          INFORMACIÓN ACTUAL
-    ========================== -->
+    ========================================== -->
 
     <section class="tarjeta">
 
@@ -500,46 +530,97 @@
         <div class="datos">
 
             <div class="dato">
-                <span class="dato-numero" id="totalLibros">0</span>
-                <span class="dato-label">Libros</span>
+
+                <span
+                    class="dato-numero"
+                    id="totalLibros">
+                    0
+                </span>
+
+                <span class="dato-label">
+                    Libros
+                </span>
+
             </div>
 
-            <div class="dato">
-                <span class="dato-numero" id="totalAfiliados">0</span>
-                <span class="dato-label">Afiliados</span>
-            </div>
 
             <div class="dato">
-                <span class="dato-numero" id="totalColaboradores">0</span>
-                <span class="dato-label">Colaboradores</span>
+
+                <span
+                    class="dato-numero"
+                    id="totalAfiliados">
+                    0
+                </span>
+
+                <span class="dato-label">
+                    Afiliados
+                </span>
+
             </div>
 
+
             <div class="dato">
-                <span class="dato-numero" id="totalPrestamos">0</span>
-                <span class="dato-label">Préstamos</span>
+
+                <span
+                    class="dato-numero"
+                    id="totalColaboradores">
+                    0
+                </span>
+
+                <span class="dato-label">
+                    Colaboradores
+                </span>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span
+                    class="dato-numero"
+                    id="totalPrestamos">
+                    0
+                </span>
+
+                <span class="dato-label">
+                    Préstamos
+                </span>
+
             </div>
 
         </div>
 
+
         <div class="dato-total">
-            <span class="dato-total-numero" id="totalDatos">0</span>
-            <span class="dato-total-texto">Registros respaldables</span>
+
+            <span
+                class="dato-total-numero"
+                id="totalDatos">
+                0
+            </span>
+
+            <span class="dato-total-texto">
+                Registros respaldables
+            </span>
+
         </div>
 
     </section>
 
-    <!-- =========================
-         ACCIONES
-    ========================== -->
+
+    <!-- =========================================
+         ADMINISTRACIÓN
+    ========================================== -->
 
     <section class="tarjeta">
 
         <h3>Administración de datos</h3>
 
         <p class="descripcion">
-            Utiliza estas opciones para guardar una copia completa de la información
-            o restaurar los datos desde un respaldo anterior.
+            Utiliza estas opciones para guardar una copia completa de la
+            información o restaurar los datos desde un respaldo anterior.
         </p>
+
 
         <div class="acciones-principales">
 
@@ -550,6 +631,7 @@
                 Crear respaldo
             </button>
 
+
             <button
                 type="button"
                 class="boton boton-restaurar"
@@ -559,12 +641,18 @@
 
         </div>
 
+
         <input
             type="file"
             id="archivoRespaldo"
             accept=".json,application/json"
             style="display:none;"
             onchange="restaurarRespaldo(event)">
+
+
+        <!-- =====================================
+             LIMPIAR PRÉSTAMOS
+        ====================================== -->
 
         <div class="zona-mantenimiento">
 
@@ -585,6 +673,11 @@
             </button>
 
         </div>
+
+
+        <!-- =====================================
+             LIMPIAR TODO
+        ====================================== -->
 
         <div class="zona-mantenimiento">
 
@@ -608,57 +701,73 @@
 
     </section>
 
-    <!-- =========================
+
+    <!-- =========================================
          INFORMACIÓN IMPORTANTE
-    ========================== -->
+    ========================================== -->
 
     <section class="tarjeta">
 
         <h3>Información del respaldo</h3>
 
         <div class="informacion">
+
             <strong>El respaldo incluye:</strong><br>
 
             Libros, afiliados, colaboradores y préstamos completos,
             incluyendo registros activos, inactivos, dados de baja y
             el historial de préstamos.
+
             <br><br>
 
             <strong>Importante:</strong><br>
 
-            La opción "Limpiar todo" elimina los datos almacenados actualmente
-            en las cuatro tablas principales. Esta acción no elimina las tablas
-            ni la estructura del sistema.
+            La opción "Limpiar todo" elimina los datos almacenados
+            actualmente en las cuatro tablas principales. Esta acción
+            no elimina las tablas ni la estructura del sistema.
+
             <br><br>
 
-            Se recomienda crear un respaldo antes de utilizar las opciones
-            de limpieza.
+            Se recomienda crear un respaldo antes de utilizar las
+            opciones de limpieza.
+
         </div>
 
     </section>
 
 </main>
 
+
 <footer>
     Sistema de Biblioteca
 </footer>
 
 
-<!-- =========================
+<!-- =========================================
      MODAL DE CONFIRMACIÓN
-========================== -->
+========================================== -->
 
-<div id="modalConfirmacion" class="modal-overlay">
+<div
+    id="modalConfirmacion"
+    class="modal-overlay">
 
     <div class="modal-confirmacion">
 
         <div class="modal-cabecera">
-            <h3 id="modalTitulo">Confirmación</h3>
+
+            <h3 id="modalTitulo">
+                Confirmación
+            </h3>
+
         </div>
 
+
         <div class="modal-contenido">
+
             <p id="modalMensaje"></p>
+
         </div>
+
 
         <div class="modal-acciones">
 
@@ -668,6 +777,7 @@
                 class="modal-boton modal-cancelar">
                 Cancelar
             </button>
+
 
             <button
                 type="button"
@@ -683,14 +793,15 @@
 </div>
 
 
-<!-- =========================
+<!-- =========================================
      SUPABASE
-========================== -->
+========================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase.js"></script>
 <script src="auth.js"></script>
+
 
 <script>
 
@@ -698,36 +809,57 @@
 
     let resolverModal = null;
 
+
     /* =========================================
        MODAL PERSONALIZADO
     ========================================= */
 
-    function mostrarConfirmacion(titulo, mensaje, textoConfirmar = "Confirmar") {
+    function mostrarConfirmacion(
+        titulo,
+        mensaje,
+        textoConfirmar = "Confirmar"
+    ) {
 
         return new Promise((resolve) => {
 
             resolverModal = resolve;
 
-            document.getElementById("modalTitulo").textContent = titulo;
-            document.getElementById("modalMensaje").textContent = mensaje;
-            document.getElementById("modalConfirmar").textContent = textoConfirmar;
+            document.getElementById("modalTitulo").textContent =
+                titulo;
 
-            document.getElementById("modalConfirmacion")
+            document.getElementById("modalMensaje").textContent =
+                mensaje;
+
+            document.getElementById("modalConfirmar").textContent =
+                textoConfirmar;
+
+
+            document
+                .getElementById("modalConfirmacion")
                 .classList.add("visible");
+
 
             document.body.style.overflow = "hidden";
 
-            document.getElementById("modalCancelar").focus();
+
+            document
+                .getElementById("modalCancelar")
+                .focus();
+
         });
+
     }
 
 
     function cerrarModal(resultado) {
 
-        document.getElementById("modalConfirmacion")
+        document
+            .getElementById("modalConfirmacion")
             .classList.remove("visible");
 
+
         document.body.style.overflow = "";
+
 
         if (resolverModal) {
 
@@ -736,19 +868,27 @@
             resolverModal = null;
 
             resolver(resultado);
+
         }
+
     }
 
 
-    document.getElementById("modalCancelar")
+    document
+        .getElementById("modalCancelar")
         .addEventListener("click", () => {
+
             cerrarModal(false);
+
         });
 
 
-    document.getElementById("modalConfirmar")
+    document
+        .getElementById("modalConfirmar")
         .addEventListener("click", () => {
+
             cerrarModal(true);
+
         });
 
 
@@ -758,89 +898,132 @@
 
     function mostrarMensaje(texto, tipo) {
 
-        const mensaje = document.getElementById("mensaje");
+        const mensaje =
+            document.getElementById("mensaje");
 
         mensaje.textContent = texto;
+
         mensaje.className = tipo;
 
         mensaje.style.display = "block";
+
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
+
     }
 
 
     /* =========================================
-       CARGAR INFORMACIÓN
+       CONTAR REGISTROS
     ========================================= */
 
     async function contarTabla(nombreTabla) {
 
-        const { count, error } = await supabaseClient
+        const {
+            count,
+            error
+        } = await supabaseClient
             .from(nombreTabla)
             .select("*", {
                 count: "exact",
                 head: true
             });
 
+
         if (error) {
             throw error;
         }
 
+
         return count || 0;
+
     }
 
+
+    /* =========================================
+       ACTUALIZAR INFORMACIÓN
+    ========================================= */
 
     async function actualizarInformacion() {
 
         try {
 
             const [
+
                 totalLibros,
                 totalAfiliados,
                 totalColaboradores,
                 totalPrestamos
+
             ] = await Promise.all([
 
                 contarTabla("libros"),
+
                 contarTabla("afiliados"),
+
                 contarTabla("colaboradores"),
+
                 contarTabla("prestamos")
 
             ]);
 
-            document.getElementById("totalLibros").textContent =
+
+            document
+                .getElementById("totalLibros")
+                .textContent =
                 totalLibros.toLocaleString("es-GT");
 
-            document.getElementById("totalAfiliados").textContent =
+
+            document
+                .getElementById("totalAfiliados")
+                .textContent =
                 totalAfiliados.toLocaleString("es-GT");
 
-            document.getElementById("totalColaboradores").textContent =
+
+            document
+                .getElementById("totalColaboradores")
+                .textContent =
                 totalColaboradores.toLocaleString("es-GT");
 
-            document.getElementById("totalPrestamos").textContent =
+
+            document
+                .getElementById("totalPrestamos")
+                .textContent =
                 totalPrestamos.toLocaleString("es-GT");
 
+
             const totalDatos =
+
                 totalLibros +
                 totalAfiliados +
                 totalColaboradores +
                 totalPrestamos;
 
-            document.getElementById("totalDatos").textContent =
+
+            document
+                .getElementById("totalDatos")
+                .textContent =
                 totalDatos.toLocaleString("es-GT");
+
 
         } catch (error) {
 
-            console.error("Error al actualizar información:", error);
+            console.error(
+                "Error al actualizar información:",
+                error
+            );
+
 
             mostrarMensaje(
                 "No fue posible obtener la información actual de la base de datos.",
                 "error"
             );
+
         }
+
     }
 
 
@@ -851,36 +1034,57 @@
     async function obtenerTodos(nombreTabla) {
 
         const cantidad = 1000;
+
         let todos = [];
+
         let desde = 0;
+
 
         while (true) {
 
-            const hasta = desde + cantidad - 1;
+            const hasta =
+                desde + cantidad - 1;
 
-            const { data, error } = await supabaseClient
+
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from(nombreTabla)
                 .select("*")
                 .range(desde, hasta);
+
 
             if (error) {
                 throw error;
             }
 
+
             if (data && data.length > 0) {
 
-                todos = todos.concat(data);
+                todos =
+                    todos.concat(data);
 
             }
 
-            if (!data || data.length < cantidad) {
+
+            if (
+                !data ||
+                data.length < cantidad
+            ) {
+
                 break;
+
             }
+
 
             desde += cantidad;
+
         }
 
+
         return todos;
+
     }
 
 
@@ -897,43 +1101,67 @@
                 "exito"
             );
 
+
             const [
+
                 afiliados,
                 libros,
                 colaboradores,
                 prestamos
+
             ] = await Promise.all([
 
                 obtenerTodos("afiliados"),
+
                 obtenerTodos("libros"),
+
                 obtenerTodos("colaboradores"),
+
                 obtenerTodos("prestamos")
 
             ]);
 
+
             const respaldo = {
 
-                version: versionRespaldo,
+                version:
+                    versionRespaldo,
 
-                fecha: new Date().toISOString(),
+                fecha:
+                    new Date().toISOString(),
 
                 tablas: {
 
-                    afiliados: afiliados,
-                    libros: libros,
-                    colaboradores: colaboradores,
-                    prestamos: prestamos
+                    afiliados:
+                        afiliados,
+
+                    libros:
+                        libros,
+
+                    colaboradores:
+                        colaboradores,
+
+                    prestamos:
+                        prestamos
 
                 },
 
                 resumen: {
 
-                    afiliados: afiliados.length,
-                    libros: libros.length,
-                    colaboradores: colaboradores.length,
-                    prestamos: prestamos.length,
+                    afiliados:
+                        afiliados.length,
+
+                    libros:
+                        libros.length,
+
+                    colaboradores:
+                        colaboradores.length,
+
+                    prestamos:
+                        prestamos.length,
 
                     total:
+
                         afiliados.length +
                         libros.length +
                         colaboradores.length +
@@ -943,76 +1171,134 @@
 
             };
 
+
             const contenido =
-                JSON.stringify(respaldo, null, 2);
+                JSON.stringify(
+                    respaldo,
+                    null,
+                    2
+                );
 
-            const blob = new Blob(
-                [contenido],
-                {
-                    type: "application/json"
-                }
-            );
 
-            const fecha = new Date();
+            const blob =
+                new Blob(
+                    [contenido],
+                    {
+                        type:
+                            "application/json"
+                    }
+                );
+
+
+            const fecha =
+                new Date();
+
 
             const nombreArchivo =
+
                 "respaldo_biblioteca_" +
+
                 fecha.getFullYear() +
-                String(fecha.getMonth() + 1).padStart(2, "0") +
-                String(fecha.getDate()).padStart(2, "0") +
+
+                String(
+                    fecha.getMonth() + 1
+                ).padStart(2, "0") +
+
+                String(
+                    fecha.getDate()
+                ).padStart(2, "0") +
+
                 "_" +
-                String(fecha.getHours()).padStart(2, "0") +
-                String(fecha.getMinutes()).padStart(2, "0") +
+
+                String(
+                    fecha.getHours()
+                ).padStart(2, "0") +
+
+                String(
+                    fecha.getMinutes()
+                ).padStart(2, "0") +
+
                 ".json";
+
 
             const url =
                 URL.createObjectURL(blob);
 
+
             const enlace =
                 document.createElement("a");
 
-            enlace.href = url;
-            enlace.download = nombreArchivo;
 
-            document.body.appendChild(enlace);
+            enlace.href = url;
+
+            enlace.download =
+                nombreArchivo;
+
+
+            document.body.appendChild(
+                enlace
+            );
+
 
             enlace.click();
 
-            document.body.removeChild(enlace);
+
+            document.body.removeChild(
+                enlace
+            );
+
 
             URL.revokeObjectURL(url);
+
 
             localStorage.setItem(
                 "biblioteca_ultimo_respaldo",
                 new Date().toISOString()
             );
 
+
             mostrarMensaje(
+
                 "Respaldo creado correctamente. Se guardaron " +
-                respaldo.resumen.total.toLocaleString("es-GT") +
+
+                respaldo.resumen.total
+                    .toLocaleString("es-GT") +
+
                 " registros.",
+
                 "exito"
+
             );
+
 
         } catch (error) {
 
-            console.error("Error creando respaldo:", error);
+            console.error(
+                "Error creando respaldo:",
+                error
+            );
+
 
             mostrarMensaje(
                 "No fue posible crear el respaldo.",
                 "error"
             );
+
         }
+
     }
 
 
     /* =========================================
-       SELECCIONAR ARCHIVO
+       SELECCIONAR RESPALDO
     ========================================= */
 
     function seleccionarRespaldo() {
 
-        document.getElementById("archivoRespaldo").click();
+        document
+            .getElementById("archivoRespaldo")
+            .click();
+
     }
 
 
@@ -1022,33 +1308,58 @@
 
     function validarRespaldo(respaldo) {
 
-        if (!respaldo || typeof respaldo !== "object") {
+        if (
+            !respaldo ||
+            typeof respaldo !== "object"
+        ) {
+
             return false;
+
         }
+
 
         if (!respaldo.tablas) {
+
             return false;
+
         }
 
-        if (!Array.isArray(respaldo.tablas.afiliados)) {
+
+        if (
+            !Array.isArray(
+                respaldo.tablas.afiliados
+            )
+        ) {
+
             return false;
+
         }
 
-        if (!Array.isArray(respaldo.tablas.libros)) {
+
+        if (
+            !Array.isArray(
+                respaldo.tablas.libros
+            )
+        ) {
+
             return false;
+
         }
 
-        if (!Array.isArray(respaldo.tablas.prestamos)) {
+
+        if (
+            !Array.isArray(
+                respaldo.tablas.prestamos
+            )
+        ) {
+
             return false;
+
         }
 
-        /*
-         * Colaboradores es compatible con respaldos
-         * anteriores. Si no existe, se tratará como
-         * una tabla vacía.
-         */
 
         return true;
+
     }
 
 
@@ -1058,14 +1369,18 @@
 
     async function eliminarTabla(nombreTabla) {
 
-        const { error } = await supabaseClient
+        const {
+            error
+        } = await supabaseClient
             .from(nombreTabla)
             .delete()
             .not("id", "is", null);
 
+
         if (error) {
             throw error;
         }
+
     }
 
 
@@ -1078,11 +1393,18 @@
         registros
     ) {
 
-        if (!registros || registros.length === 0) {
+        if (
+            !registros ||
+            registros.length === 0
+        ) {
+
             return;
+
         }
 
+
         const tamañoBloque = 500;
+
 
         for (
             let inicio = 0;
@@ -1096,15 +1418,20 @@
                     inicio + tamañoBloque
                 );
 
-            const { error } =
-                await supabaseClient
-                    .from(nombreTabla)
-                    .insert(bloque);
+
+            const {
+                error
+            } = await supabaseClient
+                .from(nombreTabla)
+                .insert(bloque);
+
 
             if (error) {
                 throw error;
             }
+
         }
+
     }
 
 
@@ -1117,110 +1444,170 @@
         const archivo =
             evento.target.files[0];
 
+
         if (!archivo) {
             return;
         }
+
 
         try {
 
             const texto =
                 await archivo.text();
 
+
             const respaldo =
                 JSON.parse(texto);
 
-            if (!validarRespaldo(respaldo)) {
+
+            if (
+                !validarRespaldo(
+                    respaldo
+                )
+            ) {
 
                 mostrarMensaje(
                     "El archivo seleccionado no es un respaldo válido de la biblioteca.",
                     "error"
                 );
 
+
                 evento.target.value = "";
 
+
                 return;
+
             }
+
 
             const afiliados =
                 respaldo.tablas.afiliados || [];
 
+
             const libros =
                 respaldo.tablas.libros || [];
 
+
             const colaboradores =
+
                 Array.isArray(
                     respaldo.tablas.colaboradores
                 )
+
                     ? respaldo.tablas.colaboradores
+
                     : [];
+
 
             const prestamos =
                 respaldo.tablas.prestamos || [];
 
+
             const total =
+
                 afiliados.length +
-                libros.length +
                 colaboradores.length +
+                libros.length +
                 prestamos.length;
 
+
             const fechaRespaldo =
+
                 respaldo.fecha
+
                     ? new Date(
                         respaldo.fecha
                     ).toLocaleString("es-GT")
+
                     : "Fecha no disponible";
 
+
             const confirmar =
+
                 await mostrarConfirmacion(
+
                     "Restaurar respaldo",
+
                     "El archivo contiene:\n\n" +
-                    afiliados.length.toLocaleString("es-GT") +
+
+                    afiliados.length
+                        .toLocaleString("es-GT") +
                     " afiliados\n" +
-                    colaboradores.length.toLocaleString("es-GT") +
+
+                    colaboradores.length
+                        .toLocaleString("es-GT") +
                     " colaboradores\n" +
-                    libros.length.toLocaleString("es-GT") +
+
+                    libros.length
+                        .toLocaleString("es-GT") +
                     " libros\n" +
-                    prestamos.length.toLocaleString("es-GT") +
+
+                    prestamos.length
+                        .toLocaleString("es-GT") +
                     " préstamos\n\n" +
+
                     "Total: " +
+
                     total.toLocaleString("es-GT") +
+
                     " registros.\n\n" +
+
                     "La restauración reemplazará los datos actuales de la biblioteca.\n\n" +
+
                     "Fecha del respaldo: " +
+
                     fechaRespaldo +
+
                     "\n\n" +
+
                     "¿Deseas continuar?",
+
                     "Restaurar datos"
+
                 );
+
 
             if (!confirmar) {
 
                 evento.target.value = "";
 
                 return;
+
             }
+
 
             mostrarMensaje(
                 "Restaurando información. Espera un momento...",
                 "exito"
             );
 
+
             /*
-             * Primero se eliminan los préstamos,
-             * porque pueden depender de libros
-             * y colaboradores.
+             * Primero se eliminan los préstamos.
              */
 
-            await eliminarTabla("prestamos");
+            await eliminarTabla(
+                "prestamos"
+            );
 
-            await eliminarTabla("libros");
 
-            await eliminarTabla("afiliados");
+            await eliminarTabla(
+                "libros"
+            );
 
-            await eliminarTabla("colaboradores");
+
+            await eliminarTabla(
+                "afiliados"
+            );
+
+
+            await eliminarTabla(
+                "colaboradores"
+            );
+
 
             /*
-             * Después se restauran las tablas.
+             * Después se restauran los datos.
              */
 
             await insertarPorBloques(
@@ -1228,29 +1615,40 @@
                 afiliados
             );
 
+
             await insertarPorBloques(
                 "libros",
                 libros
             );
+
 
             await insertarPorBloques(
                 "colaboradores",
                 colaboradores
             );
 
+
             await insertarPorBloques(
                 "prestamos",
                 prestamos
             );
 
+
             await actualizarInformacion();
 
+
             mostrarMensaje(
+
                 "El respaldo fue restaurado correctamente. Se cargaron " +
+
                 total.toLocaleString("es-GT") +
+
                 " registros.",
+
                 "exito"
+
             );
+
 
         } catch (error) {
 
@@ -1259,15 +1657,19 @@
                 error
             );
 
+
             mostrarMensaje(
                 "No fue posible restaurar el respaldo. Verifica que el archivo sea válido.",
                 "error"
             );
 
+
         } finally {
 
             evento.target.value = "";
+
         }
+
     }
 
 
@@ -1280,64 +1682,107 @@
         try {
 
             const cantidad =
-                await contarTabla("prestamos");
+                await contarTabla(
+                    "prestamos"
+                );
+
 
             const primeraConfirmacion =
+
                 await mostrarConfirmacion(
+
                     "Limpiar préstamos",
+
                     "Actualmente existen " +
+
                     cantidad.toLocaleString("es-GT") +
+
                     " registros de préstamos.\n\n" +
+
                     "Esta acción eliminará todos los préstamos, incluyendo los históricos y los ya devueltos.\n\n" +
+
                     "Los libros, afiliados y colaboradores no serán eliminados.\n\n" +
+
                     "¿Deseas continuar?",
+
                     "Continuar"
+
                 );
+
 
             if (!primeraConfirmacion) {
                 return;
             }
 
+
             const segundaConfirmacion =
+
                 await mostrarConfirmacion(
+
                     "Última confirmación",
+
                     "Se eliminarán " +
+
                     cantidad.toLocaleString("es-GT") +
+
                     " registros de préstamos.\n\n" +
+
                     "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
+
                     "¿Confirmas que deseas eliminarlos?",
+
                     "Limpiar préstamos"
+
                 );
+
 
             if (!segundaConfirmacion) {
                 return;
             }
+
 
             mostrarMensaje(
                 "Eliminando préstamos. Espera un momento...",
                 "exito"
             );
 
-            await eliminarTabla("prestamos");
+
+            await eliminarTabla(
+                "prestamos"
+            );
+
 
             /*
-             * Al eliminar todos los préstamos,
-             * los libros quedan disponibles.
+             * Los libros quedan disponibles.
              */
 
-            await supabaseClient
+            const {
+                error
+            } = await supabaseClient
                 .from("libros")
                 .update({
-                    estado: "Disponible"
+                    estado:
+                        "Disponible"
                 })
-                .neq("estado", "Disponible");
+                .neq(
+                    "estado",
+                    "Disponible"
+                );
+
+
+            if (error) {
+                throw error;
+            }
+
 
             await actualizarInformacion();
+
 
             mostrarMensaje(
                 "Los préstamos fueron eliminados correctamente.",
                 "exito"
             );
+
 
         } catch (error) {
 
@@ -1346,11 +1791,14 @@
                 error
             );
 
+
             mostrarMensaje(
                 "No fue posible limpiar los préstamos.",
                 "error"
             );
+
         }
+
     }
 
 
@@ -1363,97 +1811,166 @@
         try {
 
             /*
-             * Primero contamos todo para mostrar
-             * exactamente qué se va a eliminar.
+             * Contar todos los registros.
              */
 
             const [
+
                 afiliados,
                 colaboradores,
                 libros,
                 prestamos
+
             ] = await Promise.all([
 
-                contarTabla("afiliados"),
-                contarTabla("colaboradores"),
-                contarTabla("libros"),
-                contarTabla("prestamos")
+                contarTabla(
+                    "afiliados"
+                ),
+
+                contarTabla(
+                    "colaboradores"
+                ),
+
+                contarTabla(
+                    "libros"
+                ),
+
+                contarTabla(
+                    "prestamos"
+                )
 
             ]);
 
+
             const total =
+
                 afiliados +
                 colaboradores +
                 libros +
                 prestamos;
 
+
             const primeraConfirmacion =
+
                 await mostrarConfirmacion(
+
                     "Limpiar toda la biblioteca",
+
                     "Esta opción eliminará TODOS los datos actuales.\n\n" +
+
                     afiliados.toLocaleString("es-GT") +
                     " afiliados\n" +
+
                     colaboradores.toLocaleString("es-GT") +
                     " colaboradores\n" +
+
                     libros.toLocaleString("es-GT") +
                     " libros\n" +
+
                     prestamos.toLocaleString("es-GT") +
                     " préstamos\n\n" +
+
                     "Total: " +
+
                     total.toLocaleString("es-GT") +
+
                     " registros.\n\n" +
+
                     "Los datos activos, inactivos, dados de baja y el historial de préstamos serán eliminados.\n\n" +
+
                     "Las tablas y la estructura del sistema permanecerán intactas.\n\n" +
+
                     "¿Deseas continuar?",
+
                     "Continuar"
+
                 );
+
 
             if (!primeraConfirmacion) {
                 return;
             }
 
+
             const segundaConfirmacion =
+
                 await mostrarConfirmacion(
+
                     "Última confirmación",
+
                     "Se eliminarán TODOS los datos de la biblioteca.\n\n" +
+
                     "Después de esta acción, el sistema quedará vacío para comenzar nuevamente desde cero.\n\n" +
+
                     "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
+
                     "Se recomienda crear un respaldo antes de continuar.\n\n" +
+
                     "¿Confirmas que deseas limpiar toda la biblioteca?",
+
                     "Limpiar todo"
+
                 );
+
 
             if (!segundaConfirmacion) {
                 return;
             }
+
 
             mostrarMensaje(
                 "Limpiando toda la biblioteca. Espera un momento...",
                 "exito"
             );
 
+
             /*
-             * IMPORTANTE:
-             *
-             * Primero se eliminan los préstamos porque
-             * pueden contener referencias a libros y
-             * colaboradores.
+             * Primero se eliminan los préstamos.
              */
 
-            await eliminarTabla("prestamos");
+            await eliminarTabla(
+                "prestamos"
+            );
 
-            await eliminarTabla("libros");
 
-            await eliminarTabla("afiliados");
+            /*
+             * Después los libros.
+             */
 
-            await eliminarTabla("colaboradores");
+            await eliminarTabla(
+                "libros"
+            );
+
+
+            /*
+             * Después los afiliados.
+             */
+
+            await eliminarTabla(
+                "afiliados"
+            );
+
+
+            /*
+             * Finalmente los colaboradores.
+             */
+
+            await eliminarTabla(
+                "colaboradores"
+            );
+
 
             await actualizarInformacion();
 
+
             mostrarMensaje(
+
                 "La biblioteca fue limpiada correctamente. El sistema está listo para comenzar desde cero.",
+
                 "exito"
+
             );
+
 
         } catch (error) {
 
@@ -1462,13 +1979,20 @@
                 error
             );
 
+
             mostrarMensaje(
+
                 "No fue posible limpiar toda la información. Algunos datos pueden no haberse eliminado.",
+
                 "error"
+
             );
 
+
             await actualizarInformacion();
+
         }
+
     }
 
 
@@ -1478,14 +2002,21 @@
 
     window.respaldoAutorizado = false;
 
+
     window.respaldoAuth =
+
         (async function protegerRespaldo() {
 
             const {
+
                 data: {
                     session
                 }
-            } = await supabaseClient.auth.getSession();
+
+            } = await supabaseClient
+                .auth
+                .getSession();
+
 
             if (!session) {
 
@@ -1493,12 +2024,20 @@
                     "index.html";
 
                 return false;
+
             }
 
-            window.respaldoAutorizado = true;
 
-            document.documentElement.style.visibility =
+            window.respaldoAutorizado =
+                true;
+
+
+            document
+                .documentElement
+                .style
+                .visibility =
                 "visible";
+
 
             return true;
 
@@ -1509,15 +2048,18 @@
        INICIO
     ========================================= */
 
-    window.respaldoAuth.then((autorizado) => {
+    window.respaldoAuth.then(
+        (autorizado) => {
 
-        if (!autorizado) {
-            return;
+            if (!autorizado) {
+                return;
+            }
+
+
+            actualizarInformacion();
+
         }
-
-        actualizarInformacion();
-
-    });
+    );
 
 </script>
 
