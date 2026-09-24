@@ -1,0 +1,2922 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Colaboradores - Biblioteca</title>
+
+
+    <!-- =========================================
+         OCULTAR LA PAGINA MIENTRAS SE VERIFICA
+         LA SESION
+    ========================================== -->
+
+    <style>
+
+        html {
+            visibility: hidden;
+        }
+
+    </style>
+
+
+    <!-- =========================================
+         SUPABASE
+    ========================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase.js"></script>
+
+
+    <!-- =========================================
+         PROTECCION GENERAL
+    ========================================== -->
+
+    <script src="auth.js"></script>
+
+
+    <!-- =========================================
+         COMPROBACION DIRECTA DE SESION
+    ========================================== -->
+
+    <script>
+
+        window.colaboradoresAutorizado = false;
+
+        window.colaboradoresAuth = (async function protegerColaboradores() {
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.getSession();
+
+
+                if (
+                    error ||
+                    !data ||
+                    !data.session
+                ) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return false;
+
+                }
+
+
+                window.colaboradoresAutorizado = true;
+
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+
+                return true;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error al comprobar la sesion:",
+                    error
+                );
+
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return false;
+
+            }
+
+        })();
+
+    </script>
+
+
+    <!-- =========================================
+         SHEETJS
+    ========================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #263238;
+        }
+
+
+        /* =========================================
+           ENCABEZADO
+        ========================================== */
+
+        .encabezado {
+            background: #263238;
+            color: white;
+            padding: 22px 20px;
+        }
+
+
+        .encabezado-contenido {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .icono-marca {
+            font-size: 32px;
+        }
+
+
+        .marca h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+
+        .marca p {
+            margin: 4px 0 0;
+            color: #cfd8dc;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           CONTENEDOR
+        ========================================== */
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 0 18px;
+        }
+
+
+        .barra-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .barra-superior h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+
+        .boton-volver {
+            display: inline-block;
+            text-decoration: none;
+            background: white;
+            color: #263238;
+            border: 1px solid #cfd8dc;
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        .boton-volver:hover {
+            background: #eceff1;
+        }
+
+
+        /* =========================================
+           ESTADISTICAS
+        ========================================== */
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+
+        .tarjeta {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 9px;
+            padding: 17px;
+            text-align: center;
+        }
+
+
+        .tarjeta .icono {
+            font-size: 23px;
+            margin-bottom: 6px;
+        }
+
+
+        .tarjeta .numero {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+
+        .tarjeta .texto {
+            color: #607d8b;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           SECCIONES
+        ========================================== */
+
+        .seccion {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 9px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .seccion h3 {
+            margin: 0 0 15px;
+            font-size: 18px;
+        }
+
+
+        /* =========================================
+           IMPORTACION
+        ========================================== */
+
+        .importacion-info {
+            background: #f5f7f8;
+            border-left: 4px solid #546e7a;
+            padding: 12px 14px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        .archivo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+
+        .archivo input[type="file"] {
+            max-width: 100%;
+        }
+
+
+        .boton {
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        .boton-principal {
+            background: #37474f;
+            color: white;
+        }
+
+
+        .boton-principal:hover {
+            background: #263238;
+        }
+
+
+        .boton-secundario {
+            background: #eceff1;
+            color: #263238;
+        }
+
+
+        .boton-secundario:hover {
+            background: #cfd8dc;
+        }
+
+
+        .boton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================================
+           RESULTADO DE IMPORTACION
+        ========================================== */
+
+        .resultado-importacion {
+            display: none;
+            margin-top: 15px;
+            padding: 14px;
+            border-radius: 7px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        .resultado-importacion.mostrar {
+            display: block;
+        }
+
+
+        .resultado-importacion.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+
+        /* =========================================
+           BUSQUEDA
+        ========================================== */
+
+        .busqueda {
+            display: grid;
+            grid-template-columns: 1fr 180px;
+            gap: 12px;
+        }
+
+
+        .campo label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #b0bec5;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+
+        /* =========================================
+           INFORMACION BASE
+        ========================================== */
+
+        .informacion-base {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            color: #607d8b;
+            font-size: 13px;
+        }
+
+
+        .anio-base {
+            font-weight: bold;
+            color: #37474f;
+        }
+
+
+        /* =========================================
+           TABLA
+        ========================================== */
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+
+        th {
+            background: #eceff1;
+            padding: 11px 8px;
+            text-align: center;
+            border-bottom: 1px solid #cfd8dc;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           FILTROS DE TABLA
+        ========================================== */
+
+        .fila-filtros th {
+            background: #f7f9fa;
+            padding: 7px 6px;
+        }
+
+
+        .filtro-tabla {
+            width: 100%;
+            min-width: 90px;
+            padding: 7px 6px;
+            border: 1px solid #b0bec5;
+            border-radius: 5px;
+            font-size: 12px;
+            background: white;
+            color: #263238;
+        }
+
+
+        .filtro-tabla:focus {
+            outline: none;
+            border-color: #607d8b;
+            box-shadow: 0 0 0 2px rgba(96, 125, 139, 0.12);
+        }
+
+
+        .filtro-estado {
+            min-width: 105px;
+        }
+
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eeeeee;
+            text-align: center;
+        }
+
+
+        td.nombre {
+            text-align: left;
+        }
+
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+
+        /* =========================================
+           ESTADOS
+        ========================================== */
+
+        .estado {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+
+        .estado-activo {
+            background: #d4edda;
+            color: #155724;
+        }
+
+
+        .estado-inactivo {
+            background: #eceff1;
+            color: #546e7a;
+        }
+
+
+        /* =========================================
+           PAGINACION
+        ========================================== */
+
+        .paginacion {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+
+        .boton-paginacion {
+            border: 1px solid #cfd8dc;
+            background: white;
+            color: #263238;
+            border-radius: 6px;
+            padding: 8px 13px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .boton-paginacion:hover:not(:disabled) {
+            background: #eceff1;
+        }
+
+
+        .boton-paginacion:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+
+        .informacion-pagina {
+            font-size: 13px;
+            color: #607d8b;
+            font-weight: bold;
+            min-width: 120px;
+            text-align: center;
+        }
+
+
+        /* =========================================
+           SIN RESULTADOS
+        ========================================== */
+
+        .sin-resultados {
+            text-align: center;
+            padding: 30px 15px;
+            color: #78909c;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           PIE
+        ========================================== */
+
+        .pie {
+            text-align: center;
+            color: #78909c;
+            font-size: 12px;
+            padding: 10px 0 25px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 800px) {
+
+            .estadisticas {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .busqueda {
+                grid-template-columns: 1fr;
+            }
+
+
+            .barra-superior {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .estadisticas {
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .archivo {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+
+            .archivo .boton {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         ENCABEZADO
+    ========================================== -->
+
+    <header class="encabezado">
+
+        <div class="encabezado-contenido">
+
+            <div class="marca">
+
+                <div class="icono-marca">
+                    👤
+                </div>
+
+                <div>
+
+                    <h1>
+                        Biblioteca
+                    </h1>
+
+                    <p>
+                        Base de colaboradores
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="contenedor">
+
+
+        <!-- =====================================
+             TITULO
+        ====================================== -->
+
+        <div class="barra-superior">
+
+            <h2>
+                Colaboradores
+            </h2>
+
+            <a
+                href="index.html"
+                class="boton-volver"
+            >
+                ← Volver al inicio
+            </a>
+
+        </div>
+
+
+
+        <!-- =====================================
+             ESTADISTICAS
+        ====================================== -->
+
+        <section class="estadisticas">
+
+
+            <div class="tarjeta">
+
+                <div class="icono">
+                    👥
+                </div>
+
+                <div
+                    class="numero"
+                    id="totalColaboradores"
+                >
+                    0
+                </div>
+
+                <div class="texto">
+                    Colaboradores
+                </div>
+
+            </div>
+
+
+
+            <div class="tarjeta">
+
+                <div class="icono">
+                    🟢
+                </div>
+
+                <div
+                    class="numero"
+                    id="totalActivos"
+                >
+                    0
+                </div>
+
+                <div class="texto">
+                    Activos
+                </div>
+
+            </div>
+
+
+
+            <div class="tarjeta">
+
+                <div class="icono">
+                    🔴
+                </div>
+
+                <div
+                    class="numero"
+                    id="totalInactivos"
+                >
+                    0
+                </div>
+
+                <div class="texto">
+                    Inactivos
+                </div>
+
+            </div>
+
+
+
+            <div class="tarjeta">
+
+                <div class="icono">
+                    🏢
+                </div>
+
+                <div
+                    class="numero"
+                    id="totalAreas"
+                >
+                    0
+                </div>
+
+                <div class="texto">
+                    Áreas
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             IMPORTACION
+        ====================================== -->
+
+        <section class="seccion">
+
+            <h3>
+                📥 Actualizar base de colaboradores
+            </h3>
+
+
+            <div class="importacion-info">
+
+                <strong>
+                    Importación del Excel
+                </strong>
+
+                <br>
+
+                Selecciona el archivo Excel actualizado de la organización.
+
+                La hoja debe llamarse exactamente:
+
+                <strong>
+                    Colaboradores
+                </strong>.
+
+                <br><br>
+
+                El sistema utilizará las columnas:
+
+                <strong>
+                    CodigoColaborador, Nombre, Area, Telefono y Correo
+                </strong>.
+
+                <br><br>
+
+                Los colaboradores nuevos se agregarán como activos.
+                Los colaboradores existentes se actualizarán.
+                Los colaboradores que ya no aparezcan en el nuevo Excel
+                quedarán como inactivos.
+
+                <br><br>
+
+                Si un colaborador inactivo vuelve a aparecer en el Excel,
+                será reactivado automáticamente.
+
+            </div>
+
+
+            <div class="archivo">
+
+                <input
+                    type="file"
+                    id="archivoExcel"
+                    accept=".xlsx,.xls"
+                >
+
+
+                <button
+                    type="button"
+                    class="boton boton-principal"
+                    id="botonActualizar"
+                    onclick="actualizarBase()"
+                >
+                    🔄 Actualizar base
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoImportacion"
+                class="resultado-importacion"
+            ></div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             BUSQUEDA
+        ====================================== -->
+
+        <section class="seccion">
+
+            <h3>
+                🔎 Buscar colaborador
+            </h3>
+
+
+            <div class="busqueda">
+
+
+                <div class="campo">
+
+                    <label for="buscarColaborador">
+                        Código, nombre, área, teléfono o correo
+                    </label>
+
+                    <input
+                        type="text"
+                        id="buscarColaborador"
+                        placeholder="Ejemplo: 10025, Juan Pérez, Tecnología..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="filtroEstado">
+                        Estado
+                    </label>
+
+                    <select
+                        id="filtroEstado"
+                    >
+
+                        <option value="todos">
+                            Todos
+                        </option>
+
+                        <option value="activos">
+                            Activos
+                        </option>
+
+                        <option value="inactivos">
+                            Inactivos
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             LISTADO
+        ====================================== -->
+
+        <section class="seccion">
+
+            <div class="informacion-base">
+
+                <div>
+
+                    Registros mostrados:
+
+                    <strong id="registrosMostrados">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="anio-base">
+
+                    Última actualización:
+
+                    <span id="ultimaActualizacion">
+                        Sin registrar
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Código
+                            </th>
+
+                            <th>
+                                Nombre
+                            </th>
+
+                            <th>
+                                Área
+                            </th>
+
+                            <th>
+                                Teléfono
+                            </th>
+
+                            <th>
+                                Correo
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                        </tr>
+
+
+                        <tr class="fila-filtros">
+
+                            <th>
+
+                                <input
+                                    type="text"
+                                    id="filtroCodigoTabla"
+                                    class="filtro-tabla"
+                                    placeholder="Código"
+                                    autocomplete="off"
+                                >
+
+                            </th>
+
+
+                            <th>
+
+                                <input
+                                    type="text"
+                                    id="filtroNombreTabla"
+                                    class="filtro-tabla"
+                                    placeholder="Nombre"
+                                    autocomplete="off"
+                                >
+
+                            </th>
+
+
+                            <th>
+
+                                <input
+                                    type="text"
+                                    id="filtroAreaTabla"
+                                    class="filtro-tabla"
+                                    placeholder="Área"
+                                    autocomplete="off"
+                                >
+
+                            </th>
+
+
+                            <th>
+
+                                <input
+                                    type="text"
+                                    id="filtroTelefonoTabla"
+                                    class="filtro-tabla"
+                                    placeholder="Teléfono"
+                                    autocomplete="off"
+                                >
+
+                            </th>
+
+
+                            <th>
+
+                                <input
+                                    type="text"
+                                    id="filtroCorreoTabla"
+                                    class="filtro-tabla"
+                                    placeholder="Correo"
+                                    autocomplete="off"
+                                >
+
+                            </th>
+
+
+                            <th>
+
+                                <select
+                                    id="filtroEstadoTabla"
+                                    class="filtro-tabla filtro-estado"
+                                >
+
+                                    <option value="">
+                                        Todos
+                                    </option>
+
+                                    <option value="Activo">
+                                        Activo
+                                    </option>
+
+                                    <option value="Inactivo">
+                                        Inactivo
+                                    </option>
+
+                                </select>
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="tablaColaboradores"
+                    ></tbody>
+
+                </table>
+
+            </div>
+
+
+            <div
+                id="sinResultados"
+                class="sin-resultados"
+                style="display:none;"
+            >
+                No se encontraron colaboradores.
+            </div>
+
+
+            <div
+                id="paginacion"
+                class="paginacion"
+                style="display:none;"
+            >
+
+                <button
+                    type="button"
+                    class="boton-paginacion"
+                    id="botonAnterior"
+                    onclick="paginaAnterior()"
+                >
+                    ← Anterior
+                </button>
+
+
+                <div
+                    id="informacionPagina"
+                    class="informacion-pagina"
+                >
+                    Página 1 de 1
+                </div>
+
+
+                <button
+                    type="button"
+                    class="boton-paginacion"
+                    id="botonSiguiente"
+                    onclick="paginaSiguiente()"
+                >
+                    Siguiente →
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <div class="pie">
+            Sistema de Biblioteca
+        </div>
+
+
+    </main>
+
+
+
+    <script>
+
+        // =========================================
+        // CONFIGURACION
+        // =========================================
+
+        const NOMBRE_HOJA =
+            "Colaboradores";
+
+        const TAMANO_BLOQUE =
+            500;
+
+        const REGISTROS_POR_PAGINA =
+            25;
+
+
+        // =========================================
+        // VARIABLES
+        // =========================================
+
+        let colaboradores = [];
+
+        let paginaActual = 1;
+
+        let resultadosActuales = [];
+
+
+        // =========================================
+        // NORMALIZAR
+        // =========================================
+
+        function normalizar(valor) {
+
+            if (
+                valor === null ||
+                valor === undefined
+            ) {
+
+                return "";
+
+            }
+
+
+            return String(valor)
+                .replace(/\u00A0/g, "")
+                .replace(
+                    /[\u200B-\u200D\uFEFF]/g,
+                    ""
+                )
+                .replace(
+                    /\s+/g,
+                    " "
+                )
+                .trim()
+                .toUpperCase();
+
+        }
+
+
+        // =========================================
+        // ESCAPAR HTML
+        // =========================================
+
+        function escaparHtml(valor) {
+
+            return String(
+                valor ?? ""
+            )
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        // =========================================
+        // CARGAR BASE DESDE SUPABASE
+        // =========================================
+
+        async function cargarBase() {
+
+            if (
+                !window.colaboradoresAutorizado
+            ) {
+
+                return;
+
+            }
+
+
+            mostrarResultado(
+                "⏳ Cargando colaboradores desde Supabase..."
+            );
+
+
+            try {
+
+                const todos =
+                    [];
+
+                let desde =
+                    0;
+
+                const cantidad =
+                    1000;
+
+
+                while (true) {
+
+                    const hasta =
+                        desde +
+                        cantidad -
+                        1;
+
+
+                    const {
+                        data,
+                        error
+                    } =
+                        await supabaseClient
+                            .from("colaboradores")
+                            .select(
+                                "CodigoColaborador,Nombre,Area,Telefono,Correo,estado"
+                            )
+                            .range(
+                                desde,
+                                hasta
+                            );
+
+
+                    if (error) {
+
+                        throw error;
+
+                    }
+
+
+                    if (
+                        !data ||
+                        data.length === 0
+                    ) {
+
+                        break;
+
+                    }
+
+
+                    todos.push(
+                        ...data
+                    );
+
+
+                    if (
+                        data.length <
+                        cantidad
+                    ) {
+
+                        break;
+
+                    }
+
+
+                    desde +=
+                        cantidad;
+
+                }
+
+
+                colaboradores =
+                    todos;
+
+
+                actualizarEstadisticas();
+
+                mostrarInformacionBase();
+
+                paginaActual =
+                    1;
+
+                mostrarColaboradores();
+
+                ocultarResultado();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error cargando colaboradores:",
+                    error
+                );
+
+
+                mostrarResultado(
+
+                    "❌ No fue posible cargar la base de colaboradores desde Supabase.<br><br>" +
+
+                    escaparHtml(
+                        error.message
+                    ),
+
+                    true
+
+                );
+
+            }
+
+        }
+
+
+        // =========================================
+        // ESTADISTICAS
+        // =========================================
+
+        function actualizarEstadisticas() {
+
+            const areas =
+                new Set();
+
+
+            let activos =
+                0;
+
+            let inactivos =
+                0;
+
+
+            colaboradores.forEach(
+                colaborador => {
+
+                    if (
+                        colaborador.Area
+                    ) {
+
+                        areas.add(
+                            normalizar(
+                                colaborador.Area
+                            )
+                        );
+
+                    }
+
+
+                    if (
+                        colaborador.estado ===
+                        "Activo"
+                    ) {
+
+                        activos++;
+
+                    } else {
+
+                        inactivos++;
+
+                    }
+
+                }
+            );
+
+
+            document.getElementById(
+                "totalColaboradores"
+            ).textContent =
+                colaboradores.length;
+
+
+            document.getElementById(
+                "totalActivos"
+            ).textContent =
+                activos;
+
+
+            document.getElementById(
+                "totalInactivos"
+            ).textContent =
+                inactivos;
+
+
+            document.getElementById(
+                "totalAreas"
+            ).textContent =
+                areas.size;
+
+        }
+
+
+        // =========================================
+        // INFORMACION DE ACTUALIZACION
+        // =========================================
+
+        function mostrarInformacionBase() {
+
+            const ultima =
+                localStorage.getItem(
+                    "biblioteca_colaboradores_actualizacion"
+                );
+
+
+            const elemento =
+                document.getElementById(
+                    "ultimaActualizacion"
+                );
+
+
+            if (!ultima) {
+
+                elemento.textContent =
+                    "Base en Supabase";
+
+                return;
+
+            }
+
+
+            elemento.textContent =
+                ultima;
+
+        }
+
+
+        // =========================================
+        // OBTENER FILTROS DE TABLA
+        // =========================================
+
+        function obtenerFiltrosTabla() {
+
+            return {
+
+                codigo:
+                    normalizar(
+                        document.getElementById(
+                            "filtroCodigoTabla"
+                        ).value
+                    ),
+
+                nombre:
+                    normalizar(
+                        document.getElementById(
+                            "filtroNombreTabla"
+                        ).value
+                    ),
+
+                area:
+                    normalizar(
+                        document.getElementById(
+                            "filtroAreaTabla"
+                        ).value
+                    ),
+
+                telefono:
+                    normalizar(
+                        document.getElementById(
+                            "filtroTelefonoTabla"
+                        ).value
+                    ),
+
+                correo:
+                    normalizar(
+                        document.getElementById(
+                            "filtroCorreoTabla"
+                        ).value
+                    ),
+
+                estado:
+                    document.getElementById(
+                        "filtroEstadoTabla"
+                    ).value
+
+            };
+
+        }
+
+
+        // =========================================
+        // MOSTRAR COLABORADORES
+        // =========================================
+
+        function mostrarColaboradores() {
+
+            const texto =
+                normalizar(
+                    document.getElementById(
+                        "buscarColaborador"
+                    ).value
+                );
+
+
+            const filtroEstado =
+                document.getElementById(
+                    "filtroEstado"
+                ).value;
+
+
+            const filtrosTabla =
+                obtenerFiltrosTabla();
+
+
+            resultadosActuales =
+                colaboradores.filter(
+                    colaborador => {
+
+                        if (
+                            filtroEstado ===
+                            "activos" &&
+                            colaborador.estado !==
+                            "Activo"
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            filtroEstado ===
+                            "inactivos" &&
+                            colaborador.estado !==
+                            "Inactivo"
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            filtrosTabla.codigo &&
+                            !normalizar(
+                                colaborador.CodigoColaborador
+                            ).includes(
+                                filtrosTabla.codigo
+                            )
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            filtrosTabla.nombre &&
+                            !normalizar(
+                                colaborador.Nombre
+                            ).includes(
+                                filtrosTabla.nombre
+                            )
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            filtrosTabla.area &&
+                            !normalizar(
+                                colaborador.Area
+                            ).includes(
+                                filtrosTabla.area
+                            )
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            filtrosTabla.telefono &&
+                            !normalizar(
+                                colaborador.Telefono
+                            ).includes(
+                                filtrosTabla.telefono
+                            )
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            filtrosTabla.correo &&
+                            !normalizar(
+                                colaborador.Correo
+                            ).includes(
+                                filtrosTabla.correo
+                            )
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            filtrosTabla.estado &&
+                            colaborador.estado !==
+                            filtrosTabla.estado
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (!texto) {
+
+                            return true;
+
+                        }
+
+
+                        const contenido =
+                            normalizar(
+                                [
+                                    colaborador.CodigoColaborador,
+                                    colaborador.Nombre,
+                                    colaborador.Area,
+                                    colaborador.Telefono,
+                                    colaborador.Correo
+                                ].join(" ")
+                            );
+
+
+                        return contenido.includes(
+                            texto
+                        );
+
+                    }
+                );
+
+
+            const totalPaginas =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        resultadosActuales.length /
+                        REGISTROS_POR_PAGINA
+                    )
+                );
+
+
+            if (
+                paginaActual >
+                totalPaginas
+            ) {
+
+                paginaActual =
+                    totalPaginas;
+
+            }
+
+
+            const inicio =
+                (
+                    paginaActual -
+                    1
+                ) *
+                REGISTROS_POR_PAGINA;
+
+
+            const fin =
+                inicio +
+                REGISTROS_POR_PAGINA;
+
+
+            const resultadosPagina =
+                resultadosActuales.slice(
+                    inicio,
+                    fin
+                );
+
+
+            const tabla =
+                document.getElementById(
+                    "tablaColaboradores"
+                );
+
+
+            const sinResultados =
+                document.getElementById(
+                    "sinResultados"
+                );
+
+
+            tabla.innerHTML =
+                "";
+
+
+            document.getElementById(
+                "registrosMostrados"
+            ).textContent =
+                resultadosActuales.length;
+
+
+            if (
+                resultadosActuales.length ===
+                0
+            ) {
+
+                sinResultados.style.display =
+                    "block";
+
+
+                actualizarPaginacion(
+                    0
+                );
+
+
+                return;
+
+            }
+
+
+            sinResultados.style.display =
+                "none";
+
+
+            resultadosPagina.forEach(
+                colaborador => {
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const activo =
+                        colaborador.estado ===
+                        "Activo";
+
+
+                    fila.innerHTML = `
+
+                        <td>
+                            ${escaparHtml(
+                                colaborador.CodigoColaborador ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td class="nombre">
+                            ${escaparHtml(
+                                colaborador.Nombre ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escaparHtml(
+                                colaborador.Area ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escaparHtml(
+                                colaborador.Telefono ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td class="nombre">
+                            ${escaparHtml(
+                                colaborador.Correo ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="estado ${
+                                    activo
+                                        ? "estado-activo"
+                                        : "estado-inactivo"
+                                }"
+                            >
+
+                                ${
+                                    activo
+                                        ? "🟢 Activo"
+                                        : "🔴 Inactivo"
+                                }
+
+                            </span>
+
+                        </td>
+
+                    `;
+
+
+                    tabla.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+
+            actualizarPaginacion(
+                totalPaginas
+            );
+
+        }
+
+
+        // =========================================
+        // ACTUALIZAR PAGINACION
+        // =========================================
+
+        function actualizarPaginacion(
+            totalPaginas
+        ) {
+
+            const contenedor =
+                document.getElementById(
+                    "paginacion"
+                );
+
+
+            const botonAnterior =
+                document.getElementById(
+                    "botonAnterior"
+                );
+
+
+            const botonSiguiente =
+                document.getElementById(
+                    "botonSiguiente"
+                );
+
+
+            const informacion =
+                document.getElementById(
+                    "informacionPagina"
+                );
+
+
+            if (
+                resultadosActuales.length ===
+                0
+            ) {
+
+                contenedor.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            contenedor.style.display =
+                "flex";
+
+
+            informacion.textContent =
+                `Página ${paginaActual} de ${totalPaginas}`;
+
+
+            botonAnterior.disabled =
+                paginaActual <=
+                1;
+
+
+            botonSiguiente.disabled =
+                paginaActual >=
+                totalPaginas;
+
+        }
+
+
+        // =========================================
+        // PAGINA ANTERIOR
+        // =========================================
+
+        function paginaAnterior() {
+
+            if (
+                paginaActual <=
+                1
+            ) {
+
+                return;
+
+            }
+
+
+            paginaActual--;
+
+            mostrarColaboradores();
+
+        }
+
+
+        // =========================================
+        // PAGINA SIGUIENTE
+        // =========================================
+
+        function paginaSiguiente() {
+
+            const totalPaginas =
+                Math.ceil(
+                    resultadosActuales.length /
+                    REGISTROS_POR_PAGINA
+                );
+
+
+            if (
+                paginaActual >=
+                totalPaginas
+            ) {
+
+                return;
+
+            }
+
+
+            paginaActual++;
+
+            mostrarColaboradores();
+
+        }
+
+
+        // =========================================
+        // PREPARAR DATOS DEL EXCEL
+        // =========================================
+
+        function prepararDatosExcel(
+            filas
+        ) {
+
+            const nuevosPorCodigo =
+                new Map();
+
+
+            filas.forEach(
+                fila => {
+
+                    const codigo =
+                        String(
+                            fila.CodigoColaborador ||
+                            ""
+                        ).trim();
+
+
+                    const nombre =
+                        String(
+                            fila.Nombre ||
+                            ""
+                        ).trim();
+
+
+                    const area =
+                        String(
+                            fila.Area ||
+                            ""
+                        ).trim();
+
+
+                    const telefono =
+                        String(
+                            fila.Telefono ||
+                            ""
+                        ).trim();
+
+
+                    const correo =
+                        String(
+                            fila.Correo ||
+                            ""
+                        ).trim();
+
+
+                    if (
+                        !codigo
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const clave =
+                        normalizar(
+                            codigo
+                        );
+
+
+                    if (
+                        !nuevosPorCodigo.has(
+                            clave
+                        )
+                    ) {
+
+                        nuevosPorCodigo.set(
+
+                            clave,
+
+                            {
+
+                                CodigoColaborador:
+                                    codigo,
+
+                                Nombre:
+                                    nombre,
+
+                                Area:
+                                    area,
+
+                                Telefono:
+                                    telefono,
+
+                                Correo:
+                                    correo,
+
+                                estado:
+                                    "Activo"
+
+                            }
+
+                        );
+
+                    }
+
+                }
+            );
+
+
+            return nuevosPorCodigo;
+
+        }
+
+
+        // =========================================
+        // ACTUALIZAR BASE DESDE EXCEL
+        // =========================================
+
+        async function actualizarBase() {
+
+            if (
+                !window.colaboradoresAutorizado
+            ) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
+
+
+            const archivo =
+                document.getElementById(
+                    "archivoExcel"
+                ).files[0];
+
+
+            if (!archivo) {
+
+                mostrarResultado(
+                    "Selecciona primero el archivo Excel.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            const confirmar =
+                confirm(
+
+                    "La base de Supabase será comparada con el Excel seleccionado.\n\n" +
+
+                    "• Colaboradores nuevos serán agregados.\n" +
+
+                    "• Colaboradores existentes serán actualizados.\n" +
+
+                    "• Colaboradores que ya no aparezcan serán marcados como inactivos.\n\n" +
+
+                    "Los colaboradores no serán eliminados físicamente de la base.\n\n" +
+
+                    "¿Deseas continuar?"
+
+                );
+
+
+            if (!confirmar) {
+
+                return;
+
+            }
+
+
+            const boton =
+                document.getElementById(
+                    "botonActualizar"
+                );
+
+
+            boton.disabled =
+                true;
+
+
+            boton.textContent =
+                "⏳ Procesando...";
+
+
+            try {
+
+                mostrarResultado(
+                    "⏳ Leyendo el archivo Excel..."
+                );
+
+
+                const datos =
+                    await leerArchivoExcel(
+                        archivo
+                    );
+
+
+                const libro =
+                    XLSX.read(
+                        datos,
+                        {
+                            type:
+                                "array"
+                        }
+                    );
+
+
+                const hojaEncontrada =
+                    libro.SheetNames.find(
+                        nombre =>
+                            normalizar(
+                                nombre
+                            ) ===
+                            normalizar(
+                                NOMBRE_HOJA
+                            )
+                    );
+
+
+                if (!hojaEncontrada) {
+
+                    throw new Error(
+
+                        `No se encontró la hoja "${NOMBRE_HOJA}". Hojas disponibles: ${libro.SheetNames.join(", ")}`
+
+                    );
+
+                }
+
+
+                const hoja =
+                    libro.Sheets[
+                        hojaEncontrada
+                    ];
+
+
+                const filas =
+                    XLSX.utils.sheet_to_json(
+                        hoja,
+                        {
+                            defval:
+                                ""
+                        }
+                    );
+
+
+                if (
+                    filas.length ===
+                    0
+                ) {
+
+                    throw new Error(
+                        "La hoja de Excel no contiene registros."
+                    );
+
+                }
+
+
+                mostrarResultado(
+                    "⏳ Procesando registros del Excel..."
+                );
+
+
+                const nuevosPorCodigo =
+                    prepararDatosExcel(
+                        filas
+                    );
+
+
+                if (
+                    nuevosPorCodigo.size ===
+                    0
+                ) {
+
+                    throw new Error(
+
+                        "No se encontraron registros válidos con CodigoColaborador."
+
+                    );
+
+                }
+
+
+                const baseAnterior =
+                    new Map();
+
+
+                colaboradores.forEach(
+                    colaborador => {
+
+                        const clave =
+                            normalizar(
+                                colaborador.CodigoColaborador
+                            );
+
+
+                        if (clave) {
+
+                            baseAnterior.set(
+                                clave,
+                                colaborador
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                const nuevaBase =
+                    new Map();
+
+
+                let agregados =
+                    0;
+
+                let actualizados =
+                    0;
+
+                let reactivados =
+                    0;
+
+
+                nuevosPorCodigo.forEach(
+                    (nuevo, clave) => {
+
+                        const anterior =
+                            baseAnterior.get(
+                                clave
+                            );
+
+
+                        if (!anterior) {
+
+                            nuevaBase.set(
+                                clave,
+                                {
+
+                                    CodigoColaborador:
+                                        nuevo.CodigoColaborador,
+
+                                    Nombre:
+                                        nuevo.Nombre,
+
+                                    Area:
+                                        nuevo.Area,
+
+                                    Telefono:
+                                        nuevo.Telefono,
+
+                                    Correo:
+                                        nuevo.Correo,
+
+                                    estado:
+                                        "Activo"
+
+                                }
+                            );
+
+
+                            agregados++;
+
+                            return;
+
+                        }
+
+
+                        if (
+                            anterior.estado ===
+                            "Inactivo"
+                        ) {
+
+                            reactivados++;
+
+                        }
+
+
+                        nuevaBase.set(
+                            clave,
+                            {
+
+                                CodigoColaborador:
+                                    nuevo.CodigoColaborador,
+
+                                Nombre:
+                                    nuevo.Nombre,
+
+                                Area:
+                                    nuevo.Area,
+
+                                Telefono:
+                                    nuevo.Telefono,
+
+                                Correo:
+                                    nuevo.Correo,
+
+                                estado:
+                                    "Activo"
+
+                            }
+                        );
+
+
+                        actualizados++;
+
+                    }
+                );
+
+
+                let inactivados =
+                    0;
+
+
+                baseAnterior.forEach(
+                    (anterior, clave) => {
+
+                        if (
+                            !nuevosPorCodigo.has(
+                                clave
+                            )
+                        ) {
+
+                            nuevaBase.set(
+                                clave,
+                                {
+
+                                    CodigoColaborador:
+                                        anterior.CodigoColaborador,
+
+                                    Nombre:
+                                        anterior.Nombre,
+
+                                    Area:
+                                        anterior.Area,
+
+                                    Telefono:
+                                        anterior.Telefono,
+
+                                    Correo:
+                                        anterior.Correo,
+
+                                    estado:
+                                        "Inactivo"
+
+                                }
+                            );
+
+
+                            if (
+                                anterior.estado !==
+                                "Inactivo"
+                            ) {
+
+                                inactivados++;
+
+                            }
+
+                        }
+
+                    }
+                );
+
+
+                const nuevaBaseArray =
+                    Array.from(
+                        nuevaBase.values()
+                    );
+
+
+                mostrarResultado(
+
+                    `⏳ Guardando ${nuevaBaseArray.length.toLocaleString("es-GT")} colaboradores en Supabase...`
+
+                );
+
+
+                await guardarEnSupabase(
+                    nuevaBaseArray
+                );
+
+
+                colaboradores =
+                    nuevaBaseArray;
+
+
+                actualizarEstadisticas();
+
+                paginaActual =
+                    1;
+
+                mostrarColaboradores();
+
+
+                const ahora =
+                    new Date();
+
+
+                const fechaTexto =
+                    ahora.toLocaleDateString(
+                        "es-GT",
+                        {
+
+                            day:
+                                "2-digit",
+
+                            month:
+                                "2-digit",
+
+                            year:
+                                "numeric",
+
+                            hour:
+                                "2-digit",
+
+                            minute:
+                                "2-digit"
+
+                        }
+                    );
+
+
+                localStorage.setItem(
+                    "biblioteca_colaboradores_actualizacion",
+                    fechaTexto
+                );
+
+
+                mostrarInformacionBase();
+
+
+                document.getElementById(
+                    "archivoExcel"
+                ).value =
+                    "";
+
+
+                mostrarResultado(
+
+                    `<strong>✅ Base de colaboradores actualizada correctamente.</strong><br><br>` +
+
+                    `🆕 Registros nuevos: <strong>${agregados}</strong><br>` +
+
+                    `🔄 Registros actualizados: <strong>${actualizados}</strong><br>` +
+
+                    `♻️ Colaboradores reactivados: <strong>${reactivados}</strong><br>` +
+
+                    `🔴 Colaboradores que pasaron a inactivos: <strong>${inactivados}</strong><br>` +
+
+                    `👥 Total de colaboradores en Supabase: <strong>${nuevaBaseArray.length}</strong>`
+
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error actualizando colaboradores:",
+                    error
+                );
+
+
+                mostrarResultado(
+
+                    "❌ Ocurrió un error al actualizar la base.<br><br>" +
+
+                    escaparHtml(
+                        error.message
+                    ),
+
+                    true
+
+                );
+
+            } finally {
+
+                boton.disabled =
+                    false;
+
+
+                boton.textContent =
+                    "🔄 Actualizar base";
+
+            }
+
+        }
+
+
+        // =========================================
+        // LEER ARCHIVO EXCEL
+        // =========================================
+
+        function leerArchivoExcel(
+            archivo
+        ) {
+
+            return new Promise(
+                (
+                    resolver,
+                    rechazar
+                ) => {
+
+                    const lector =
+                        new FileReader();
+
+
+                    lector.onload =
+                        evento => {
+
+                            resolver(
+                                new Uint8Array(
+                                    evento.target.result
+                                )
+                            );
+
+                        };
+
+
+                    lector.onerror =
+                        () => {
+
+                            rechazar(
+                                new Error(
+                                    "No fue posible leer el archivo Excel."
+                                )
+                            );
+
+                        };
+
+
+                    lector.readAsArrayBuffer(
+                        archivo
+                    );
+
+                }
+            );
+
+        }
+
+
+        // =========================================
+        // GUARDAR EN SUPABASE
+        // =========================================
+
+        async function guardarEnSupabase(
+            registros
+        ) {
+
+            if (
+                !window.colaboradoresAutorizado
+            ) {
+
+                throw new Error(
+                    "Sesión no autorizada."
+                );
+
+            }
+
+
+            for (
+                let inicio = 0;
+                inicio <
+                registros.length;
+                inicio +=
+                TAMANO_BLOQUE
+            ) {
+
+                const bloque =
+                    registros.slice(
+                        inicio,
+                        inicio +
+                        TAMANO_BLOQUE
+                    );
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("colaboradores")
+                        .upsert(
+                            bloque,
+                            {
+                                onConflict:
+                                    "CodigoColaborador"
+                            }
+                        );
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                const procesados =
+                    Math.min(
+                        inicio +
+                        bloque.length,
+                        registros.length
+                    );
+
+
+                mostrarResultado(
+
+                    `⏳ Guardando colaboradores... ${procesados.toLocaleString("es-GT")} de ${registros.length.toLocaleString("es-GT")}`
+
+                );
+
+            }
+
+        }
+
+
+        // =========================================
+        // MOSTRAR RESULTADO
+        // =========================================
+
+        function mostrarResultado(
+            mensaje,
+            error = false
+        ) {
+
+            const elemento =
+                document.getElementById(
+                    "resultadoImportacion"
+                );
+
+
+            elemento.innerHTML =
+                mensaje;
+
+
+            elemento.classList.add(
+                "mostrar"
+            );
+
+
+            if (error) {
+
+                elemento.classList.add(
+                    "error"
+                );
+
+            } else {
+
+                elemento.classList.remove(
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        // =========================================
+        // OCULTAR RESULTADO
+        // =========================================
+
+        function ocultarResultado() {
+
+            const elemento =
+                document.getElementById(
+                    "resultadoImportacion"
+                );
+
+
+            elemento.classList.remove(
+                "mostrar"
+            );
+
+        }
+
+
+        // =========================================
+        // APLICAR FILTRO
+        // =========================================
+
+        function aplicarFiltroTabla() {
+
+            paginaActual =
+                1;
+
+            mostrarColaboradores();
+
+        }
+
+
+        // =========================================
+        // EVENTOS - BUSQUEDA GENERAL
+        // =========================================
+
+        document
+            .getElementById(
+                "buscarColaborador"
+            )
+            .addEventListener(
+                "input",
+                () => {
+
+                    paginaActual =
+                        1;
+
+                    mostrarColaboradores();
+
+                }
+            );
+
+
+        // =========================================
+        // EVENTO - ESTADO GENERAL
+        // =========================================
+
+        document
+            .getElementById(
+                "filtroEstado"
+            )
+            .addEventListener(
+                "change",
+                () => {
+
+                    paginaActual =
+                        1;
+
+                    mostrarColaboradores();
+
+                }
+            );
+
+
+        // =========================================
+        // EVENTOS - FILTROS DE TABLA
+        // =========================================
+
+        const filtrosTexto = [
+
+            "filtroCodigoTabla",
+
+            "filtroNombreTabla",
+
+            "filtroAreaTabla",
+
+            "filtroTelefonoTabla",
+
+            "filtroCorreoTabla"
+
+        ];
+
+
+        filtrosTexto.forEach(
+            id => {
+
+                document
+                    .getElementById(id)
+                    .addEventListener(
+                        "input",
+                        aplicarFiltroTabla
+                    );
+
+            }
+        );
+
+
+        // =========================================
+        // EVENTO - FILTRO ESTADO DE TABLA
+        // =========================================
+
+        document
+            .getElementById(
+                "filtroEstadoTabla"
+            )
+            .addEventListener(
+                "change",
+                aplicarFiltroTabla
+            );
+
+
+        // =========================================
+        // INICIAR COLABORADORES
+        // =========================================
+
+        async function iniciarColaboradores() {
+
+            const accesoPermitido =
+                await window.colaboradoresAuth;
+
+
+            if (!accesoPermitido) {
+
+                return;
+
+            }
+
+
+            await cargarBase();
+
+        }
+
+
+        // =========================================
+        // INICIAR PAGINA
+        // =========================================
+
+        iniciarColaboradores();
+
+    </script>
+
+
+</body>
+
+</html>
