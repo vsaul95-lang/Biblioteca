@@ -17,7 +17,12 @@
         href="estilos.css"
     >
 
-    <style>
+
+    <!-- =========================================================
+         OCULTAR LA PÁGINA MIENTRAS SE COMPRUEBA LA SESIÓN
+    ========================================================== -->
+
+    <style id="bloqueo-acceso">
 
         html {
             visibility: hidden;
@@ -25,9 +30,19 @@
 
     </style>
 
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase.js"></script>
+
+
+    <!-- =========================================================
+         PROTECCIÓN DIRECTA DE ESTA PÁGINA
+    ========================================================== -->
 
     <script>
 
@@ -38,7 +53,9 @@
                 const {
                     data,
                     error
-                } = await supabaseClient.auth.getSession();
+                } =
+                    await supabaseClient.auth.getSession();
+
 
                 if (
                     error ||
@@ -46,15 +63,21 @@
                     !data.session
                 ) {
 
-                    window.location.replace("index.html");
+                    window.location.replace(
+                        "index.html"
+                    );
 
                     return false;
 
                 }
 
-                document.documentElement.style.visibility = "visible";
+
+                document.documentElement.style.visibility =
+                    "visible";
+
 
                 return true;
+
 
             } catch (error) {
 
@@ -63,7 +86,11 @@
                     error
                 );
 
-                window.location.replace("index.html");
+
+                window.location.replace(
+                    "index.html"
+                );
+
 
                 return false;
 
@@ -73,12 +100,25 @@
 
     </script>
 
+
+    <!-- =========================================================
+         EXCEL
+    ========================================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+
+    <!-- =========================================================
+         CHART.JS
+    ========================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
 
     <style>
+
 
         /* =========================================================
            CONTENEDOR
@@ -105,6 +145,7 @@
 
         }
 
+
         .reporte-encabezado h1 {
 
             margin: 0 0 4px;
@@ -114,6 +155,7 @@
             color: #263238;
 
         }
+
 
         .reporte-encabezado p {
 
@@ -125,33 +167,27 @@
 
         }
 
+
         .volver {
 
             display: inline-block;
 
-            float: right;
+            margin-bottom: 9px;
 
-            background: #37474f;
-
-            color: white;
+            color: #546e7a;
 
             text-decoration: none;
 
-            font-size: 12px;
-
-            font-weight: 600;
-
-            padding: 7px 12px;
-
-            border-radius: 5px;
-
-            margin-bottom: 9px;
+            font-size: 13px;
 
         }
 
+
         .volver:hover {
 
-            background: #263238;
+            text-decoration: underline;
+
+            color: #263238;
 
         }
 
@@ -173,6 +209,7 @@
 
         }
 
+
         .estadistica-reporte {
 
             background: white;
@@ -190,6 +227,7 @@
 
         }
 
+
         .estadistica-reporte .icono {
 
             font-size: 19px;
@@ -199,6 +237,7 @@
             margin-bottom: 4px;
 
         }
+
 
         .estadistica-reporte .numero {
 
@@ -211,6 +250,7 @@
             color: #263238;
 
         }
+
 
         .estadistica-reporte .texto {
 
@@ -240,6 +280,7 @@
 
         }
 
+
         .grafico-card {
 
             background: white;
@@ -255,15 +296,6 @@
 
         }
 
-        .grafico-card h2 {
-
-            margin: 0 0 8px;
-
-            font-size: 15px;
-
-            color: #37474f;
-
-        }
 
         .grafico-titulo-fila {
 
@@ -279,6 +311,7 @@
 
         }
 
+
         .grafico-titulo-fila h2 {
 
             margin: 0;
@@ -288,6 +321,18 @@
             color: #37474f;
 
         }
+
+
+        .grafico-card h2 {
+
+            margin: 0 0 8px;
+
+            font-size: 15px;
+
+            color: #37474f;
+
+        }
+
 
         .selector-grafica {
 
@@ -310,11 +355,13 @@
 
         }
 
+
         .selector-grafica:focus {
 
             border-color: #78909c;
 
         }
+
 
         .grafico-contenedor {
 
@@ -324,11 +371,17 @@
 
         }
 
+
+        /* =========================================================
+           GRÁFICA DE ACTIVIDAD
+        ========================================================== */
+
         .grafico-actividad {
 
             grid-column: 1 / 3;
 
         }
+
 
         .grafico-actividad
         .grafico-contenedor {
@@ -357,11 +410,13 @@
 
         }
 
+
         .resultados-encabezado {
 
             margin-bottom: 10px;
 
         }
+
 
         .resultados-encabezado h2 {
 
@@ -372,6 +427,7 @@
             color: #37474f;
 
         }
+
 
         .resultados-encabezado p {
 
@@ -402,6 +458,7 @@
 
         }
 
+
         .filtros-titulo {
 
             font-size: 13px;
@@ -413,6 +470,7 @@
             margin-bottom: 7px;
 
         }
+
 
         .filtros-grid {
 
@@ -427,6 +485,7 @@
 
         }
 
+
         .campo {
 
             display: flex;
@@ -437,6 +496,7 @@
 
         }
 
+
         .campo label {
 
             font-size: 10px;
@@ -446,6 +506,7 @@
             font-weight: 600;
 
         }
+
 
         .campo input,
         .campo select {
@@ -471,12 +532,14 @@
 
         }
 
+
         .campo input:focus,
         .campo select:focus {
 
             border-color: #78909c;
 
         }
+
 
         .filtros-fechas {
 
@@ -504,6 +567,7 @@
 
         }
 
+
         .btn {
 
             border: none;
@@ -520,6 +584,7 @@
 
         }
 
+
         .btn-buscar {
 
             background: #455a64;
@@ -528,11 +593,13 @@
 
         }
 
+
         .btn-buscar:hover {
 
             background: #37474f;
 
         }
+
 
         .btn-limpiar {
 
@@ -542,11 +609,13 @@
 
         }
 
+
         .btn-limpiar:hover {
 
             background: #cfd8dc;
 
         }
+
 
         .btn-excel {
 
@@ -556,6 +625,7 @@
 
         }
 
+
         .btn-excel:hover {
 
             background: #455a64;
@@ -564,7 +634,7 @@
 
 
         /* =========================================================
-           RESUMEN
+           RESUMEN DE RESULTADOS
         ========================================================== */
 
         .resultado-resumen {
@@ -583,6 +653,7 @@
 
         }
 
+
         .cantidad-resultados {
 
             font-size: 12px;
@@ -590,6 +661,7 @@
             color: #607d8b;
 
         }
+
 
         .filtros-activos {
 
@@ -620,17 +692,19 @@
 
         }
 
+
         .tabla-resultados {
 
             width: 100%;
 
-            min-width: 1350px;
+            min-width: 1250px;
 
             border-collapse: collapse;
 
             font-size: 11px;
 
         }
+
 
         .tabla-resultados th {
 
@@ -648,6 +722,7 @@
 
         }
 
+
         .tabla-resultados td {
 
             padding: 7px;
@@ -659,9 +734,8 @@
 
             color: #455a64;
 
-            white-space: nowrap;
-
         }
+
 
         .tabla-resultados tbody tr:hover {
 
@@ -669,37 +743,21 @@
 
         }
 
-        .tabla-resultados td.nombres,
-        .tabla-resultados td.apellidos,
-        .tabla-resultados td.colaborador {
+
+        .tabla-resultados td.nombre {
 
             text-align: left;
 
-            min-width: 120px;
+            min-width: 145px;
 
         }
+
 
         .tabla-resultados td.libro {
 
             text-align: left;
 
             min-width: 180px;
-
-        }
-
-        .tabla-resultados td.genero {
-
-            text-align: left;
-
-            min-width: 110px;
-
-        }
-
-        .tabla-resultados td.area {
-
-            text-align: left;
-
-            min-width: 110px;
 
         }
 
@@ -724,6 +782,7 @@
 
         }
 
+
         .estado-prestado {
 
             background: #e3f2fd;
@@ -731,6 +790,7 @@
             color: #1565c0;
 
         }
+
 
         .estado-vencido {
 
@@ -740,6 +800,7 @@
 
         }
 
+
         .estado-devuelto {
 
             background: #e8f5e9;
@@ -747,6 +808,7 @@
             color: #2e7d32;
 
         }
+
 
         .sin-resultados {
 
@@ -774,6 +836,7 @@
 
             }
 
+
             .graficos-grid {
 
                 grid-template-columns:
@@ -781,11 +844,13 @@
 
             }
 
+
             .grafico-actividad {
 
                 grid-column: 1 / 3;
 
             }
+
 
             .filtros-grid {
 
@@ -806,12 +871,14 @@
 
             }
 
+
             .estadisticas-reportes {
 
                 grid-template-columns:
                     repeat(2, 1fr);
 
             }
+
 
             .graficos-grid {
 
@@ -820,11 +887,13 @@
 
             }
 
+
             .grafico-actividad {
 
                 grid-column: auto;
 
             }
+
 
             .filtros-grid {
 
@@ -833,11 +902,13 @@
 
             }
 
+
             .botones-filtros {
 
                 flex-direction: column;
 
             }
+
 
             .btn {
 
@@ -845,9 +916,17 @@
 
             }
 
+
             .grafico-titulo-fila {
 
                 align-items: flex-start;
+
+            }
+
+
+            .selector-grafica {
+
+                flex-shrink: 0;
 
             }
 
@@ -901,13 +980,17 @@
     <main class="reportes-contenedor">
 
 
+        <!-- =====================================================
+             ENCABEZADO
+        ====================================================== -->
+
         <section class="reporte-encabezado">
 
             <a
                 href="index.html"
                 class="volver"
             >
-                Volver
+                ← Volver al inicio
             </a>
 
             <h1>
@@ -1038,6 +1121,8 @@
         <section class="graficos-grid">
 
 
+            <!-- PRÉSTAMOS POR MES -->
+
             <div class="grafico-card">
 
                 <div class="grafico-titulo-fila">
@@ -1049,7 +1134,7 @@
                     <select
                         id="filtroSitioGraficaMeses"
                         class="selector-grafica"
-                        title="Filtrar gráfica por sitio"
+                        title="Filtrar préstamos por sitio"
                     >
 
                         <option value="Todos">
@@ -1091,6 +1176,8 @@
             </div>
 
 
+            <!-- ESTADO ACTUAL DE LOS LIBROS -->
+
             <div class="grafico-card">
 
                 <h2>
@@ -1108,11 +1195,49 @@
             </div>
 
 
+            <!-- ACTIVIDAD -->
+
             <div class="grafico-card grafico-actividad">
 
-                <h2>
-                    📊 Actividad de la biblioteca
-                </h2>
+                <div class="grafico-titulo-fila">
+
+                    <h2>
+                        📊 Actividad de la biblioteca
+                    </h2>
+
+                    <select
+                        id="filtroSitioGraficaActividad"
+                        class="selector-grafica"
+                        title="Filtrar actividad por sitio"
+                    >
+
+                        <option value="Todos">
+                            Todos
+                        </option>
+
+                        <option value="F">
+                            F
+                        </option>
+
+                        <option value="M">
+                            M
+                        </option>
+
+                        <option value="N">
+                            N
+                        </option>
+
+                        <option value="R">
+                            R
+                        </option>
+
+                        <option value="Z">
+                            Z
+                        </option>
+
+                    </select>
+
+                </div>
 
                 <div class="grafico-contenedor">
 
@@ -1148,6 +1273,10 @@
             </div>
 
 
+            <!-- =================================================
+                 FILTROS
+            ================================================== -->
+
             <div class="filtros">
 
                 <div class="filtros-titulo">
@@ -1167,7 +1296,7 @@
                         <input
                             type="text"
                             id="busqueda"
-                            placeholder="Familia, persona, colaborador, código, libro..."
+                            placeholder="Familia, persona, código o libro..."
                         >
 
                     </div>
@@ -1219,7 +1348,7 @@
                             </option>
 
                             <option value="familia">
-                                FamiliaId
+                                Familia
                             </option>
 
                             <option value="persona">
@@ -1238,30 +1367,13 @@
                     <div class="campo">
 
                         <label for="filtroSitio">
-                            SitioPréstamo
+                            Sitio
                         </label>
 
                         <select id="filtroSitio">
 
                             <option value="Todos">
                                 Todos
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="campo">
-
-                        <label for="filtroBiblioteca">
-                            Biblioteca
-                        </label>
-
-                        <select id="filtroBiblioteca">
-
-                            <option value="Todos">
-                                Todas
                             </option>
 
                         </select>
@@ -1307,6 +1419,7 @@
                         🔎 Buscar
                     </button>
 
+
                     <button
                         type="button"
                         class="btn btn-limpiar"
@@ -1314,6 +1427,7 @@
                     >
                         ↺ Limpiar filtros
                     </button>
+
 
                     <button
                         type="button"
@@ -1328,6 +1442,10 @@
             </div>
 
 
+            <!-- =================================================
+                 RESUMEN
+            ================================================== -->
+
             <div class="resultado-resumen">
 
                 <div
@@ -1336,6 +1454,7 @@
                 >
                     0 resultados
                 </div>
+
 
                 <div
                     class="filtros-activos"
@@ -1400,10 +1519,6 @@
                             </th>
 
                             <th>
-                                Biblioteca
-                            </th>
-
-                            <th>
                                 Préstamo
                             </th>
 
@@ -1433,7 +1548,7 @@
 
 
     <!-- =========================================================
-         JAVASCRIPT
+         JAVASCRIPT DE REPORTES
     ========================================================== -->
 
     <script>
@@ -1496,11 +1611,13 @@
                         ""
                     );
 
+
             if (!valor) {
 
                 return "";
 
             }
+
 
             valor =
                 valor.replace(
@@ -1508,30 +1625,8 @@
                     ""
                 );
 
+
             return valor;
-
-        }
-
-
-        /* =========================================================
-           FORMATEAR CÓDIGO
-        ========================================================== */
-
-        function formatearCodigo(codigo) {
-
-            const valor =
-                normalizarCodigo(codigo);
-
-            if (!valor) {
-
-                return "—";
-
-            }
-
-            return valor.padStart(
-                8,
-                "0"
-            );
 
         }
 
@@ -1584,14 +1679,17 @@
 
             }
 
+
             const texto =
                 String(fecha).trim();
+
 
             if (!texto) {
 
                 return null;
 
             }
+
 
             if (
                 /^\d{4}-\d{2}-\d{2}/
@@ -1602,6 +1700,7 @@
                     texto
                         .substring(0, 10)
                         .split("-");
+
 
                 return new Date(
 
@@ -1615,10 +1714,12 @@
 
             }
 
+
             const match =
                 texto.match(
                     /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
                 );
+
 
             if (match) {
 
@@ -1634,8 +1735,10 @@
 
             }
 
+
             const fechaConvertida =
                 new Date(texto);
+
 
             if (
                 isNaN(
@@ -1646,6 +1749,7 @@
                 return null;
 
             }
+
 
             return new Date(
 
@@ -1665,24 +1769,29 @@
             const fechaObj =
                 obtenerFechaSoloDia(fecha);
 
+
             if (!fechaObj) {
 
                 return "—";
 
             }
 
+
             const dia =
                 String(
                     fechaObj.getDate()
                 ).padStart(2, "0");
+
 
             const mes =
                 String(
                     fechaObj.getMonth() + 1
                 ).padStart(2, "0");
 
+
             const anio =
                 fechaObj.getFullYear();
+
 
             return `${dia}/${mes}/${anio}`;
 
@@ -1693,6 +1802,7 @@
 
             const ahora =
                 new Date();
+
 
             return new Date(
 
@@ -1708,27 +1818,32 @@
 
 
         /* =========================================================
-           ESTADO
+           ESTADO DEL PRÉSTAMO
         ========================================================== */
 
         function obtenerEstado(prestamo) {
 
             if (
-                prestamo.estado ===
-                "Devuelto"
+                normalizarTexto(
+                    prestamo.estado
+                ) ===
+                "devuelto"
             ) {
 
                 return "Devuelto";
 
             }
 
+
             const fechaDevolucion =
                 obtenerFechaSoloDia(
                     prestamo.fechaDevolucion
                 );
 
+
             const hoy =
                 obtenerHoy();
+
 
             if (
                 fechaDevolucion &&
@@ -1739,32 +1854,32 @@
 
             }
 
+
             return "Prestado";
 
         }
 
 
         /* =========================================================
-           TIPO DE PRÉSTAMO
+           COLABORADORES
         ========================================================== */
 
         function esColaborador(prestamo) {
 
-            return (
-
+            const tipo =
                 normalizarTexto(
-                    prestamo.tipoPrestamo
-                ) ===
-                "colaborador"
-
-                ||
-
-                !!String(
-                    prestamo.CodigoColaborador ??
-                    prestamo.codigoColaborador ??
+                    prestamo.tipoPrestamo ||
+                    prestamo.TipoPrestamo ||
                     ""
-                ).trim()
+                );
 
+
+            return (
+                tipo === "colaborador" ||
+                Boolean(
+                    prestamo.CodigoColaborador ||
+                    prestamo.codigoColaborador
+                )
             );
 
         }
@@ -1772,64 +1887,42 @@
 
         function obtenerTipoPrestamo(prestamo) {
 
-            if (
-                esColaborador(prestamo)
-            ) {
-
-                return "Colaborador";
-
-            }
-
-            return "Afiliado";
+            return esColaborador(prestamo)
+                ? "Colaborador"
+                : "Afiliado";
 
         }
 
 
-        /* =========================================================
-           DATOS DEL COLABORADOR
-        ========================================================== */
-
         function obtenerCodigoColaborador(prestamo) {
 
-            return String(
-
-                prestamo.CodigoColaborador ??
-
-                prestamo.codigoColaborador ??
-
-                ""
-
-            ).trim();
+            return (
+                prestamo.CodigoColaborador ||
+                prestamo.codigoColaborador ||
+                "—"
+            );
 
         }
 
 
         function obtenerNombreColaborador(prestamo) {
 
-            return String(
-
-                prestamo.NombreColaborador ??
-
-                prestamo.nombreColaborador ??
-
-                ""
-
-            ).trim();
+            return (
+                prestamo.NombreColaborador ||
+                prestamo.nombreColaborador ||
+                "Sin nombre"
+            );
 
         }
 
 
         function obtenerAreaColaborador(prestamo) {
 
-            return String(
-
-                prestamo.AreaColaborador ??
-
-                prestamo.areaColaborador ??
-
-                ""
-
-            ).trim();
+            return (
+                prestamo.AreaColaborador ||
+                prestamo.areaColaborador ||
+                "—"
+            );
 
         }
 
@@ -1873,10 +1966,6 @@
         }
 
 
-        /* =========================================================
-           CÓDIGO DE SITIO
-        ========================================================== */
-
         function obtenerCodigoSitio(sitio) {
 
             const valor =
@@ -1886,14 +1975,21 @@
                     .trim()
                     .toUpperCase();
 
+
             if (
-                ["F", "M", "N", "R", "Z"]
-                    .includes(valor)
+                [
+                    "F",
+                    "M",
+                    "N",
+                    "R",
+                    "Z"
+                ].includes(valor)
             ) {
 
                 return valor;
 
             }
+
 
             return valor;
 
@@ -1904,85 +2000,35 @@
            PERSONA
         ========================================================== */
 
-        function obtenerNombres(prestamo) {
-
-            return String(
-
-                prestamo.Nombres ||
-
-                prestamo.nombres ||
-
-                ""
-
-            ).trim();
-
-        }
-
-
-        function obtenerApellidos(prestamo) {
-
-            return String(
-
-                prestamo.Apellidos ||
-
-                prestamo.apellidos ||
-
-                ""
-
-            ).trim();
-
-        }
-
-
-        function obtenerPersonaId(prestamo) {
-
-            return (
-
-                prestamo.PersonaId ||
-
-                prestamo.personaId ||
-
-                ""
-
-            );
-
-        }
-
-
         function obtenerNombrePersona(prestamo) {
 
-            if (
-                esColaborador(prestamo)
-            ) {
-
-                return (
-
-                    obtenerNombreColaborador(
-                        prestamo
-                    ) ||
-
-                    obtenerCodigoColaborador(
-                        prestamo
-                    ) ||
-
-                    "Sin nombre"
-
-                );
-
-            }
-
             const nombres =
-                obtenerNombres(
-                    prestamo
-                );
+                String(
+
+                    prestamo.Nombres ||
+
+                    prestamo.nombres ||
+
+                    ""
+
+                ).trim();
+
 
             const apellidos =
-                obtenerApellidos(
-                    prestamo
-                );
+                String(
+
+                    prestamo.Apellidos ||
+
+                    prestamo.apellidos ||
+
+                    ""
+
+                ).trim();
+
 
             const nombreCompleto =
                 `${nombres} ${apellidos}`.trim();
+
 
             if (nombreCompleto) {
 
@@ -1990,60 +2036,16 @@
 
             }
 
+
             return (
-                obtenerPersonaId(
-                    prestamo
-                ) ||
+
+                prestamo.PersonaId ||
+
+                prestamo.personaId ||
+
                 "Sin nombre"
-            );
-
-        }
-
-
-        /* =========================================================
-           FAMILIA ID
-        ========================================================== */
-
-        function obtenerFamiliaId(prestamo) {
-
-            return (
-
-                prestamo.FamiliaId ||
-
-                prestamo.familiaId ||
-
-                ""
 
             );
-
-        }
-
-
-        /* =========================================================
-           BUSCAR LIBRO
-        ========================================================== */
-
-        function obtenerLibroPorCodigo(codigo) {
-
-            const codigoBuscado =
-                normalizarCodigo(codigo);
-
-            if (!codigoBuscado) {
-
-                return null;
-
-            }
-
-            return libros.find(
-
-                libro =>
-
-                    normalizarCodigo(
-                        libro.codigoLibro
-                    ) ===
-                    codigoBuscado
-
-            ) || null;
 
         }
 
@@ -2054,41 +2056,69 @@
 
         function obtenerDatosLibro(prestamo) {
 
-            const libro =
-                obtenerLibroPorCodigo(
-                    prestamo.codigoLibro
+            const codigo =
+                prestamo.codigoLibro ||
+                prestamo.CodigoLibro ||
+                "";
+
+
+            const codigoNormalizado =
+                normalizarCodigo(codigo);
+
+
+            const libroEncontrado =
+                libros.find(
+
+                    libro =>
+                        normalizarCodigo(
+                            libro.codigoLibro
+                        ) ===
+                        codigoNormalizado
+
                 );
+
 
             return {
 
                 codigo:
-                    libro?.codigoLibro ||
-                    prestamo.codigoLibro ||
-                    "",
+                    codigo ||
+
+                    libroEncontrado?.codigoLibro ||
+
+                    "—",
 
                 nombre:
-                    libro?.nombreLibro ||
                     prestamo.nombreLibro ||
-                    "",
+
+                    prestamo.NombreLibro ||
+
+                    libroEncontrado?.nombreLibro ||
+
+                    "Sin nombre",
 
                 autor:
-                    libro?.autor ||
+                    libroEncontrado?.autor ||
+
                     "",
 
                 genero:
-                    libro?.genero ||
+                    libroEncontrado?.genero ||
+
                     "",
 
                 editorial:
-                    libro?.editorial ||
+                    libroEncontrado?.editorial ||
+
                     "",
 
                 anio:
-                    libro?.año ??
+                    libroEncontrado?.["año"] ||
+
                     "",
 
                 biblioteca:
-                    libro?.Biblioteca ||
+                    libroEncontrado?.Biblioteca ||
+
                     ""
 
             };
@@ -2107,6 +2137,7 @@
             let desde = 0;
 
             const cantidad = 1000;
+
 
             while (true) {
 
@@ -2138,6 +2169,7 @@
 
                         );
 
+
                 if (error) {
 
                     console.error(
@@ -2149,6 +2181,7 @@
 
                 }
 
+
                 if (
                     !data ||
                     data.length === 0
@@ -2158,7 +2191,9 @@
 
                 }
 
+
                 libros.push(...data);
+
 
                 if (
                     data.length <
@@ -2168,6 +2203,7 @@
                     break;
 
                 }
+
 
                 desde += cantidad;
 
@@ -2187,6 +2223,7 @@
             let desde = 0;
 
             const cantidad = 1000;
+
 
             while (true) {
 
@@ -2218,6 +2255,7 @@
 
                         );
 
+
                 if (error) {
 
                     console.error(
@@ -2229,6 +2267,7 @@
 
                 }
 
+
                 if (
                     !data ||
                     data.length === 0
@@ -2238,7 +2277,9 @@
 
                 }
 
+
                 prestamos.push(...data);
+
 
                 if (
                     data.length <
@@ -2249,6 +2290,7 @@
 
                 }
 
+
                 desde += cantidad;
 
             }
@@ -2257,7 +2299,7 @@
 
 
         /* =========================================================
-           CARGAR DATOS
+           CARGAR TODO
         ========================================================== */
 
         async function cargarDatos() {
@@ -2272,17 +2314,18 @@
 
                 ]);
 
+
                 actualizarEstadisticas();
 
                 cargarSitios();
 
-                cargarBibliotecas();
-
                 aplicarFiltros();
+
 
             } catch (error) {
 
                 console.error(error);
+
 
                 alert(
                     "No se pudieron cargar los datos desde Supabase."
@@ -2303,19 +2346,25 @@
                 libros.filter(
 
                     libro =>
-                        libro.estado !==
-                        "Baja"
+                        normalizarTexto(
+                            libro.estado
+                        ) !==
+                        "baja"
 
                 );
+
 
             const prestamosActivos =
                 prestamos.filter(
 
                     prestamo =>
-                        prestamo.estado ===
-                        "Prestado"
+                        normalizarTexto(
+                            prestamo.estado
+                        ) ===
+                        "prestado"
 
                 );
+
 
             const vencidos =
                 prestamos.filter(
@@ -2327,6 +2376,7 @@
                         "Vencido"
 
                 );
+
 
             const codigosPrestados =
                 new Set(
@@ -2342,6 +2392,7 @@
 
                 );
 
+
             const disponibles =
                 librosActivos.filter(
 
@@ -2356,30 +2407,36 @@
 
                 );
 
+
             document.getElementById(
                 "totalLibros"
             ).textContent =
                 librosActivos.length;
+
 
             document.getElementById(
                 "totalDisponibles"
             ).textContent =
                 disponibles.length;
 
+
             document.getElementById(
                 "totalPrestados"
             ).textContent =
                 prestamosActivos.length;
+
 
             document.getElementById(
                 "totalVencidos"
             ).textContent =
                 vencidos.length;
 
+
             document.getElementById(
                 "totalPrestamos"
             ).textContent =
                 prestamos.length;
+
 
             actualizarGraficaLibros(
 
@@ -2389,18 +2446,22 @@
 
             );
 
+
             actualizarGraficaActividad();
 
         }
 
 
         /* =========================================================
-           GRÁFICA DE LIBROS
+           GRÁFICA CIRCULAR
         ========================================================== */
 
         function actualizarGraficaLibros(
+
             disponibles,
+
             prestados
+
         ) {
 
             const canvas =
@@ -2408,11 +2469,13 @@
                     "graficaLibros"
                 );
 
+
             if (graficaLibros) {
 
                 graficaLibros.destroy();
 
             }
+
 
             graficaLibros =
                 new Chart(
@@ -2421,7 +2484,9 @@
 
                     {
 
-                        type: "doughnut",
+                        type:
+                            "doughnut",
+
 
                         data: {
 
@@ -2432,6 +2497,7 @@
                                 "Prestados"
 
                             ],
+
 
                             datasets: [
 
@@ -2445,7 +2511,8 @@
 
                                     ],
 
-                                    borderWidth: 2
+                                    borderWidth:
+                                        2
 
                                 }
 
@@ -2453,14 +2520,18 @@
 
                         },
 
+
                         options: {
 
-                            responsive: true,
+                            responsive:
+                                true,
 
                             maintainAspectRatio:
                                 false,
 
-                            cutout: "60%",
+                            cutout:
+                                "60%",
+
 
                             plugins: {
 
@@ -2471,15 +2542,116 @@
 
                                     labels: {
 
-                                        padding: 10,
+                                        padding:
+                                            10,
 
-                                        boxWidth: 11,
+                                        boxWidth:
+                                            11,
 
                                         font: {
 
-                                            size: 10
+                                            size:
+                                                10
 
                                         }
+
+                                    }
+
+                                },
+
+
+                                datalabels: {
+
+                                    display:
+                                        true,
+
+                                    color:
+                                        "white",
+
+                                    backgroundColor:
+                                        "rgba(38, 50, 56, 0.78)",
+
+                                    borderRadius:
+                                        5,
+
+                                    padding: {
+
+                                        top: 4,
+
+                                        bottom: 4,
+
+                                        left: 6,
+
+                                        right: 6
+
+                                    },
+
+                                    font: {
+
+                                        size:
+                                            12,
+
+                                        weight:
+                                            "bold"
+
+                                    },
+
+                                    formatter:
+                                        function(
+                                            value
+                                        ) {
+
+                                            return value;
+
+                                        }
+
+                                },
+
+
+                                tooltip: {
+
+                                    callbacks: {
+
+                                        label:
+                                            function(
+                                                context
+                                            ) {
+
+                                                const total =
+                                                    disponibles +
+                                                    prestados;
+
+
+                                                const valor =
+                                                    context.raw;
+
+
+                                                const porcentaje =
+                                                    total > 0
+
+                                                        ?
+
+                                                        (
+                                                            valor /
+                                                            total *
+                                                            100
+
+                                                        ).toFixed(1)
+
+                                                        :
+
+                                                        0;
+
+
+                                                return (
+
+                                                    `${context.label}: ` +
+
+                                                    `${valor} (${porcentaje}%)`
+
+                                                );
+
+                                            }
 
                                     }
 
@@ -2488,6 +2660,7 @@
                             }
 
                         }
+
 
                     }
 
@@ -2500,13 +2673,19 @@
            GRÁFICA DE MESES
         ========================================================== */
 
-        function actualizarGraficaMeses(datos) {
+        function actualizarGraficaMeses(
+
+            datos
+
+        ) {
 
             const ahora =
                 new Date();
 
+
             const anioActual =
                 ahora.getFullYear();
+
 
             const nombresMeses = [
 
@@ -2536,8 +2715,10 @@
 
             ];
 
+
             const conteoMeses =
                 new Array(12).fill(0);
+
 
             datos.forEach(
 
@@ -2545,8 +2726,11 @@
 
                     const fecha =
                         obtenerFechaSoloDia(
+
                             prestamo.fechaPrestamo
+
                         );
+
 
                     if (!fecha) {
 
@@ -2554,33 +2738,42 @@
 
                     }
 
+
                     if (
+
                         fecha.getFullYear() !==
                         anioActual
+
                     ) {
 
                         return;
 
                     }
 
-                    conteoMeses[
-                        fecha.getMonth()
-                    ]++;
+
+                    const mes =
+                        fecha.getMonth();
+
+
+                    conteoMeses[mes]++;
 
                 }
 
             );
+
 
             const canvas =
                 document.getElementById(
                     "graficaMeses"
                 );
 
+
             if (graficaMeses) {
 
                 graficaMeses.destroy();
 
             }
+
 
             graficaMeses =
                 new Chart(
@@ -2589,12 +2782,15 @@
 
                     {
 
-                        type: "line",
+                        type:
+                            "line",
+
 
                         data: {
 
                             labels:
                                 nombresMeses,
+
 
                             datasets: [
 
@@ -2627,12 +2823,15 @@
 
                         },
 
+
                         options: {
 
-                            responsive: true,
+                            responsive:
+                                true,
 
                             maintainAspectRatio:
                                 false,
+
 
                             interaction: {
 
@@ -2643,6 +2842,7 @@
                                     "index"
 
                             },
+
 
                             plugins: {
 
@@ -2671,9 +2871,18 @@
 
                                     }
 
+                                },
+
+
+                                tooltip: {
+
+                                    padding:
+                                        7
+
                                 }
 
                             },
+
 
                             scales: {
 
@@ -2697,6 +2906,7 @@
                                     }
 
                                 },
+
 
                                 x: {
 
@@ -2731,67 +2941,53 @@
 
 
         /* =========================================================
-           GRÁFICA DE MESES POR SITIO
+           GRÁFICA DE ACTIVIDAD
         ========================================================== */
 
-        function actualizarGraficaMesesPorSitio() {
+        function actualizarGraficaActividad() {
 
-            const select =
+            const selector =
                 document.getElementById(
-                    "filtroSitioGraficaMeses"
+                    "filtroSitioGraficaActividad"
                 );
 
-            const sitioSeleccionado =
-                select.value;
 
-            let datosGrafica =
+            const sitioSeleccionado =
+                selector
+                    ? selector.value
+                    : "Todos";
+
+
+            let datos =
                 prestamos;
+
 
             if (
                 sitioSeleccionado !==
                 "Todos"
             ) {
 
-                datosGrafica =
+                datos =
                     prestamos.filter(
 
-                        prestamo => {
+                        prestamo =>
 
-                            const sitio =
+                            obtenerCodigoSitio(
+
                                 obtenerSitioPrestamo(
                                     prestamo
-                                );
+                                )
 
-                            return (
-
-                                obtenerCodigoSitio(
-                                    sitio
-                                ) ===
-                                sitioSeleccionado
-
-                            );
-
-                        }
+                            ) ===
+                            sitioSeleccionado
 
                     );
 
             }
 
-            actualizarGraficaMeses(
-                datosGrafica
-            );
-
-        }
-
-
-        /* =========================================================
-           GRÁFICA DE ACTIVIDAD
-        ========================================================== */
-
-        function actualizarGraficaActividad() {
 
             const prestados =
-                prestamos.filter(
+                datos.filter(
 
                     prestamo =>
                         obtenerEstado(
@@ -2801,8 +2997,9 @@
 
                 ).length;
 
+
             const vencidos =
-                prestamos.filter(
+                datos.filter(
 
                     prestamo =>
                         obtenerEstado(
@@ -2812,8 +3009,9 @@
 
                 ).length;
 
+
             const devueltos =
-                prestamos.filter(
+                datos.filter(
 
                     prestamo =>
                         obtenerEstado(
@@ -2823,16 +3021,19 @@
 
                 ).length;
 
+
             const canvas =
                 document.getElementById(
                     "graficaActividad"
                 );
+
 
             if (graficaActividad) {
 
                 graficaActividad.destroy();
 
             }
+
 
             graficaActividad =
                 new Chart(
@@ -2841,7 +3042,9 @@
 
                     {
 
-                        type: "bar",
+                        type:
+                            "bar",
+
 
                         data: {
 
@@ -2854,6 +3057,7 @@
                                 "Devueltos"
 
                             ],
+
 
                             datasets: [
 
@@ -2881,12 +3085,15 @@
 
                         },
 
+
                         options: {
 
-                            responsive: true,
+                            responsive:
+                                true,
 
                             maintainAspectRatio:
                                 false,
+
 
                             plugins: {
 
@@ -2895,9 +3102,49 @@
                                     display:
                                         false
 
+                                },
+
+
+                                datalabels: {
+
+                                    display:
+                                        true,
+
+                                    color:
+                                        "#37474f",
+
+                                    anchor:
+                                        "end",
+
+                                    align:
+                                        "top",
+
+                                    offset:
+                                        2,
+
+                                    font: {
+
+                                        size:
+                                            11,
+
+                                        weight:
+                                            "bold"
+
+                                    },
+
+                                    formatter:
+                                        function(
+                                            value
+                                        ) {
+
+                                            return value;
+
+                                        }
+
                                 }
 
                             },
+
 
                             scales: {
 
@@ -2905,6 +3152,9 @@
 
                                     beginAtZero:
                                         true,
+
+                                    grace:
+                                        "12%",
 
                                     ticks: {
 
@@ -2921,6 +3171,7 @@
                                     }
 
                                 },
+
 
                                 x: {
 
@@ -2949,7 +3200,7 @@
 
 
         /* =========================================================
-           CARGAR SITIOS
+           CARGAR SITIOS DE LA TABLA
         ========================================================== */
 
         function cargarSitios() {
@@ -2959,26 +3210,30 @@
                     "filtroSitio"
                 );
 
-            const sitios = [
 
-                ...new Set(
+            const sitios =
+                [
 
-                    prestamos.map(
+                    ...new Set(
 
-                        prestamo =>
-                            obtenerSitioPrestamo(
-                                prestamo
-                            )
+                        prestamos.map(
+
+                            prestamo =>
+                                obtenerSitioPrestamo(
+                                    prestamo
+                                )
+
+                        )
 
                     )
 
-                )
+                ];
 
-            ];
 
             sitios.sort(
 
                 (a, b) =>
+
                     a.localeCompare(
 
                         b,
@@ -2996,8 +3251,10 @@
 
             );
 
+
             select.innerHTML =
                 `<option value="Todos">Todos</option>`;
+
 
             sitios.forEach(
 
@@ -3008,137 +3265,14 @@
                             "option"
                         );
 
+
                     option.value =
                         sitio;
+
 
                     option.textContent =
                         sitio;
 
-                    select.appendChild(
-                        option
-                    );
-
-                }
-
-            );
-
-        }
-
-
-        /* =========================================================
-           CARGAR BIBLIOTECAS
-        ========================================================== */
-
-        function cargarBibliotecas() {
-
-            const select =
-                document.getElementById(
-                    "filtroBiblioteca"
-                );
-
-            const bibliotecas = [
-
-                ...new Set(
-
-                    libros
-
-                        .map(
-
-                            libro =>
-                                String(
-                                    libro.Biblioteca ??
-                                    ""
-                                )
-                                    .trim()
-                                    .toUpperCase()
-
-                        )
-
-                        .filter(
-                            biblioteca =>
-                                biblioteca
-                        )
-
-                )
-
-            ];
-
-            const ordenFijo = [
-
-                "F",
-
-                "M",
-
-                "N",
-
-                "R",
-
-                "Z"
-
-            ];
-
-            bibliotecas.sort(
-
-                (a, b) => {
-
-                    const posicionA =
-                        ordenFijo.indexOf(a);
-
-                    const posicionB =
-                        ordenFijo.indexOf(b);
-
-                    if (
-                        posicionA !== -1 &&
-                        posicionB !== -1
-                    ) {
-
-                        return posicionA -
-                            posicionB;
-
-                    }
-
-                    if (
-                        posicionA !== -1
-                    ) {
-
-                        return -1;
-
-                    }
-
-                    if (
-                        posicionB !== -1
-                    ) {
-
-                        return 1;
-
-                    }
-
-                    return a.localeCompare(
-                        b,
-                        "es"
-                    );
-
-                }
-
-            );
-
-            select.innerHTML =
-                `<option value="Todos">Todas</option>`;
-
-            bibliotecas.forEach(
-
-                biblioteca => {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-                    option.value =
-                        biblioteca;
-
-                    option.textContent =
-                        biblioteca;
 
                     select.appendChild(
                         option
@@ -3166,30 +3300,30 @@
 
                 );
 
+
             const estadoFiltro =
                 document.getElementById(
                     "filtroEstado"
                 ).value;
+
 
             const sitioFiltro =
                 document.getElementById(
                     "filtroSitio"
                 ).value;
 
-            const bibliotecaFiltro =
-                document.getElementById(
-                    "filtroBiblioteca"
-                ).value;
 
             const orden =
                 document.getElementById(
                     "filtroOrden"
                 ).value;
 
+
             const fechaDesde =
                 document.getElementById(
                     "fechaDesde"
                 ).value;
+
 
             const fechaHasta =
                 document.getElementById(
@@ -3203,7 +3337,8 @@
 
                 fechaHasta &&
 
-                fechaDesde > fechaHasta
+                fechaDesde >
+                fechaHasta
 
             ) {
 
@@ -3226,72 +3361,75 @@
                                 prestamo
                             );
 
-                        const sitioPrestamo =
+
+                        const sitio =
                             obtenerSitioPrestamo(
                                 prestamo
                             );
+
+
+                        const nombrePersona =
+                            obtenerNombrePersona(
+                                prestamo
+                            );
+
+
+                        const nombreColaborador =
+                            obtenerNombreColaborador(
+                                prestamo
+                            );
+
+
+                        const codigoColaborador =
+                            obtenerCodigoColaborador(
+                                prestamo
+                            );
+
+
+                        const areaColaborador =
+                            obtenerAreaColaborador(
+                                prestamo
+                            );
+
 
                         const datosLibro =
                             obtenerDatosLibro(
                                 prestamo
                             );
 
-                        const colaboradorCodigo =
-                            obtenerCodigoColaborador(
-                                prestamo
-                            );
-
-                        const colaboradorNombre =
-                            obtenerNombreColaborador(
-                                prestamo
-                            );
-
-                        const colaboradorArea =
-                            obtenerAreaColaborador(
-                                prestamo
-                            );
-
-                        const tipoPrestamo =
-                            obtenerTipoPrestamo(
-                                prestamo
-                            );
 
                         const textoCompleto =
                             normalizarTexto(
 
                                 [
 
-                                    tipoPrestamo,
+                                    prestamo.FamiliaId,
 
-                                    obtenerFamiliaId(
-                                        prestamo
-                                    ),
+                                    prestamo.familiaId,
 
-                                    obtenerPersonaId(
-                                        prestamo
-                                    ),
+                                    prestamo.PersonaId,
 
-                                    obtenerNombres(
-                                        prestamo
-                                    ),
+                                    prestamo.personaId,
 
-                                    obtenerApellidos(
-                                        prestamo
-                                    ),
+                                    prestamo.Nombres,
 
-                                    colaboradorCodigo,
+                                    prestamo.nombres,
 
-                                    colaboradorNombre,
+                                    prestamo.Apellidos,
 
-                                    colaboradorArea,
+                                    prestamo.apellidos,
+
+                                    nombrePersona,
+
+                                    codigoColaborador,
+
+                                    nombreColaborador,
+
+                                    areaColaborador,
 
                                     prestamo.codigoLibro,
 
-                                    datosLibro.codigo,
-
                                     prestamo.nombreLibro,
-
-                                    datosLibro.nombre,
 
                                     datosLibro.autor,
 
@@ -3301,9 +3439,7 @@
 
                                     datosLibro.anio,
 
-                                    datosLibro.biblioteca,
-
-                                    sitioPrestamo
+                                    sitio
 
                                 ].join(" ")
 
@@ -3345,37 +3481,8 @@
                             sitioFiltro !==
                                 "Todos" &&
 
-                            sitioPrestamo !==
+                            sitio !==
                                 sitioFiltro
-
-                        ) {
-
-                            return false;
-
-                        }
-
-
-                        const biblioteca =
-                            String(
-
-                                datosLibro.biblioteca ||
-
-                                ""
-
-                            )
-
-                                .trim()
-
-                                .toUpperCase();
-
-
-                        if (
-
-                            bibliotecaFiltro !==
-                                "Todos" &&
-
-                            biblioteca !==
-                                bibliotecaFiltro
 
                         ) {
 
@@ -3408,6 +3515,7 @@
 
                                 );
 
+
                             if (
 
                                 fechaPrestamo <
@@ -3437,6 +3545,7 @@
                                     "T00:00:00"
 
                                 );
+
 
                             if (
 
@@ -3477,10 +3586,12 @@
                                 a.fechaPrestamo
                             );
 
+
                         const fechaB =
                             obtenerFechaSoloDia(
                                 b.fechaPrestamo
                             );
+
 
                         return (
 
@@ -3502,10 +3613,12 @@
                                 a.fechaPrestamo
                             );
 
+
                         const fechaB =
                             obtenerFechaSoloDia(
                                 b.fechaPrestamo
                             );
+
 
                         return (
 
@@ -3524,17 +3637,17 @@
 
                         return String(
 
-                            obtenerFamiliaId(
-                                a
-                            )
+                            a.FamiliaId ||
+
+                            ""
 
                         ).localeCompare(
 
                             String(
 
-                                obtenerFamiliaId(
-                                    b
-                                )
+                                b.FamiliaId ||
+
+                                ""
 
                             ),
 
@@ -3583,15 +3696,9 @@
                         "libro"
                     ) {
 
-                        const libroA =
-                            obtenerDatosLibro(a);
-
-                        const libroB =
-                            obtenerDatosLibro(b);
-
                         return String(
 
-                            libroA.nombre ||
+                            a.nombreLibro ||
 
                             ""
 
@@ -3599,7 +3706,7 @@
 
                             String(
 
-                                libroB.nombre ||
+                                b.nombreLibro ||
 
                                 ""
 
@@ -3618,6 +3725,7 @@
 
                     }
 
+
                     return 0;
 
                 }
@@ -3633,7 +3741,7 @@
 
 
         /* =========================================================
-           ACTUALIZAR TABLA
+           RESULTADOS
         ========================================================== */
 
         function actualizarResultados() {
@@ -3643,21 +3751,26 @@
                     "tablaResultados"
                 );
 
+
             const cantidad =
                 document.getElementById(
                     "cantidadResultados"
                 );
 
+
             tabla.innerHTML = "";
+
 
             cantidad.textContent =
 
                 `${prestamosFiltrados.length} ${
+
                     prestamosFiltrados.length === 1
 
                         ? "resultado"
 
                         : "resultados"
+
                 }`;
 
 
@@ -3670,7 +3783,7 @@
                     <tr>
 
                         <td
-                            colspan="14"
+                            colspan="13"
                             class="sin-resultados"
                         >
                             🔎 No se encontraron préstamos con los filtros seleccionados.
@@ -3679,6 +3792,7 @@
                     </tr>
 
                 `;
+
 
                 actualizarFiltrosActivos();
 
@@ -3696,13 +3810,16 @@
                             "tr"
                         );
 
+
                     const estado =
                         obtenerEstado(
                             prestamo
                         );
 
+
                     let claseEstado =
                         "estado-prestado";
+
 
                     if (
                         estado ===
@@ -3713,6 +3830,7 @@
                             "estado-vencido";
 
                     }
+
 
                     if (
                         estado ===
@@ -3727,6 +3845,7 @@
 
                     let fechaDevolucion =
                         prestamo.fechaDevolucion;
+
 
                     if (
 
@@ -3743,88 +3862,125 @@
                     }
 
 
+                    const esColab =
+                        esColaborador(
+                            prestamo
+                        );
+
+
+                    const tipo =
+                        obtenerTipoPrestamo(
+                            prestamo
+                        );
+
+
+                    const sitio =
+                        obtenerSitioPrestamo(
+                            prestamo
+                        );
+
+
+                    const familia =
+
+                        esColab
+
+                            ? "—"
+
+                            :
+
+                            (
+
+                                prestamo.FamiliaId ||
+
+                                prestamo.familiaId ||
+
+                                "—"
+
+                            );
+
+
+                    const personaCodigo =
+
+                        esColab
+
+                            ?
+
+                            obtenerCodigoColaborador(
+                                prestamo
+                            )
+
+                            :
+
+                            (
+
+                                prestamo.PersonaId ||
+
+                                prestamo.personaId ||
+
+                                "—"
+
+                            );
+
+
+                    const nombre =
+
+                        esColab
+
+                            ?
+
+                            obtenerNombreColaborador(
+                                prestamo
+                            )
+
+                            :
+
+                            obtenerNombrePersona(
+                                prestamo
+                            );
+
+
+                    const apellidos =
+
+                        esColab
+
+                            ? "—"
+
+                            :
+
+                            (
+
+                                prestamo.Apellidos ||
+
+                                prestamo.apellidos ||
+
+                                "—"
+
+                            );
+
+
+                    const area =
+
+                        esColab
+
+                            ?
+
+                            obtenerAreaColaborador(
+                                prestamo
+                            )
+
+                            :
+
+                            "—";
+
+
                     const datosLibro =
                         obtenerDatosLibro(
                             prestamo
                         );
 
 
-                    const sitioPrestamo =
-                        obtenerSitioPrestamo(
-                            prestamo
-                        );
-
-
-                    const colaborador =
-                        esColaborador(
-                            prestamo
-                        );
-
-
-                    const tipoPrestamo =
-                        obtenerTipoPrestamo(
-                            prestamo
-                        );
-
-
-                    let familiaId = "";
-
-                    let personaId = "";
-
-                    let nombres = "";
-
-                    let apellidos = "";
-
-                    let area = "";
-
-                    let codigoPersona =
-                        "";
-
-
-                    if (colaborador) {
-
-                        codigoPersona =
-                            obtenerCodigoColaborador(
-                                prestamo
-                            );
-
-                        nombres =
-                            obtenerNombreColaborador(
-                                prestamo
-                            );
-
-                        area =
-                            obtenerAreaColaborador(
-                                prestamo
-                            );
-
-                    } else {
-
-                        familiaId =
-                            obtenerFamiliaId(
-                                prestamo
-                            );
-
-                        personaId =
-                            obtenerPersonaId(
-                                prestamo
-                            );
-
-                        nombres =
-                            obtenerNombres(
-                                prestamo
-                            );
-
-                        apellidos =
-                            obtenerApellidos(
-                                prestamo
-                            );
-
-                    }
-
-
-                    const biblioteca =
-                        datosLibro.biblioteca ||
+                    const genero =
+                        datosLibro.genero ||
                         "—";
 
 
@@ -3833,7 +3989,7 @@
                         <td>
 
                             ${escapeHtml(
-                                tipoPrestamo
+                                tipo
                             )}
 
                         </td>
@@ -3842,7 +3998,7 @@
                         <td>
 
                             ${escapeHtml(
-                                sitioPrestamo
+                                sitio
                             )}
 
                         </td>
@@ -3851,8 +4007,7 @@
                         <td>
 
                             ${escapeHtml(
-                                familiaId ||
-                                "—"
+                                familia
                             )}
 
                         </td>
@@ -3861,53 +4016,16 @@
                         <td>
 
                             ${escapeHtml(
-
-                                colaborador
-
-                                    ? (
-                                        codigoPersona ||
-                                        "—"
-                                    )
-
-                                    : (
-                                        personaId ||
-                                        "—"
-                                    )
-
+                                personaCodigo
                             )}
 
                         </td>
 
 
-                        <td class="${
-                            colaborador
-                                ? "colaborador"
-                                : "nombres"
-                        }">
+                        <td class="nombre">
 
                             ${escapeHtml(
-                                nombres ||
-                                "—"
-                            )}
-
-                        </td>
-
-
-                        <td class="apellidos">
-
-                            ${escapeHtml(
-                                apellidos ||
-                                "—"
-                            )}
-
-                        </td>
-
-
-                        <td class="area">
-
-                            ${escapeHtml(
-                                area ||
-                                "—"
+                                nombre
                             )}
 
                         </td>
@@ -3915,17 +4033,27 @@
 
                         <td>
 
-                            <strong>
+                            ${escapeHtml(
+                                apellidos
+                            )}
 
-                                ${escapeHtml(
+                        </td>
 
-                                    formatearCodigo(
-                                        datosLibro.codigo
-                                    )
 
-                                )}
+                        <td>
 
-                            </strong>
+                            ${escapeHtml(
+                                area
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHtml(
+                                datosLibro.codigo
+                            )}
 
                         </td>
 
@@ -3933,22 +4061,7 @@
                         <td class="libro">
 
                             ${escapeHtml(
-
-                                datosLibro.nombre ||
-                                "Sin nombre"
-
-                            )}
-
-                        </td>
-
-
-                        <td class="genero">
-
-                            ${escapeHtml(
-
-                                datosLibro.genero ||
-                                "—"
-
+                                datosLibro.nombre
                             )}
 
                         </td>
@@ -3957,7 +4070,7 @@
                         <td>
 
                             ${escapeHtml(
-                                biblioteca
+                                genero
                             )}
 
                         </td>
@@ -4022,60 +4135,54 @@
 
         function actualizarGraficosFiltrados() {
 
-            const selector =
+            const selectorMeses =
                 document.getElementById(
                     "filtroSitioGraficaMeses"
                 );
 
-            if (!selector) {
 
-                actualizarGraficaMeses(
-                    prestamosFiltrados
-                );
+            const sitioMeses =
+                selectorMeses
+                    ? selectorMeses.value
+                    : "Todos";
 
-                return;
 
-            }
+            let datosMeses =
+                prestamos;
 
-            const sitioSeleccionado =
-                selector.value;
-
-            let datosGrafica =
-                prestamosFiltrados;
 
             if (
-                sitioSeleccionado !==
+                sitioMeses !==
                 "Todos"
             ) {
 
-                datosGrafica =
-                    prestamosFiltrados.filter(
+                datosMeses =
+                    prestamos.filter(
 
-                        prestamo => {
+                        prestamo =>
 
-                            const sitio =
+                            obtenerCodigoSitio(
+
                                 obtenerSitioPrestamo(
                                     prestamo
-                                );
+                                )
 
-                            return (
-
-                                obtenerCodigoSitio(
-                                    sitio
-                                ) ===
-                                sitioSeleccionado
-
-                            );
-
-                        }
+                            ) ===
+                            sitioMeses
 
                     );
 
             }
 
+
             actualizarGraficaMeses(
-                datosGrafica
+
+                datosMeses
+
             );
+
+
+            actualizarGraficaActividad();
 
         }
 
@@ -4088,30 +4195,30 @@
 
             const elementos = [];
 
+
             const busqueda =
                 document.getElementById(
                     "busqueda"
                 ).value.trim();
+
 
             const estado =
                 document.getElementById(
                     "filtroEstado"
                 ).value;
 
-            const sitioPrestamo =
+
+            const sitio =
                 document.getElementById(
                     "filtroSitio"
                 ).value;
 
-            const biblioteca =
-                document.getElementById(
-                    "filtroBiblioteca"
-                ).value;
 
             const desde =
                 document.getElementById(
                     "fechaDesde"
                 ).value;
+
 
             const hasta =
                 document.getElementById(
@@ -4145,27 +4252,13 @@
 
 
             if (
-                sitioPrestamo !==
+                sitio !==
                 "Todos"
             ) {
 
                 elementos.push(
 
-                    `SitioPréstamo: ${sitioPrestamo}`
-
-                );
-
-            }
-
-
-            if (
-                biblioteca !==
-                "Todos"
-            ) {
-
-                elementos.push(
-
-                    `Biblioteca: ${biblioteca}`
+                    `Sitio: ${sitio}`
 
                 );
 
@@ -4271,14 +4364,14 @@
                         }
 
 
-                        const datosLibro =
-                            obtenerDatosLibro(
+                        const esColab =
+                            esColaborador(
                                 prestamo
                             );
 
 
-                        const colaborador =
-                            esColaborador(
+                        const datosLibro =
+                            obtenerDatosLibro(
                                 prestamo
                             );
 
@@ -4301,86 +4394,110 @@
 
                             "FamiliaId":
 
-                                colaborador
+                                esColab
 
                                     ? ""
 
-                                    : obtenerFamiliaId(
-                                        prestamo
+                                    :
+
+                                    (
+
+                                        prestamo.FamiliaId ||
+
+                                        prestamo.familiaId ||
+
+                                        ""
+
                                     ),
 
 
                             "PersonaId / Código":
 
-                                colaborador
+                                esColab
 
-                                    ? obtenerCodigoColaborador(
+                                    ?
+
+                                    obtenerCodigoColaborador(
                                         prestamo
                                     )
 
-                                    : obtenerPersonaId(
-                                        prestamo
+                                    :
+
+                                    (
+
+                                        prestamo.PersonaId ||
+
+                                        prestamo.personaId ||
+
+                                        ""
+
                                     ),
 
 
                             "Nombres / Colaborador":
 
-                                colaborador
+                                esColab
 
-                                    ? obtenerNombreColaborador(
+                                    ?
+
+                                    obtenerNombreColaborador(
                                         prestamo
                                     )
 
-                                    : obtenerNombres(
+                                    :
+
+                                    obtenerNombrePersona(
                                         prestamo
                                     ),
 
 
                             "Apellidos":
 
-                                colaborador
+                                esColab
 
                                     ? ""
 
-                                    : obtenerApellidos(
-                                        prestamo
+                                    :
+
+                                    (
+
+                                        prestamo.Apellidos ||
+
+                                        prestamo.apellidos ||
+
+                                        ""
+
                                     ),
 
 
                             "Área":
 
-                                colaborador
+                                esColab
 
-                                    ? obtenerAreaColaborador(
+                                    ?
+
+                                    obtenerAreaColaborador(
                                         prestamo
                                     )
 
-                                    : "",
+                                    :
+
+                                    "",
 
 
                             "Código":
 
-                                formatearCodigo(
-                                    datosLibro.codigo
-                                ),
+                                datosLibro.codigo,
 
 
                             "Libro":
 
-                                datosLibro.nombre ||
-                                "",
+                                datosLibro.nombre,
 
 
                             "Género":
 
-                                datosLibro.genero ||
-                                "",
-
-
-                            "Biblioteca":
-
-                                datosLibro.biblioteca ||
-                                "",
+                                datosLibro.genero || "",
 
 
                             "Préstamo":
@@ -4441,7 +4558,7 @@
 
 
         /* =========================================================
-           LIMPIAR FILTROS
+           LIMPIAR
         ========================================================== */
 
         function limpiarFiltros() {
@@ -4450,33 +4567,34 @@
                 "busqueda"
             ).value = "";
 
+
             document.getElementById(
                 "filtroEstado"
             ).value =
                 "Todos";
+
 
             document.getElementById(
                 "filtroSitio"
             ).value =
                 "Todos";
 
-            document.getElementById(
-                "filtroBiblioteca"
-            ).value =
-                "Todos";
 
             document.getElementById(
                 "filtroOrden"
             ).value =
                 "reciente";
 
+
             document.getElementById(
                 "fechaDesde"
             ).value = "";
 
+
             document.getElementById(
                 "fechaHasta"
             ).value = "";
+
 
             aplicarFiltros();
 
@@ -4565,17 +4683,6 @@
 
 
         document.getElementById(
-            "filtroBiblioteca"
-        ).addEventListener(
-
-            "change",
-
-            aplicarFiltros
-
-        );
-
-
-        document.getElementById(
             "filtroOrden"
         ).addEventListener(
 
@@ -4608,19 +4715,46 @@
         );
 
 
+        /* =========================================================
+           SELECTOR DE SITIO - PRÉSTAMOS POR MES
+        ========================================================== */
+
         document.getElementById(
             "filtroSitioGraficaMeses"
         ).addEventListener(
 
             "change",
 
-            actualizarGraficosFiltrados
+            function() {
+
+                actualizarGraficosFiltrados();
+
+            }
 
         );
 
 
         /* =========================================================
-           INICIAR
+           SELECTOR DE SITIO - ACTIVIDAD
+        ========================================================== */
+
+        document.getElementById(
+            "filtroSitioGraficaActividad"
+        ).addEventListener(
+
+            "change",
+
+            function() {
+
+                actualizarGraficaActividad();
+
+            }
+
+        );
+
+
+        /* =========================================================
+           INICIAR REPORTES
         ========================================================== */
 
         async function iniciarReportes() {
@@ -4628,11 +4762,13 @@
             const accesoPermitido =
                 await window.reportesAuth;
 
+
             if (!accesoPermitido) {
 
                 return;
 
             }
+
 
             if (reportesIniciados) {
 
@@ -4640,7 +4776,9 @@
 
             }
 
+
             reportesIniciados = true;
+
 
             await cargarDatos();
 
@@ -4651,6 +4789,7 @@
 
 
     </script>
+
 
 </body>
 
