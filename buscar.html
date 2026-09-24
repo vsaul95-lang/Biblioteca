@@ -225,6 +225,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
+            min-width: 950px;
         }
 
         thead {
@@ -273,6 +274,24 @@
             color: #196f3d;
         }
 
+        .tipo {
+            display: inline-block;
+            padding: 4px 7px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .tipo-afiliado {
+            background: #e8f4fd;
+            color: #21618c;
+        }
+
+        .tipo-colaborador {
+            background: #fef5e7;
+            color: #935116;
+        }
+
         .sin-resultados {
             text-align: center;
             padding: 30px 10px;
@@ -283,6 +302,7 @@
         /* RESPONSIVO */
 
         @media (max-width: 1100px) {
+
             .fila-filtros {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -293,6 +313,7 @@
         }
 
         @media (max-width: 700px) {
+
             header h1 {
                 font-size: 20px;
             }
@@ -346,6 +367,7 @@
 <div class="contenedor">
 
     <!-- FILTROS -->
+
     <div class="filtros">
 
         <h2>🔎 Filtros de búsqueda</h2>
@@ -357,7 +379,7 @@
                 <input
                     type="text"
                     id="busquedaGeneral"
-                    placeholder="Nombre, familia, persona o libro..."
+                    placeholder="Nombre, familia, persona, colaborador o libro..."
                 >
             </div>
 
@@ -375,7 +397,7 @@
                 <input
                     type="text"
                     id="persona"
-                    placeholder="P1234"
+                    placeholder="F1234"
                 >
             </div>
 
@@ -413,6 +435,7 @@
     </div>
 
     <!-- ESTADÍSTICAS -->
+
     <div class="estadisticas">
 
         <div class="tarjeta">
@@ -450,6 +473,7 @@
     </div>
 
     <!-- RESULTADOS -->
+
     <div class="resultados">
 
         <h2>Resultados</h2>
@@ -459,10 +483,13 @@
             <table>
 
                 <thead>
+
                     <tr>
+                        <th>Tipo</th>
                         <th>Familia</th>
-                        <th>Persona</th>
+                        <th>Persona / Código</th>
                         <th>Nombre</th>
+                        <th>Área</th>
                         <th>Código</th>
                         <th>Libro</th>
                         <th>Préstamo</th>
@@ -470,12 +497,13 @@
                         <th>Devolución real</th>
                         <th>Estado</th>
                     </tr>
+
                 </thead>
 
                 <tbody id="tablaResultados">
 
                     <tr>
-                        <td colspan="9" class="sin-resultados">
+                        <td colspan="11" class="sin-resultados">
                             Realiza una búsqueda para mostrar resultados.
                         </td>
                     </tr>
@@ -494,6 +522,55 @@
 
 let prestamos = [];
 let resultadosActuales = [];
+
+/* =========================
+   IDENTIFICAR COLABORADOR
+========================= */
+
+function esColaborador(prestamo) {
+
+    const tipo = normalizar(
+        prestamo.tipoPrestamo ||
+        prestamo.TipoPrestamo ||
+        ""
+    );
+
+    return (
+        tipo === "colaborador" ||
+        !!prestamo.CodigoColaborador
+    );
+}
+
+/* =========================
+   DATOS DEL COLABORADOR
+========================= */
+
+function obtenerCodigoColaborador(prestamo) {
+
+    return (
+        prestamo.CodigoColaborador ||
+        prestamo.codigoColaborador ||
+        "-"
+    );
+}
+
+function obtenerNombreColaborador(prestamo) {
+
+    return (
+        prestamo.NombreColaborador ||
+        prestamo.nombreColaborador ||
+        "-"
+    );
+}
+
+function obtenerAreaColaborador(prestamo) {
+
+    return (
+        prestamo.AreaColaborador ||
+        prestamo.areaColaborador ||
+        "-"
+    );
+}
 
 /* =========================
    CARGAR PRÉSTAMOS
@@ -515,8 +592,11 @@ async function cargarPrestamos() {
             .range(desde, desde + cantidad - 1);
 
         if (error) {
+
             console.error(error);
+
             alert("No se pudieron cargar los préstamos.");
+
             return;
         }
 
@@ -565,8 +645,11 @@ function obtenerEstado(prestamo) {
         return "Prestado";
     }
 
-    const fechaLimite = new Date(prestamo.fechaDevolucion);
-    const ahora = new Date();
+    const fechaLimite =
+        new Date(prestamo.fechaDevolucion);
+
+    const ahora =
+        new Date();
 
     if (fechaLimite < ahora) {
         return "Vencido";
@@ -585,7 +668,8 @@ function formatearFecha(fecha) {
         return "-";
     }
 
-    const fechaObj = new Date(fecha);
+    const fechaObj =
+        new Date(fecha);
 
     if (isNaN(fechaObj.getTime())) {
         return "-";
@@ -601,16 +685,24 @@ function formatearFecha(fecha) {
 function buscar() {
 
     const busquedaGeneral =
-        normalizar(document.getElementById("busquedaGeneral").value);
+        normalizar(
+            document.getElementById("busquedaGeneral").value
+        );
 
     const familia =
-        normalizar(document.getElementById("familia").value);
+        normalizar(
+            document.getElementById("familia").value
+        );
 
     const persona =
-        normalizar(document.getElementById("persona").value);
+        normalizar(
+            document.getElementById("persona").value
+        );
 
     const codigoLibro =
-        normalizar(document.getElementById("codigoLibro").value);
+        normalizar(
+            document.getElementById("codigoLibro").value
+        );
 
     const estadoSeleccionado =
         document.getElementById("estado").value;
@@ -618,72 +710,144 @@ function buscar() {
     const fechaDesde =
         document.getElementById("fechaDesde").value;
 
-    resultadosActuales = prestamos.filter(prestamo => {
+    resultadosActuales =
+        prestamos.filter(prestamo => {
 
-        const estado = obtenerEstado(prestamo);
+            const colaborador =
+                esColaborador(prestamo);
 
-        const textoGeneral = [
-            prestamo.FamiliaId,
-            prestamo.PersonaId,
-            prestamo.Nombres,
-            prestamo.Apellidos,
-            prestamo.codigoLibro,
-            prestamo.nombreLibro
-        ]
-        .map(normalizar)
-        .join(" ");
+            const estado =
+                obtenerEstado(prestamo);
 
-        if (
-            busquedaGeneral &&
-            !textoGeneral.includes(busquedaGeneral)
-        ) {
-            return false;
-        }
+            const codigoColaborador =
+                obtenerCodigoColaborador(prestamo);
 
-        if (
-            familia &&
-            !normalizar(prestamo.FamiliaId).includes(familia)
-        ) {
-            return false;
-        }
+            const nombreColaborador =
+                obtenerNombreColaborador(prestamo);
 
-        if (
-            persona &&
-            !normalizar(prestamo.PersonaId).includes(persona)
-        ) {
-            return false;
-        }
+            const areaColaborador =
+                obtenerAreaColaborador(prestamo);
 
-        if (
-            codigoLibro &&
-            !normalizar(prestamo.codigoLibro).includes(codigoLibro)
-        ) {
-            return false;
-        }
+            /* =========================
+               BÚSQUEDA GENERAL
+            ========================= */
 
-        if (
-            estadoSeleccionado !== "Todos" &&
-            estado !== estadoSeleccionado
-        ) {
-            return false;
-        }
+            const textoGeneral = [
 
-        if (fechaDesde) {
+                prestamo.FamiliaId,
+                prestamo.PersonaId,
+                prestamo.Nombres,
+                prestamo.Apellidos,
 
-            const fechaPrestamo =
-                new Date(prestamo.fechaPrestamo);
+                prestamo.codigoLibro,
+                prestamo.nombreLibro,
 
-            const desde =
-                new Date(fechaDesde + "T00:00:00");
+                prestamo.tipoPrestamo,
 
-            if (fechaPrestamo < desde) {
+                codigoColaborador,
+                nombreColaborador,
+                areaColaborador
+
+            ]
+            .map(normalizar)
+            .join(" ");
+
+            if (
+                busquedaGeneral &&
+                !textoGeneral.includes(busquedaGeneral)
+            ) {
                 return false;
             }
-        }
 
-        return true;
+            /* =========================
+               FILTRO FAMILIA
+            ========================= */
 
-    });
+            if (familia) {
+
+                if (colaborador) {
+                    return false;
+                }
+
+                if (
+                    !normalizar(prestamo.FamiliaId)
+                        .includes(familia)
+                ) {
+                    return false;
+                }
+            }
+
+            /* =========================
+               FILTRO PERSONA / COLABORADOR
+            ========================= */
+
+            if (persona) {
+
+                const coincidePersona =
+                    normalizar(prestamo.PersonaId)
+                        .includes(persona);
+
+                const coincideColaboradorCodigo =
+                    normalizar(codigoColaborador)
+                        .includes(persona);
+
+                const coincideColaboradorNombre =
+                    normalizar(nombreColaborador)
+                        .includes(persona);
+
+                if (
+                    !coincidePersona &&
+                    !coincideColaboradorCodigo &&
+                    !coincideColaboradorNombre
+                ) {
+                    return false;
+                }
+            }
+
+            /* =========================
+               FILTRO CÓDIGO LIBRO
+            ========================= */
+
+            if (
+                codigoLibro &&
+                !normalizar(prestamo.codigoLibro)
+                    .includes(codigoLibro)
+            ) {
+                return false;
+            }
+
+            /* =========================
+               FILTRO ESTADO
+            ========================= */
+
+            if (
+                estadoSeleccionado !== "Todos" &&
+                estado !== estadoSeleccionado
+            ) {
+                return false;
+            }
+
+            /* =========================
+               FILTRO FECHA
+            ========================= */
+
+            if (fechaDesde) {
+
+                const fechaPrestamo =
+                    new Date(prestamo.fechaPrestamo);
+
+                const desde =
+                    new Date(
+                        fechaDesde + "T00:00:00"
+                    );
+
+                if (fechaPrestamo < desde) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
 
     mostrarResultados(resultadosActuales);
 }
@@ -699,18 +863,37 @@ function mostrarResultados(lista) {
 
     tbody.innerHTML = "";
 
-    const personas = new Set();
-    const libros = new Set();
+    const personas =
+        new Set();
+
+    const colaboradores =
+        new Set();
+
+    const libros =
+        new Set();
 
     let activos = 0;
     let vencidos = 0;
 
     lista.forEach(prestamo => {
 
-        const estado = obtenerEstado(prestamo);
+        const estado =
+            obtenerEstado(prestamo);
 
-        if (prestamo.PersonaId) {
-            personas.add(prestamo.PersonaId);
+        if (esColaborador(prestamo)) {
+
+            const codigo =
+                obtenerCodigoColaborador(prestamo);
+
+            if (codigo && codigo !== "-") {
+                colaboradores.add(codigo);
+            }
+
+        } else {
+
+            if (prestamo.PersonaId) {
+                personas.add(prestamo.PersonaId);
+            }
         }
 
         if (prestamo.codigoLibro) {
@@ -726,8 +909,13 @@ function mostrarResultados(lista) {
         }
     });
 
+    /*
+       Personas encontradas incluye:
+       afiliados + colaboradores
+    */
+
     document.getElementById("totalPersonas").textContent =
-        personas.size;
+        personas.size + colaboradores.size;
 
     document.getElementById("totalLibros").textContent =
         libros.size;
@@ -742,7 +930,7 @@ function mostrarResultados(lista) {
 
         tbody.innerHTML = `
             <tr>
-                <td colspan="9" class="sin-resultados">
+                <td colspan="11" class="sin-resultados">
                     No se encontraron resultados.
                 </td>
             </tr>
@@ -753,7 +941,8 @@ function mostrarResultados(lista) {
 
     lista.forEach(prestamo => {
 
-        const estado = obtenerEstado(prestamo);
+        const estado =
+            obtenerEstado(prestamo);
 
         let claseEstado = "";
 
@@ -769,30 +958,119 @@ function mostrarResultados(lista) {
             claseEstado = "estado-devuelto";
         }
 
-        const nombreCompleto =
-            `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`.trim();
+        const colaborador =
+            esColaborador(prestamo);
+
+        let tipoTexto = "";
+        let tipoClase = "";
+
+        let familia = "";
+        let personaCodigo = "";
+        let nombre = "";
+        let area = "";
+
+        if (colaborador) {
+
+            tipoTexto = "Colaborador";
+            tipoClase = "tipo-colaborador";
+
+            familia = "-";
+
+            personaCodigo =
+                obtenerCodigoColaborador(prestamo);
+
+            nombre =
+                obtenerNombreColaborador(prestamo);
+
+            area =
+                obtenerAreaColaborador(prestamo);
+
+        } else {
+
+            tipoTexto = "Afiliado";
+            tipoClase = "tipo-afiliado";
+
+            familia =
+                prestamo.FamiliaId || "-";
+
+            personaCodigo =
+                prestamo.PersonaId || "-";
+
+            nombre =
+                `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`
+                    .trim();
+
+            if (!nombre) {
+                nombre = "-";
+            }
+
+            area = "-";
+        }
 
         const fechaDevolucionReal =
             prestamo.fechaDevolucionReal
-                ? formatearFecha(prestamo.fechaDevolucionReal)
+                ? formatearFecha(
+                    prestamo.fechaDevolucionReal
+                )
                 : "-";
 
-        const fila = document.createElement("tr");
+        const fila =
+            document.createElement("tr");
 
         fila.innerHTML = `
-            <td>${prestamo.FamiliaId || "-"}</td>
-            <td>${prestamo.PersonaId || "-"}</td>
-            <td>${nombreCompleto || "-"}</td>
-            <td>${prestamo.codigoLibro || "-"}</td>
-            <td>${prestamo.nombreLibro || "-"}</td>
-            <td>${formatearFecha(prestamo.fechaPrestamo)}</td>
-            <td>${formatearFecha(prestamo.fechaDevolucion)}</td>
-            <td>${fechaDevolucionReal}</td>
+
+            <td>
+                <span class="tipo ${tipoClase}">
+                    ${tipoTexto}
+                </span>
+            </td>
+
+            <td>
+                ${familia}
+            </td>
+
+            <td>
+                ${personaCodigo}
+            </td>
+
+            <td>
+                ${nombre}
+            </td>
+
+            <td>
+                ${area}
+            </td>
+
+            <td>
+                ${prestamo.codigoLibro || "-"}
+            </td>
+
+            <td>
+                ${prestamo.nombreLibro || "-"}
+            </td>
+
+            <td>
+                ${formatearFecha(
+                    prestamo.fechaPrestamo
+                )}
+            </td>
+
+            <td>
+                ${formatearFecha(
+                    prestamo.fechaDevolucion
+                )}
+            </td>
+
+            <td>
+                ${fechaDevolucionReal}
+            </td>
+
             <td>
                 <span class="estado ${claseEstado}">
                     ${estado}
                 </span>
             </td>
+
         `;
 
         tbody.appendChild(fila);
@@ -806,10 +1084,15 @@ function mostrarResultados(lista) {
 function limpiarFiltros() {
 
     document.getElementById("busquedaGeneral").value = "";
+
     document.getElementById("familia").value = "";
+
     document.getElementById("persona").value = "";
+
     document.getElementById("codigoLibro").value = "";
+
     document.getElementById("estado").value = "Todos";
+
     document.getElementById("fechaDesde").value = "";
 
     resultadosActuales = [];
@@ -821,22 +1104,26 @@ function limpiarFiltros() {
    ENTER PARA BUSCAR
 ========================= */
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener(
+    "keydown",
+    function(event) {
 
-    if (
-        event.key === "Enter" &&
-        document.activeElement.tagName === "INPUT"
-    ) {
-        buscar();
+        if (
+            event.key === "Enter" &&
+            document.activeElement.tagName === "INPUT"
+        ) {
+            buscar();
+        }
+
     }
-
-});
+);
 
 /* =========================
    VOLVER
 ========================= */
 
 function volverAtras() {
+
     window.history.back();
 }
 
@@ -844,9 +1131,14 @@ function volverAtras() {
    INICIO
 ========================= */
 
-document.addEventListener("DOMContentLoaded", function() {
-    cargarPrestamos();
-});
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        cargarPrestamos();
+
+    }
+);
 
 </script>
 
