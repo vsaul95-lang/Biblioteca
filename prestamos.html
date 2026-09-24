@@ -154,6 +154,38 @@
         }
 
         /* =====================================================
+           TIPO DE SOLICITANTE
+        ===================================================== */
+
+        .tipo-solicitante {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .opcion-tipo {
+            flex: 1;
+            border: 1px solid #ccc;
+            background: #f7f9fa;
+            color: #37474f;
+            padding: 11px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .opcion-tipo:hover {
+            background: #eceff1;
+        }
+
+        .opcion-tipo.activa {
+            background: #37474f;
+            color: white;
+            border-color: #37474f;
+        }
+
+        /* =====================================================
            PASO 3 - RESUMEN
         ===================================================== */
 
@@ -339,6 +371,10 @@
                 align-items: stretch;
             }
 
+            .tipo-solicitante {
+                flex-direction: column;
+            }
+
             .encabezado {
                 gap: 10px;
                 flex-direction: column;
@@ -383,51 +419,132 @@
 <div class="contenedor">
 
     <!-- =====================================================
-         1. FAMILIA
+         1. SOLICITANTE
     ====================================================== -->
 
     <section class="seccion">
 
-        <h2>1. Buscar familia</h2>
+        <h2>1. ¿Quién solicita el préstamo?</h2>
 
-        <div class="fila-busqueda">
-
-            <input
-                type="text"
-                id="buscarFamilia"
-                placeholder="Ingrese número de familia..."
-            >
+        <div class="tipo-solicitante">
 
             <button
-                class="btn-buscar"
-                id="btnBuscarFamilia"
+                type="button"
+                id="btnTipoAfiliado"
+                class="opcion-tipo activa"
             >
-                Buscar
+                👨‍👩‍👧 Afiliado
+            </button>
+
+            <button
+                type="button"
+                id="btnTipoColaborador"
+                class="opcion-tipo"
+            >
+                👤 Colaborador
             </button>
 
         </div>
 
-        <div id="mensajeFamilia" class="mensaje"></div>
 
-        <div class="tabla-contenedor">
+        <!-- =================================================
+             BUSCAR AFILIADO
+        ================================================== -->
 
-            <table id="tablaFamilia" style="display:none;">
+        <div id="seccionAfiliado">
 
-                <thead>
+            <div class="fila-busqueda">
 
-                    <tr>
-                        <th>PersonaId</th>
-                        <th>FamiliaId</th>
-                        <th>Nombre</th>
-                        <th>Estado</th>
-                        <th>Seleccionar</th>
-                    </tr>
+                <input
+                    type="text"
+                    id="buscarFamilia"
+                    placeholder="Ingrese número de familia..."
+                >
 
-                </thead>
+                <button
+                    class="btn-buscar"
+                    id="btnBuscarFamilia"
+                >
+                    Buscar
+                </button>
 
-                <tbody id="cuerpoFamilia"></tbody>
+            </div>
 
-            </table>
+            <div id="mensajeFamilia" class="mensaje"></div>
+
+            <div class="tabla-contenedor">
+
+                <table id="tablaFamilia" style="display:none;">
+
+                    <thead>
+
+                        <tr>
+                            <th>PersonaId</th>
+                            <th>FamiliaId</th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                            <th>Seleccionar</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="cuerpoFamilia"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BUSCAR COLABORADOR
+        ================================================== -->
+
+        <div id="seccionColaborador" style="display:none;">
+
+            <div class="fila-busqueda">
+
+                <input
+                    type="text"
+                    id="buscarColaborador"
+                    placeholder="Ingrese código del colaborador..."
+                    maxlength="30"
+                    autocomplete="off"
+                >
+
+                <button
+                    class="btn-buscar"
+                    id="btnBuscarColaborador"
+                >
+                    Buscar
+                </button>
+
+            </div>
+
+            <div id="mensajeColaborador" class="mensaje"></div>
+
+            <div class="tabla-contenedor">
+
+                <table id="tablaColaborador" style="display:none;">
+
+                    <thead>
+
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Área</th>
+                            <th>Estado</th>
+                            <th>Seleccionar</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="cuerpoColaborador"></tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
@@ -476,9 +593,6 @@
 
         <h2>3. Confirmar préstamo</h2>
 
-
-        <!-- RESUMEN COMPLETO -->
-
         <div
             id="resumenPrestamo"
             class="resumen-prestamo"
@@ -496,25 +610,41 @@
 
                     <div class="datos-persona-libro">
 
-                        <!-- PERSONA -->
+                        <!-- PERSONA / COLABORADOR -->
 
                         <div class="tarjeta-dato">
 
-                            <h3>👤 Persona</h3>
+                            <h3 id="tituloResumenPersona">
+                                👤 Afiliado
+                            </h3>
 
                             <div class="dato">
-                                <span>Familia</span>
+                                <span id="etiquetaIdentificador">
+                                    Familia
+                                </span>
+
                                 <span id="resumenFamilia"></span>
                             </div>
 
                             <div class="dato">
-                                <span>PersonaId</span>
+                                <span id="etiquetaPersonaId">
+                                    PersonaId
+                                </span>
+
                                 <span id="resumenPersonaId"></span>
                             </div>
 
                             <div class="dato">
-                                <span>Nombre</span>
+                                <span id="etiquetaNombre">
+                                    Nombre
+                                </span>
+
                                 <span id="resumenNombre"></span>
+                            </div>
+
+                            <div class="dato" id="filaAreaResumen" style="display:none;">
+                                <span>Área</span>
+                                <span id="resumenArea"></span>
                             </div>
 
                             <div class="dato">
@@ -555,7 +685,7 @@
             </div>
 
 
-            <!-- FECHAS Y SITIO DE PRÉSTAMO -->
+            <!-- FECHAS Y SITIO -->
 
             <div class="bloque-resumen">
 
@@ -611,25 +741,11 @@
 
                             <select id="sitioPrestamo">
 
-                                <option value="F">
-                                    F
-                                </option>
-
-                                <option value="M">
-                                    M
-                                </option>
-
-                                <option value="R">
-                                    R
-                                </option>
-
-                                <option value="N">
-                                    N
-                                </option>
-
-                                <option value="Z">
-                                    Z
-                                </option>
+                                <option value="F">F</option>
+                                <option value="M">M</option>
+                                <option value="R">R</option>
+                                <option value="N">N</option>
+                                <option value="Z">Z</option>
 
                             </select>
 
@@ -701,7 +817,10 @@
 ========================================================= */
 
 let personaSeleccionada = null;
+let colaboradorSeleccionado = null;
 let libroSeleccionado = null;
+
+let tipoSolicitante = "Afiliado";
 
 let fechaDevolucionModificada = false;
 
@@ -713,17 +832,29 @@ let fechaDevolucionModificada = false;
 const buscarFamiliaInput =
     document.getElementById("buscarFamilia");
 
+const buscarColaboradorInput =
+    document.getElementById("buscarColaborador");
+
 const buscarLibroInput =
     document.getElementById("buscarLibro");
 
 const cuerpoFamilia =
     document.getElementById("cuerpoFamilia");
 
+const cuerpoColaborador =
+    document.getElementById("cuerpoColaborador");
+
 const tablaFamilia =
     document.getElementById("tablaFamilia");
 
+const tablaColaborador =
+    document.getElementById("tablaColaborador");
+
 const mensajeFamilia =
     document.getElementById("mensajeFamilia");
+
+const mensajeColaborador =
+    document.getElementById("mensajeColaborador");
 
 const mensajeLibro =
     document.getElementById("mensajeLibro");
@@ -749,10 +880,40 @@ const fechaDevolucionInput =
 const sitioPrestamoInput =
     document.getElementById("sitioPrestamo");
 
+const seccionAfiliado =
+    document.getElementById("seccionAfiliado");
+
+const seccionColaborador =
+    document.getElementById("seccionColaborador");
+
+const btnTipoAfiliado =
+    document.getElementById("btnTipoAfiliado");
+
+const btnTipoColaborador =
+    document.getElementById("btnTipoColaborador");
+
 
 /* =========================================================
    ELEMENTOS DEL RESUMEN
 ========================================================= */
+
+const tituloResumenPersona =
+    document.getElementById("tituloResumenPersona");
+
+const etiquetaIdentificador =
+    document.getElementById("etiquetaIdentificador");
+
+const etiquetaPersonaId =
+    document.getElementById("etiquetaPersonaId");
+
+const etiquetaNombre =
+    document.getElementById("etiquetaNombre");
+
+const filaAreaResumen =
+    document.getElementById("filaAreaResumen");
+
+const resumenArea =
+    document.getElementById("resumenArea");
 
 const resumenFamilia =
     document.getElementById("resumenFamilia");
@@ -795,7 +956,19 @@ function limpiarMensaje(elemento) {
 
 
 /* =========================================================
-   NORMALIZAR CÓDIGO
+   NORMALIZAR TEXTO
+========================================================= */
+
+function normalizarTexto(valor) {
+
+    return String(valor || "")
+        .trim()
+        .toUpperCase();
+}
+
+
+/* =========================================================
+   NORMALIZAR CÓDIGO DE LIBRO
 ========================================================= */
 
 function normalizarCodigo(codigo) {
@@ -857,7 +1030,6 @@ function agregarUnMes(fechaTexto) {
     const dia =
         Number(partes[2]);
 
-
     const fecha =
         new Date(
             año,
@@ -868,11 +1040,9 @@ function agregarUnMes(fechaTexto) {
             0
         );
 
-
     fecha.setMonth(
         fecha.getMonth() + 1
     );
-
 
     const nuevoAño =
         fecha.getFullYear();
@@ -886,7 +1056,6 @@ function agregarUnMes(fechaTexto) {
         String(
             fecha.getDate()
         ).padStart(2, "0");
-
 
     return `${nuevoAño}-${nuevoMes}-${nuevoDia}`;
 }
@@ -917,7 +1086,6 @@ function fechaLocalDesdeInput(fechaTexto) {
 
     const dia =
         Number(partes[2]);
-
 
     return new Date(
         año,
@@ -950,27 +1118,6 @@ function fechaInputAISO(fechaTexto) {
 
 
 /* =========================================================
-   FECHA INPUT A TEXTO
-========================================================= */
-
-function formatearFechaInput(fechaTexto) {
-
-    if (!fechaTexto) {
-        return "";
-    }
-
-    const partes =
-        fechaTexto.split("-");
-
-    if (partes.length !== 3) {
-        return "";
-    }
-
-    return `${partes[2]}/${partes[1]}/${partes[0]}`;
-}
-
-
-/* =========================================================
    OBTENER SITIO DE LA PERSONA
 ========================================================= */
 
@@ -991,7 +1138,6 @@ function obtenerSitio(persona) {
         }
     }
 
-
     if (persona && persona.FamiliaId) {
 
         const sitio =
@@ -1007,7 +1153,6 @@ function obtenerSitio(persona) {
             return sitio;
         }
     }
-
 
     return null;
 }
@@ -1026,14 +1171,12 @@ function obtenerSitioPrestamo() {
         .trim()
         .toUpperCase();
 
-
     if (
         ["F", "M", "R", "N", "Z"]
             .includes(sitio)
     ) {
         return sitio;
     }
-
 
     return null;
 }
@@ -1052,10 +1195,7 @@ function prepararFechas() {
 
     }
 
-
-    if (
-        !fechaDevolucionModificada
-    ) {
+    if (!fechaDevolucionModificada) {
 
         fechaDevolucionInput.value =
             agregarUnMes(
@@ -1063,7 +1203,6 @@ function prepararFechas() {
             );
 
     }
-
 }
 
 
@@ -1079,7 +1218,6 @@ function validarFechas() {
     const fechaDevolucion =
         fechaDevolucionInput.value;
 
-
     if (!fechaPrestamo) {
 
         mostrarMensaje(
@@ -1092,7 +1230,6 @@ function validarFechas() {
 
         return false;
     }
-
 
     if (!fechaDevolucion) {
 
@@ -1107,7 +1244,6 @@ function validarFechas() {
         return false;
     }
 
-
     const fechaInicio =
         fechaLocalDesdeInput(
             fechaPrestamo
@@ -1117,7 +1253,6 @@ function validarFechas() {
         fechaLocalDesdeInput(
             fechaDevolucion
         );
-
 
     if (
         !fechaInicio ||
@@ -1132,7 +1267,6 @@ function validarFechas() {
 
         return false;
     }
-
 
     if (
         fechaFin < fechaInicio
@@ -1149,20 +1283,18 @@ function validarFechas() {
         return false;
     }
 
-
     return true;
 }
 
 
 /* =========================================================
-   VALIDAR SITIO DE PRÉSTAMO
+   VALIDAR SITIO
 ========================================================= */
 
 function validarSitioPrestamo() {
 
     const sitio =
         obtenerSitioPrestamo();
-
 
     if (!sitio) {
 
@@ -1177,8 +1309,95 @@ function validarSitioPrestamo() {
         return false;
     }
 
-
     return true;
+}
+
+
+/* =========================================================
+   CAMBIAR TIPO DE SOLICITANTE
+========================================================= */
+
+function cambiarTipoSolicitante(tipo) {
+
+    tipoSolicitante =
+        tipo;
+
+
+    personaSeleccionada =
+        null;
+
+    colaboradorSeleccionado =
+        null;
+
+
+    limpiarMensaje(
+        mensajeFamilia
+    );
+
+    limpiarMensaje(
+        mensajeColaborador
+    );
+
+
+    cuerpoFamilia.innerHTML =
+        "";
+
+    cuerpoColaborador.innerHTML =
+        "";
+
+
+    tablaFamilia.style.display =
+        "none";
+
+    tablaColaborador.style.display =
+        "none";
+
+
+    buscarFamiliaInput.value =
+        "";
+
+    buscarColaboradorInput.value =
+        "";
+
+
+    if (tipo === "Afiliado") {
+
+        btnTipoAfiliado.classList.add(
+            "activa"
+        );
+
+        btnTipoColaborador.classList.remove(
+            "activa"
+        );
+
+
+        seccionAfiliado.style.display =
+            "block";
+
+        seccionColaborador.style.display =
+            "none";
+
+    } else {
+
+        btnTipoAfiliado.classList.remove(
+            "activa"
+        );
+
+        btnTipoColaborador.classList.add(
+            "activa"
+        );
+
+
+        seccionAfiliado.style.display =
+            "none";
+
+        seccionColaborador.style.display =
+            "block";
+
+    }
+
+
+    actualizarDetalle();
 }
 
 
@@ -1198,7 +1417,8 @@ async function buscarFamilia() {
     tablaFamilia.style.display =
         "none";
 
-    personaSeleccionada = null;
+    personaSeleccionada =
+        null;
 
     actualizarDetalle();
 
@@ -1403,12 +1623,10 @@ function seleccionarPersona(
                 "seleccionada"
             );
 
-
             const boton =
                 fila.querySelector(
                     ".btn-seleccionar"
                 );
-
 
             if (boton) {
 
@@ -1440,6 +1658,274 @@ function seleccionarPersona(
     personaSeleccionada =
         persona;
 
+    colaboradorSeleccionado =
+        null;
+
+
+    actualizarDetalle();
+}
+
+
+/* =========================================================
+   BUSCAR COLABORADOR
+========================================================= */
+
+async function buscarColaborador() {
+
+    const codigo =
+        buscarColaboradorInput.value.trim();
+
+
+    limpiarMensaje(
+        mensajeColaborador
+    );
+
+
+    cuerpoColaborador.innerHTML =
+        "";
+
+    tablaColaborador.style.display =
+        "none";
+
+
+    colaboradorSeleccionado =
+        null;
+
+
+    actualizarDetalle();
+
+
+    if (!codigo) {
+
+        mostrarMensaje(
+            mensajeColaborador,
+            "Ingrese el código del colaborador.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+
+                .from("colaboradores")
+
+                .select("*")
+
+                .eq(
+                    "CodigoColaborador",
+                    codigo
+                )
+
+                .eq(
+                    "estado",
+                    "Activo"
+                );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            mostrarMensaje(
+                mensajeColaborador,
+                "No se encontró un colaborador activo con ese código.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        data.forEach(colaborador => {
+
+            const fila =
+                document.createElement("tr");
+
+
+            const tdCodigo =
+                document.createElement("td");
+
+            tdCodigo.textContent =
+                colaborador.CodigoColaborador;
+
+
+            const tdNombre =
+                document.createElement("td");
+
+            tdNombre.className =
+                "nombre";
+
+            tdNombre.textContent =
+                colaborador.Nombre || "";
+
+
+            const tdArea =
+                document.createElement("td");
+
+            tdArea.textContent =
+                colaborador.Area || "";
+
+
+            const tdEstado =
+                document.createElement("td");
+
+            tdEstado.textContent =
+                colaborador.estado;
+
+
+            const tdAccion =
+                document.createElement("td");
+
+
+            const boton =
+                document.createElement("button");
+
+            boton.type =
+                "button";
+
+            boton.className =
+                "btn-seleccionar";
+
+            boton.textContent =
+                "Seleccionar";
+
+
+            boton.addEventListener(
+                "click",
+                function() {
+
+                    seleccionarColaborador(
+                        colaborador,
+                        fila,
+                        boton
+                    );
+
+                }
+            );
+
+
+            tdAccion.appendChild(
+                boton
+            );
+
+
+            fila.appendChild(
+                tdCodigo
+            );
+
+            fila.appendChild(
+                tdNombre
+            );
+
+            fila.appendChild(
+                tdArea
+            );
+
+            fila.appendChild(
+                tdEstado
+            );
+
+            fila.appendChild(
+                tdAccion
+            );
+
+
+            cuerpoColaborador.appendChild(
+                fila
+            );
+
+        });
+
+
+        tablaColaborador.style.display =
+            "table";
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            mensajeColaborador,
+            "Ocurrió un error al consultar el colaborador.",
+            "error"
+        );
+    }
+}
+
+
+/* =========================================================
+   SELECCIONAR COLABORADOR
+========================================================= */
+
+function seleccionarColaborador(
+    colaborador,
+    filaSeleccionada,
+    botonSeleccionado
+) {
+
+    document
+        .querySelectorAll(
+            "#cuerpoColaborador tr"
+        )
+        .forEach(fila => {
+
+            fila.classList.remove(
+                "seleccionada"
+            );
+
+            const boton =
+                fila.querySelector(
+                    ".btn-seleccionar"
+                );
+
+            if (boton) {
+
+                boton.classList.remove(
+                    "seleccionada"
+                );
+
+                boton.textContent =
+                    "Seleccionar";
+            }
+
+        });
+
+
+    filaSeleccionada.classList.add(
+        "seleccionada"
+    );
+
+
+    botonSeleccionado.classList.add(
+        "seleccionada"
+    );
+
+
+    botonSeleccionado.textContent =
+        "✓ Seleccionado";
+
+
+    colaboradorSeleccionado =
+        colaborador;
+
+    personaSeleccionada =
+        null;
+
 
     actualizarDetalle();
 }
@@ -1454,12 +1940,14 @@ async function buscarLibro() {
     const codigoIngresado =
         buscarLibroInput.value.trim();
 
+
     limpiarMensaje(mensajeLibro);
 
     libroInfo.style.display =
         "none";
 
-    libroSeleccionado = null;
+    libroSeleccionado =
+        null;
 
     actualizarDetalle();
 
@@ -1620,8 +2108,14 @@ async function buscarLibro() {
 
 function actualizarDetalle() {
 
+    const haySolicitante =
+        tipoSolicitante === "Afiliado"
+            ? !!personaSeleccionada
+            : !!colaboradorSeleccionado;
+
+
     if (
-        !personaSeleccionada ||
+        !haySolicitante ||
         !libroSeleccionado
     ) {
 
@@ -1638,22 +2132,94 @@ function actualizarDetalle() {
     prepararFechas();
 
 
-    resumenFamilia.textContent =
-        personaSeleccionada.FamiliaId || "";
+    if (
+        tipoSolicitante === "Afiliado"
+    ) {
+
+        tituloResumenPersona.textContent =
+            "👤 Afiliado";
 
 
-    resumenPersonaId.textContent =
-        personaSeleccionada.PersonaId || "";
+        etiquetaIdentificador.textContent =
+            "Familia";
 
 
-    resumenNombre.textContent =
-        `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
+        etiquetaPersonaId.textContent =
+            "PersonaId";
 
 
-    resumenSitio.textContent =
-        obtenerSitio(
-            personaSeleccionada
-        ) || "No definido";
+        etiquetaNombre.textContent =
+            "Nombre";
+
+
+        resumenFamilia.textContent =
+            personaSeleccionada.FamiliaId || "";
+
+
+        resumenPersonaId.textContent =
+            personaSeleccionada.PersonaId || "";
+
+
+        resumenNombre.textContent =
+            `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
+
+
+        resumenArea.textContent =
+            "";
+
+
+        filaAreaResumen.style.display =
+            "none";
+
+
+        resumenSitio.textContent =
+            obtenerSitio(
+                personaSeleccionada
+            ) || "No definido";
+
+
+    } else {
+
+        tituloResumenPersona.textContent =
+            "👤 Colaborador";
+
+
+        etiquetaIdentificador.textContent =
+            "Código";
+
+
+        etiquetaPersonaId.textContent =
+            "Tipo";
+
+
+        etiquetaNombre.textContent =
+            "Nombre";
+
+
+        resumenFamilia.textContent =
+            colaboradorSeleccionado.CodigoColaborador || "";
+
+
+        resumenPersonaId.textContent =
+            "Colaborador";
+
+
+        resumenNombre.textContent =
+            colaboradorSeleccionado.Nombre || "";
+
+
+        resumenArea.textContent =
+            colaboradorSeleccionado.Area || "No definida";
+
+
+        filaAreaResumen.style.display =
+            "flex";
+
+
+        resumenSitio.textContent =
+            sitioPrestamoInput.value || "No definido";
+
+    }
 
 
     resumenCodigoLibro.textContent =
@@ -1682,14 +2248,20 @@ async function confirmarPrestamo() {
     limpiarMensaje(mensajeFinal);
 
 
+    const haySolicitante =
+        tipoSolicitante === "Afiliado"
+            ? !!personaSeleccionada
+            : !!colaboradorSeleccionado;
+
+
     if (
-        !personaSeleccionada ||
+        !haySolicitante ||
         !libroSeleccionado
     ) {
 
         mostrarMensaje(
             mensajeFinal,
-            "Debe seleccionar una persona y un libro.",
+            "Debe seleccionar una persona o colaborador y un libro.",
             "error"
         );
 
@@ -1697,18 +2269,12 @@ async function confirmarPrestamo() {
     }
 
 
-    if (
-        !validarFechas()
-    ) {
-
+    if (!validarFechas()) {
         return;
     }
 
 
-    if (
-        !validarSitioPrestamo()
-    ) {
-
+    if (!validarSitioPrestamo()) {
         return;
     }
 
@@ -1765,24 +2331,6 @@ async function confirmarPrestamo() {
         }
 
 
-        const sitio =
-            obtenerSitio(
-                personaSeleccionada
-            );
-
-
-        if (!sitio) {
-
-            mostrarMensaje(
-                mensajeFinal,
-                "No se pudo determinar el sitio de la persona. Verifique el Sitio o FamiliaId del afiliado.",
-                "error"
-            );
-
-            return;
-        }
-
-
         const sitioPrestamo =
             obtenerSitioPrestamo();
 
@@ -1813,44 +2361,151 @@ async function confirmarPrestamo() {
             );
 
 
-        const nuevoPrestamo = {
+        let nuevoPrestamo = null;
 
-            Sitio:
-                sitio,
 
-            SitioPrestamo:
-                sitioPrestamo,
+        /* =================================================
+           PRÉSTAMO DE AFILIADO
+        ================================================= */
 
-            FamiliaId:
-                personaSeleccionada.FamiliaId,
+        if (
+            tipoSolicitante === "Afiliado"
+        ) {
 
-            PersonaId:
-                personaSeleccionada.PersonaId,
+            const sitio =
+                obtenerSitio(
+                    personaSeleccionada
+                );
 
-            Nombres:
-                personaSeleccionada.Nombres,
 
-            Apellidos:
-                personaSeleccionada.Apellidos,
+            if (!sitio) {
 
-            codigoLibro:
-                libroSeleccionado.codigoLibro,
+                mostrarMensaje(
+                    mensajeFinal,
+                    "No se pudo determinar el sitio de la persona. Verifique el Sitio o FamiliaId del afiliado.",
+                    "error"
+                );
 
-            nombreLibro:
-                libroSeleccionado.nombreLibro,
+                return;
+            }
 
-            fechaPrestamo:
-                fechaPrestamo,
 
-            fechaDevolucion:
-                fechaDevolucion,
+            nuevoPrestamo = {
 
-            estado:
-                "Prestado",
+                tipoPrestamo:
+                    "Afiliado",
 
-            fechaDevolucionReal:
-                null
-        };
+                Sitio:
+                    sitio,
+
+                SitioPrestamo:
+                    sitioPrestamo,
+
+                FamiliaId:
+                    personaSeleccionada.FamiliaId,
+
+                PersonaId:
+                    personaSeleccionada.PersonaId,
+
+                Nombres:
+                    personaSeleccionada.Nombres,
+
+                Apellidos:
+                    personaSeleccionada.Apellidos,
+
+                CodigoColaborador:
+                    null,
+
+                NombreColaborador:
+                    null,
+
+                AreaColaborador:
+                    null,
+
+                codigoLibro:
+                    libroSeleccionado.codigoLibro,
+
+                nombreLibro:
+                    libroSeleccionado.nombreLibro,
+
+                fechaPrestamo:
+                    fechaPrestamo,
+
+                fechaDevolucion:
+                    fechaDevolucion,
+
+                estado:
+                    "Prestado",
+
+                fechaDevolucionReal:
+                    null
+
+            };
+
+
+        } else {
+
+            /* =================================================
+               PRÉSTAMO DE COLABORADOR
+            ================================================= */
+
+            nuevoPrestamo = {
+
+                tipoPrestamo:
+                    "Colaborador",
+
+                /*
+                   En este caso Sitio representa el sitio
+                   donde se realiza el préstamo.
+                */
+                Sitio:
+                    sitioPrestamo,
+
+                SitioPrestamo:
+                    sitioPrestamo,
+
+                FamiliaId:
+                    null,
+
+                PersonaId:
+                    null,
+
+                Nombres:
+                    null,
+
+                Apellidos:
+                    null,
+
+                CodigoColaborador:
+                    colaboradorSeleccionado.CodigoColaborador,
+
+                NombreColaborador:
+                    colaboradorSeleccionado.Nombre,
+
+                AreaColaborador:
+                    colaboradorSeleccionado.Area,
+
+                codigoLibro:
+                    libroSeleccionado.codigoLibro,
+
+                nombreLibro:
+                    libroSeleccionado.nombreLibro,
+
+                fechaPrestamo:
+                    fechaPrestamo,
+
+                fechaDevolucion:
+                    fechaDevolucion,
+
+                estado:
+                    "Prestado",
+
+                fechaDevolucionReal:
+                    null
+
+            };
+
+        }
 
 
         const {
@@ -1866,7 +2521,6 @@ async function confirmarPrestamo() {
                 )
 
                 .select()
-
                 .single();
 
 
@@ -1899,11 +2553,7 @@ async function confirmarPrestamo() {
 
         /* =================================================
            PRÉSTAMO REGISTRADO CORRECTAMENTE
-           
-           AQUÍ SE LIMPIA COMPLETAMENTE EL FORMULARIO
-           PARA PODER CREAR UN NUEVO PRÉSTAMO.
         ================================================= */
-
 
         mostrarMensaje(
             mensajeFinal,
@@ -1917,11 +2567,36 @@ async function confirmarPrestamo() {
         personaSeleccionada =
             null;
 
+        colaboradorSeleccionado =
+            null;
+
         libroSeleccionado =
             null;
 
         fechaDevolucionModificada =
             false;
+
+
+        /* RESTABLECER TIPO */
+
+        tipoSolicitante =
+            "Afiliado";
+
+
+        btnTipoAfiliado.classList.add(
+            "activa"
+        );
+
+        btnTipoColaborador.classList.remove(
+            "activa"
+        );
+
+
+        seccionAfiliado.style.display =
+            "block";
+
+        seccionColaborador.style.display =
+            "none";
 
 
         /* LIMPIAR BUSCAR FAMILIA */
@@ -1930,20 +2605,35 @@ async function confirmarPrestamo() {
             "";
 
 
-        /* LIMPIAR RESULTADOS DE FAMILIA */
+        /* LIMPIAR RESULTADOS FAMILIA */
 
         cuerpoFamilia.innerHTML =
             "";
-
 
         tablaFamilia.style.display =
             "none";
 
 
-        /* LIMPIAR MENSAJE DE FAMILIA */
-
         limpiarMensaje(
             mensajeFamilia
+        );
+
+
+        /* LIMPIAR BUSCAR COLABORADOR */
+
+        buscarColaboradorInput.value =
+            "";
+
+
+        cuerpoColaborador.innerHTML =
+            "";
+
+        tablaColaborador.style.display =
+            "none";
+
+
+        limpiarMensaje(
+            mensajeColaborador
         );
 
 
@@ -1952,8 +2642,6 @@ async function confirmarPrestamo() {
         buscarLibroInput.value =
             "";
 
-
-        /* LIMPIAR INFORMACIÓN DEL LIBRO */
 
         libroInfo.innerHTML =
             "";
@@ -1965,6 +2653,10 @@ async function confirmarPrestamo() {
         /* OCULTAR RESUMEN */
 
         resumenPrestamo.style.display =
+            "none";
+
+
+        confirmacion.style.display =
             "none";
 
 
@@ -1984,38 +2676,6 @@ async function confirmarPrestamo() {
 
         sitioPrestamoInput.value =
             "F";
-
-
-        /* LIMPIAR FILAS SELECCIONADAS */
-
-        document
-            .querySelectorAll(
-                "#cuerpoFamilia tr"
-            )
-            .forEach(fila => {
-
-                fila.classList.remove(
-                    "seleccionada"
-                );
-
-
-                const boton =
-                    fila.querySelector(
-                        ".btn-seleccionar"
-                    );
-
-
-                if (boton) {
-
-                    boton.classList.remove(
-                        "seleccionada"
-                    );
-
-                    boton.textContent =
-                        "Seleccionar";
-                }
-
-            });
 
 
     } catch (error) {
@@ -2073,7 +2733,6 @@ fechaPrestamoInput.addEventListener(
 
         }
 
-
         actualizarDetalle();
 
     }
@@ -2090,6 +2749,20 @@ fechaDevolucionInput.addEventListener(
 
         fechaDevolucionModificada =
             true;
+
+        actualizarDetalle();
+
+    }
+);
+
+
+/* =========================================================
+   CAMBIO DE SITIO
+========================================================= */
+
+sitioPrestamoInput.addEventListener(
+    "change",
+    function() {
 
         actualizarDetalle();
 
@@ -2128,7 +2801,35 @@ function escapeHtml(valor) {
 
 
 /* =========================================================
-   BOTONES
+   BOTONES TIPO SOLICITANTE
+========================================================= */
+
+btnTipoAfiliado.addEventListener(
+    "click",
+    function() {
+
+        cambiarTipoSolicitante(
+            "Afiliado"
+        );
+
+    }
+);
+
+
+btnTipoColaborador.addEventListener(
+    "click",
+    function() {
+
+        cambiarTipoSolicitante(
+            "Colaborador"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   BOTONES PRINCIPALES
 ========================================================= */
 
 document
@@ -2138,6 +2839,16 @@ document
     .addEventListener(
         "click",
         buscarFamilia
+    );
+
+
+document
+    .getElementById(
+        "btnBuscarColaborador"
+    )
+    .addEventListener(
+        "click",
+        buscarColaborador
     );
 
 
@@ -2185,6 +2896,27 @@ buscarFamiliaInput
             ) {
 
                 buscarFamilia();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ENTER - COLABORADOR
+========================================================= */
+
+buscarColaboradorInput
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                buscarColaborador();
 
             }
 
@@ -2252,7 +2984,7 @@ fechaDevolucionInput.value =
 
 
 /* =========================================================
-   SITIO DE PRÉSTAMO INICIAL
+   SITIO INICIAL
 ========================================================= */
 
 sitioPrestamoInput.value =
