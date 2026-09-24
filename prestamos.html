@@ -950,7 +950,7 @@ function fechaInputAISO(fechaTexto) {
 
 
 /* =========================================================
-   FORMATEAR FECHA INPUT
+   FECHA INPUT A TEXTO
 ========================================================= */
 
 function formatearFechaInput(fechaTexto) {
@@ -1897,12 +1897,22 @@ async function confirmarPrestamo() {
         }
 
 
+        /* =================================================
+           PRÉSTAMO REGISTRADO CORRECTAMENTE
+           
+           AQUÍ SE LIMPIA COMPLETAMENTE EL FORMULARIO
+           PARA PODER CREAR UN NUEVO PRÉSTAMO.
+        ================================================= */
+
+
         mostrarMensaje(
             mensajeFinal,
             "Préstamo registrado correctamente.",
             "exito"
         );
 
+
+        /* LIMPIAR SELECCIONES */
 
         personaSeleccionada =
             null;
@@ -1914,17 +1924,51 @@ async function confirmarPrestamo() {
             false;
 
 
-        resumenPrestamo.style.display =
+        /* LIMPIAR BUSCAR FAMILIA */
+
+        buscarFamiliaInput.value =
+            "";
+
+
+        /* LIMPIAR RESULTADOS DE FAMILIA */
+
+        cuerpoFamilia.innerHTML =
+            "";
+
+
+        tablaFamilia.style.display =
             "none";
 
+
+        /* LIMPIAR MENSAJE DE FAMILIA */
+
+        limpiarMensaje(
+            mensajeFamilia
+        );
+
+
+        /* LIMPIAR BUSCAR LIBRO */
+
+        buscarLibroInput.value =
+            "";
+
+
+        /* LIMPIAR INFORMACIÓN DEL LIBRO */
+
+        libroInfo.innerHTML =
+            "";
 
         libroInfo.style.display =
             "none";
 
 
-        buscarLibroInput.value =
-            "";
+        /* OCULTAR RESUMEN */
 
+        resumenPrestamo.style.display =
+            "none";
+
+
+        /* REINICIAR FECHAS */
 
         fechaPrestamoInput.value =
             obtenerFechaLocalInput();
@@ -1936,9 +1980,13 @@ async function confirmarPrestamo() {
             );
 
 
+        /* REINICIAR SITIO */
+
         sitioPrestamoInput.value =
             "F";
 
+
+        /* LIMPIAR FILAS SELECCIONADAS */
 
         document
             .querySelectorAll(
