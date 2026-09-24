@@ -1,118 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Respaldo de datos - Biblioteca</title>
-
-
-    <!-- =========================================================
-         OCULTAR LA PÁGINA MIENTRAS SE COMPRUEBA EL ACCESO
-    ========================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respaldo - Biblioteca</title>
 
     <style>
-
         html {
             visibility: hidden;
         }
 
-    </style>
-
-
-    <!-- =========================================================
-         SUPABASE
-    ========================================================== -->
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="supabase.js"></script>
-
-
-    <!-- =========================================================
-         PROTECCIÓN GENERAL
-    ========================================================== -->
-
-    <script src="auth.js"></script>
-
-
-    <!-- =========================================================
-         COMPROBACIÓN DIRECTA DE SESIÓN
-    ========================================================== -->
-
-    <script>
-
-        window.respaldoAutorizado = false;
-
-        window.respaldoAuth = (async function () {
-
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.auth.getSession();
-
-
-                if (
-                    error ||
-                    !data ||
-                    !data.session
-                ) {
-
-                    window.location.replace(
-                        "index.html"
-                    );
-
-                    return false;
-
-                }
-
-
-                window.respaldoAutorizado = true;
-
-
-                document.documentElement.style.visibility =
-                    "visible";
-
-
-                return true;
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error al comprobar la sesión:",
-                    error
-                );
-
-
-                window.location.replace(
-                    "index.html"
-                );
-
-
-                return false;
-
-            }
-
-        })();
-
-    </script>
-
-
-    <style>
-
         * {
             box-sizing: border-box;
         }
-
 
         body {
             margin: 0;
@@ -121,2278 +21,1141 @@
             color: #263238;
         }
 
-
-        /* =========================================================
-           ENCABEZADO
-        ========================================================== */
-
-        .encabezado {
+        header {
             background: #263238;
             color: white;
-            padding: 18px 24px;
+            padding: 14px 20px;
         }
-
 
         .encabezado-contenido {
             max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            margin: auto;
+            position: relative;
         }
-
 
         .marca {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            padding-right: 130px;
         }
 
-
-        .icono-marca {
-            font-size: 32px;
+        .marca-icono {
+            font-size: 25px;
         }
 
-
-        .marca h1 {
+        .marca-texto h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 20px;
         }
 
-
-        .marca p {
-            margin: 3px 0 0;
-            font-size: 13px;
-            opacity: 0.85;
+        .marca-texto p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: #cfd8dc;
         }
-
-
-        /* =========================================================
-           BOTÓN VOLVER
-        ========================================================== */
 
         .volver {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
             background: #7f8c8d;
             color: white;
             text-decoration: none;
-            font-size: 12px;
-            font-weight: bold;
+            border: none;
             padding: 7px 12px;
             border-radius: 5px;
-            white-space: nowrap;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
         }
-
 
         .volver:hover {
-            background: #607174;
+            background: #6f7c7d;
         }
 
-
-        /* =========================================================
-           CONTENEDOR
-        ========================================================== */
-
-        .contenedor {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 20px;
+        main {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
 
+        .titulo-seccion {
+            margin-bottom: 15px;
+        }
 
-        /* =========================================================
-           SECCIONES
-        ========================================================== */
+        .titulo-seccion h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #263238;
+        }
 
-        .seccion {
+        .titulo-seccion p {
+            margin: 5px 0 0;
+            color: #607d8b;
+            font-size: 14px;
+        }
+
+        .tarjeta {
             background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
-
-        .seccion h2 {
-            margin: 0 0 8px;
-            font-size: 21px;
+        .tarjeta h3 {
+            margin: 0 0 7px;
+            font-size: 17px;
+            color: #263238;
         }
-
 
         .descripcion {
-            margin: 0 0 22px;
+            margin: 0 0 18px;
             color: #607d8b;
+            font-size: 13px;
             line-height: 1.5;
         }
 
+        /* =========================
+           INFORMACIÓN DEL RESPALDO
+        ========================= */
 
-        /* =========================================================
-           BLOQUE DE ACCIONES
-        ========================================================== */
-
-        .bloque-acciones {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+        .datos {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 15px;
         }
 
+        .dato {
+            background: #f8fafb;
+            border: 1px solid #dfe5e8;
+            border-radius: 7px;
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        .dato-numero {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            color: #37474f;
+            margin-bottom: 5px;
+        }
+
+        .dato-label {
+            display: block;
+            font-size: 12px;
+            color: #607d8b;
+            font-weight: bold;
+        }
+
+        .dato-total {
+            margin-top: 12px;
+            background: #f8fafb;
+            border: 1px solid #cfd8dc;
+            border-radius: 7px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .dato-total-numero {
+            font-size: 25px;
+            font-weight: bold;
+            color: #263238;
+        }
+
+        .dato-total-texto {
+            font-size: 13px;
+            font-weight: bold;
+            color: #546e7a;
+        }
+
+        /* =========================
+           BOTONES DE RESPALDO
+        ========================= */
 
         .acciones-principales {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
         }
-
-
-        .accion-secundaria {
-            border-top: 1px solid #e4e8eb;
-            padding-top: 18px;
-        }
-
-
-        .accion-secundaria-titulo {
-            margin: 0 0 10px;
-            color: #607d8b;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-
-        /* =========================================================
-           BOTONES
-        ========================================================== */
 
         .boton {
             width: 100%;
             border: none;
-            border-radius: 9px;
-            padding: 15px 18px;
-            font-size: 15px;
+            border-radius: 6px;
+            padding: 13px 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: background 0.2s ease;
         }
-
-
-        .boton:hover {
-            transform: translateY(-1px);
-        }
-
-
-        .boton:disabled {
-            opacity: 0.6;
-            cursor: wait;
-            transform: none;
-        }
-
 
         .boton-respaldo {
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: #37474f;
+            color: white;
         }
-
 
         .boton-respaldo:hover {
-            background: #dceddd;
+            background: #263238;
         }
-
 
         .boton-restaurar {
-            background: #e3f2fd;
-            color: #1565c0;
+            background: #607d8b;
+            color: white;
         }
-
 
         .boton-restaurar:hover {
-            background: #d7ebfa;
+            background: #546e7a;
         }
 
+        .zona-mantenimiento {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .zona-titulo {
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #455a64;
+        }
+
+        .zona-descripcion {
+            margin: 0 0 12px;
+            color: #607d8b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
 
         .boton-limpiar {
-            background: #ffebee;
-            color: #c62828;
+            background: #c0392b;
+            color: white;
         }
-
 
         .boton-limpiar:hover {
-            background: #ffcdd2;
+            background: #a93226;
         }
 
+        .boton-limpiar-todo {
+            background: #263238;
+            color: white;
+            margin-top: 12px;
+        }
 
-        /* =========================================================
-           INFORMACIÓN ACTUAL
-        ========================================================== */
+        .boton-limpiar-todo:hover {
+            background: #1b2529;
+        }
+
+        /* =========================
+           INFORMACIÓN
+        ========================= */
 
         .informacion {
-            background: #f8fafb;
-            border: 1px solid #e0e6e9;
-            border-radius: 10px;
-            padding: 18px;
-        }
-
-
-        .informacion-titulo {
-            margin: 0 0 14px;
-            color: #455a64;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-
-        .datos {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-        }
-
-
-        .dato {
-            background: white;
-            border: 1px solid #e4e8eb;
-            border-radius: 8px;
-            padding: 14px 10px;
-            min-width: 0;
-            text-align: center;
-        }
-
-
-        .dato:nth-child(1) {
-            grid-column: span 2;
-        }
-
-
-        .dato:nth-child(2) {
-            grid-column: span 2;
-        }
-
-
-        .dato:nth-child(3) {
-            grid-column: span 2;
-        }
-
-
-        .dato:nth-child(4) {
-            grid-column: span 3;
-        }
-
-
-        .dato:nth-child(5) {
-            grid-column: span 3;
-        }
-
-
-        .dato-numero {
-            font-size: 23px;
-            font-weight: bold;
-            color: #263238;
-            line-height: 1.2;
-        }
-
-
-        .dato-texto {
-            margin-top: 5px;
+            background: #f7f9fa;
+            border-left: 4px solid #78909c;
+            padding: 12px 14px;
+            border-radius: 4px;
             font-size: 12px;
-            color: #607d8b;
-            line-height: 1.3;
+            color: #546e7a;
+            line-height: 1.6;
         }
 
+        .informacion strong {
+            color: #37474f;
+        }
 
-        /* =========================================================
-           MENSAJES
-        ========================================================== */
-
-        .mensaje {
+        #mensaje {
             display: none;
-            margin-top: 18px;
-            padding: 14px 16px;
-            border-radius: 8px;
-            line-height: 1.5;
-        }
-
-
-        .mensaje.exito {
-            display: block;
-            background: #e8f5e9;
-            border: 1px solid #a5d6a7;
-            color: #2e7d32;
-        }
-
-
-        .mensaje.error {
-            display: block;
-            background: #ffebee;
-            border: 1px solid #ef9a9a;
-            color: #c62828;
-        }
-
-
-        .mensaje.aviso {
-            display: block;
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            color: #8d6e00;
-        }
-
-
-        /* =========================================================
-           NOTAS
-        ========================================================== */
-
-        .nota {
-            margin-top: 18px;
-            padding: 14px;
-            background: #fff8e1;
-            border-left: 4px solid #f9a825;
+            margin-bottom: 15px;
+            padding: 11px 14px;
             border-radius: 5px;
-            color: #6d5b00;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-
-        .nota-limpiar {
-            margin-top: 18px;
-            padding: 14px;
-            background: #ffebee;
-            border-left: 4px solid #e53935;
-            border-radius: 5px;
-            color: #b71c1c;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-
-        /* =========================================================
-           PIE
-        ========================================================== */
-
-        .pie {
-            text-align: center;
-            color: #78909c;
             font-size: 13px;
-            padding: 10px 20px 30px;
+            font-weight: bold;
         }
 
-
-        input[type="file"] {
-            display: none;
+        #mensaje.exito {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
+        #mensaje.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
 
-        /* =========================================================
+        /* =========================
            MODAL DE CONFIRMACIÓN
-        ========================================================== */
+        ========================= */
 
-        .modal-fondo {
+        .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(38, 50, 56, 0.55);
+            background: rgba(38, 50, 56, 0.58);
             z-index: 9999;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
 
-
-        .modal-fondo.mostrar {
+        .modal-overlay.visible {
             display: flex;
         }
 
-
-        .modal {
+        .modal-confirmacion {
             width: 100%;
             max-width: 520px;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            border-radius: 9px;
             overflow: hidden;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.25);
         }
 
-
-        .modal-encabezado {
+        .modal-cabecera {
             background: #263238;
             color: white;
-            padding: 17px 20px;
+            padding: 15px 18px;
         }
 
-
-        .modal-encabezado h3 {
+        .modal-cabecera h3 {
             margin: 0;
-            font-size: 18px;
+            font-size: 17px;
         }
-
 
         .modal-contenido {
-            padding: 20px;
+            padding: 20px 18px 10px;
         }
-
 
         .modal-contenido p {
-            margin: 0 0 12px;
+            margin: 0;
             color: #455a64;
-            line-height: 1.5;
             font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-line;
         }
 
-
-        .modal-cantidad {
-            background: #f8fafb;
-            border: 1px solid #e0e6e9;
-            border-radius: 8px;
-            padding: 14px;
-            margin: 15px 0;
-            text-align: center;
-        }
-
-
-        .modal-cantidad-numero {
-            font-size: 26px;
-            font-weight: bold;
-            color: #c62828;
-        }
-
-
-        .modal-cantidad-texto {
-            margin-top: 4px;
-            color: #607d8b;
-            font-size: 12px;
-        }
-
-
-        .modal-advertencia {
-            background: #ffebee;
-            border-left: 4px solid #e53935;
-            border-radius: 5px;
-            padding: 12px 14px;
-            color: #b71c1c;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-
-        .modal-botones {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .modal-acciones {
+            display: flex;
+            justify-content: flex-end;
             gap: 10px;
-            padding: 0 20px 20px;
+            padding: 15px 18px 18px;
         }
-
 
         .modal-boton {
             border: none;
-            border-radius: 7px;
-            padding: 11px 14px;
+            border-radius: 5px;
+            padding: 9px 15px;
             font-size: 13px;
             font-weight: bold;
             cursor: pointer;
         }
 
-
-        .modal-boton-cancelar {
+        .modal-cancelar {
             background: #eceff1;
             color: #455a64;
         }
 
-
-        .modal-boton-cancelar:hover {
-            background: #dfe4e6;
+        .modal-cancelar:hover {
+            background: #dfe4e7;
         }
 
-
-        .modal-boton-confirmar {
+        .modal-confirmar {
             background: #37474f;
             color: white;
         }
 
-
-        .modal-boton-confirmar:hover {
+        .modal-confirmar:hover {
             background: #263238;
         }
 
-
-        .modal-boton-eliminar {
-            background: #c62828;
-            color: white;
-        }
-
-
-        .modal-boton-eliminar:hover {
-            background: #b71c1c;
-        }
-
-
-        /* =========================================================
-           MODAL DE PROCESAMIENTO
-        ========================================================== */
-
-        .modal-progreso {
+        footer {
             text-align: center;
-            padding: 10px 0 4px;
+            color: #90a4ae;
+            font-size: 11px;
+            padding: 20px 0 30px;
         }
 
-
-        .modal-progreso-texto {
-            color: #607d8b;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-
-        /* =========================================================
-           RESPONSIVE
-        ========================================================== */
-
-        @media (max-width: 700px) {
-
-            .encabezado {
-                padding: 14px 10px;
+        @media (max-width: 750px) {
+            .datos {
+                grid-template-columns: repeat(2, 1fr);
             }
-
-
-            .encabezado-contenido {
-                align-items: center;
-                gap: 10px;
-            }
-
-
-            .marca {
-                gap: 8px;
-            }
-
-
-            .icono-marca {
-                font-size: 26px;
-            }
-
-
-            .marca h1 {
-                font-size: 20px;
-            }
-
-
-            .marca p {
-                font-size: 11px;
-            }
-
-
-            .volver {
-                font-size: 11px;
-                padding: 7px 10px;
-            }
-
 
             .acciones-principales {
                 grid-template-columns: 1fr;
             }
 
+            .marca {
+                padding-right: 115px;
+            }
+
+            .volver {
+                right: 0;
+                padding: 7px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 12px 10px;
+            }
+
+            .marca-texto h1 {
+                font-size: 17px;
+            }
+
+            .marca-texto p {
+                font-size: 10px;
+            }
+
+            .marca-icono {
+                font-size: 21px;
+            }
+
+            .marca {
+                padding-right: 105px;
+            }
+
+            .volver {
+                font-size: 11px;
+            }
+
+            main {
+                padding: 0 10px;
+            }
 
             .datos {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-
-            .dato:nth-child(1),
-            .dato:nth-child(2),
-            .dato:nth-child(3),
-            .dato:nth-child(4),
-            .dato:nth-child(5) {
-                grid-column: span 1;
-            }
-
-
-            .dato:nth-child(5) {
-                grid-column: span 2;
-            }
-
-
-            .contenedor {
-                margin-top: 20px;
-            }
-
-
-            .modal-fondo {
-                padding: 12px;
-            }
-
-
-            .modal-botones {
                 grid-template-columns: 1fr;
             }
 
+            .dato-total {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .modal-acciones {
+                flex-direction: column-reverse;
+            }
+
+            .modal-boton {
+                width: 100%;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-    <!-- =========================================================
-         ENCABEZADO
-    ========================================================== -->
+<header>
+    <div class="encabezado-contenido">
 
-    <header class="encabezado">
+        <div class="marca">
+            <div class="marca-icono">💾</div>
 
-        <div class="encabezado-contenido">
+            <div class="marca-texto">
+                <h1>Biblioteca</h1>
+                <p>Respaldo y administración de datos</p>
+            </div>
+        </div>
 
-            <div class="marca">
+        <a href="index.html" class="volver">Volver atrás</a>
 
-                <div class="icono-marca">
-                    📚
-                </div>
+    </div>
+</header>
 
+<main>
 
-                <div>
+    <div class="titulo-seccion">
+        <h2>Respaldo y restauración</h2>
+        <p>Administración de la información almacenada en la biblioteca.</p>
+    </div>
 
-                    <h1>
-                        Biblioteca
-                    </h1>
+    <div id="mensaje"></div>
 
+    <!-- =========================
+         INFORMACIÓN ACTUAL
+    ========================== -->
 
-                    <p>
-                        Respaldo y restauración de datos
-                    </p>
+    <section class="tarjeta">
 
-                </div>
+        <h3>Información actual</h3>
 
+        <p class="descripcion">
+            Cantidad de registros disponibles actualmente en la base de datos.
+        </p>
+
+        <div class="datos">
+
+            <div class="dato">
+                <span class="dato-numero" id="totalLibros">0</span>
+                <span class="dato-label">Libros</span>
             </div>
 
+            <div class="dato">
+                <span class="dato-numero" id="totalAfiliados">0</span>
+                <span class="dato-label">Afiliados</span>
+            </div>
 
-            <a
-                href="index.html"
-                class="volver"
-            >
-                Volver atrás
-            </a>
+            <div class="dato">
+                <span class="dato-numero" id="totalColaboradores">0</span>
+                <span class="dato-label">Colaboradores</span>
+            </div>
+
+            <div class="dato">
+                <span class="dato-numero" id="totalPrestamos">0</span>
+                <span class="dato-label">Préstamos</span>
+            </div>
 
         </div>
 
-    </header>
+        <div class="dato-total">
+            <span class="dato-total-numero" id="totalDatos">0</span>
+            <span class="dato-total-texto">Registros respaldables</span>
+        </div>
 
+    </section>
 
-    <!-- =========================================================
-         CONTENIDO PRINCIPAL
-    ========================================================== -->
+    <!-- =========================
+         ACCIONES
+    ========================== -->
 
-    <main class="contenedor">
+    <section class="tarjeta">
 
-        <!-- =====================================================
-             SECCIÓN DE RESPALDO
-        ====================================================== -->
+        <h3>Administración de datos</h3>
 
-        <section class="seccion">
+        <p class="descripcion">
+            Utiliza estas opciones para guardar una copia completa de la información
+            o restaurar los datos desde un respaldo anterior.
+        </p>
 
-            <h2>
-                💾 Respaldo de la base de datos
-            </h2>
+        <div class="acciones-principales">
 
+            <button
+                type="button"
+                class="boton boton-respaldo"
+                onclick="crearRespaldo()">
+                Crear respaldo
+            </button>
 
-            <p class="descripcion">
-                Guarda una copia de seguridad de toda la información registrada
-                actualmente en la Biblioteca.
+            <button
+                type="button"
+                class="boton boton-restaurar"
+                onclick="seleccionarRespaldo()">
+                Restaurar respaldo
+            </button>
+
+        </div>
+
+        <input
+            type="file"
+            id="archivoRespaldo"
+            accept=".json,application/json"
+            style="display:none;"
+            onchange="restaurarRespaldo(event)">
+
+        <div class="zona-mantenimiento">
+
+            <div class="zona-titulo">
+                Mantenimiento de préstamos
+            </div>
+
+            <p class="zona-descripcion">
+                Elimina únicamente los registros de préstamos. Los libros,
+                afiliados y colaboradores permanecerán en la base de datos.
             </p>
 
+            <button
+                type="button"
+                class="boton boton-limpiar"
+                onclick="limpiarPrestamos()">
+                Limpiar préstamos
+            </button>
 
-            <div class="bloque-acciones">
+        </div>
 
-                <!-- =================================================
-                     ACCIONES PRINCIPALES
-                ================================================== -->
+        <div class="zona-mantenimiento">
 
-                <div class="acciones-principales">
-
-                    <button
-                        type="button"
-                        class="boton boton-respaldo"
-                        id="btnCrearRespaldo"
-                    >
-                        💾 Crear respaldo
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="boton boton-restaurar"
-                        id="btnSeleccionarRespaldo"
-                    >
-                        📥 Restaurar respaldo
-                    </button>
-
-                </div>
-
-
-                <!-- =================================================
-                     ACCIÓN DELICADA
-                ================================================== -->
-
-                <div class="accion-secundaria">
-
-                    <p class="accion-secundaria-titulo">
-                        Acción de mantenimiento
-                    </p>
-
-
-                    <button
-                        type="button"
-                        class="boton boton-limpiar"
-                        id="btnLimpiarPrestamos"
-                    >
-                        🗑️ Limpiar préstamos
-                    </button>
-
-                </div>
-
+            <div class="zona-titulo">
+                Reinicio completo de la biblioteca
             </div>
 
-
-            <input
-                type="file"
-                id="archivoRespaldo"
-                accept=".json,application/json"
-            >
-
-
-            <div
-                id="mensaje"
-                class="mensaje"
-            ></div>
-
-        </section>
-
-
-        <!-- =====================================================
-             INFORMACIÓN ACTUAL
-        ====================================================== -->
-
-        <section class="seccion">
-
-            <h2>
-                📊 Información actual
-            </h2>
-
-
-            <p class="descripcion">
-                Registros que se encuentran almacenados actualmente en Supabase.
+            <p class="zona-descripcion">
+                Esta opción elimina todos los datos actuales para permitir
+                comenzar nuevamente desde cero después de una presentación o prueba.
             </p>
 
+            <button
+                type="button"
+                class="boton boton-limpiar-todo"
+                onclick="limpiarTodo()">
+                Limpiar todo
+            </button>
 
-            <div class="informacion">
+        </div>
 
-                <div class="informacion-titulo">
-                    Resumen de registros almacenados
-                </div>
+    </section>
 
+    <!-- =========================
+         INFORMACIÓN IMPORTANTE
+    ========================== -->
 
-                <div class="datos">
+    <section class="tarjeta">
 
-                    <div class="dato">
+        <h3>Información del respaldo</h3>
 
-                        <div
-                            class="dato-numero"
-                            id="totalLibros"
-                        >
-                            0
-                        </div>
+        <div class="informacion">
+            <strong>El respaldo incluye:</strong><br>
 
+            Libros, afiliados, colaboradores y préstamos completos,
+            incluyendo registros activos, inactivos, dados de baja y
+            el historial de préstamos.
+            <br><br>
 
-                        <div class="dato-texto">
-                            Libros
-                        </div>
+            <strong>Importante:</strong><br>
 
-                    </div>
+            La opción "Limpiar todo" elimina los datos almacenados actualmente
+            en las cuatro tablas principales. Esta acción no elimina las tablas
+            ni la estructura del sistema.
+            <br><br>
 
+            Se recomienda crear un respaldo antes de utilizar las opciones
+            de limpieza.
+        </div>
 
-                    <div class="dato">
+    </section>
 
-                        <div
-                            class="dato-numero"
-                            id="totalAfiliados"
-                        >
-                            0
-                        </div>
+</main>
 
+<footer>
+    Sistema de Biblioteca
+</footer>
 
-                        <div class="dato-texto">
-                            Afiliados
-                        </div>
 
-                    </div>
+<!-- =========================
+     MODAL DE CONFIRMACIÓN
+========================== -->
 
+<div id="modalConfirmacion" class="modal-overlay">
 
-                    <div class="dato">
+    <div class="modal-confirmacion">
 
-                        <div
-                            class="dato-numero"
-                            id="totalColaboradores"
-                        >
-                            0
-                        </div>
+        <div class="modal-cabecera">
+            <h3 id="modalTitulo">Confirmación</h3>
+        </div>
 
+        <div class="modal-contenido">
+            <p id="modalMensaje"></p>
+        </div>
 
-                        <div class="dato-texto">
-                            Colaboradores
-                        </div>
+        <div class="modal-acciones">
 
-                    </div>
+            <button
+                type="button"
+                id="modalCancelar"
+                class="modal-boton modal-cancelar">
+                Cancelar
+            </button>
 
-
-                    <div class="dato">
-
-                        <div
-                            class="dato-numero"
-                            id="totalPrestamos"
-                        >
-                            0
-                        </div>
-
-
-                        <div class="dato-texto">
-                            Préstamos
-                        </div>
-
-                    </div>
-
-
-                    <div class="dato">
-
-                        <div
-                            class="dato-numero"
-                            id="totalDatos"
-                        >
-                            0
-                        </div>
-
-
-                        <div class="dato-texto">
-                            Registros respaldables
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="nota">
-
-                <strong>Importante:</strong>
-
-                el respaldo contiene la información almacenada actualmente
-                en la base de datos de la Biblioteca. Se recomienda guardar
-                el archivo en un lugar seguro, por ejemplo una memoria USB,
-                disco externo o carpeta de respaldo.
-
-            </div>
-
-
-            <div class="nota-limpiar">
-
-                <strong>Limpiar préstamos:</strong>
-
-                esta opción elimina únicamente los registros de préstamos
-                y devoluciones. Los libros, afiliados y colaboradores
-                permanecerán intactos.
-
-                <br><br>
-
-                Se recomienda utilizarla solamente para eliminar los datos
-                utilizados durante las pruebas antes de comenzar a trabajar
-                con registros reales.
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <footer class="pie">
-        Sistema de control de préstamos · Biblioteca
-    </footer>
-
-
-    <!-- =========================================================
-         MODAL LIMPIAR PRÉSTAMOS
-    ========================================================== -->
-
-    <div
-        id="modalLimpiar"
-        class="modal-fondo"
-    >
-
-        <div class="modal">
-
-            <div class="modal-encabezado">
-
-                <h3 id="modalLimpiarTitulo">
-                    Limpiar préstamos
-                </h3>
-
-            </div>
-
-
-            <div class="modal-contenido">
-
-                <p id="modalLimpiarMensaje">
-                    Se consultarán los registros actuales de préstamos
-                    y devoluciones.
-                </p>
-
-
-                <div
-                    id="modalCantidad"
-                    class="modal-cantidad"
-                    style="display:none;"
-                >
-
-                    <div
-                        id="modalCantidadNumero"
-                        class="modal-cantidad-numero"
-                    >
-                        0
-                    </div>
-
-
-                    <div class="modal-cantidad-texto">
-                        registros de préstamos y devoluciones
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="modalAdvertencia"
-                    class="modal-advertencia"
-                    style="display:none;"
-                >
-                    Esta acción eliminará todos los registros de préstamos
-                    y devoluciones. Los libros, afiliados y colaboradores
-                    permanecerán intactos.
-                </div>
-
-            </div>
-
-
-            <div
-                id="modalLimpiarBotones"
-                class="modal-botones"
-            >
-
-                <button
-                    type="button"
-                    class="modal-boton modal-boton-cancelar"
-                    id="btnCancelarLimpiar"
-                >
-                    Cancelar
-                </button>
-
-
-                <button
-                    type="button"
-                    class="modal-boton modal-boton-confirmar"
-                    id="btnContinuarLimpiar"
-                >
-                    Continuar
-                </button>
-
-            </div>
+            <button
+                type="button"
+                id="modalConfirmar"
+                class="modal-boton modal-confirmar">
+                Confirmar
+            </button>
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- =========================================================
-         MODAL DE RESTAURACIÓN
-    ========================================================== -->
 
-    <div
-        id="modalRestaurar"
-        class="modal-fondo"
-    >
+<!-- =========================
+     SUPABASE
+========================== -->
 
-        <div class="modal">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-            <div class="modal-encabezado">
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
 
-                <h3>
-                    Confirmar restauración
-                </h3>
+<script>
 
-            </div>
+    let versionRespaldo = "2.1";
 
+    let resolverModal = null;
 
-            <div class="modal-contenido">
+    /* =========================================
+       MODAL PERSONALIZADO
+    ========================================= */
 
-                <p>
-                    La restauración reemplazará los datos actuales de
-                    Supabase por los datos contenidos en este respaldo.
-                </p>
+    function mostrarConfirmacion(titulo, mensaje, textoConfirmar = "Confirmar") {
 
+        return new Promise((resolve) => {
 
-                <div class="modal-cantidad">
+            resolverModal = resolve;
 
-                    <div
-                        id="modalRestaurarFecha"
-                        class="modal-cantidad-texto"
-                    >
-                        Fecha del respaldo: No indicada
-                    </div>
+            document.getElementById("modalTitulo").textContent = titulo;
+            document.getElementById("modalMensaje").textContent = mensaje;
+            document.getElementById("modalConfirmar").textContent = textoConfirmar;
 
+            document.getElementById("modalConfirmacion")
+                .classList.add("visible");
 
-                    <div
-                        id="modalRestaurarDatos"
-                        class="modal-cantidad-texto"
-                        style="margin-top:10px;"
-                    >
-                    </div>
+            document.body.style.overflow = "hidden";
 
-                </div>
+            document.getElementById("modalCancelar").focus();
+        });
+    }
 
 
-                <div class="modal-advertencia">
-                    Esta acción reemplazará los datos actuales y no se puede
-                    deshacer automáticamente.
-                </div>
+    function cerrarModal(resultado) {
 
-            </div>
+        document.getElementById("modalConfirmacion")
+            .classList.remove("visible");
 
+        document.body.style.overflow = "";
 
-            <div class="modal-botones">
+        if (resolverModal) {
 
-                <button
-                    type="button"
-                    class="modal-boton modal-boton-cancelar"
-                    id="btnCancelarRestaurar"
-                >
-                    Cancelar
-                </button>
+            const resolver = resolverModal;
 
+            resolverModal = null;
 
-                <button
-                    type="button"
-                    class="modal-boton modal-boton-confirmar"
-                    id="btnConfirmarRestaurar"
-                >
-                    Restaurar datos
-                </button>
+            resolver(resultado);
+        }
+    }
 
-            </div>
 
-        </div>
+    document.getElementById("modalCancelar")
+        .addEventListener("click", () => {
+            cerrarModal(false);
+        });
 
-    </div>
 
+    document.getElementById("modalConfirmar")
+        .addEventListener("click", () => {
+            cerrarModal(true);
+        });
 
-    <script>
 
-        /* =========================================================
-           CONFIGURACIÓN
-        ========================================================== */
+    /* =========================================
+       MENSAJES
+    ========================================= */
 
-        const TAMANO_LOTE = 500;
+    function mostrarMensaje(texto, tipo) {
 
+        const mensaje = document.getElementById("mensaje");
 
-        /* =========================================================
-           ELEMENTOS PRINCIPALES
-        ========================================================== */
+        mensaje.textContent = texto;
+        mensaje.className = tipo;
 
-        const btnCrearRespaldo =
-            document.getElementById(
-                "btnCrearRespaldo"
-            );
+        mensaje.style.display = "block";
 
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
 
-        const btnSeleccionarRespaldo =
-            document.getElementById(
-                "btnSeleccionarRespaldo"
-            );
 
+    /* =========================================
+       CARGAR INFORMACIÓN
+    ========================================= */
 
-        const btnLimpiarPrestamos =
-            document.getElementById(
-                "btnLimpiarPrestamos"
-            );
+    async function contarTabla(nombreTabla) {
 
-
-        const archivoRespaldo =
-            document.getElementById(
-                "archivoRespaldo"
-            );
-
-
-        /* =========================================================
-           ELEMENTOS DEL MODAL DE LIMPIEZA
-        ========================================================== */
-
-        const modalLimpiar =
-            document.getElementById(
-                "modalLimpiar"
-            );
-
-
-        const modalLimpiarTitulo =
-            document.getElementById(
-                "modalLimpiarTitulo"
-            );
-
-
-        const modalLimpiarMensaje =
-            document.getElementById(
-                "modalLimpiarMensaje"
-            );
-
-
-        const modalCantidad =
-            document.getElementById(
-                "modalCantidad"
-            );
-
-
-        const modalCantidadNumero =
-            document.getElementById(
-                "modalCantidadNumero"
-            );
-
-
-        const modalAdvertencia =
-            document.getElementById(
-                "modalAdvertencia"
-            );
-
-
-        const modalLimpiarBotones =
-            document.getElementById(
-                "modalLimpiarBotones"
-            );
-
-
-        const btnCancelarLimpiar =
-            document.getElementById(
-                "btnCancelarLimpiar"
-            );
-
-
-        const btnContinuarLimpiar =
-            document.getElementById(
-                "btnContinuarLimpiar"
-            );
-
-
-        /* =========================================================
-           ELEMENTOS DEL MODAL DE RESTAURACIÓN
-        ========================================================== */
-
-        const modalRestaurar =
-            document.getElementById(
-                "modalRestaurar"
-            );
-
-
-        const btnCancelarRestaurar =
-            document.getElementById(
-                "btnCancelarRestaurar"
-            );
-
-
-        const btnConfirmarRestaurar =
-            document.getElementById(
-                "btnConfirmarRestaurar"
-            );
-
-
-        const modalRestaurarFecha =
-            document.getElementById(
-                "modalRestaurarFecha"
-            );
-
-
-        const modalRestaurarDatos =
-            document.getElementById(
-                "modalRestaurarDatos"
-            );
-
-
-        /* =========================================================
-           VARIABLES DE ESTADO
-        ========================================================== */
-
-        let cantidadPrestamosPendiente =
-            0;
-
-
-        let datosRestauracionPendiente =
-            null;
-
-
-        /* =========================================================
-           MENSAJES
-        ========================================================== */
-
-        function mostrarMensaje(
-            texto,
-            tipo
-        ) {
-
-            const mensaje =
-                document.getElementById(
-                    "mensaje"
-                );
-
-
-            mensaje.textContent =
-                texto;
-
-
-            mensaje.className =
-                "mensaje " + tipo;
-
+        const { count, error } = await supabaseClient
+            .from(nombreTabla)
+            .select("*", {
+                count: "exact",
+                head: true
+            });
+
+        if (error) {
+            throw error;
         }
 
+        return count || 0;
+    }
 
-        /* =========================================================
-           CARGAR TABLA COMPLETA
-        ========================================================== */
 
-        async function cargarTabla(
-            nombreTabla
-        ) {
+    async function actualizarInformacion() {
 
-            const registros = [];
+        try {
 
-            let desde = 0;
+            const [
+                totalLibros,
+                totalAfiliados,
+                totalColaboradores,
+                totalPrestamos
+            ] = await Promise.all([
 
+                contarTabla("libros"),
+                contarTabla("afiliados"),
+                contarTabla("colaboradores"),
+                contarTabla("prestamos")
 
-            while (true) {
+            ]);
 
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from(nombreTabla)
-                        .select("*")
-                        .range(
-                            desde,
-                            desde + 999
-                        );
+            document.getElementById("totalLibros").textContent =
+                totalLibros.toLocaleString("es-GT");
 
+            document.getElementById("totalAfiliados").textContent =
+                totalAfiliados.toLocaleString("es-GT");
 
-                if (error) {
+            document.getElementById("totalColaboradores").textContent =
+                totalColaboradores.toLocaleString("es-GT");
 
-                    console.error(
-                        `Error cargando ${nombreTabla}:`,
-                        error
-                    );
+            document.getElementById("totalPrestamos").textContent =
+                totalPrestamos.toLocaleString("es-GT");
 
+            const totalDatos =
+                totalLibros +
+                totalAfiliados +
+                totalColaboradores +
+                totalPrestamos;
 
-                    throw error;
+            document.getElementById("totalDatos").textContent =
+                totalDatos.toLocaleString("es-GT");
 
-                }
+        } catch (error) {
 
-
-                if (
-                    !data ||
-                    data.length === 0
-                ) {
-
-                    break;
-
-                }
-
-
-                registros.push(
-                    ...data
-                );
-
-
-                if (
-                    data.length < 1000
-                ) {
-
-                    break;
-
-                }
-
-
-                desde += 1000;
-
-            }
-
-
-            return registros;
-
-        }
-
-
-        /* =========================================================
-           ACTUALIZAR INFORMACIÓN
-        ========================================================== */
-
-        async function actualizarInformacion() {
-
-            if (
-                !window.respaldoAutorizado
-            ) {
-
-                return;
-
-            }
-
-
-            try {
-
-                const [
-                    libros,
-                    afiliados,
-                    colaboradores,
-                    prestamos
-                ] =
-                    await Promise.all([
-
-                        cargarTabla(
-                            "libros"
-                        ),
-
-                        cargarTabla(
-                            "afiliados"
-                        ),
-
-                        cargarTabla(
-                            "colaboradores"
-                        ),
-
-                        cargarTabla(
-                            "prestamos"
-                        )
-
-                    ]);
-
-
-                document.getElementById(
-                    "totalLibros"
-                ).textContent =
-                    libros.length.toLocaleString(
-                        "es-GT"
-                    );
-
-
-                document.getElementById(
-                    "totalAfiliados"
-                ).textContent =
-                    afiliados.length.toLocaleString(
-                        "es-GT"
-                    );
-
-
-                document.getElementById(
-                    "totalColaboradores"
-                ).textContent =
-                    colaboradores.length.toLocaleString(
-                        "es-GT"
-                    );
-
-
-                document.getElementById(
-                    "totalPrestamos"
-                ).textContent =
-                    prestamos.length.toLocaleString(
-                        "es-GT"
-                    );
-
-
-                document.getElementById(
-                    "totalDatos"
-                ).textContent =
-                    (
-                        libros.length +
-                        afiliados.length +
-                        colaboradores.length +
-                        prestamos.length
-                    ).toLocaleString(
-                        "es-GT"
-                    );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error actualizando información:",
-                    error
-                );
-
-
-                mostrarMensaje(
-                    "No se pudo consultar la información actual de Supabase.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        /* =========================================================
-           FECHA PARA NOMBRE DEL ARCHIVO
-        ========================================================== */
-
-        function obtenerFechaArchivo() {
-
-            const fecha =
-                new Date();
-
-
-            const dia =
-                String(
-                    fecha.getDate()
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            const mes =
-                String(
-                    fecha.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            const anio =
-                fecha.getFullYear();
-
-
-            return `${dia}-${mes}-${anio}`;
-
-        }
-
-
-        /* =========================================================
-           CREAR RESPALDO
-        ========================================================== */
-
-        async function crearRespaldo() {
-
-            if (
-                !window.respaldoAutorizado
-            ) {
-
-                window.location.replace(
-                    "index.html"
-                );
-
-                return;
-
-            }
-
-
-            btnCrearRespaldo.disabled =
-                true;
-
-
-            btnSeleccionarRespaldo.disabled =
-                true;
-
-
-            btnLimpiarPrestamos.disabled =
-                true;
-
+            console.error("Error al actualizar información:", error);
 
             mostrarMensaje(
-                "Preparando respaldo. Espere un momento...",
-                "aviso"
+                "No fue posible obtener la información actual de la base de datos.",
+                "error"
             );
-
-
-            try {
-
-                const [
-                    afiliados,
-                    libros,
-                    colaboradores,
-                    prestamos
-                ] =
-                    await Promise.all([
-
-                        cargarTabla(
-                            "afiliados"
-                        ),
-
-                        cargarTabla(
-                            "libros"
-                        ),
-
-                        cargarTabla(
-                            "colaboradores"
-                        ),
-
-                        cargarTabla(
-                            "prestamos"
-                        )
-
-                    ]);
-
-
-                const totalRegistros =
-                    afiliados.length +
-                    libros.length +
-                    colaboradores.length +
-                    prestamos.length;
-
-
-                if (
-                    totalRegistros === 0
-                ) {
-
-                    mostrarMensaje(
-                        "No se encontraron registros en Supabase para respaldar.",
-                        "aviso"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const respaldo = {
-
-                    aplicacion:
-                        "Biblioteca",
-
-                    versionRespaldo:
-                        "3.0",
-
-                    tipo:
-                        "Supabase",
-
-                    fechaRespaldo:
-                        new Date().toISOString(),
-
-                    tablas: {
-
-                        afiliados:
-                            afiliados,
-
-                        libros:
-                            libros,
-
-                        colaboradores:
-                            colaboradores,
-
-                        prestamos:
-                            prestamos
-
-                    },
-
-                    resumen: {
-
-                        afiliados:
-                            afiliados.length,
-
-                        libros:
-                            libros.length,
-
-                        colaboradores:
-                            colaboradores.length,
-
-                        prestamos:
-                            prestamos.length,
-
-                        totalRegistros:
-                            totalRegistros
-
-                    }
-
-                };
-
-
-                const contenido =
-                    JSON.stringify(
-                        respaldo,
-                        null,
-                        2
-                    );
-
-
-                const archivo =
-                    new Blob(
-                        [
-                            contenido
-                        ],
-                        {
-                            type:
-                                "application/json"
-                        }
-                    );
-
-
-                const url =
-                    URL.createObjectURL(
-                        archivo
-                    );
-
-
-                const enlace =
-                    document.createElement(
-                        "a"
-                    );
-
-
-                const nombreArchivo =
-                    `Biblioteca_Respaldo_${obtenerFechaArchivo()}.json`;
-
-
-                enlace.href =
-                    url;
-
-
-                enlace.download =
-                    nombreArchivo;
-
-
-                document.body.appendChild(
-                    enlace
-                );
-
-
-                enlace.click();
-
-
-                document.body.removeChild(
-                    enlace
-                );
-
-
-                URL.revokeObjectURL(
-                    url
-                );
-
-
-                mostrarMensaje(
-                    `Respaldo creado correctamente: ${nombreArchivo}. Se respaldaron ${totalRegistros.toLocaleString("es-GT")} registros.`,
-                    "exito"
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error creando respaldo:",
-                    error
-                );
-
-
-                mostrarMensaje(
-                    "No fue posible crear el respaldo. Revise la consola para obtener más información.",
-                    "error"
-                );
-
-
-            } finally {
-
-                btnCrearRespaldo.disabled =
-                    false;
-
-
-                btnSeleccionarRespaldo.disabled =
-                    false;
-
-
-                btnLimpiarPrestamos.disabled =
-                    false;
-
-            }
-
         }
+    }
 
 
-        /* =========================================================
-           ABRIR MODAL DE LIMPIEZA
-        ========================================================== */
+    /* =========================================
+       OBTENER TODOS LOS REGISTROS
+    ========================================= */
 
-        async function abrirModalLimpiar() {
+    async function obtenerTodos(nombreTabla) {
 
-            if (
-                !window.respaldoAutorizado
-            ) {
+        const cantidad = 1000;
+        let todos = [];
+        let desde = 0;
 
-                window.location.replace(
-                    "index.html"
-                );
+        while (true) {
 
-                return;
+            const hasta = desde + cantidad - 1;
 
-            }
-
-
-            btnCrearRespaldo.disabled =
-                true;
-
-
-            btnSeleccionarRespaldo.disabled =
-                true;
-
-
-            btnLimpiarPrestamos.disabled =
-                true;
-
-
-            modalLimpiarTitulo.textContent =
-                "Limpiar préstamos";
-
-
-            modalLimpiarMensaje.textContent =
-                "Consultando los registros actuales de préstamos y devoluciones...";
-
-
-            modalCantidad.style.display =
-                "none";
-
-
-            modalAdvertencia.style.display =
-                "none";
-
-
-            modalLimpiarBotones.style.display =
-                "none";
-
-
-            modalLimpiar.classList.add(
-                "mostrar"
-            );
-
-
-            document.body.style.overflow =
-                "hidden";
-
-
-            try {
-
-                const prestamos =
-                    await cargarTabla(
-                        "prestamos"
-                    );
-
-
-                cantidadPrestamosPendiente =
-                    prestamos.length;
-
-
-                if (
-                    cantidadPrestamosPendiente === 0
-                ) {
-
-                    modalLimpiarTitulo.textContent =
-                        "Sin registros para limpiar";
-
-
-                    modalLimpiarMensaje.textContent =
-                        "No existen registros de préstamos o devoluciones para eliminar.";
-
-
-                    modalLimpiarBotones.style.display =
-                        "grid";
-
-
-                    btnContinuarLimpiar.style.display =
-                        "none";
-
-
-                    btnCancelarLimpiar.textContent =
-                        "Cerrar";
-
-
-                    return;
-
-                }
-
-
-                modalLimpiarTitulo.textContent =
-                    "Limpiar préstamos";
-
-
-                modalLimpiarMensaje.textContent =
-                    "Actualmente existen los siguientes registros que serán eliminados:";
-
-
-                modalCantidad.style.display =
-                    "block";
-
-
-                modalCantidadNumero.textContent =
-                    cantidadPrestamosPendiente.toLocaleString(
-                        "es-GT"
-                    );
-
-
-                modalAdvertencia.style.display =
-                    "block";
-
-
-                modalLimpiarBotones.style.display =
-                    "grid";
-
-
-                btnContinuarLimpiar.style.display =
-                    "block";
-
-
-                btnCancelarLimpiar.textContent =
-                    "Cancelar";
-
-
-                btnContinuarLimpiar.textContent =
-                    "Continuar";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error consultando préstamos:",
-                    error
-                );
-
-
-                cerrarModalLimpiar();
-
-
-                mostrarMensaje(
-                    "No fue posible consultar los registros de préstamos.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        /* =========================================================
-           SEGUNDA CONFIRMACIÓN DENTRO DEL MODAL
-        ========================================================== */
-
-        function mostrarSegundaConfirmacion() {
-
-            modalLimpiarTitulo.textContent =
-                "Confirmar limpieza";
-
-
-            modalLimpiarMensaje.textContent =
-                "Está a punto de eliminar todos los registros de préstamos y devoluciones.";
-
-
-            modalCantidad.style.display =
-                "block";
-
-
-            modalAdvertencia.style.display =
-                "block";
-
-
-            modalAdvertencia.textContent =
-                "Esta acción no se puede deshacer desde esta pantalla. Los libros, afiliados y colaboradores no serán eliminados.";
-
-
-            btnCancelarLimpiar.textContent =
-                "Cancelar";
-
-
-            btnContinuarLimpiar.textContent =
-                "Eliminar registros";
-
-
-            btnContinuarLimpiar.classList.remove(
-                "modal-boton-confirmar"
-            );
-
-
-            btnContinuarLimpiar.classList.add(
-                "modal-boton-eliminar"
-            );
-
-        }
-
-
-        /* =========================================================
-           EJECUTAR LIMPIEZA
-        ========================================================== */
-
-        async function ejecutarLimpieza() {
-
-            btnCancelarLimpiar.disabled =
-                true;
-
-
-            btnContinuarLimpiar.disabled =
-                true;
-
-
-            modalLimpiarTitulo.textContent =
-                "Limpiando préstamos";
-
-
-            modalLimpiarMensaje.textContent =
-                "Eliminando los registros de préstamos y devoluciones. No cierre esta página.";
-
-
-            modalCantidad.style.display =
-                "none";
-
-
-            modalAdvertencia.style.display =
-                "none";
-
-
-            modalLimpiarBotones.style.display =
-                "none";
-
-
-            try {
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("prestamos")
-                        .delete()
-                        .not(
-                            "id",
-                            "is",
-                            null
-                        );
-
-
-                if (error) {
-
-                    console.error(
-                        "Error eliminando los préstamos:",
-                        error
-                    );
-
-
-                    throw error;
-
-                }
-
-
-                cerrarModalLimpiar();
-
-
-                await actualizarInformacion();
-
-
-                mostrarMensaje(
-                    `Limpieza completada correctamente. Se eliminaron ${cantidadPrestamosPendiente.toLocaleString("es-GT")} registros de préstamos y devoluciones. Los libros, afiliados y colaboradores permanecen intactos.`,
-                    "exito"
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error limpiando préstamos:",
-                    error
-                );
-
-
-                cerrarModalLimpiar();
-
-
-                mostrarMensaje(
-                    "No fue posible eliminar los registros de préstamos. Revise la consola para obtener más información.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        /* =========================================================
-           CERRAR MODAL DE LIMPIEZA
-        ========================================================== */
-
-        function cerrarModalLimpiar() {
-
-            modalLimpiar.classList.remove(
-                "mostrar"
-            );
-
-
-            document.body.style.overflow =
-                "";
-
-
-            btnCrearRespaldo.disabled =
-                false;
-
-
-            btnSeleccionarRespaldo.disabled =
-                false;
-
-
-            btnLimpiarPrestamos.disabled =
-                false;
-
-
-            btnCancelarLimpiar.disabled =
-                false;
-
-
-            btnContinuarLimpiar.disabled =
-                false;
-
-
-            btnContinuarLimpiar.style.display =
-                "block";
-
-
-            btnCancelarLimpiar.textContent =
-                "Cancelar";
-
-
-            btnContinuarLimpiar.textContent =
-                "Continuar";
-
-
-            btnContinuarLimpiar.classList.remove(
-                "modal-boton-eliminar"
-            );
-
-
-            btnContinuarLimpiar.classList.add(
-                "modal-boton-confirmar"
-            );
-
-        }
-
-
-        /* =========================================================
-           SELECCIONAR ARCHIVO
-        ========================================================== */
-
-        function seleccionarRespaldo() {
-
-            if (
-                !window.respaldoAutorizado
-            ) {
-
-                window.location.replace(
-                    "index.html"
-                );
-
-                return;
-
-            }
-
-
-            archivoRespaldo.click();
-
-        }
-
-
-        /* =========================================================
-           VALIDAR RESPALDO
-        ========================================================== */
-
-        function validarRespaldo(
-            respaldo
-        ) {
-
-            if (
-                !respaldo ||
-                typeof respaldo !== "object"
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                !respaldo.tablas ||
-                typeof respaldo.tablas !== "object"
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                !Array.isArray(
-                    respaldo.tablas.afiliados
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                !Array.isArray(
-                    respaldo.tablas.libros
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                !Array.isArray(
-                    respaldo.tablas.colaboradores
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                !Array.isArray(
-                    respaldo.tablas.prestamos
-                )
-            ) {
-
-                return false;
-
-            }
-
-
-            return true;
-
-        }
-
-
-        /* =========================================================
-           INSERTAR POR LOTES
-        ========================================================== */
-
-        async function insertarPorLotes(
-            nombreTabla,
-            registros
-        ) {
-
-            if (
-                !registros ||
-                registros.length === 0
-            ) {
-
-                return;
-
-            }
-
-
-            for (
-                let i = 0;
-                i < registros.length;
-                i += TAMANO_LOTE
-            ) {
-
-                const lote =
-                    registros.slice(
-                        i,
-                        i + TAMANO_LOTE
-                    );
-
-
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from(nombreTabla)
-                        .insert(
-                            lote
-                        );
-
-
-                if (error) {
-
-                    console.error(
-                        `Error restaurando ${nombreTabla}:`,
-                        error
-                    );
-
-
-                    throw error;
-
-                }
-
-            }
-
-        }
-
-
-        /* =========================================================
-           ELIMINAR TABLA COMPLETA
-        ========================================================== */
-
-        async function eliminarTabla(
-            nombreTabla
-        ) {
-
-            const {
-                error
-            } =
-                await supabaseClient
-                    .from(nombreTabla)
-                    .delete()
-                    .not(
-                        "id",
-                        "is",
-                        null
-                    );
-
+            const { data, error } = await supabaseClient
+                .from(nombreTabla)
+                .select("*")
+                .range(desde, hasta);
 
             if (error) {
-
-                console.error(
-                    `Error eliminando ${nombreTabla}:`,
-                    error
-                );
-
-
                 throw error;
+            }
+
+            if (data && data.length > 0) {
+
+                todos = todos.concat(data);
 
             }
 
+            if (!data || data.length < cantidad) {
+                break;
+            }
+
+            desde += cantidad;
         }
 
+        return todos;
+    }
 
-        /* =========================================================
-           MOSTRAR MODAL DE RESTAURACIÓN
-        ========================================================== */
 
-        function mostrarModalRestauracion(
-            respaldo
+    /* =========================================
+       CREAR RESPALDO
+    ========================================= */
+
+    async function crearRespaldo() {
+
+        try {
+
+            mostrarMensaje(
+                "Creando respaldo. Espera un momento...",
+                "exito"
+            );
+
+            const [
+                afiliados,
+                libros,
+                colaboradores,
+                prestamos
+            ] = await Promise.all([
+
+                obtenerTodos("afiliados"),
+                obtenerTodos("libros"),
+                obtenerTodos("colaboradores"),
+                obtenerTodos("prestamos")
+
+            ]);
+
+            const respaldo = {
+
+                version: versionRespaldo,
+
+                fecha: new Date().toISOString(),
+
+                tablas: {
+
+                    afiliados: afiliados,
+                    libros: libros,
+                    colaboradores: colaboradores,
+                    prestamos: prestamos
+
+                },
+
+                resumen: {
+
+                    afiliados: afiliados.length,
+                    libros: libros.length,
+                    colaboradores: colaboradores.length,
+                    prestamos: prestamos.length,
+
+                    total:
+                        afiliados.length +
+                        libros.length +
+                        colaboradores.length +
+                        prestamos.length
+
+                }
+
+            };
+
+            const contenido =
+                JSON.stringify(respaldo, null, 2);
+
+            const blob = new Blob(
+                [contenido],
+                {
+                    type: "application/json"
+                }
+            );
+
+            const fecha = new Date();
+
+            const nombreArchivo =
+                "respaldo_biblioteca_" +
+                fecha.getFullYear() +
+                String(fecha.getMonth() + 1).padStart(2, "0") +
+                String(fecha.getDate()).padStart(2, "0") +
+                "_" +
+                String(fecha.getHours()).padStart(2, "0") +
+                String(fecha.getMinutes()).padStart(2, "0") +
+                ".json";
+
+            const url =
+                URL.createObjectURL(blob);
+
+            const enlace =
+                document.createElement("a");
+
+            enlace.href = url;
+            enlace.download = nombreArchivo;
+
+            document.body.appendChild(enlace);
+
+            enlace.click();
+
+            document.body.removeChild(enlace);
+
+            URL.revokeObjectURL(url);
+
+            localStorage.setItem(
+                "biblioteca_ultimo_respaldo",
+                new Date().toISOString()
+            );
+
+            mostrarMensaje(
+                "Respaldo creado correctamente. Se guardaron " +
+                respaldo.resumen.total.toLocaleString("es-GT") +
+                " registros.",
+                "exito"
+            );
+
+        } catch (error) {
+
+            console.error("Error creando respaldo:", error);
+
+            mostrarMensaje(
+                "No fue posible crear el respaldo.",
+                "error"
+            );
+        }
+    }
+
+
+    /* =========================================
+       SELECCIONAR ARCHIVO
+    ========================================= */
+
+    function seleccionarRespaldo() {
+
+        document.getElementById("archivoRespaldo").click();
+    }
+
+
+    /* =========================================
+       VALIDAR RESPALDO
+    ========================================= */
+
+    function validarRespaldo(respaldo) {
+
+        if (!respaldo || typeof respaldo !== "object") {
+            return false;
+        }
+
+        if (!respaldo.tablas) {
+            return false;
+        }
+
+        if (!Array.isArray(respaldo.tablas.afiliados)) {
+            return false;
+        }
+
+        if (!Array.isArray(respaldo.tablas.libros)) {
+            return false;
+        }
+
+        if (!Array.isArray(respaldo.tablas.prestamos)) {
+            return false;
+        }
+
+        /*
+         * Colaboradores es compatible con respaldos
+         * anteriores. Si no existe, se tratará como
+         * una tabla vacía.
+         */
+
+        return true;
+    }
+
+
+    /* =========================================
+       ELIMINAR TABLA
+    ========================================= */
+
+    async function eliminarTabla(nombreTabla) {
+
+        const { error } = await supabaseClient
+            .from(nombreTabla)
+            .delete()
+            .not("id", "is", null);
+
+        if (error) {
+            throw error;
+        }
+    }
+
+
+    /* =========================================
+       INSERTAR POR BLOQUES
+    ========================================= */
+
+    async function insertarPorBloques(
+        nombreTabla,
+        registros
+    ) {
+
+        if (!registros || registros.length === 0) {
+            return;
+        }
+
+        const tamañoBloque = 500;
+
+        for (
+            let inicio = 0;
+            inicio < registros.length;
+            inicio += tamañoBloque
         ) {
 
-            const afiliados =
-                respaldo.tablas.afiliados;
+            const bloque =
+                registros.slice(
+                    inicio,
+                    inicio + tamañoBloque
+                );
 
+            const { error } =
+                await supabaseClient
+                    .from(nombreTabla)
+                    .insert(bloque);
+
+            if (error) {
+                throw error;
+            }
+        }
+    }
+
+
+    /* =========================================
+       RESTAURAR RESPALDO
+    ========================================= */
+
+    async function restaurarRespaldo(evento) {
+
+        const archivo =
+            evento.target.files[0];
+
+        if (!archivo) {
+            return;
+        }
+
+        try {
+
+            const texto =
+                await archivo.text();
+
+            const respaldo =
+                JSON.parse(texto);
+
+            if (!validarRespaldo(respaldo)) {
+
+                mostrarMensaje(
+                    "El archivo seleccionado no es un respaldo válido de la biblioteca.",
+                    "error"
+                );
+
+                evento.target.value = "";
+
+                return;
+            }
+
+            const afiliados =
+                respaldo.tablas.afiliados || [];
 
             const libros =
-                respaldo.tablas.libros;
-
+                respaldo.tablas.libros || [];
 
             const colaboradores =
-                respaldo.tablas.colaboradores;
-
+                Array.isArray(
+                    respaldo.tablas.colaboradores
+                )
+                    ? respaldo.tablas.colaboradores
+                    : [];
 
             const prestamos =
-                respaldo.tablas.prestamos;
-
+                respaldo.tablas.prestamos || [];
 
             const total =
                 afiliados.length +
@@ -2400,556 +1163,363 @@
                 colaboradores.length +
                 prestamos.length;
 
-
             const fechaRespaldo =
-                respaldo.fechaRespaldo
+                respaldo.fecha
                     ? new Date(
-                        respaldo.fechaRespaldo
-                    ).toLocaleString(
-                        "es-GT"
-                    )
-                    : "No indicada";
+                        respaldo.fecha
+                    ).toLocaleString("es-GT")
+                    : "Fecha no disponible";
 
-
-            modalRestaurarFecha.textContent =
-                `Fecha del respaldo: ${fechaRespaldo}`;
-
-
-            modalRestaurarDatos.innerHTML =
-                `Afiliados: ${afiliados.length.toLocaleString("es-GT")} · ` +
-                `Libros: ${libros.length.toLocaleString("es-GT")} · ` +
-                `Colaboradores: ${colaboradores.length.toLocaleString("es-GT")} · ` +
-                `Préstamos: ${prestamos.length.toLocaleString("es-GT")} · ` +
-                `Total: ${total.toLocaleString("es-GT")}`;
-
-
-            datosRestauracionPendiente = {
-
-                respaldo:
-                    respaldo,
-
-                afiliados:
-                    afiliados,
-
-                libros:
-                    libros,
-
-                colaboradores:
-                    colaboradores,
-
-                prestamos:
-                    prestamos,
-
-                total:
-                    total
-
-            };
-
-
-            modalRestaurar.classList.add(
-                "mostrar"
-            );
-
-
-            document.body.style.overflow =
-                "hidden";
-
-        }
-
-
-        /* =========================================================
-           CERRAR MODAL DE RESTAURACIÓN
-        ========================================================== */
-
-        function cerrarModalRestauracion() {
-
-            modalRestaurar.classList.remove(
-                "mostrar"
-            );
-
-
-            document.body.style.overflow =
-                "";
-
-
-            datosRestauracionPendiente =
-                null;
-
-
-            btnCrearRespaldo.disabled =
-                false;
-
-
-            btnSeleccionarRespaldo.disabled =
-                false;
-
-
-            btnLimpiarPrestamos.disabled =
-                false;
-
-        }
-
-
-        /* =========================================================
-           RESTAURAR RESPALDO
-        ========================================================== */
-
-        async function restaurarRespaldo(
-            evento
-        ) {
-
-            if (
-                !window.respaldoAutorizado
-            ) {
-
-                window.location.replace(
-                    "index.html"
+            const confirmar =
+                await mostrarConfirmacion(
+                    "Restaurar respaldo",
+                    "El archivo contiene:\n\n" +
+                    afiliados.length.toLocaleString("es-GT") +
+                    " afiliados\n" +
+                    colaboradores.length.toLocaleString("es-GT") +
+                    " colaboradores\n" +
+                    libros.length.toLocaleString("es-GT") +
+                    " libros\n" +
+                    prestamos.length.toLocaleString("es-GT") +
+                    " préstamos\n\n" +
+                    "Total: " +
+                    total.toLocaleString("es-GT") +
+                    " registros.\n\n" +
+                    "La restauración reemplazará los datos actuales de la biblioteca.\n\n" +
+                    "Fecha del respaldo: " +
+                    fechaRespaldo +
+                    "\n\n" +
+                    "¿Deseas continuar?",
+                    "Restaurar datos"
                 );
 
-                return;
+            if (!confirmar) {
 
-            }
-
-
-            const archivo =
-                evento.target.files[0];
-
-
-            if (!archivo) {
+                evento.target.value = "";
 
                 return;
-
             }
-
-
-            btnCrearRespaldo.disabled =
-                true;
-
-
-            btnSeleccionarRespaldo.disabled =
-                true;
-
-
-            btnLimpiarPrestamos.disabled =
-                true;
-
-
-            const lector =
-                new FileReader();
-
-
-            lector.onload =
-                async function(e) {
-
-                    try {
-
-                        const respaldo =
-                            JSON.parse(
-                                e.target.result
-                            );
-
-
-                        if (
-                            !validarRespaldo(
-                                respaldo
-                            )
-                        ) {
-
-                            mostrarMensaje(
-                                "El archivo seleccionado no parece ser un respaldo válido de la Biblioteca.",
-                                "error"
-                            );
-
-
-                            btnCrearRespaldo.disabled =
-                                false;
-
-
-                            btnSeleccionarRespaldo.disabled =
-                                false;
-
-
-                            btnLimpiarPrestamos.disabled =
-                                false;
-
-
-                            return;
-
-                        }
-
-
-                        mostrarModalRestauracion(
-                            respaldo
-                        );
-
-
-                    } catch (error) {
-
-                        console.error(
-                            "Error leyendo respaldo:",
-                            error
-                        );
-
-
-                        mostrarMensaje(
-                            "No fue posible leer el archivo seleccionado.",
-                            "error"
-                        );
-
-
-                        btnCrearRespaldo.disabled =
-                            false;
-
-
-                        btnSeleccionarRespaldo.disabled =
-                            false;
-
-
-                        btnLimpiarPrestamos.disabled =
-                            false;
-
-                    }
-
-                };
-
-
-            lector.onerror =
-                function() {
-
-                    mostrarMensaje(
-                        "No fue posible leer el archivo seleccionado.",
-                        "error"
-                    );
-
-
-                    btnCrearRespaldo.disabled =
-                        false;
-
-
-                    btnSeleccionarRespaldo.disabled =
-                        false;
-
-
-                    btnLimpiarPrestamos.disabled =
-                        false;
-
-                };
-
-
-            lector.readAsText(
-                archivo
-            );
-
-
-            evento.target.value = "";
-
-        }
-
-
-        /* =========================================================
-           EJECUTAR RESTAURACIÓN
-        ========================================================== */
-
-        async function ejecutarRestauracion() {
-
-            if (
-                !datosRestauracionPendiente
-            ) {
-
-                return;
-
-            }
-
-
-            const {
-
-                afiliados,
-                libros,
-                colaboradores,
-                prestamos,
-                total
-
-            } =
-                datosRestauracionPendiente;
-
-
-            btnCancelarRestaurar.disabled =
-                true;
-
-
-            btnConfirmarRestaurar.disabled =
-                true;
-
-
-            modalRestaurar.classList.remove(
-                "mostrar"
-            );
-
-
-            document.body.style.overflow =
-                "";
-
 
             mostrarMensaje(
-                "Restaurando datos en Supabase. No cierre esta página...",
-                "aviso"
+                "Restaurando información. Espera un momento...",
+                "exito"
             );
 
-
-            try {
-
-                /*
-                 * Primero eliminamos los préstamos.
-                 */
-
-                await eliminarTabla(
-                    "prestamos"
-                );
-
-
-                /*
-                 * Después eliminamos colaboradores,
-                 * libros y afiliados.
-                 */
-
-                await eliminarTabla(
-                    "colaboradores"
-                );
-
-
-                await eliminarTabla(
-                    "libros"
-                );
-
-
-                await eliminarTabla(
-                    "afiliados"
-                );
-
-
-                /*
-                 * Restauramos las entidades principales.
-                 */
-
-                await insertarPorLotes(
-                    "afiliados",
-                    afiliados
-                );
-
-
-                await insertarPorLotes(
-                    "libros",
-                    libros
-                );
-
-
-                await insertarPorLotes(
-                    "colaboradores",
-                    colaboradores
-                );
-
-
-                /*
-                 * Finalmente restauramos los préstamos.
-                 */
-
-                await insertarPorLotes(
-                    "prestamos",
-                    prestamos
-                );
-
-
-                await actualizarInformacion();
-
-
-                mostrarMensaje(
-                    `Restauración completada correctamente. Se restauraron ${total.toLocaleString("es-GT")} registros.`,
-                    "exito"
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error restaurando respaldo:",
-                    error
-                );
-
-
-                mostrarMensaje(
-                    "Ocurrió un error durante la restauración. Revise la consola y verifique los datos de Supabase.",
-                    "error"
-                );
-
-
-            } finally {
-
-                datosRestauracionPendiente =
-                    null;
-
-
-                btnCrearRespaldo.disabled =
-                    false;
-
-
-                btnSeleccionarRespaldo.disabled =
-                    false;
-
-
-                btnLimpiarPrestamos.disabled =
-                    false;
-
-
-                btnCancelarRestaurar.disabled =
-                    false;
-
-
-                btnConfirmarRestaurar.disabled =
-                    false;
-
-            }
-
-        }
-
-
-        /* =========================================================
-           EVENTOS
-        ========================================================== */
-
-        btnCrearRespaldo.addEventListener(
-            "click",
-            crearRespaldo
-        );
-
-
-        btnSeleccionarRespaldo.addEventListener(
-            "click",
-            seleccionarRespaldo
-        );
-
-
-        btnLimpiarPrestamos.addEventListener(
-            "click",
-            abrirModalLimpiar
-        );
-
-
-        btnCancelarLimpiar.addEventListener(
-            "click",
-            cerrarModalLimpiar
-        );
-
-
-        btnContinuarLimpiar.addEventListener(
-            "click",
-            function () {
-
-                if (
-                    cantidadPrestamosPendiente <= 0
-                ) {
-
-                    cerrarModalLimpiar();
-
-                    return;
-
-                }
-
-
-                if (
-                    btnContinuarLimpiar.textContent ===
-                    "Eliminar registros"
-                ) {
-
-                    ejecutarLimpieza();
-
-                    return;
-
-                }
-
-
-                mostrarSegundaConfirmacion();
-
-            }
-        );
-
-
-        btnCancelarRestaurar.addEventListener(
-            "click",
-            cerrarModalRestauracion
-        );
-
-
-        btnConfirmarRestaurar.addEventListener(
-            "click",
-            ejecutarRestauracion
-        );
-
-
-        /* =========================================================
-           CERRAR MODALES AL HACER CLIC EN EL FONDO
-        ========================================================== */
-
-        modalLimpiar.addEventListener(
-            "click",
-            function(evento) {
-
-                if (
-                    evento.target ===
-                    modalLimpiar
-                ) {
-
-                    cerrarModalLimpiar();
-
-                }
-
-            }
-        );
-
-
-        modalRestaurar.addEventListener(
-            "click",
-            function(evento) {
-
-                if (
-                    evento.target ===
-                    modalRestaurar
-                ) {
-
-                    cerrarModalRestauracion();
-
-                }
-
-            }
-        );
-
-
-        /* =========================================================
-           INICIAR RESPALDO
-        ========================================================== */
-
-        async function iniciarRespaldo() {
-
-            const accesoPermitido =
-                await window.respaldoAuth;
-
-
-            if (
-                !accesoPermitido
-            ) {
-
-                return;
-
-            }
-
+            /*
+             * Primero se eliminan los préstamos,
+             * porque pueden depender de libros
+             * y colaboradores.
+             */
+
+            await eliminarTabla("prestamos");
+
+            await eliminarTabla("libros");
+
+            await eliminarTabla("afiliados");
+
+            await eliminarTabla("colaboradores");
+
+            /*
+             * Después se restauran las tablas.
+             */
+
+            await insertarPorBloques(
+                "afiliados",
+                afiliados
+            );
+
+            await insertarPorBloques(
+                "libros",
+                libros
+            );
+
+            await insertarPorBloques(
+                "colaboradores",
+                colaboradores
+            );
+
+            await insertarPorBloques(
+                "prestamos",
+                prestamos
+            );
 
             await actualizarInformacion();
 
+            mostrarMensaje(
+                "El respaldo fue restaurado correctamente. Se cargaron " +
+                total.toLocaleString("es-GT") +
+                " registros.",
+                "exito"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error restaurando respaldo:",
+                error
+            );
+
+            mostrarMensaje(
+                "No fue posible restaurar el respaldo. Verifica que el archivo sea válido.",
+                "error"
+            );
+
+        } finally {
+
+            evento.target.value = "";
+        }
+    }
+
+
+    /* =========================================
+       LIMPIAR PRÉSTAMOS
+    ========================================= */
+
+    async function limpiarPrestamos() {
+
+        try {
+
+            const cantidad =
+                await contarTabla("prestamos");
+
+            const primeraConfirmacion =
+                await mostrarConfirmacion(
+                    "Limpiar préstamos",
+                    "Actualmente existen " +
+                    cantidad.toLocaleString("es-GT") +
+                    " registros de préstamos.\n\n" +
+                    "Esta acción eliminará todos los préstamos, incluyendo los históricos y los ya devueltos.\n\n" +
+                    "Los libros, afiliados y colaboradores no serán eliminados.\n\n" +
+                    "¿Deseas continuar?",
+                    "Continuar"
+                );
+
+            if (!primeraConfirmacion) {
+                return;
+            }
+
+            const segundaConfirmacion =
+                await mostrarConfirmacion(
+                    "Última confirmación",
+                    "Se eliminarán " +
+                    cantidad.toLocaleString("es-GT") +
+                    " registros de préstamos.\n\n" +
+                    "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
+                    "¿Confirmas que deseas eliminarlos?",
+                    "Limpiar préstamos"
+                );
+
+            if (!segundaConfirmacion) {
+                return;
+            }
+
+            mostrarMensaje(
+                "Eliminando préstamos. Espera un momento...",
+                "exito"
+            );
+
+            await eliminarTabla("prestamos");
+
+            /*
+             * Al eliminar todos los préstamos,
+             * los libros quedan disponibles.
+             */
+
+            await supabaseClient
+                .from("libros")
+                .update({
+                    estado: "Disponible"
+                })
+                .neq("estado", "Disponible");
+
+            await actualizarInformacion();
+
+            mostrarMensaje(
+                "Los préstamos fueron eliminados correctamente.",
+                "exito"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error limpiando préstamos:",
+                error
+            );
+
+            mostrarMensaje(
+                "No fue posible limpiar los préstamos.",
+                "error"
+            );
+        }
+    }
+
+
+    /* =========================================
+       LIMPIAR TODO
+    ========================================= */
+
+    async function limpiarTodo() {
+
+        try {
+
+            /*
+             * Primero contamos todo para mostrar
+             * exactamente qué se va a eliminar.
+             */
+
+            const [
+                afiliados,
+                colaboradores,
+                libros,
+                prestamos
+            ] = await Promise.all([
+
+                contarTabla("afiliados"),
+                contarTabla("colaboradores"),
+                contarTabla("libros"),
+                contarTabla("prestamos")
+
+            ]);
+
+            const total =
+                afiliados +
+                colaboradores +
+                libros +
+                prestamos;
+
+            const primeraConfirmacion =
+                await mostrarConfirmacion(
+                    "Limpiar toda la biblioteca",
+                    "Esta opción eliminará TODOS los datos actuales.\n\n" +
+                    afiliados.toLocaleString("es-GT") +
+                    " afiliados\n" +
+                    colaboradores.toLocaleString("es-GT") +
+                    " colaboradores\n" +
+                    libros.toLocaleString("es-GT") +
+                    " libros\n" +
+                    prestamos.toLocaleString("es-GT") +
+                    " préstamos\n\n" +
+                    "Total: " +
+                    total.toLocaleString("es-GT") +
+                    " registros.\n\n" +
+                    "Los datos activos, inactivos, dados de baja y el historial de préstamos serán eliminados.\n\n" +
+                    "Las tablas y la estructura del sistema permanecerán intactas.\n\n" +
+                    "¿Deseas continuar?",
+                    "Continuar"
+                );
+
+            if (!primeraConfirmacion) {
+                return;
+            }
+
+            const segundaConfirmacion =
+                await mostrarConfirmacion(
+                    "Última confirmación",
+                    "Se eliminarán TODOS los datos de la biblioteca.\n\n" +
+                    "Después de esta acción, el sistema quedará vacío para comenzar nuevamente desde cero.\n\n" +
+                    "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
+                    "Se recomienda crear un respaldo antes de continuar.\n\n" +
+                    "¿Confirmas que deseas limpiar toda la biblioteca?",
+                    "Limpiar todo"
+                );
+
+            if (!segundaConfirmacion) {
+                return;
+            }
+
+            mostrarMensaje(
+                "Limpiando toda la biblioteca. Espera un momento...",
+                "exito"
+            );
+
+            /*
+             * IMPORTANTE:
+             *
+             * Primero se eliminan los préstamos porque
+             * pueden contener referencias a libros y
+             * colaboradores.
+             */
+
+            await eliminarTabla("prestamos");
+
+            await eliminarTabla("libros");
+
+            await eliminarTabla("afiliados");
+
+            await eliminarTabla("colaboradores");
+
+            await actualizarInformacion();
+
+            mostrarMensaje(
+                "La biblioteca fue limpiada correctamente. El sistema está listo para comenzar desde cero.",
+                "exito"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error limpiando toda la biblioteca:",
+                error
+            );
+
+            mostrarMensaje(
+                "No fue posible limpiar toda la información. Algunos datos pueden no haberse eliminado.",
+                "error"
+            );
+
+            await actualizarInformacion();
+        }
+    }
+
+
+    /* =========================================
+       PROTECCIÓN DE PÁGINA
+    ========================================= */
+
+    window.respaldoAutorizado = false;
+
+    window.respaldoAuth =
+        (async function protegerRespaldo() {
+
+            const {
+                data: {
+                    session
+                }
+            } = await supabaseClient.auth.getSession();
+
+            if (!session) {
+
+                window.location.href =
+                    "index.html";
+
+                return false;
+            }
+
+            window.respaldoAutorizado = true;
+
+            document.documentElement.style.visibility =
+                "visible";
+
+            return true;
+
+        })();
+
+
+    /* =========================================
+       INICIO
+    ========================================= */
+
+    window.respaldoAuth.then((autorizado) => {
+
+        if (!autorizado) {
+            return;
         }
 
+        actualizarInformacion();
 
-        iniciarRespaldo();
+    });
 
-    </script>
+</script>
 
 </body>
 </html>
