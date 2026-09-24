@@ -43,11 +43,6 @@
 
     <!-- =========================================================
          COMPROBACIÓN DIRECTA DE SESIÓN
-         
-         IMPORTANTE:
-         Aquí solamente comprobamos la sesión.
-         La carga de los datos se hará al final de la página,
-         cuando todas las funciones ya estén disponibles.
     ========================================================== -->
 
     <script>
@@ -581,6 +576,23 @@
 
                         <div
                             class="dato-numero"
+                            id="totalColaboradores"
+                        >
+                            0
+                        </div>
+
+
+                        <div class="dato-texto">
+                            Colaboradores
+                        </div>
+
+                    </div>
+
+
+                    <div class="dato">
+
+                        <div
+                            class="dato-numero"
                             id="totalPrestamos"
                         >
                             0
@@ -632,7 +644,8 @@
                 <strong>Limpiar préstamos:</strong>
 
                 esta opción elimina únicamente los registros de préstamos
-                y devoluciones. Los libros y afiliados permanecerán intactos.
+                y devoluciones. Los libros, afiliados y colaboradores
+                permanecerán intactos.
 
                 <br><br>
 
@@ -809,6 +822,7 @@
                 const [
                     libros,
                     afiliados,
+                    colaboradores,
                     prestamos
                 ] =
                     await Promise.all([
@@ -819,6 +833,10 @@
 
                         cargarTabla(
                             "afiliados"
+                        ),
+
+                        cargarTabla(
+                            "colaboradores"
                         ),
 
                         cargarTabla(
@@ -845,6 +863,14 @@
 
 
                 document.getElementById(
+                    "totalColaboradores"
+                ).textContent =
+                    colaboradores.length.toLocaleString(
+                        "es-GT"
+                    );
+
+
+                document.getElementById(
                     "totalPrestamos"
                 ).textContent =
                     prestamos.length.toLocaleString(
@@ -858,6 +884,7 @@
                     (
                         libros.length +
                         afiliados.length +
+                        colaboradores.length +
                         prestamos.length
                     ).toLocaleString(
                         "es-GT"
@@ -961,6 +988,7 @@
                 const [
                     afiliados,
                     libros,
+                    colaboradores,
                     prestamos
                 ] =
                     await Promise.all([
@@ -974,6 +1002,10 @@
                         ),
 
                         cargarTabla(
+                            "colaboradores"
+                        ),
+
+                        cargarTabla(
                             "prestamos"
                         )
 
@@ -983,6 +1015,7 @@
                 const totalRegistros =
                     afiliados.length +
                     libros.length +
+                    colaboradores.length +
                     prestamos.length;
 
 
@@ -1007,7 +1040,7 @@
                         "Biblioteca",
 
                     versionRespaldo:
-                        "2.0",
+                        "3.0",
 
                     tipo:
                         "Supabase",
@@ -1023,6 +1056,9 @@
                         libros:
                             libros,
 
+                        colaboradores:
+                            colaboradores,
+
                         prestamos:
                             prestamos
 
@@ -1035,6 +1071,9 @@
 
                         libros:
                             libros.length,
+
+                        colaboradores:
+                            colaboradores.length,
 
                         prestamos:
                             prestamos.length,
@@ -1201,13 +1240,13 @@
                 const primeraConfirmacion =
                     confirm(
 
-                        "⚠️ LIMPIAR PRÉSTAMOS\n\n" +
+                        "LIMPIAR PRÉSTAMOS\n\n" +
 
                         `Actualmente existen ${cantidad.toLocaleString("es-GT")} registros de préstamos y devoluciones.\n\n` +
 
                         "Esta acción eliminará TODOS esos registros.\n\n" +
 
-                        "Los LIBROS y los AFILIADOS NO serán eliminados.\n\n" +
+                        "Los LIBROS, AFILIADOS y COLABORADORES NO serán eliminados.\n\n" +
 
                         "¿Deseas continuar?"
 
@@ -1304,7 +1343,7 @@
 
 
                 mostrarMensaje(
-                    `Limpieza completada correctamente. Se eliminaron ${cantidad.toLocaleString("es-GT")} registros de préstamos y devoluciones. Los libros y afiliados permanecen intactos.`,
+                    `Limpieza completada correctamente. Se eliminaron ${cantidad.toLocaleString("es-GT")} registros de préstamos y devoluciones. Los libros, afiliados y colaboradores permanecen intactos.`,
                     "exito"
                 );
 
@@ -1407,6 +1446,17 @@
             if (
                 !Array.isArray(
                     respaldo.tablas.libros
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                !Array.isArray(
+                    respaldo.tablas.colaboradores
                 )
             ) {
 
@@ -1610,6 +1660,10 @@
                             respaldo.tablas.libros;
 
 
+                        const colaboradores =
+                            respaldo.tablas.colaboradores;
+
+
                         const prestamos =
                             respaldo.tablas.prestamos;
 
@@ -1617,6 +1671,7 @@
                         const total =
                             afiliados.length +
                             libros.length +
+                            colaboradores.length +
                             prestamos.length;
 
 
@@ -1642,6 +1697,8 @@
                                 `Afiliados: ${afiliados.length.toLocaleString("es-GT")}\n` +
 
                                 `Libros: ${libros.length.toLocaleString("es-GT")}\n` +
+
+                                `Colaboradores: ${colaboradores.length.toLocaleString("es-GT")}\n` +
 
                                 `Préstamos: ${prestamos.length.toLocaleString("es-GT")}\n\n` +
 
@@ -1675,8 +1732,25 @@
                         );
 
 
+                        /*
+                         * Primero eliminamos los préstamos.
+                         * Esto permite posteriormente reemplazar
+                         * afiliados, libros y colaboradores sin
+                         * dejar préstamos antiguos relacionados.
+                         */
+
                         await eliminarTabla(
                             "prestamos"
+                        );
+
+
+                        /*
+                         * Después eliminamos colaboradores,
+                         * libros y afiliados.
+                         */
+
+                        await eliminarTabla(
+                            "colaboradores"
                         );
 
 
@@ -1690,6 +1764,11 @@
                         );
 
 
+                        /*
+                         * Restauramos primero las entidades
+                         * principales.
+                         */
+
                         await insertarPorLotes(
                             "afiliados",
                             afiliados
@@ -1701,6 +1780,18 @@
                             libros
                         );
 
+
+                        await insertarPorLotes(
+                            "colaboradores",
+                            colaboradores
+                        );
+
+
+                        /*
+                         * Finalmente restauramos préstamos.
+                         * De esta manera los datos de afiliados,
+                         * libros y colaboradores ya están presentes.
+                         */
 
                         await insertarPorLotes(
                             "prestamos",
@@ -1812,10 +1903,6 @@
 
         /* =========================================================
            INICIAR RESPALDO
-           
-           IMPORTANTE:
-           Esperamos a que la comprobación de sesión termine
-           antes de consultar las tablas de Supabase.
         ========================================================== */
 
         async function iniciarRespaldo() {
@@ -1837,11 +1924,6 @@
 
         }
 
-
-        /*
-         * Ahora todas las funciones ya fueron declaradas,
-         * por lo que podemos iniciar correctamente.
-         */
 
         iniciarRespaldo();
 
