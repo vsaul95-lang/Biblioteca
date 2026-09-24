@@ -1,2457 +1,3142 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Devoluciones - Biblioteca</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- =========================================================
+         SUPABASE
+    ========================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
     <script src="supabase.js"></script>
     <script src="auth.js"></script>
 
+
+    <!-- =========================================================
+         ESTILOS
+    ========================================================== -->
+
     <style>
+
+        html {
+            visibility: hidden;
+        }
+
+
         * {
             box-sizing: border-box;
         }
 
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             background: #f4f6f8;
-            color: #333;
+            color: #263238;
         }
+
+
+        /* =====================================================
+           ENCABEZADO
+        ====================================================== */
 
         .encabezado {
             background: #263238;
             color: white;
             padding: 18px 25px;
+        }
+
+
+        .encabezado-contenido {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+
+        .marca {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 12px;
         }
 
-        .encabezado h1 {
-            margin: 0;
+
+        .icono-marca {
+            font-size: 34px;
+        }
+
+
+        .titulo-marca {
             font-size: 22px;
+            font-weight: bold;
         }
 
-        .btn-volver {
-            background: #546e7a;
-            color: white;
-            text-decoration: none;
-            padding: 9px 14px;
-            border-radius: 6px;
-            font-size: 14px;
+
+        .subtitulo-marca {
+            font-size: 13px;
+            color: #cfd8dc;
+            margin-top: 3px;
         }
+
+
+        /* =====================================================
+           CONTENEDOR
+        ====================================================== */
 
         .contenedor {
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 15px;
+            margin: 25px auto;
+            padding: 0 18px;
         }
+
+
+        /* =====================================================
+           ENCABEZADO DE SECCIÓN
+        ====================================================== */
+
+        .encabezado-pagina {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .btn-volver {
+            display: inline-block;
+            background: #546e7a;
+            color: white;
+            text-decoration: none;
+            padding: 9px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+
+        .btn-volver:hover {
+            background: #455a64;
+        }
+
+
+        h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+
+        .descripcion {
+            margin: 7px 0 0;
+            color: #607d8b;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           RESUMEN
+        ====================================================== */
 
         .resumen {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 18px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .tarjeta {
+
+        .tarjeta-resumen {
             background: white;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 15px;
+            padding: 18px;
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,.08);
         }
 
-        .tarjeta .numero {
-            font-size: 25px;
+
+        .tarjeta-resumen .numero {
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
         }
 
-        .tarjeta .texto {
+
+        .tarjeta-resumen .texto {
+            color: #607d8b;
             font-size: 13px;
-            color: #666;
         }
+
+
+        /* =====================================================
+           SECCIONES
+        ====================================================== */
 
         .seccion {
             background: white;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 6px rgba(0,0,0,.08);
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
+
         .seccion h2 {
-            margin: 0 0 15px;
+            margin-top: 0;
             font-size: 18px;
         }
+
+
+        /* =====================================================
+           BUSQUEDA
+        ====================================================== */
 
         .fila-busqueda {
             display: flex;
             gap: 10px;
-            align-items: center;
+            margin-bottom: 15px;
         }
 
-        input,
-        select {
+
+        #buscar {
             flex: 1;
             padding: 10px 12px;
-            border: 1px solid #ccc;
+            border: 1px solid #cfd8dc;
             border-radius: 5px;
             font-size: 14px;
-            background: white;
         }
 
-        button {
+
+        #buscar:focus {
+            outline: none;
+            border-color: #78909c;
+        }
+
+
+        .btn {
             border: none;
             border-radius: 5px;
-            padding: 10px 15px;
+            padding: 9px 14px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
+            color: white;
         }
+
 
         .btn-buscar {
-            background: #1976d2;
-            color: white;
+            background: #37474f;
         }
 
-        .btn-devolver,
-        .btn-eliminar {
-            color: white;
-            padding: 7px 11px;
-            font-size: 12px;
-            min-width: 65px;
+
+        .btn-buscar:hover {
+            background: #263238;
         }
 
-        .btn-devolver {
-            background: #2e7d32;
+
+        .btn-limpiar {
+            background: #78909c;
         }
 
-        .btn-devolver:hover {
-            background: #1b5e20;
+
+        .btn-limpiar:hover {
+            background: #607d8b;
         }
 
-        .btn-eliminar {
-            background: #c62828;
-        }
 
-        .btn-eliminar:hover {
-            background: #b71c1c;
-        }
-
-        .acciones-tabla {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .mensaje {
-            margin-top: 12px;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .mensaje.exito {
-            display: block;
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .mensaje.error {
-            display: block;
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .mensaje.advertencia {
-            display: block;
-            background: #fff8e1;
-            color: #e65100;
-        }
+        /* =====================================================
+           TABLA
+        ====================================================== */
 
         .tabla-contenedor {
             overflow-x: auto;
-            margin-top: 15px;
         }
+
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
+            min-width: 1000px;
         }
+
 
         th {
             background: #eceff1;
-            padding: 9px;
-            border-bottom: 1px solid #ccc;
+            color: #37474f;
+            font-size: 13px;
+            padding: 11px 9px;
+            border-bottom: 1px solid #cfd8dc;
             text-align: center;
+            white-space: nowrap;
         }
+
 
         td {
-            padding: 9px;
-            border-bottom: 1px solid #eee;
+            padding: 10px 9px;
+            border-bottom: 1px solid #eceff1;
+            font-size: 13px;
             text-align: center;
+            vertical-align: middle;
         }
 
-        td.nombre {
+
+        tbody tr:hover {
+            background: #f7f9fa;
+        }
+
+
+        .nombre-largo {
             text-align: left;
         }
 
-        tr.vencido {
-            background: #fff3f3;
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
         }
+
+
+        .badge-afiliado {
+            background: #eceff1;
+            color: #455a64;
+        }
+
+
+        .badge-colaborador {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
 
         .estado-prestado {
-            color: #1565c0;
+            background: #fff3cd;
+            color: #856404;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
+
 
         .estado-vencido {
-            color: #c62828;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
 
-        /* ==========================================
-           DETALLE DE DEVOLUCIÓN
-           ========================================== */
+
+        .acciones {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+
+        .btn-devolver {
+            background: #37474f;
+        }
+
+
+        .btn-devolver:hover {
+            background: #263238;
+        }
+
+
+        .btn-eliminar {
+            background: #78909c;
+        }
+
+
+        .btn-eliminar:hover {
+            background: #607d8b;
+        }
+
+
+        /* =====================================================
+           MENSAJE SIN RESULTADOS
+        ====================================================== */
+
+        #sinResultados {
+            display: none;
+            text-align: center;
+            padding: 25px;
+            color: #78909c;
+        }
+
+
+        /* =====================================================
+           =====================================================
+           MODAL / DETALLE DE DEVOLUCIÓN
+           =====================================================
+        ====================================================== */
+
+        .modal-detalle {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.48);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+
+
+        .modal-detalle.activo {
+            display: flex;
+        }
+
 
         .detalle {
-            background: #f7f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
-            padding: 12px;
-            margin-top: 5px;
-            display: none;
+            width: 100%;
+            max-width: 760px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.28);
+            border: 1px solid #d7dde0;
+            animation: aparecerDetalle 0.18s ease-out;
         }
+
+
+        @keyframes aparecerDetalle {
+
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        .detalle-cabecera {
+            background: #263238;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-radius: 10px 10px 0 0;
+        }
+
+
+        .detalle-cabecera h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+
+        .btn-cerrar-detalle {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 2px 5px;
+        }
+
+
+        .btn-cerrar-detalle:hover {
+            color: #cfd8dc;
+        }
+
+
+        .detalle-contenido {
+            padding: 20px;
+        }
+
 
         .detalle-grid {
             display: grid;
-            grid-template-columns: 1fr 1.6fr 1fr;
-            gap: 8px 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
         }
+
 
         .detalle-item {
-            background: white;
-            border: 1px solid #e5e5e5;
-            border-radius: 5px;
-            padding: 7px 10px;
-            min-width: 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 11px;
+            background: #f7f9fa;
         }
 
-        .detalle-item.libro {
-            grid-column: span 2;
-        }
-
-        .detalle-item.fecha {
-            grid-column: span 1;
-        }
 
         .detalle-etiqueta {
             display: block;
             color: #78909c;
-            font-size: 10px;
-            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            margin-bottom: 3px;
         }
+
 
         .detalle-valor {
-            display: block;
-            color: #263238;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            color: #263238;
+            word-break: break-word;
         }
+
 
         .detalle-comentario {
-            margin-top: 9px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            padding: 7px 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
         }
+
 
         .detalle-comentario label {
-            font-size: 12px;
+            display: block;
+            font-size: 13px;
             font-weight: bold;
-            color: #455a64;
-            white-space: nowrap;
+            margin-bottom: 7px;
         }
 
-        .detalle-comentario select {
-            flex: 0 0 180px;
-            padding: 7px 9px;
-            font-size: 13px;
-        }
 
-        .confirmacion {
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: 6px;
-            padding: 10px 12px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .confirmacion-contenido {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .confirmacion-texto {
-            min-width: 0;
-            font-size: 13px;
-        }
-
-        .confirmacion strong {
-            color: #e65100;
-        }
-
-        .acciones-confirmacion {
-            display: flex;
-            gap: 7px;
-            flex-shrink: 0;
-        }
-
-        .btn-confirmar {
-            background: #2e7d32;
-            color: white;
-            padding: 8px 12px;
-            font-size: 12px;
-        }
-
-        .btn-cancelar {
-            background: #757575;
-            color: white;
-            padding: 8px 12px;
-            font-size: 12px;
-        }
-
-        .aviso-extraviado {
-            display: none;
-            margin-top: 7px;
-            padding: 7px 10px;
+        #comentarioDevolucion {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cfd8dc;
             border-radius: 5px;
-            background: #ffebee;
-            color: #c62828;
-            font-size: 12px;
-            border: 1px solid #ffcdd2;
+            background: white;
+            font-size: 14px;
         }
 
-        /* ==========================================
-           CONFIRMACIÓN DE ELIMINACIÓN
-           ========================================== */
+
+        #comentarioDevolucion:focus {
+            outline: none;
+            border-color: #78909c;
+        }
+
+
+        .advertencia {
+            display: none;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 6px;
+            padding: 11px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
 
         .confirmacion-eliminar {
             display: none;
-            margin-top: 10px;
-            padding: 10px 12px;
-            background: #ffebee;
-            border: 1px solid #ef9a9a;
+            background: #f8f9fa;
+            border: 1px solid #cfd8dc;
             border-radius: 6px;
-        }
-
-        .confirmacion-eliminar-contenido {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .confirmacion-eliminar-texto {
+            padding: 13px;
+            margin-bottom: 15px;
             font-size: 13px;
-            color: #b71c1c;
-            line-height: 1.4;
+            color: #455a64;
         }
 
-        .confirmacion-eliminar-texto strong {
-            color: #c62828;
-        }
 
-        .acciones-eliminar {
+        .acciones-detalle {
             display: flex;
-            gap: 7px;
-            flex-shrink: 0;
+            justify-content: flex-end;
+            gap: 8px;
+            border-top: 1px solid #eceff1;
+            padding-top: 15px;
         }
+
+
+        .btn-cancelar-detalle {
+            background: #78909c;
+        }
+
+
+        .btn-cancelar-detalle:hover {
+            background: #607d8b;
+        }
+
+
+        .btn-confirmar-devolucion {
+            background: #37474f;
+        }
+
+
+        .btn-confirmar-devolucion:hover {
+            background: #263238;
+        }
+
 
         .btn-confirmar-eliminar {
-            background: #c62828;
-            color: white;
-            padding: 8px 12px;
-            font-size: 12px;
+            background: #546e7a;
         }
+
 
         .btn-confirmar-eliminar:hover {
-            background: #b71c1c;
+            background: #455a64;
         }
 
-        .btn-cancelar-eliminar {
-            background: #757575;
-            color: white;
-            padding: 8px 12px;
+
+        /* =====================================================
+           MENSAJES
+        ====================================================== */
+
+        .mensaje {
+            display: none;
+            padding: 11px 13px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+
+        .mensaje.exito {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+
+        .mensaje.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+
+        .mensaje.info {
+            display: block;
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #bbdefb;
+        }
+
+
+        /* =====================================================
+           PIE
+        ====================================================== */
+
+        footer {
+            text-align: center;
+            color: #90a4ae;
             font-size: 12px;
+            padding: 20px;
         }
 
-        @media (max-width: 850px) {
 
-            .detalle-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
 
-            .detalle-item.libro {
-                grid-column: span 2;
-            }
-
-            .confirmacion-contenido,
-            .confirmacion-eliminar-contenido {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .acciones-confirmacion,
-            .acciones-eliminar {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 700px) {
+        @media (max-width: 800px) {
 
             .resumen {
                 grid-template-columns: 1fr;
             }
 
+
             .fila-busqueda {
                 flex-direction: column;
-                align-items: stretch;
             }
 
-            .encabezado {
-                gap: 10px;
-                flex-direction: column;
-                align-items: flex-start;
-            }
 
             .detalle-grid {
                 grid-template-columns: 1fr;
             }
 
-            .detalle-item.libro {
-                grid-column: span 1;
+
+            .detalle {
+                max-height: 94vh;
             }
 
-            .detalle-comentario {
-                align-items: stretch;
-                flex-direction: column;
-            }
-
-            .detalle-comentario select {
-                flex: 1;
-                width: 100%;
-            }
-
-            .acciones-confirmacion,
-            .acciones-eliminar {
-                flex-direction: column;
-            }
-
-            .acciones-confirmacion button,
-            .acciones-eliminar button {
-                width: 100%;
-            }
         }
+
+
+        @media (max-width: 500px) {
+
+            .contenedor {
+                padding: 0 10px;
+            }
+
+
+            .seccion {
+                padding: 14px;
+            }
+
+
+            .detalle-contenido {
+                padding: 15px;
+            }
+
+
+            .acciones-detalle {
+                flex-direction: column;
+            }
+
+
+            .acciones-detalle .btn {
+                width: 100%;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-<header class="encabezado">
-    <h1>📚 Devoluciones</h1>
-    <a href="index.html" class="btn-volver">← Volver</a>
-</header>
 
+    <!-- =========================================================
+         ENCABEZADO
+    ========================================================== -->
 
-<div class="contenedor">
+    <header class="encabezado">
 
-    <!-- ==========================================
-         RESUMEN
-         ========================================== -->
+        <div class="encabezado-contenido">
 
-    <section class="resumen">
+            <div class="marca">
 
-        <div class="tarjeta">
-            <div class="numero" id="totalActivos">0</div>
-            <div class="texto">Préstamos activos</div>
+                <div class="icono-marca">
+                    📚
+                </div>
+
+                <div>
+
+                    <div class="titulo-marca">
+                        Biblioteca
+                    </div>
+
+                    <div class="subtitulo-marca">
+                        Sistema de control de préstamos
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="tarjeta">
-            <div class="numero" id="totalVencidos">0</div>
-            <div class="texto">Vencidos</div>
-        </div>
-
-        <div class="tarjeta">
-            <div class="numero" id="totalDisponibles">0</div>
-            <div class="texto">Libros disponibles</div>
-        </div>
-
-    </section>
+    </header>
 
 
-    <!-- ==========================================
-         BUSCAR PRÉSTAMO
-         ========================================== -->
+    <!-- =========================================================
+         CONTENIDO PRINCIPAL
+    ========================================================== -->
 
-    <section class="seccion">
+    <main class="contenedor">
 
-        <h2>Buscar préstamo</h2>
 
-        <div class="fila-busqueda">
+        <!-- =====================================================
+             ENCABEZADO
+        ====================================================== -->
 
-            <input
-                type="text"
-                id="buscar"
-                placeholder="Familia, PersonaId, colaborador, nombre, apellido o código de libro..."
+        <section class="encabezado-pagina">
+
+            <a
+                href="index.html"
+                class="btn-volver"
             >
+                ← Volver al inicio
+            </a>
 
-            <button
-                class="btn-buscar"
-                id="btnBuscar"
-            >
-                Buscar
-            </button>
+            <h1>
+                📚 Devoluciones
+            </h1>
 
-        </div>
+            <p class="descripcion">
+                Consulta los préstamos activos y registra las devoluciones de libros.
+            </p>
 
-        <div id="mensaje" class="mensaje"></div>
-
-
-        <div class="tabla-contenedor">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Familia / Código</th>
-                        <th>Persona / Colaborador</th>
-                        <th>Área</th>
-                        <th>Libro</th>
-                        <th>Préstamo</th>
-                        <th>Devolución</th>
-                        <th>Estado</th>
-                        <th>Comentarios</th>
-                        <th>Acciones</th>
-                    </tr>
-
-                </thead>
+        </section>
 
 
-                <tbody id="tablaPrestamos"></tbody>
+        <!-- =====================================================
+             RESUMEN
+        ====================================================== -->
 
-            </table>
+        <section class="resumen">
 
-        </div>
-
-    </section>
-
-
-    <!-- ==========================================
-         DETALLE DE DEVOLUCIÓN
-         ========================================== -->
-
-    <section class="seccion">
-
-        <h2>Detalle de devolución</h2>
-
-
-        <div id="detalle" class="detalle">
-
-            <div class="detalle-grid">
-
-                <div class="detalle-item">
-
-                    <span
-                        class="detalle-etiqueta"
-                        id="detalleEtiquetaTipo"
-                    >
-                        Tipo
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detalleTipo"
-                    ></span>
-
-                </div>
-
-
-                <div class="detalle-item">
-
-                    <span
-                        class="detalle-etiqueta"
-                        id="detalleEtiquetaIdentificador"
-                    >
-                        FamiliaId
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detalleFamilia"
-                    ></span>
-
-                </div>
-
-
-                <div class="detalle-item">
-
-                    <span
-                        class="detalle-etiqueta"
-                        id="detalleEtiquetaPersona"
-                    >
-                        Persona
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detallePersona"
-                    ></span>
-
-                </div>
-
+            <div class="tarjeta-resumen">
 
                 <div
-                    class="detalle-item"
-                    id="detalleItemPersonaId"
+                    class="numero"
+                    id="totalPrestamos"
                 >
-
-                    <span
-                        class="detalle-etiqueta"
-                        id="detalleEtiquetaPersonaId"
-                    >
-                        PersonaId
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detallePersonaId"
-                    ></span>
-
+                    0
                 </div>
 
+                <div class="texto">
+                    Préstamos activos
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta-resumen">
 
                 <div
-                    class="detalle-item"
-                    id="detalleItemArea"
-                    style="display:none;"
+                    class="numero"
+                    id="totalVencidos"
                 >
-
-                    <span class="detalle-etiqueta">
-                        Área
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detalleArea"
-                    ></span>
-
+                    0
                 </div>
 
-
-                <div class="detalle-item libro">
-
-                    <span class="detalle-etiqueta">
-                        Libro
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detalleLibro"
-                    ></span>
-
-                </div>
-
-
-                <div class="detalle-item">
-
-                    <span class="detalle-etiqueta">
-                        Código
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detalleCodigo"
-                    ></span>
-
-                </div>
-
-
-                <div class="detalle-item fecha">
-
-                    <span class="detalle-etiqueta">
-                        Fecha del préstamo
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detallePrestamo"
-                    ></span>
-
-                </div>
-
-
-                <div class="detalle-item fecha">
-
-                    <span class="detalle-etiqueta">
-                        Fecha límite
-                    </span>
-
-                    <span
-                        class="detalle-valor"
-                        id="detalleDevolucion"
-                    ></span>
-
+                <div class="texto">
+                    Préstamos vencidos
                 </div>
 
             </div>
 
 
-            <div class="detalle-comentario">
+            <div class="tarjeta-resumen">
 
-                <label for="comentarioDevolucion">
-                    Comentario:
-                </label>
+                <div
+                    class="numero"
+                    id="totalDisponibles"
+                >
+                    0
+                </div>
 
-                <select id="comentarioDevolucion">
-
-                    <option value="">
-                        Vacío
-                    </option>
-
-                    <option value="Roto">
-                        Roto
-                    </option>
-
-                    <option value="Mojado">
-                        Mojado
-                    </option>
-
-                    <option value="Manchado">
-                        Manchado
-                    </option>
-
-                    <option value="Extraviado">
-                        Extraviado
-                    </option>
-
-                </select>
+                <div class="texto">
+                    Libros disponibles
+                </div>
 
             </div>
 
-
-            <div
-                id="avisoExtraviado"
-                class="aviso-extraviado"
-            >
-                ⚠️ Al registrar el libro como
-                <strong>Extraviado</strong>,
-                su estado cambiará a
-                <strong>Baja</strong>
-                y no volverá a aparecer como disponible.
-            </div>
-
-        </div>
+        </section>
 
 
-        <!-- ==========================================
-             CONFIRMACIÓN DEVOLUCIÓN
-             ========================================== -->
+        <!-- =====================================================
+             MENSAJE
+        ====================================================== -->
 
         <div
-            id="confirmacion"
-            class="confirmacion"
+            id="mensaje"
+            class="mensaje"
+        ></div>
+
+
+        <!-- =====================================================
+             LISTADO
+        ====================================================== -->
+
+        <section class="seccion">
+
+            <h2>
+                Préstamos activos
+            </h2>
+
+
+            <div class="fila-busqueda">
+
+                <input
+                    type="text"
+                    id="buscar"
+                    placeholder="Familia, PersonaId, nombre, apellido o código de libro..."
+                    autocomplete="off"
+                >
+
+
+                <button
+                    class="btn btn-buscar"
+                    id="btnBuscar"
+                >
+                    🔍 Buscar
+                </button>
+
+
+                <button
+                    class="btn btn-limpiar"
+                    id="btnLimpiar"
+                >
+                    Limpiar
+                </button>
+
+            </div>
+
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Tipo
+                            </th>
+
+                            <th>
+                                Familia / Código
+                            </th>
+
+                            <th>
+                                Persona / Colaborador
+                            </th>
+
+                            <th>
+                                Área
+                            </th>
+
+                            <th>
+                                Libro
+                            </th>
+
+                            <th>
+                                Préstamo
+                            </th>
+
+                            <th>
+                                Devolución
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                            <th>
+                                Comentarios
+                            </th>
+
+                            <th>
+                                Acciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tablaPrestamos">
+                    </tbody>
+
+                </table>
+
+
+                <div id="sinResultados">
+                    No se encontraron préstamos.
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         MODAL DETALLE DE DEVOLUCIÓN
+         ESTE ELEMENTO AHORA QUEDA SOBRE TODO EL CONTENIDO
+    ========================================================== -->
+
+    <div
+        id="modalDetalle"
+        class="modal-detalle"
+    >
+
+        <div
+            class="detalle"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tituloDetalle"
         >
 
-            <div class="confirmacion-contenido">
 
-                <div class="confirmacion-texto">
+            <div class="detalle-cabecera">
 
-                    <strong>
-                        ¿Desea registrar la devolución de este libro?
-                    </strong>
+                <h2 id="tituloDetalle">
+                    Detalle de devolución
+                </h2>
+
+
+                <button
+                    class="btn-cerrar-detalle"
+                    id="btnCerrarDetalle"
+                    title="Cerrar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="detalle-contenido">
+
+
+                <!-- =================================================
+                     INFORMACIÓN DEL PRÉSTAMO
+                ================================================== -->
+
+                <div class="detalle-grid">
+
+
+                    <div class="detalle-item">
+
+                        <span class="detalle-etiqueta">
+                            Tipo
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detalleTipo"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="detalle-item">
+
+                        <span
+                            class="detalle-etiqueta"
+                            id="etiquetaIdentificacion"
+                        >
+                            FamiliaId
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detalleIdentificacion"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="detalle-item">
+
+                        <span
+                            class="detalle-etiqueta"
+                            id="etiquetaPersona"
+                        >
+                            Persona
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detallePersona"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="detalle-item">
+
+                        <span
+                            class="detalle-etiqueta"
+                            id="etiquetaPersonaId"
+                        >
+                            PersonaId
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detallePersonaId"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="detalle-item"
+                        id="detalleAreaContenedor"
+                    >
+
+                        <span class="detalle-etiqueta">
+                            Área
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detalleArea"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="detalle-item">
+
+                        <span class="detalle-etiqueta">
+                            Libro
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detalleLibro"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="detalle-item">
+
+                        <span class="detalle-etiqueta">
+                            Código
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detalleCodigo"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="detalle-item">
+
+                        <span class="detalle-etiqueta">
+                            Fecha del préstamo
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detalleFechaPrestamo"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="detalle-item">
+
+                        <span class="detalle-etiqueta">
+                            Fecha límite
+                        </span>
+
+                        <span
+                            class="detalle-valor"
+                            id="detalleFechaLimite"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
 
                 </div>
 
 
-                <div class="acciones-confirmacion">
+                <!-- =================================================
+                     COMENTARIO
+                ================================================== -->
+
+                <div
+                    class="detalle-comentario"
+                    id="contenedorComentario"
+                >
+
+                    <label for="comentarioDevolucion">
+                        Comentario de devolución
+                    </label>
+
+
+                    <select id="comentarioDevolucion">
+
+                        <option value="">
+                            Vacío
+                        </option>
+
+                        <option value="Roto">
+                            Roto
+                        </option>
+
+                        <option value="Mojado">
+                            Mojado
+                        </option>
+
+                        <option value="Manchado">
+                            Manchado
+                        </option>
+
+                        <option value="Extraviado">
+                            Extraviado
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =================================================
+                     ADVERTENCIA EXTRAVIADO
+                ================================================== -->
+
+                <div
+                    id="advertenciaExtraviado"
+                    class="advertencia"
+                >
+
+                    ⚠️ Si selecciona <strong>Extraviado</strong>,
+                    el libro quedará registrado como <strong>Baja</strong>
+                    y no volverá a estar disponible para préstamo.
+
+                </div>
+
+
+                <!-- =================================================
+                     CONFIRMACIÓN ELIMINAR
+                ================================================== -->
+
+                <div
+                    id="confirmacionEliminar"
+                    class="confirmacion-eliminar"
+                >
+
+                    Al eliminar este préstamo se borrará el registro
+                    y el libro volverá a quedar como <strong>Disponible</strong>.
+                    El préstamo desaparecerá como si nunca hubiera sido registrado.
+
+                </div>
+
+
+                <!-- =================================================
+                     ACCIONES
+                ================================================== -->
+
+                <div class="acciones-detalle">
 
                     <button
-                        class="btn-cancelar"
-                        id="btnCancelar"
+                        class="btn btn-cancelar-detalle"
+                        id="btnCancelarDetalle"
                     >
                         Cancelar
                     </button>
 
+
                     <button
-                        class="btn-confirmar"
-                        id="btnConfirmar"
+                        class="btn btn-confirmar-devolucion"
+                        id="btnConfirmarDevolucion"
                     >
-                        Sí, registrar devolución
+                        ✓ Confirmar devolución
                     </button>
 
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- ==========================================
-             CONFIRMACIÓN ELIMINACIÓN
-             ========================================== -->
-
-        <div
-            id="confirmacionEliminar"
-            class="confirmacion-eliminar"
-        >
-
-            <div class="confirmacion-eliminar-contenido">
-
-                <div class="confirmacion-eliminar-texto">
-
-                    <strong>
-                        ⚠️ ¿Está seguro de eliminar este registro?
-                    </strong>
-
-                    <br>
-
-                    El préstamo será eliminado y el libro volverá a estar
-                    disponible. Esta acción hará que el préstamo desaparezca
-                    del historial como si nunca se hubiera realizado.
-
-                </div>
-
-
-                <div class="acciones-eliminar">
 
                     <button
-                        class="btn-cancelar-eliminar"
-                        id="btnCancelarEliminar"
-                    >
-                        Cancelar
-                    </button>
-
-                    <button
-                        class="btn-confirmar-eliminar"
+                        class="btn btn-confirmar-eliminar"
                         id="btnConfirmarEliminar"
                     >
-                        Sí, eliminar
+                        🗑 Confirmar eliminación
                     </button>
 
                 </div>
+
 
             </div>
 
         </div>
 
-    </section>
-
-</div>
+    </div>
 
 
-<script>
+    <!-- =========================================================
+         PIE
+    ========================================================== -->
 
-let prestamos = [];
-let prestamoSeleccionado = null;
-let prestamoEliminar = null;
-
-
-/* ==========================================
-   ELEMENTOS
-   ========================================== */
-
-const tablaPrestamos =
-    document.getElementById(
-        "tablaPrestamos"
-    );
-
-const buscarInput =
-    document.getElementById(
-        "buscar"
-    );
-
-const mensaje =
-    document.getElementById(
-        "mensaje"
-    );
-
-const detalle =
-    document.getElementById(
-        "detalle"
-    );
-
-const confirmacion =
-    document.getElementById(
-        "confirmacion"
-    );
-
-const confirmacionEliminar =
-    document.getElementById(
-        "confirmacionEliminar"
-    );
-
-const comentarioDevolucion =
-    document.getElementById(
-        "comentarioDevolucion"
-    );
-
-const avisoExtraviado =
-    document.getElementById(
-        "avisoExtraviado"
-    );
+    <footer>
+        Sistema de Biblioteca
+    </footer>
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    cargarDatos
-);
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
 
 
-/* ==========================================
-   NORMALIZAR CÓDIGO DE COLABORADOR
-   ========================================== */
+        /* =========================================================
+           VARIABLES
+        ========================================================== */
 
-function normalizarCodigoColaborador(codigo) {
+        let prestamos = [];
 
-    let valor =
-        String(codigo || "")
-            .trim()
-            .toUpperCase();
+        let prestamoSeleccionado = null;
 
-
-    valor =
-        valor.replace(
-            /^C/,
-            ""
-        );
+        let datosCargados = false;
 
 
-    valor =
-        valor.replace(
-            /\D/g,
-            ""
-        );
+        /* =========================================================
+           ELEMENTOS
+        ========================================================== */
+
+        const tablaPrestamos =
+            document.getElementById(
+                "tablaPrestamos"
+            );
 
 
-    valor =
-        valor.replace(
-            /^0+/,
-            ""
-        );
+        const sinResultados =
+            document.getElementById(
+                "sinResultados"
+            );
 
 
-    if (!valor) {
-        return "";
-    }
+        const buscarInput =
+            document.getElementById(
+                "buscar"
+            );
 
 
-    return "C" + valor;
-}
+        const mensaje =
+            document.getElementById(
+                "mensaje"
+            );
 
 
-/* ==========================================
-   CARGAR PRÉSTAMOS ACTIVOS
-   ========================================== */
+        const modalDetalle =
+            document.getElementById(
+                "modalDetalle"
+            );
 
-async function cargarDatos() {
 
-    try {
+        const comentarioDevolucion =
+            document.getElementById(
+                "comentarioDevolucion"
+            );
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("prestamos")
-            .select("*")
-            .eq(
-                "estado",
-                "Prestado"
+
+        const advertenciaExtraviado =
+            document.getElementById(
+                "advertenciaExtraviado"
+            );
+
+
+        const confirmacionEliminar =
+            document.getElementById(
+                "confirmacionEliminar"
+            );
+
+
+        const btnConfirmarDevolucion =
+            document.getElementById(
+                "btnConfirmarDevolucion"
+            );
+
+
+        const btnConfirmarEliminar =
+            document.getElementById(
+                "btnConfirmarEliminar"
+            );
+
+
+        /* =========================================================
+           NORMALIZAR
+        ========================================================== */
+
+        function normalizar(valor) {
+
+            return String(
+                valor ?? ""
             )
-            .order(
-                "fechaPrestamo",
+            .normalize("NFD")
+            .replace(
+                /[\u0300-\u036f]/g,
+                ""
+            )
+            .toLowerCase()
+            .replace(
+                /\s+/g,
+                " "
+            )
+            .trim();
+
+        }
+
+
+        /* =========================================================
+           NORMALIZAR CÓDIGO DE LIBRO
+        ========================================================== */
+
+        function normalizarCodigo(valor) {
+
+            const texto =
+                String(
+                    valor ?? ""
+                )
+                .trim()
+                .replace(
+                    /\D/g,
+                    ""
+                );
+
+
+            if (!texto) {
+                return "";
+            }
+
+
+            return texto.replace(
+                /^0+/,
+                ""
+            ) || "0";
+
+        }
+
+
+        /* =========================================================
+           FORMATEAR CÓDIGO DE LIBRO
+        ========================================================== */
+
+        function formatearCodigo(valor) {
+
+            const codigo =
+                normalizarCodigo(
+                    valor
+                );
+
+
+            if (!codigo) {
+                return "";
+            }
+
+
+            return codigo.padStart(
+                8,
+                "0"
+            );
+
+        }
+
+
+        /* =========================================================
+           ESCAPAR HTML
+        ========================================================== */
+
+        function escapeHtml(valor) {
+
+            return String(
+                valor ?? ""
+            )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+        }
+
+
+        /* =========================================================
+           FORMATEAR FECHA
+        ========================================================== */
+
+        function formatearFecha(
+            valor
+        ) {
+
+            if (!valor) {
+                return "—";
+            }
+
+
+            const fecha =
+                new Date(
+                    valor
+                );
+
+
+            if (
+                Number.isNaN(
+                    fecha.getTime()
+                )
+            ) {
+                return "—";
+            }
+
+
+            return fecha.toLocaleDateString(
+                "es-GT",
                 {
-                    ascending: false
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
                 }
             );
 
-
-        if (error) {
-            throw error;
         }
 
 
-        prestamos =
-            data || [];
+        /* =========================================================
+           FECHA ACTUAL LOCAL
+        ========================================================== */
+
+        function obtenerFechaActual() {
+
+            const ahora =
+                new Date();
 
 
-        actualizarResumen();
-
-        mostrarPrestamos(
-            prestamos
-        );
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            "No fue posible cargar los préstamos.",
-            "error"
-        );
-    }
-}
+            const año =
+                ahora.getFullYear();
 
 
-/* ==========================================
-   RESUMEN
-   ========================================== */
-
-async function actualizarResumen() {
-
-    const totalActivos =
-        prestamos.length;
-
-
-    const ahora =
-        new Date();
+            const mes =
+                String(
+                    ahora.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
 
 
-    const totalVencidos =
-        prestamos.filter(
-            prestamo => {
-
-                if (!prestamo.fechaDevolucion) {
-                    return false;
-                }
-
-                return new Date(
-                    prestamo.fechaDevolucion
-                ) < ahora;
-
-            }
-        ).length;
+            const dia =
+                String(
+                    ahora.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
 
 
-    document.getElementById(
-        "totalActivos"
-    ).textContent =
-        totalActivos;
+            return `${año}-${mes}-${dia}`;
 
-
-    document.getElementById(
-        "totalVencidos"
-    ).textContent =
-        totalVencidos;
-
-
-    try {
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("libros")
-            .select(
-                "id, estado"
-            );
-
-
-        if (error) {
-            throw error;
         }
 
 
-        const disponibles =
-            (data || []).filter(
-                libro =>
-                    libro.estado ===
-                    "Disponible"
-            ).length;
+        /* =========================================================
+           OBTENER TIPO DE PRÉSTAMO
+        ========================================================== */
 
-
-        document.getElementById(
-            "totalDisponibles"
-        ).textContent =
-            disponibles;
-
-    } catch (error) {
-
-        console.error(error);
-
-        document.getElementById(
-            "totalDisponibles"
-        ).textContent =
-            "—";
-    }
-}
-
-
-/* ==========================================
-   MOSTRAR PRÉSTAMOS
-   ========================================== */
-
-function mostrarPrestamos(lista) {
-
-    tablaPrestamos.innerHTML =
-        "";
-
-
-    if (!lista.length) {
-
-        tablaPrestamos.innerHTML = `
-            <tr>
-                <td colspan="10" style="padding:20px;">
-                    No hay préstamos activos.
-                </td>
-            </tr>
-        `;
-
-        return;
-    }
-
-
-    const ahora =
-        new Date();
-
-
-    lista.forEach(
-        prestamo => {
-
-            const vencido =
-                prestamo.fechaDevolucion
-                    ? new Date(
-                        prestamo.fechaDevolucion
-                    ) < ahora
-                    : false;
-
-
-            const fila =
-                document.createElement(
-                    "tr"
-                );
-
-
-            if (vencido) {
-                fila.classList.add(
-                    "vencido"
-                );
-            }
-
-
-            /* ==================================
-               TIPO
-               ================================== */
-
-            const tdTipo =
-                document.createElement(
-                    "td"
-                );
-
+        function esColaborador(
+            prestamo
+        ) {
 
             const tipo =
-                prestamo.tipoPrestamo ||
-                (
-                    prestamo.CodigoColaborador
-                        ? "Colaborador"
-                        : "Afiliado"
+                normalizar(
+                    prestamo.tipoPrestamo
                 );
 
 
-            tdTipo.textContent =
+            if (
+                tipo === "colaborador"
+            ) {
+                return true;
+            }
+
+
+            if (
+                prestamo.CodigoColaborador
+            ) {
+                return true;
+            }
+
+
+            return false;
+
+        }
+
+
+        /* =========================================================
+           OBTENER SITIO
+        ========================================================== */
+
+        function obtenerSitio(
+            prestamo
+        ) {
+
+            const sitio =
+                String(
+                    prestamo.Sitio ??
+                    prestamo.sitio ??
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            if (
+                [
+                    "F",
+                    "M",
+                    "R",
+                    "N",
+                    "Z"
+                ].includes(
+                    sitio
+                )
+            ) {
+                return sitio;
+            }
+
+
+            const familia =
+                String(
+                    prestamo.FamiliaId ??
+                    ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            const primeraLetra =
+                familia.charAt(0);
+
+
+            if (
+                [
+                    "F",
+                    "M",
+                    "R",
+                    "N",
+                    "Z"
+                ].includes(
+                    primeraLetra
+                )
+            ) {
+                return primeraLetra;
+            }
+
+
+            return "";
+
+        }
+
+
+        /* =========================================================
+           MOSTRAR MENSAJE
+        ========================================================== */
+
+        function mostrarMensaje(
+            texto,
+            tipo
+        ) {
+
+            mensaje.textContent =
+                texto;
+
+
+            mensaje.className =
+                "mensaje " +
                 tipo;
 
 
-            /* ==================================
-               FAMILIA / CÓDIGO
-               ================================== */
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
 
-            const tdIdentificador =
-                document.createElement(
-                    "td"
+        }
+
+
+        /* =========================================================
+           CARGAR DATOS
+        ========================================================== */
+
+        async function cargarDatos() {
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("prestamos")
+                        .select("*")
+                        .eq(
+                            "estado",
+                            "Prestado"
+                        )
+                        .order(
+                            "fechaPrestamo",
+                            {
+                                ascending: false
+                            }
+                        );
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                prestamos =
+                    data || [];
+
+
+                datosCargados =
+                    true;
+
+
+                mostrarPrestamos(
+                    prestamos
+                );
+
+
+                await actualizarResumen();
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No fue posible cargar los préstamos.",
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           MOSTRAR PRÉSTAMOS
+        ========================================================== */
+
+        function mostrarPrestamos(
+            lista
+        ) {
+
+            tablaPrestamos.innerHTML =
+                "";
+
+
+            if (
+                !lista ||
+                lista.length === 0
+            ) {
+
+                sinResultados.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            sinResultados.style.display =
+                "none";
+
+
+            const hoy =
+                new Date();
+
+
+            hoy.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+
+            lista.forEach(
+                prestamo => {
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    const colaborador =
+                        esColaborador(
+                            prestamo
+                        );
+
+
+                    const fechaLimite =
+                        prestamo.fechaDevolucion
+                            ? new Date(
+                                prestamo.fechaDevolucion
+                            )
+                            : null;
+
+
+                    if (fechaLimite) {
+
+                        fechaLimite.setHours(
+                            0,
+                            0,
+                            0,
+                            0
+                        );
+
+                    }
+
+
+                    const vencido =
+                        fechaLimite &&
+                        fechaLimite <
+                        hoy;
+
+
+                    const tipoTexto =
+                        colaborador
+                            ? "Colaborador"
+                            : "Afiliado";
+
+
+                    const tipoClase =
+                        colaborador
+                            ? "badge-colaborador"
+                            : "badge-afiliado";
+
+
+                    let identificacion =
+                        "";
+
+
+                    let persona =
+                        "";
+
+
+                    let personaId =
+                        "";
+
+
+                    let area =
+                        "";
+
+
+                    if (
+                        colaborador
+                    ) {
+
+                        identificacion =
+                            prestamo.CodigoColaborador ||
+                            "—";
+
+
+                        persona =
+                            prestamo.NombreColaborador ||
+                            "—";
+
+
+                        area =
+                            prestamo.AreaColaborador ||
+                            "—";
+
+
+                        personaId =
+                            "—";
+
+
+                    } else {
+
+                        identificacion =
+                            prestamo.FamiliaId ||
+                            "—";
+
+
+                        persona =
+                            (
+                                prestamo.Nombres ||
+                                ""
+                            ) +
+                            " " +
+                            (
+                                prestamo.Apellidos ||
+                                ""
+                            );
+
+
+                        persona =
+                            persona.trim() ||
+                            "—";
+
+
+                        personaId =
+                            prestamo.PersonaId ||
+                            "—";
+
+
+                        area =
+                            "—";
+
+                    }
+
+
+                    const codigoLibro =
+                        formatearCodigo(
+                            prestamo.codigoLibro
+                        );
+
+
+                    const nombreLibro =
+                        prestamo.nombreLibro ||
+                        "—";
+
+
+                    const comentario =
+                        prestamo.comentarios ||
+                        "—";
+
+
+                    fila.innerHTML = `
+
+                        <td>
+
+                            <span
+                                class="badge ${tipoClase}"
+                            >
+                                ${escapeHtml(
+                                    tipoTexto
+                                )}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(
+                                identificacion
+                            )}
+                        </td>
+
+
+                        <td class="nombre-largo">
+                            ${escapeHtml(
+                                persona
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(
+                                area
+                            )}
+                        </td>
+
+
+                        <td class="nombre-largo">
+
+                            <strong>
+                                ${escapeHtml(
+                                    codigoLibro
+                                )}
+                            </strong>
+
+                            <br>
+
+                            ${escapeHtml(
+                                nombreLibro
+                            )}
+
+                        </td>
+
+
+                        <td>
+                            ${formatearFecha(
+                                prestamo.fechaPrestamo
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${formatearFecha(
+                                prestamo.fechaDevolucion
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                vencido
+
+                                    ? `
+                                        <span class="estado-vencido">
+                                            Vencido
+                                        </span>
+                                      `
+
+                                    : `
+                                        <span class="estado-prestado">
+                                            Prestado
+                                        </span>
+                                      `
+                            }
+
+                        </td>
+
+
+                        <td>
+                            ${escapeHtml(
+                                comentario
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            <div class="acciones">
+
+                                <button
+                                    class="btn btn-devolver"
+                                    onclick="seleccionarPrestamo(${prestamo.id})"
+                                >
+                                    Devolver
+                                </button>
+
+
+                                <button
+                                    class="btn btn-eliminar"
+                                    onclick="seleccionarPrestamoEliminar(${prestamo.id})"
+                                >
+                                    Eliminar
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    `;
+
+
+                    tablaPrestamos.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           BUSCAR PRÉSTAMO POR ID
+        ========================================================== */
+
+        function obtenerPrestamoPorId(
+            id
+        ) {
+
+            return prestamos.find(
+                prestamo =>
+                    String(
+                        prestamo.id
+                    ) ===
+                    String(id)
+            );
+
+        }
+
+
+        /* =========================================================
+           ACTUALIZAR DETALLE
+        ========================================================== */
+
+        function cargarDetalle(
+            prestamo,
+            modo
+        ) {
+
+            if (!prestamo) {
+                return;
+            }
+
+
+            prestamoSeleccionado =
+                prestamo;
+
+
+            const colaborador =
+                esColaborador(
+                    prestamo
+                );
+
+
+            document.getElementById(
+                "detalleTipo"
+            ).textContent =
+                colaborador
+                    ? "Colaborador"
+                    : "Afiliado";
+
+
+            const etiquetaIdentificacion =
+                document.getElementById(
+                    "etiquetaIdentificacion"
+                );
+
+
+            const detalleIdentificacion =
+                document.getElementById(
+                    "detalleIdentificacion"
+                );
+
+
+            const etiquetaPersona =
+                document.getElementById(
+                    "etiquetaPersona"
+                );
+
+
+            const detallePersona =
+                document.getElementById(
+                    "detallePersona"
+                );
+
+
+            const etiquetaPersonaId =
+                document.getElementById(
+                    "etiquetaPersonaId"
+                );
+
+
+            const detallePersonaId =
+                document.getElementById(
+                    "detallePersonaId"
+                );
+
+
+            const detalleAreaContenedor =
+                document.getElementById(
+                    "detalleAreaContenedor"
+                );
+
+
+            const detalleArea =
+                document.getElementById(
+                    "detalleArea"
                 );
 
 
             if (
-                tipo === "Colaborador"
+                colaborador
             ) {
 
-                tdIdentificador.textContent =
+                etiquetaIdentificacion.textContent =
+                    "Código colaborador";
+
+
+                detalleIdentificacion.textContent =
                     prestamo.CodigoColaborador ||
-                    "";
-
-            } else {
-
-                tdIdentificador.textContent =
-                    prestamo.FamiliaId ||
-                    "";
-            }
+                    "—";
 
 
-            /* ==================================
-               PERSONA / COLABORADOR
-               ================================== */
-
-            const tdPersona =
-                document.createElement(
-                    "td"
-                );
-
-            tdPersona.className =
-                "nombre";
+                etiquetaPersona.textContent =
+                    "Colaborador";
 
 
-            if (
-                tipo === "Colaborador"
-            ) {
-
-                tdPersona.textContent =
+                detallePersona.textContent =
                     prestamo.NombreColaborador ||
-                    "";
-
-            } else {
-
-                tdPersona.textContent =
-                    `${prestamo.Nombres || ""} ${
-                        prestamo.Apellidos || ""
-                    }`.trim();
-
-            }
+                    "—";
 
 
-            /* ==================================
-               ÁREA
-               ================================== */
-
-            const tdArea =
-                document.createElement(
-                    "td"
-                );
+                etiquetaPersonaId.textContent =
+                    "Área";
 
 
-            if (
-                tipo === "Colaborador"
-            ) {
-
-                tdArea.textContent =
+                detallePersonaId.textContent =
                     prestamo.AreaColaborador ||
                     "—";
 
+
+                detalleAreaContenedor.style.display =
+                    "none";
+
+
             } else {
 
-                tdArea.textContent =
+                etiquetaIdentificacion.textContent =
+                    "FamiliaId";
+
+
+                detalleIdentificacion.textContent =
+                    prestamo.FamiliaId ||
                     "—";
+
+
+                etiquetaPersona.textContent =
+                    "Persona";
+
+
+                detallePersona.textContent =
+                    (
+                        prestamo.Nombres ||
+                        ""
+                    ) +
+                    " " +
+                    (
+                        prestamo.Apellidos ||
+                        ""
+                    );
+
+
+                detallePersona.textContent =
+                    detallePersona.textContent.trim() ||
+                    "—";
+
+
+                etiquetaPersonaId.textContent =
+                    "PersonaId";
+
+
+                detallePersonaId.textContent =
+                    prestamo.PersonaId ||
+                    "—";
+
+
+                detalleAreaContenedor.style.display =
+                    "none";
+
             }
 
 
-            /* ==================================
-               LIBRO
-               ================================== */
+            document.getElementById(
+                "detalleLibro"
+            ).textContent =
+                prestamo.nombreLibro ||
+                "—";
 
-            const tdLibro =
-                document.createElement(
-                    "td"
-                );
 
-            tdLibro.className =
-                "nombre";
-
-            tdLibro.textContent =
-                `${formatearCodigo(
+            document.getElementById(
+                "detalleCodigo"
+            ).textContent =
+                formatearCodigo(
                     prestamo.codigoLibro
-                )} - ${prestamo.nombreLibro}`;
-
-
-            /* ==================================
-               FECHA PRÉSTAMO
-               ================================== */
-
-            const tdPrestamo =
-                document.createElement(
-                    "td"
                 );
 
-            tdPrestamo.textContent =
+
+            document.getElementById(
+                "detalleFechaPrestamo"
+            ).textContent =
                 formatearFecha(
                     prestamo.fechaPrestamo
                 );
 
 
-            /* ==================================
-               FECHA DEVOLUCIÓN
-               ================================== */
-
-            const tdDevolucion =
-                document.createElement(
-                    "td"
-                );
-
-            tdDevolucion.textContent =
+            document.getElementById(
+                "detalleFechaLimite"
+            ).textContent =
                 formatearFecha(
                     prestamo.fechaDevolucion
                 );
 
 
-            /* ==================================
-               ESTADO
-               ================================== */
-
-            const tdEstado =
-                document.createElement(
-                    "td"
-                );
+            comentarioDevolucion.value =
+                "";
 
 
-            if (vencido) {
+            advertenciaExtraviado.style.display =
+                "none";
 
-                tdEstado.textContent =
-                    "Vencido";
 
-                tdEstado.className =
-                    "estado-vencido";
+            if (
+                modo === "eliminar"
+            ) {
+
+                document.getElementById(
+                    "tituloDetalle"
+                ).textContent =
+                    "Eliminar préstamo";
+
+
+                document.getElementById(
+                    "contenedorComentario"
+                ).style.display =
+                    "none";
+
+
+                confirmacionEliminar.style.display =
+                    "block";
+
+
+                btnConfirmarDevolucion.style.display =
+                    "none";
+
+
+                btnConfirmarEliminar.style.display =
+                    "inline-block";
+
 
             } else {
 
-                tdEstado.textContent =
-                    "Prestado";
+                document.getElementById(
+                    "tituloDetalle"
+                ).textContent =
+                    "Detalle de devolución";
 
-                tdEstado.className =
-                    "estado-prestado";
+
+                document.getElementById(
+                    "contenedorComentario"
+                ).style.display =
+                    "block";
+
+
+                confirmacionEliminar.style.display =
+                    "none";
+
+
+                btnConfirmarDevolucion.style.display =
+                    "inline-block";
+
+
+                btnConfirmarEliminar.style.display =
+                    "none";
+
             }
 
 
-            /* ==================================
-               COMENTARIOS
-               ================================== */
-
-            const tdComentarios =
-                document.createElement(
-                    "td"
-                );
-
-            tdComentarios.textContent =
-                prestamo.comentarios ||
-                "—";
-
-
-            /* ==================================
-               ACCIONES
-               ================================== */
-
-            const tdAccion =
-                document.createElement(
-                    "td"
-                );
-
-
-            const acciones =
-                document.createElement(
-                    "div"
-                );
-
-            acciones.className =
-                "acciones-tabla";
-
-
-            /* BOTÓN DEVOLVER */
-
-            const botonDevolver =
-                document.createElement(
-                    "button"
-                );
-
-            botonDevolver.type =
-                "button";
-
-            botonDevolver.className =
-                "btn-devolver";
-
-            botonDevolver.textContent =
-                "Devolver";
-
-
-            botonDevolver.addEventListener(
-                "click",
-                function() {
-
-                    seleccionarPrestamo(
-                        prestamo
-                    );
-
-                }
+            modalDetalle.classList.add(
+                "activo"
             );
 
 
-            /* BOTÓN ELIMINAR */
-
-            const botonEliminar =
-                document.createElement(
-                    "button"
-                );
-
-            botonEliminar.type =
-                "button";
-
-            botonEliminar.className =
-                "btn-eliminar";
-
-            botonEliminar.textContent =
-                "Eliminar";
+            document.body.style.overflow =
+                "hidden";
 
 
-            botonEliminar.addEventListener(
-                "click",
-                function() {
+            setTimeout(
+                () => {
 
-                    seleccionarParaEliminar(
-                        prestamo
-                    );
+                    if (
+                        modo !==
+                        "eliminar"
+                    ) {
 
-                }
-            );
+                        comentarioDevolucion.focus();
 
+                    }
 
-            acciones.appendChild(
-                botonDevolver
-            );
-
-            acciones.appendChild(
-                botonEliminar
-            );
-
-
-            tdAccion.appendChild(
-                acciones
-            );
-
-
-            /* ==================================
-               AGREGAR FILA
-               ================================== */
-
-            fila.appendChild(
-                tdTipo
-            );
-
-            fila.appendChild(
-                tdIdentificador
-            );
-
-            fila.appendChild(
-                tdPersona
-            );
-
-            fila.appendChild(
-                tdArea
-            );
-
-            fila.appendChild(
-                tdLibro
-            );
-
-            fila.appendChild(
-                tdPrestamo
-            );
-
-            fila.appendChild(
-                tdDevolucion
-            );
-
-            fila.appendChild(
-                tdEstado
-            );
-
-            fila.appendChild(
-                tdComentarios
-            );
-
-            fila.appendChild(
-                tdAccion
-            );
-
-
-            tablaPrestamos.appendChild(
-                fila
+                },
+                100
             );
 
         }
-    );
-}
 
 
-/* ==========================================
-   SELECCIONAR PARA DEVOLVER
-   ========================================== */
+        /* =========================================================
+           SELECCIONAR PARA DEVOLVER
+        ========================================================== */
 
-function seleccionarPrestamo(
-    prestamo
-) {
-
-    prestamoSeleccionado =
-        prestamo;
-
-
-    prestamoEliminar =
-        null;
-
-
-    confirmacionEliminar.style.display =
-        "none";
-
-
-    const tipo =
-        prestamo.tipoPrestamo ||
-        (
-            prestamo.CodigoColaborador
-                ? "Colaborador"
-                : "Afiliado"
-        );
-
-
-    document.getElementById(
-        "detalleTipo"
-    ).textContent =
-        tipo;
-
-
-    if (
-        tipo === "Colaborador"
-    ) {
-
-        document.getElementById(
-            "detalleEtiquetaIdentificador"
-        ).textContent =
-            "Código colaborador";
-
-
-        document.getElementById(
-            "detalleFamilia"
-        ).textContent =
-            prestamo.CodigoColaborador ||
-            "";
-
-
-        document.getElementById(
-            "detalleEtiquetaPersona"
-        ).textContent =
-            "Colaborador";
-
-
-        document.getElementById(
-            "detallePersona"
-        ).textContent =
-            prestamo.NombreColaborador ||
-            "";
-
-
-        document.getElementById(
-            "detalleItemPersonaId"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "detalleItemArea"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "detalleArea"
-        ).textContent =
-            prestamo.AreaColaborador ||
-            "No definida";
-
-    } else {
-
-        document.getElementById(
-            "detalleEtiquetaIdentificador"
-        ).textContent =
-            "FamiliaId";
-
-
-        document.getElementById(
-            "detalleFamilia"
-        ).textContent =
-            prestamo.FamiliaId ||
-            "";
-
-
-        document.getElementById(
-            "detalleEtiquetaPersona"
-        ).textContent =
-            "Persona";
-
-
-        document.getElementById(
-            "detallePersona"
-        ).textContent =
-            `${prestamo.Nombres || ""} ${
-                prestamo.Apellidos || ""
-            }`.trim();
-
-
-        document.getElementById(
-            "detalleItemPersonaId"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "detallePersonaId"
-        ).textContent =
-            prestamo.PersonaId ||
-            "";
-
-
-        document.getElementById(
-            "detalleItemArea"
-        ).style.display =
-            "none";
-    }
-
-
-    document.getElementById(
-        "detalleLibro"
-    ).textContent =
-        prestamo.nombreLibro ||
-        "";
-
-
-    document.getElementById(
-        "detalleCodigo"
-    ).textContent =
-        formatearCodigo(
-            prestamo.codigoLibro
-        );
-
-
-    document.getElementById(
-        "detallePrestamo"
-    ).textContent =
-        formatearFecha(
-            prestamo.fechaPrestamo
-        );
-
-
-    document.getElementById(
-        "detalleDevolucion"
-    ).textContent =
-        formatearFecha(
-            prestamo.fechaDevolucion
-        );
-
-
-    comentarioDevolucion.value =
-        "";
-
-
-    avisoExtraviado.style.display =
-        "none";
-
-
-    detalle.style.display =
-        "block";
-
-
-    confirmacion.style.display =
-        "block";
-
-
-    detalle.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
-    });
-}
-
-
-/* ==========================================
-   SELECCIONAR PARA ELIMINAR
-   ========================================== */
-
-function seleccionarParaEliminar(
-    prestamo
-) {
-
-    prestamoEliminar =
-        prestamo;
-
-
-    prestamoSeleccionado =
-        null;
-
-
-    detalle.style.display =
-        "none";
-
-
-    confirmacion.style.display =
-        "none";
-
-
-    confirmacionEliminar.style.display =
-        "block";
-
-
-    confirmacionEliminar.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest"
-    });
-}
-
-
-/* ==========================================
-   CAMBIO DE COMENTARIO
-   ========================================== */
-
-comentarioDevolucion.addEventListener(
-    "change",
-    function() {
-
-        if (
-            comentarioDevolucion.value ===
-            "Extraviado"
+        function seleccionarPrestamo(
+            id
         ) {
 
-            avisoExtraviado.style.display =
-                "block";
+            const prestamo =
+                obtenerPrestamoPorId(
+                    id
+                );
 
-        } else {
 
-            avisoExtraviado.style.display =
-                "none";
+            cargarDetalle(
+                prestamo,
+                "devolver"
+            );
+
         }
 
-    }
-);
+
+        /* =========================================================
+           SELECCIONAR PARA ELIMINAR
+        ========================================================== */
+
+        function seleccionarPrestamoEliminar(
+            id
+        ) {
+
+            const prestamo =
+                obtenerPrestamoPorId(
+                    id
+                );
 
 
-/* ==========================================
-   CONFIRMAR DEVOLUCIÓN
-   ========================================== */
+            cargarDetalle(
+                prestamo,
+                "eliminar"
+            );
 
-async function confirmarDevolucion() {
+        }
 
-    if (!prestamoSeleccionado) {
 
-        mostrarMensaje(
-            "Seleccione un préstamo.",
-            "error"
+        /* =========================================================
+           CERRAR DETALLE
+        ========================================================== */
+
+        function cerrarDetalle() {
+
+            modalDetalle.classList.remove(
+                "activo"
+            );
+
+
+            document.body.style.overflow =
+                "";
+
+
+            prestamoSeleccionado =
+                null;
+
+
+            comentarioDevolucion.value =
+                "";
+
+
+            advertenciaExtraviado.style.display =
+                "none";
+
+
+            confirmacionEliminar.style.display =
+                "none";
+
+        }
+
+
+        /* =========================================================
+           CAMBIO DE COMENTARIO
+        ========================================================== */
+
+        comentarioDevolucion.addEventListener(
+            "change",
+            function() {
+
+                if (
+                    this.value ===
+                    "Extraviado"
+                ) {
+
+                    advertenciaExtraviado.style.display =
+                        "block";
+
+                } else {
+
+                    advertenciaExtraviado.style.display =
+                        "none";
+
+                }
+
+            }
         );
 
-        return;
-    }
+
+        /* =========================================================
+           CONFIRMAR DEVOLUCIÓN
+        ========================================================== */
+
+        async function confirmarDevolucion() {
+
+            if (
+                !prestamoSeleccionado
+            ) {
+                return;
+            }
 
 
-    try {
-
-        const fechaReal =
-            new Date();
+            const comentario =
+                comentarioDevolucion.value;
 
 
-        const comentario =
-            comentarioDevolucion.value.trim();
-
-
-        /* ======================================
-           ACTUALIZAR PRÉSTAMO
-           ====================================== */
-
-        const {
-            error: errorPrestamo
-        } = await supabaseClient
-            .from("prestamos")
-            .update({
-
-                estado:
-                    "Devuelto",
-
-                fechaDevolucionReal:
-                    fechaReal.toISOString(),
-
-                comentarios:
-                    comentario ||
-                    null
-
-            })
-            .eq(
-                "id",
-                prestamoSeleccionado.id
-            );
-
-
-        if (errorPrestamo) {
-            throw errorPrestamo;
-        }
-
-
-        /* ======================================
-           BUSCAR LIBRO
-           ====================================== */
-
-        const {
-            data: libros,
-            error: errorLibroConsulta
-        } = await supabaseClient
-            .from("libros")
-            .select(
-                "id, codigoLibro"
-            );
-
-
-        if (errorLibroConsulta) {
-            throw errorLibroConsulta;
-        }
-
-
-        const codigoNormalizado =
-            normalizarCodigo(
-                prestamoSeleccionado.codigoLibro
-            );
-
-
-        const libro =
-            (libros || []).find(
-                item =>
-                    normalizarCodigo(
-                        item.codigoLibro
-                    ) ===
-                    codigoNormalizado
-            );
-
-
-        /* ======================================
-           ACTUALIZAR LIBRO
-           ====================================== */
-
-        if (libro) {
-
-            const nuevoEstado =
+            if (
                 comentario ===
                 "Extraviado"
-                    ? "Baja"
-                    : "Disponible";
-
-
-            const {
-                error:
-                    errorLibroUpdate
-            } = await supabaseClient
-                .from("libros")
-                .update({
-
-                    estado:
-                        nuevoEstado
-
-                })
-                .eq(
-                    "id",
-                    libro.id
-                );
-
-
-            if (errorLibroUpdate) {
-                throw errorLibroUpdate;
-            }
-        }
-
-
-        if (
-            comentario ===
-            "Extraviado"
-        ) {
-
-            mostrarMensaje(
-                "Devolución registrada. El libro fue marcado como Baja por extravío.",
-                "exito"
-            );
-
-        } else {
-
-            mostrarMensaje(
-                "Devolución registrada correctamente.",
-                "exito"
-            );
-        }
-
-
-        prestamoSeleccionado =
-            null;
-
-
-        detalle.style.display =
-            "none";
-
-
-        confirmacion.style.display =
-            "none";
-
-
-        comentarioDevolucion.value =
-            "";
-
-
-        avisoExtraviado.style.display =
-            "none";
-
-
-        await cargarDatos();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            "No fue posible registrar la devolución: " +
-            (
-                error.message ||
-                "error desconocido"
-            ),
-            "error"
-        );
-    }
-}
-
-
-/* ==========================================
-   CONFIRMAR ELIMINACIÓN
-   ========================================== */
-
-async function confirmarEliminacion() {
-
-    if (!prestamoEliminar) {
-
-        mostrarMensaje(
-            "Seleccione un préstamo para eliminar.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    try {
-
-        const codigoNormalizado =
-            normalizarCodigo(
-                prestamoEliminar.codigoLibro
-            );
-
-
-        /* ======================================
-           BUSCAR EL LIBRO
-           ====================================== */
-
-        const {
-            data: libros,
-            error: errorLibroConsulta
-        } = await supabaseClient
-            .from("libros")
-            .select(
-                "id, codigoLibro"
-            );
-
-
-        if (errorLibroConsulta) {
-            throw errorLibroConsulta;
-        }
-
-
-        const libro =
-            (libros || []).find(
-                item =>
-                    normalizarCodigo(
-                        item.codigoLibro
-                    ) ===
-                    codigoNormalizado
-            );
-
-
-        /* ======================================
-           REGRESAR LIBRO A DISPONIBLE
-           ====================================== */
-
-        if (libro) {
-
-            const {
-                error: errorLibroUpdate
-            } = await supabaseClient
-                .from("libros")
-                .update({
-
-                    estado:
-                        "Disponible"
-
-                })
-                .eq(
-                    "id",
-                    libro.id
-                );
-
-
-            if (errorLibroUpdate) {
-                throw errorLibroUpdate;
-            }
-        }
-
-
-        /* ======================================
-           ELIMINAR PRÉSTAMO
-           ====================================== */
-
-        const {
-            error: errorEliminar
-        } = await supabaseClient
-            .from("prestamos")
-            .delete()
-            .eq(
-                "id",
-                prestamoEliminar.id
-            );
-
-
-        if (errorEliminar) {
-            throw errorEliminar;
-        }
-
-
-        /* ======================================
-           LIMPIAR SELECCIÓN
-           ====================================== */
-
-        prestamoEliminar =
-            null;
-
-
-        confirmacionEliminar.style.display =
-            "none";
-
-
-        mostrarMensaje(
-            "El registro fue eliminado correctamente. El libro volvió a estar disponible.",
-            "exito"
-        );
-
-
-        await cargarDatos();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        mostrarMensaje(
-            "No fue posible eliminar el registro: " +
-            (
-                error.message ||
-                "error desconocido"
-            ),
-            "error"
-        );
-    }
-}
-
-
-/* ==========================================
-   CANCELAR DEVOLUCIÓN
-   ========================================== */
-
-function cancelarDevolucion() {
-
-    prestamoSeleccionado =
-        null;
-
-
-    detalle.style.display =
-        "none";
-
-
-    confirmacion.style.display =
-        "none";
-
-
-    comentarioDevolucion.value =
-        "";
-
-
-    avisoExtraviado.style.display =
-        "none";
-}
-
-
-/* ==========================================
-   CANCELAR ELIMINACIÓN
-   ========================================== */
-
-function cancelarEliminacion() {
-
-    prestamoEliminar =
-        null;
-
-
-    confirmacionEliminar.style.display =
-        "none";
-}
-
-
-/* ==========================================
-   BUSCAR
-   ========================================== */
-
-function buscar() {
-
-    const texto =
-        buscarInput.value
-            .trim()
-            .toLowerCase();
-
-
-    if (!texto) {
-
-        mostrarPrestamos(
-            prestamos
-        );
-
-        limpiarMensaje();
-
-        return;
-    }
-
-
-    const textoColaborador =
-        normalizarCodigoColaborador(
-            texto
-        );
-
-
-    const resultados =
-        prestamos.filter(
-            prestamo => {
-
-                const codigoColaborador =
-                    normalizarCodigoColaborador(
-                        prestamo.CodigoColaborador
+            ) {
+
+                const confirmar =
+                    window.confirm(
+                        "El libro será marcado como Baja porque fue registrado como Extraviado. ¿Desea continuar?"
                     );
 
 
-                const nombreCompletoAfiliado =
-                    `${prestamo.Nombres || ""} ${
-                        prestamo.Apellidos || ""
-                    }`.toLowerCase();
+                if (!confirmar) {
+                    return;
+                }
+
+            }
 
 
-                const nombreColaborador =
-                    String(
-                        prestamo.NombreColaborador || ""
-                    ).toLowerCase();
+            const confirmar =
+                window.confirm(
+                    "¿Desea registrar la devolución de este libro?"
+                );
 
 
-                const areaColaborador =
-                    String(
-                        prestamo.AreaColaborador || ""
-                    ).toLowerCase();
+            if (!confirmar) {
+                return;
+            }
 
 
-                return (
+            try {
 
-                    String(
-                        prestamo.FamiliaId || ""
-                    )
-                        .toLowerCase()
-                        .includes(texto)
+                const fechaActual =
+                    new Date()
+                        .toISOString();
 
-                    ||
 
-                    String(
-                        prestamo.PersonaId || ""
-                    )
-                        .toLowerCase()
-                        .includes(texto)
+                const {
+                    error: errorPrestamo
+                } =
+                    await supabaseClient
+                        .from("prestamos")
+                        .update({
+                            estado:
+                                "Devuelto",
 
-                    ||
+                            fechaDevolucionReal:
+                                fechaActual,
 
-                    nombreCompletoAfiliado
-                        .includes(texto)
+                            comentarios:
+                                comentario || null
+                        })
+                        .eq(
+                            "id",
+                            prestamoSeleccionado.id
+                        );
 
-                    ||
 
-                    nombreColaborador
-                        .includes(texto)
+                if (
+                    errorPrestamo
+                ) {
+                    throw errorPrestamo;
+                }
 
-                    ||
 
-                    areaColaborador
-                        .includes(texto)
+                const codigoNormalizado =
+                    normalizarCodigo(
+                        prestamoSeleccionado.codigoLibro
+                    );
 
-                    ||
 
+                const {
+                    data: libros,
+                    error: errorLibros
+                } =
+                    await supabaseClient
+                        .from("libros")
+                        .select(
+                            "id,codigoLibro"
+                        );
+
+
+                if (
+                    errorLibros
+                ) {
+                    throw errorLibros;
+                }
+
+
+                const libro =
                     (
-                        textoColaborador &&
-                        codigoColaborador ===
-                        textoColaborador
-                    )
+                        libros || []
+                    ).find(
+                        item =>
+                            normalizarCodigo(
+                                item.codigoLibro
+                            ) ===
+                            codigoNormalizado
+                    );
 
-                    ||
 
-                    String(
-                        prestamo.CodigoColaborador || ""
-                    )
-                        .toLowerCase()
-                        .includes(texto)
+                if (
+                    libro
+                ) {
 
-                    ||
+                    const nuevoEstado =
+                        comentario ===
+                        "Extraviado"
+                            ? "Baja"
+                            : "Disponible";
 
-                    String(
-                        prestamo.codigoLibro || ""
-                    )
-                        .toLowerCase()
-                        .includes(texto)
 
-                    ||
+                    const {
+                        error:
+                            errorActualizarLibro
+                    } =
+                        await supabaseClient
+                            .from("libros")
+                            .update({
+                                estado:
+                                    nuevoEstado
+                            })
+                            .eq(
+                                "id",
+                                libro.id
+                            );
 
-                    String(
-                        prestamo.nombreLibro || ""
-                    )
-                        .toLowerCase()
-                        .includes(texto)
 
-                    ||
+                    if (
+                        errorActualizarLibro
+                    ) {
+                        throw errorActualizarLibro;
+                    }
 
-                    String(
-                        prestamo.comentarios || ""
-                    )
-                        .toLowerCase()
-                        .includes(texto)
+                }
 
+
+                cerrarDetalle();
+
+
+                mostrarMensaje(
+                    "La devolución fue registrada correctamente.",
+                    "exito"
+                );
+
+
+                await cargarDatos();
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No fue posible registrar la devolución: " +
+                    (
+                        error.message ||
+                        "error desconocido"
+                    ),
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           CONFIRMAR ELIMINACIÓN
+        ========================================================== */
+
+        async function confirmarEliminacion() {
+
+            if (
+                !prestamoSeleccionado
+            ) {
+                return;
+            }
+
+
+            const confirmar =
+                window.confirm(
+                    "¿Está seguro de eliminar este préstamo? El libro volverá a quedar disponible y el registro del préstamo será eliminado."
+                );
+
+
+            if (!confirmar) {
+                return;
+            }
+
+
+            try {
+
+                const codigoNormalizado =
+                    normalizarCodigo(
+                        prestamoSeleccionado.codigoLibro
+                    );
+
+
+                const {
+                    data: libros,
+                    error: errorLibros
+                } =
+                    await supabaseClient
+                        .from("libros")
+                        .select(
+                            "id,codigoLibro"
+                        );
+
+
+                if (
+                    errorLibros
+                ) {
+                    throw errorLibros;
+                }
+
+
+                const libro =
+                    (
+                        libros || []
+                    ).find(
+                        item =>
+                            normalizarCodigo(
+                                item.codigoLibro
+                            ) ===
+                            codigoNormalizado
+                    );
+
+
+                if (
+                    libro
+                ) {
+
+                    const {
+                        error:
+                            errorLibro
+                    } =
+                        await supabaseClient
+                            .from("libros")
+                            .update({
+                                estado:
+                                    "Disponible"
+                            })
+                            .eq(
+                                "id",
+                                libro.id
+                            );
+
+
+                    if (
+                        errorLibro
+                    ) {
+                        throw errorLibro;
+                    }
+
+                }
+
+
+                const {
+                    error:
+                        errorEliminar
+                } =
+                    await supabaseClient
+                        .from("prestamos")
+                        .delete()
+                        .eq(
+                            "id",
+                            prestamoSeleccionado.id
+                        );
+
+
+                if (
+                    errorEliminar
+                ) {
+                    throw errorEliminar;
+                }
+
+
+                cerrarDetalle();
+
+
+                mostrarMensaje(
+                    "El préstamo fue eliminado correctamente y el libro quedó disponible.",
+                    "exito"
+                );
+
+
+                await cargarDatos();
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No fue posible eliminar el préstamo: " +
+                    (
+                        error.message ||
+                        "error desconocido"
+                    ),
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           APLICAR BÚSQUEDA
+        ========================================================== */
+
+        function aplicarBusqueda() {
+
+            const texto =
+                normalizar(
+                    buscarInput.value
+                );
+
+
+            if (!texto) {
+
+                mostrarPrestamos(
+                    prestamos
+                );
+
+                return;
+
+            }
+
+
+            const filtrados =
+                prestamos.filter(
+                    prestamo => {
+
+                        const colaborador =
+                            esColaborador(
+                                prestamo
+                            );
+
+
+                        const textoCompleto =
+                            [
+
+                                prestamo.FamiliaId,
+
+                                prestamo.PersonaId,
+
+                                prestamo.Nombres,
+
+                                prestamo.Apellidos,
+
+                                prestamo.codigoLibro,
+
+                                prestamo.nombreLibro,
+
+                                prestamo.comentarios,
+
+                                prestamo.CodigoColaborador,
+
+                                prestamo.NombreColaborador,
+
+                                prestamo.AreaColaborador,
+
+                                prestamo.tipoPrestamo
+
+                            ]
+                            .map(
+                                normalizar
+                            )
+                            .join(
+                                " "
+                            );
+
+
+                        return textoCompleto.includes(
+                            texto
+                        );
+
+                    }
+                );
+
+
+            mostrarPrestamos(
+                filtrados
+            );
+
+        }
+
+
+        /* =========================================================
+           ACTUALIZAR RESUMEN
+        ========================================================== */
+
+        async function actualizarResumen() {
+
+            document.getElementById(
+                "totalPrestamos"
+            ).textContent =
+                prestamos.length;
+
+
+            let vencidos =
+                0;
+
+
+            const hoy =
+                new Date();
+
+
+            hoy.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
+
+            prestamos.forEach(
+                prestamo => {
+
+                    if (
+                        !prestamo.fechaDevolucion
+                    ) {
+                        return;
+                    }
+
+
+                    const fecha =
+                        new Date(
+                            prestamo.fechaDevolucion
+                        );
+
+
+                    fecha.setHours(
+                        0,
+                        0,
+                        0,
+                        0
+                    );
+
+
+                    if (
+                        fecha <
+                        hoy
+                    ) {
+                        vencidos++;
+                    }
+
+                }
+            );
+
+
+            document.getElementById(
+                "totalVencidos"
+            ).textContent =
+                vencidos;
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("libros")
+                        .select(
+                            "id"
+                        )
+                        .eq(
+                            "estado",
+                            "Disponible"
+                        );
+
+
+                if (
+                    !error
+                ) {
+
+                    document.getElementById(
+                        "totalDisponibles"
+                    ).textContent =
+                        (
+                            data ||
+                            []
+                        ).length;
+
+                }
+
+            } catch (
+                error
+            ) {
+
+                console.error(
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           EVENTOS
+        ========================================================== */
+
+        document.getElementById(
+            "btnBuscar"
+        ).addEventListener(
+            "click",
+            aplicarBusqueda
+        );
+
+
+        document.getElementById(
+            "btnLimpiar"
+        ).addEventListener(
+            "click",
+            function() {
+
+                buscarInput.value =
+                    "";
+
+
+                mostrarPrestamos(
+                    prestamos
                 );
 
             }
         );
 
 
-    mostrarPrestamos(
-        resultados
-    );
+        buscarInput.addEventListener(
+            "keydown",
+            function(event) {
 
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
 
-    if (!resultados.length) {
+                    aplicarBusqueda();
 
-        mostrarMensaje(
-            "No se encontraron préstamos con ese criterio.",
-            "error"
-        );
+                }
 
-    } else {
-
-        limpiarMensaje();
-
-    }
-}
-
-
-/* ==========================================
-   FORMATEAR FECHA
-   ========================================== */
-
-function formatearFecha(
-    fecha
-) {
-
-    if (!fecha) {
-        return "";
-    }
-
-
-    return new Date(fecha)
-        .toLocaleDateString(
-            "es-GT",
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric"
             }
         );
-}
 
 
-/* ==========================================
-   NORMALIZAR CÓDIGO DE LIBRO
-   ========================================== */
-
-function normalizarCodigo(
-    codigo
-) {
-
-    return String(
-        codigo || ""
-    )
-        .replace(
-            /\D/g,
-            ""
-        )
-        .replace(
-            /^0+/,
-            ""
-        ) || "0";
-}
+        document.getElementById(
+            "btnCerrarDetalle"
+        ).addEventListener(
+            "click",
+            cerrarDetalle
+        );
 
 
-/* ==========================================
-   FORMATEAR CÓDIGO DE LIBRO
-   ========================================== */
-
-function formatearCodigo(
-    codigo
-) {
-
-    const numero =
-        String(
-            codigo || ""
-        )
-            .replace(
-                /\D/g,
-                ""
-            );
+        document.getElementById(
+            "btnCancelarDetalle"
+        ).addEventListener(
+            "click",
+            cerrarDetalle
+        );
 
 
-    if (!numero) {
-        return "";
-    }
+        btnConfirmarDevolucion.addEventListener(
+            "click",
+            confirmarDevolucion
+        );
 
 
-    return numero.padStart(
-        8,
-        "0"
-    );
-}
+        btnConfirmarEliminar.addEventListener(
+            "click",
+            confirmarEliminacion
+        );
 
 
-/* ==========================================
-   MOSTRAR MENSAJE
-   ========================================== */
+        /* =========================================================
+           CERRAR AL HACER CLIC FUERA DEL PANEL
+        ========================================================== */
 
-function mostrarMensaje(
-    texto,
-    tipo
-) {
+        modalDetalle.addEventListener(
+            "click",
+            function(event) {
 
-    mensaje.textContent =
-        texto;
+                if (
+                    event.target ===
+                    modalDetalle
+                ) {
 
-    mensaje.className =
-        "mensaje " +
-        tipo;
-}
+                    cerrarDetalle();
 
+                }
 
-/* ==========================================
-   LIMPIAR MENSAJE
-   ========================================== */
-
-function limpiarMensaje() {
-
-    mensaje.textContent =
-        "";
-
-    mensaje.className =
-        "mensaje";
-}
+            }
+        );
 
 
-/* ==========================================
-   EVENTOS
-   ========================================== */
+        /* =========================================================
+           CERRAR CON ESC
+        ========================================================== */
 
-document
-    .getElementById(
-        "btnBuscar"
-    )
-    .addEventListener(
-        "click",
-        buscar
-    );
+        document.addEventListener(
+            "keydown",
+            function(event) {
 
+                if (
+                    event.key ===
+                    "Escape" &&
+                    modalDetalle.classList.contains(
+                        "activo"
+                    )
+                ) {
 
-document
-    .getElementById(
-        "btnConfirmar"
-    )
-    .addEventListener(
-        "click",
-        confirmarDevolucion
-    );
+                    cerrarDetalle();
 
+                }
 
-document
-    .getElementById(
-        "btnCancelar"
-    )
-    .addEventListener(
-        "click",
-        cancelarDevolucion
-    );
+            }
+        );
 
 
-document
-    .getElementById(
-        "btnConfirmarEliminar"
-    )
-    .addEventListener(
-        "click",
-        confirmarEliminacion
-    );
+        /* =========================================================
+           INICIAR
+        ========================================================== */
+
+        async function iniciarDevoluciones() {
+
+            const accesoPermitido =
+                await window.devolucionesAuth;
 
 
-document
-    .getElementById(
-        "btnCancelarEliminar"
-    )
-    .addEventListener(
-        "click",
-        cancelarEliminacion
-    );
+            if (
+                accesoPermitido === false
+            ) {
+
+                return;
+
+            }
 
 
-buscarInput.addEventListener(
-    "keydown",
-    function(event) {
+            await cargarDatos();
 
-        if (
-            event.key ===
-            "Enter"
-        ) {
 
-            buscar();
+            document.documentElement.style.visibility =
+                "visible";
 
         }
 
-    }
-);
 
-</script>
+        iniciarDevoluciones();
+
+
+    </script>
 
 </body>
+
 </html>
