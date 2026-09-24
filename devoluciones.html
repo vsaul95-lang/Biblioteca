@@ -1,791 +1,424 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Devoluciones - Biblioteca</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script src="supabase.js"></script>
-
     <script src="auth.js"></script>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
 
-
         body {
-
             margin: 0;
-
-            font-family:
-                Arial,
-                sans-serif;
-
-            background:
-                #f4f6f8;
-
-            color:
-                #333;
-
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
         }
-
 
         .encabezado {
-
-            background:
-                #263238;
-
-            color:
-                white;
-
-            padding:
-                18px 25px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                space-between;
-
+            background: #263238;
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-
 
         .encabezado h1 {
-
-            margin:
-                0;
-
-            font-size:
-                22px;
-
+            margin: 0;
+            font-size: 22px;
         }
-
 
         .btn-volver {
-
-            background:
-                #546e7a;
-
-            color:
-                white;
-
-            text-decoration:
-                none;
-
-            padding:
-                9px 14px;
-
-            border-radius:
-                6px;
-
-            font-size:
-                14px;
-
+            background: #546e7a;
+            color: white;
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
         }
-
 
         .contenedor {
-
-            max-width:
-                1200px;
-
-            margin:
-                20px auto;
-
-            padding:
-                0 15px;
-
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
-
 
         .resumen {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap:
-                12px;
-
-            margin-bottom:
-                18px;
-
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 18px;
         }
-
 
         .tarjeta {
-
-            background:
-                white;
-
-            border-radius:
-                8px;
-
-            padding:
-                15px;
-
-            text-align:
-                center;
-
-            box-shadow:
-                0 2px 6px rgba(0,0,0,.08);
-
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,.08);
         }
-
 
         .tarjeta .numero {
-
-            font-size:
-                25px;
-
-            font-weight:
-                bold;
-
-            margin-bottom:
-                4px;
-
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 4px;
         }
-
 
         .tarjeta .texto {
-
-            font-size:
-                13px;
-
-            color:
-                #666;
-
+            font-size: 13px;
+            color: #666;
         }
-
 
         .seccion {
-
-            background:
-                white;
-
-            border-radius:
-                8px;
-
-            padding:
-                18px;
-
-            margin-bottom:
-                18px;
-
-            box-shadow:
-                0 2px 6px rgba(0,0,0,.08);
-
+            background: white;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.08);
         }
-
 
         .seccion h2 {
-
-            margin:
-                0 0 15px;
-
-            font-size:
-                18px;
-
+            margin: 0 0 15px;
+            font-size: 18px;
         }
-
 
         .fila-busqueda {
-
-            display:
-                flex;
-
-            gap:
-                10px;
-
-            align-items:
-                center;
-
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
-
 
         input,
         select {
-
-            flex:
-                1;
-
-            padding:
-                10px 12px;
-
-            border:
-                1px solid #ccc;
-
-            border-radius:
-                5px;
-
-            font-size:
-                14px;
-
-            background:
-                white;
-
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            background: white;
         }
-
 
         button {
-
-            border:
-                none;
-
-            border-radius:
-                5px;
-
-            padding:
-                10px 15px;
-
-            cursor:
-                pointer;
-
-            font-size:
-                14px;
-
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
         }
-
 
         .btn-buscar {
-
-            background:
-                #1976d2;
-
-            color:
-                white;
-
+            background: #1976d2;
+            color: white;
         }
-
 
         .btn-devolver {
-
-            background:
-                #2e7d32;
-
-            color:
-                white;
-
-            padding:
-                7px 11px;
-
-            font-size:
-                12px;
-
+            background: #2e7d32;
+            color: white;
+            padding: 7px 11px;
+            font-size: 12px;
         }
-
 
         .mensaje {
-
-            margin-top:
-                12px;
-
-            padding:
-                10px;
-
-            border-radius:
-                5px;
-
-            display:
-                none;
-
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
         }
-
 
         .mensaje.exito {
-
-            display:
-                block;
-
-            background:
-                #e8f5e9;
-
-            color:
-                #2e7d32;
-
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
         }
-
 
         .mensaje.error {
-
-            display:
-                block;
-
-            background:
-                #ffebee;
-
-            color:
-                #c62828;
-
+            display: block;
+            background: #ffebee;
+            color: #c62828;
         }
-
 
         .tabla-contenedor {
-
-            overflow-x:
-                auto;
-
-            margin-top:
-                15px;
-
+            overflow-x: auto;
+            margin-top: 15px;
         }
-
 
         table {
-
-            width:
-                100%;
-
-            min-width:
-                900px;
-
-            border-collapse:
-                collapse;
-
-            font-size:
-                13px;
-
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
         }
-
 
         th {
-
-            background:
-                #eceff1;
-
-            padding:
-                9px;
-
-            border-bottom:
-                1px solid #ccc;
-
-            text-align:
-                center;
-
-            white-space:
-                nowrap;
-
+            background: #eceff1;
+            padding: 9px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
         }
-
 
         td {
-
-            padding:
-                9px;
-
-            border-bottom:
-                1px solid #eee;
-
-            text-align:
-                center;
-
-            white-space:
-                nowrap;
-
+            padding: 9px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
         }
-
 
         td.nombre {
-
-            text-align:
-                left;
-
+            text-align: left;
         }
-
-
-        td.libro {
-
-            text-align:
-                left;
-
-            min-width:
-                190px;
-
-        }
-
-
-        td.comentarios {
-
-            min-width:
-                110px;
-
-        }
-
 
         tr.vencido {
-
-            background:
-                #fff3f3;
-
+            background: #fff3f3;
         }
-
 
         .estado-prestado {
-
-            color:
-                #1565c0;
-
-            font-weight:
-                bold;
-
+            color: #1565c0;
+            font-weight: bold;
         }
-
 
         .estado-vencido {
-
-            color:
-                #c62828;
-
-            font-weight:
-                bold;
-
+            color: #c62828;
+            font-weight: bold;
         }
 
-
-        .estado-devuelto {
-
-            color:
-                #2e7d32;
-
-            font-weight:
-                bold;
-
-        }
-
+        /* ================================
+           DETALLE DE DEVOLUCIÓN
+           ================================ */
 
         .detalle {
-
-            background:
-                #f7f9fa;
-
-            border-radius:
-                6px;
-
-            padding:
-                14px;
-
-            margin-top:
-                15px;
-
-            display:
-                none;
-
+            background: #f7f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 12px;
+            margin-top: 5px;
+            display: none;
         }
 
-
-        .detalle p {
-
-            margin:
-                6px 0;
-
-            font-size:
-                14px;
-
+        .detalle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr 1fr;
+            gap: 8px 15px;
         }
 
-
-        .campo-comentario {
-
-            margin-top:
-                12px;
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            gap:
-                5px;
-
+        .detalle-item {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 5px;
+            padding: 7px 10px;
+            min-width: 0;
         }
 
-
-        .campo-comentario label {
-
-            font-size:
-                13px;
-
-            font-weight:
-                bold;
-
-            color:
-                #455a64;
-
+        .detalle-item.libro {
+            grid-column: span 2;
         }
 
-
-        .campo-comentario select {
-
-            max-width:
-                280px;
-
-            padding:
-                8px 10px;
-
-            font-size:
-                13px;
-
+        .detalle-item.fecha {
+            grid-column: span 1;
         }
 
-
-        .aviso-extraviado {
-
-            display:
-                none;
-
-            margin-top:
-                8px;
-
-            padding:
-                9px 10px;
-
-            background:
-                #fff3e0;
-
-            border:
-                1px solid #ffcc80;
-
-            border-radius:
-                5px;
-
-            color:
-                #e65100;
-
-            font-size:
-                12px;
-
+        .detalle-etiqueta {
+            display: block;
+            color: #78909c;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 3px;
         }
 
+        .detalle-valor {
+            display: block;
+            color: #263238;
+            font-size: 13px;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .detalle-comentario {
+            margin-top: 9px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 7px 10px;
+        }
+
+        .detalle-comentario label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #455a64;
+            white-space: nowrap;
+        }
+
+        .detalle-comentario select {
+            flex: 0 0 180px;
+            padding: 7px 9px;
+            font-size: 13px;
+        }
 
         .confirmacion {
-
-            background:
-                #fff8e1;
-
-            border:
-                1px solid #ffe082;
-
-            border-radius:
-                6px;
-
-            padding:
-                15px;
-
-            margin-top:
-                15px;
-
-            display:
-                none;
-
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-top: 10px;
+            display: none;
         }
 
+        .confirmacion-contenido {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .confirmacion-texto {
+            min-width: 0;
+            font-size: 13px;
+        }
 
         .confirmacion strong {
-
-            color:
-                #e65100;
-
+            color: #e65100;
         }
-
 
         .acciones-confirmacion {
-
-            margin-top:
-                12px;
-
-            display:
-                flex;
-
-            gap:
-                8px;
-
+            display: flex;
+            gap: 7px;
+            flex-shrink: 0;
         }
-
 
         .btn-confirmar {
-
-            background:
-                #2e7d32;
-
-            color:
-                white;
-
+            background: #2e7d32;
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
         }
-
 
         .btn-cancelar {
-
-            background:
-                #757575;
-
-            color:
-                white;
-
+            background: #757575;
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
         }
 
+        .aviso-extraviado {
+            display: none;
+            margin-top: 7px;
+            padding: 7px 10px;
+            border-radius: 5px;
+            background: #ffebee;
+            color: #c62828;
+            font-size: 12px;
+            border: 1px solid #ffcdd2;
+        }
+
+        @media (max-width: 850px) {
+            .detalle-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .detalle-item.libro {
+                grid-column: span 2;
+            }
+
+            .confirmacion-contenido {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .acciones-confirmacion {
+                width: 100%;
+            }
+        }
 
         @media (max-width: 700px) {
-
             .resumen {
-
-                grid-template-columns:
-                    1fr;
-
+                grid-template-columns: 1fr;
             }
-
 
             .fila-busqueda {
-
-                flex-direction:
-                    column;
-
-                align-items:
-                    stretch;
-
+                flex-direction: column;
+                align-items: stretch;
             }
-
 
             .encabezado {
-
-                gap:
-                    10px;
-
-                flex-direction:
-                    column;
-
-                align-items:
-                    flex-start;
-
+                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-
-            .campo-comentario select {
-
-                max-width:
-                    100%;
-
+            .detalle-grid {
+                grid-template-columns: 1fr;
             }
 
+            .detalle-item.libro {
+                grid-column: span 1;
+            }
+
+            .detalle-comentario {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .detalle-comentario select {
+                flex: 1;
+                width: 100%;
+            }
+
+            .acciones-confirmacion {
+                flex-direction: column;
+            }
+
+            .acciones-confirmacion button {
+                width: 100%;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <header class="encabezado">
-
-    <h1>
-        📚 Devoluciones
-    </h1>
-
-
-    <a
-        href="index.html"
-        class="btn-volver"
-    >
-        ← Volver
-    </a>
-
+    <h1>📚 Devoluciones</h1>
+    <a href="index.html" class="btn-volver">← Volver</a>
 </header>
-
 
 <div class="contenedor">
 
-
-    <!-- =====================================================
-         RESUMEN
-    ====================================================== -->
-
     <section class="resumen">
 
-
         <div class="tarjeta">
-
-            <div
-                class="numero"
-                id="totalActivos"
-            >
-                0
-            </div>
-
-            <div class="texto">
-                Préstamos activos
-            </div>
-
+            <div class="numero" id="totalActivos">0</div>
+            <div class="texto">Préstamos activos</div>
         </div>
 
-
         <div class="tarjeta">
-
-            <div
-                class="numero"
-                id="totalVencidos"
-            >
-                0
-            </div>
-
-            <div class="texto">
-                Vencidos
-            </div>
-
+            <div class="numero" id="totalVencidos">0</div>
+            <div class="texto">Vencidos</div>
         </div>
 
-
         <div class="tarjeta">
-
-            <div
-                class="numero"
-                id="totalDisponibles"
-            >
-                0
-            </div>
-
-            <div class="texto">
-                Libros disponibles
-            </div>
-
+            <div class="numero" id="totalDisponibles">0</div>
+            <div class="texto">Libros disponibles</div>
         </div>
-
 
     </section>
 
 
-    <!-- =====================================================
-         BUSCAR
-    ====================================================== -->
-
     <section class="seccion">
 
-
-        <h2>
-            Buscar préstamo
-        </h2>
-
+        <h2>Buscar préstamo</h2>
 
         <div class="fila-busqueda">
-
 
             <input
                 type="text"
@@ -793,847 +426,634 @@
                 placeholder="Familia, PersonaId, nombre, apellido o código de libro..."
             >
 
-
-            <button
-                class="btn-buscar"
-                id="btnBuscar"
-            >
+            <button class="btn-buscar" id="btnBuscar">
                 Buscar
             </button>
 
-
         </div>
 
-
-        <div
-            id="mensaje"
-            class="mensaje"
-        ></div>
-
+        <div id="mensaje" class="mensaje"></div>
 
         <div class="tabla-contenedor">
 
-
             <table>
 
-
                 <thead>
-
                     <tr>
-
-                        <th>
-                            FamiliaId
-                        </th>
-
-                        <th>
-                            PersonaId
-                        </th>
-
-                        <th>
-                            Libro
-                        </th>
-
-                        <th>
-                            Préstamo
-                        </th>
-
-                        <th>
-                            Devolución
-                        </th>
-
-                        <th>
-                            Estado
-                        </th>
-
-                        <th>
-                            Comentarios
-                        </th>
-
-                        <th>
-                            Acciones
-                        </th>
-
+                        <th>FamiliaId</th>
+                        <th>PersonaId</th>
+                        <th>Libro</th>
+                        <th>Préstamo</th>
+                        <th>Devolución</th>
+                        <th>Estado</th>
+                        <th>Comentarios</th>
+                        <th>Acciones</th>
                     </tr>
-
                 </thead>
 
-
-                <tbody
-                    id="tablaPrestamos"
-                ></tbody>
-
+                <tbody id="tablaPrestamos"></tbody>
 
             </table>
 
-
         </div>
-
 
     </section>
 
 
-    <!-- =====================================================
-         DETALLE
-    ====================================================== -->
-
     <section class="seccion">
 
+        <h2>Detalle de devolución</h2>
 
-        <h2>
-            Detalle de devolución
-        </h2>
+        <div id="detalle" class="detalle">
 
+            <div class="detalle-grid">
 
-        <div
-            id="detalle"
-            class="detalle"
-        ></div>
+                <div class="detalle-item">
 
+                    <span class="detalle-etiqueta">
+                        FamiliaId
+                    </span>
 
-        <div
-            id="confirmacion"
-            class="confirmacion"
-        >
+                    <span
+                        class="detalle-valor"
+                        id="detalleFamilia"
+                    ></span>
 
-
-            <strong>
-                ¿Desea registrar la devolución de este libro?
-            </strong>
+                </div>
 
 
-            <div
-                class="acciones-confirmacion"
-            >
+                <div class="detalle-item">
+
+                    <span class="detalle-etiqueta">
+                        Persona
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detallePersona"
+                    ></span>
+
+                </div>
 
 
-                <button
-                    class="btn-confirmar"
-                    id="btnConfirmar"
-                >
-                    Sí, registrar devolución
-                </button>
+                <div class="detalle-item">
+
+                    <span class="detalle-etiqueta">
+                        PersonaId
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detallePersonaId"
+                    ></span>
+
+                </div>
 
 
-                <button
-                    class="btn-cancelar"
-                    id="btnCancelar"
-                >
-                    Cancelar
-                </button>
+                <div class="detalle-item libro">
 
+                    <span class="detalle-etiqueta">
+                        Libro
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detalleLibro"
+                    ></span>
+
+                </div>
+
+
+                <div class="detalle-item">
+
+                    <span class="detalle-etiqueta">
+                        Código
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detalleCodigo"
+                    ></span>
+
+                </div>
+
+
+                <div class="detalle-item fecha">
+
+                    <span class="detalle-etiqueta">
+                        Fecha del préstamo
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detallePrestamo"
+                    ></span>
+
+                </div>
+
+
+                <div class="detalle-item fecha">
+
+                    <span class="detalle-etiqueta">
+                        Fecha límite
+                    </span>
+
+                    <span
+                        class="detalle-valor"
+                        id="detalleDevolucion"
+                    ></span>
+
+                </div>
 
             </div>
 
 
-        </div>
+            <div class="detalle-comentario">
 
+                <label for="comentarioDevolucion">
+                    Comentario:
+                </label>
 
-    </section>
+                <select id="comentarioDevolucion">
 
+                    <option value="">
+                        Vacío
+                    </option>
 
-</div>
+                    <option value="Roto">
+                        Roto
+                    </option>
 
+                    <option value="Mojado">
+                        Mojado
+                    </option>
 
-<script>
+                    <option value="Manchado">
+                        Manchado
+                    </option>
 
+                    <option value="Extraviado">
+                        Extraviado
+                    </option>
 
-/* =========================================================
-   VARIABLES
-========================================================= */
+                </select>
 
-let prestamos = [];
-
-let prestamoSeleccionado = null;
-
-
-/* =========================================================
-   ELEMENTOS
-========================================================= */
-
-const tablaPrestamos =
-    document.getElementById(
-        "tablaPrestamos"
-    );
-
-
-const buscarInput =
-    document.getElementById(
-        "buscar"
-    );
-
-
-const mensaje =
-    document.getElementById(
-        "mensaje"
-    );
-
-
-const detalle =
-    document.getElementById(
-        "detalle"
-    );
-
-
-const confirmacion =
-    document.getElementById(
-        "confirmacion"
-    );
-
-
-/* =========================================================
-   INICIO
-========================================================= */
-
-document.addEventListener(
-
-    "DOMContentLoaded",
-
-    cargarDatos
-
-);
-
-
-/* =========================================================
-   CARGAR DATOS
-========================================================= */
-
-async function cargarDatos() {
-
-    try {
-
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-
-            .from("prestamos")
-
-            .select("*")
-
-            .eq(
-                "estado",
-                "Prestado"
-            )
-
-            .order(
-                "fechaPrestamo",
-                {
-                    ascending:
-                        false
-                }
-            );
-
-
-        if (error) {
-
-            throw error;
-
-        }
-
-
-        prestamos =
-            data || [];
-
-
-        actualizarResumen();
-
-
-        mostrarPrestamos(
-            prestamos
-        );
-
-
-    } catch (error) {
-
-
-        console.error(error);
-
-
-        mostrarMensaje(
-
-            "No fue posible cargar los préstamos.",
-
-            "error"
-
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   RESUMEN
-========================================================= */
-
-async function actualizarResumen() {
-
-
-    const totalActivos =
-        prestamos.length;
-
-
-    const hoy =
-        obtenerHoy();
-
-
-    const totalVencidos =
-        prestamos.filter(
-
-            prestamo => {
-
-                const fecha =
-                    obtenerFechaSoloDia(
-                        prestamo.fechaDevolucion
-                    );
-
-                return (
-                    fecha &&
-                    fecha < hoy
-                );
-
-            }
-
-        ).length;
-
-
-    document.getElementById(
-        "totalActivos"
-    ).textContent =
-        totalActivos;
-
-
-    document.getElementById(
-        "totalVencidos"
-    ).textContent =
-        totalVencidos;
-
-
-    try {
-
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-
-            .from("libros")
-
-            .select(
-                "id, estado"
-            );
-
-
-        if (error) {
-
-            throw error;
-
-        }
-
-
-        const disponibles =
-            (data || []).filter(
-
-                libro =>
-                    libro.estado ===
-                    "Disponible"
-
-            ).length;
-
-
-        document.getElementById(
-            "totalDisponibles"
-        ).textContent =
-            disponibles;
-
-
-    } catch (error) {
-
-
-        console.error(error);
-
-
-        document.getElementById(
-            "totalDisponibles"
-        ).textContent =
-            "—";
-
-    }
-
-}
-
-
-/* =========================================================
-   MOSTRAR PRÉSTAMOS
-========================================================= */
-
-function mostrarPrestamos(
-    lista
-) {
-
-
-    tablaPrestamos.innerHTML =
-        "";
-
-
-    if (!lista.length) {
-
-
-        tablaPrestamos.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="8"
-                    style="padding:20px;"
-                >
-                    No hay préstamos activos.
-                </td>
-
-            </tr>
-
-        `;
-
-
-        return;
-
-    }
-
-
-    const hoy =
-        obtenerHoy();
-
-
-    lista.forEach(
-
-        prestamo => {
-
-
-            const fechaDevolucion =
-                obtenerFechaSoloDia(
-                    prestamo.fechaDevolucion
-                );
-
-
-            const vencido =
-                fechaDevolucion &&
-                fechaDevolucion < hoy;
-
-
-            const fila =
-                document.createElement(
-                    "tr"
-                );
-
-
-            if (vencido) {
-
-                fila.classList.add(
-                    "vencido"
-                );
-
-            }
-
-
-            /* FamiliaId */
-
-            const tdFamilia =
-                document.createElement(
-                    "td"
-                );
-
-
-            tdFamilia.textContent =
-                prestamo.FamiliaId ||
-                "—";
-
-
-            /* PersonaId */
-
-            const tdPersona =
-                document.createElement(
-                    "td"
-                );
-
-
-            tdPersona.textContent =
-                prestamo.PersonaId ||
-                "—";
-
-
-            /* Libro */
-
-            const tdLibro =
-                document.createElement(
-                    "td"
-                );
-
-
-            tdLibro.className =
-                "libro";
-
-
-            const codigo =
-                formatearCodigo(
-                    prestamo.codigoLibro
-                );
-
-
-            tdLibro.textContent =
-                `${codigo} - ${
-                    prestamo.nombreLibro ||
-                    "Sin nombre"
-                }`;
-
-
-            /* Préstamo */
-
-            const tdPrestamo =
-                document.createElement(
-                    "td"
-                );
-
-
-            tdPrestamo.textContent =
-                formatearFecha(
-                    prestamo.fechaPrestamo
-                );
-
-
-            /* Devolución */
-
-            const tdDevolucion =
-                document.createElement(
-                    "td"
-                );
-
-
-            tdDevolucion.textContent =
-                formatearFecha(
-                    prestamo.fechaDevolucion
-                );
-
-
-            /* Estado */
-
-            const tdEstado =
-                document.createElement(
-                    "td"
-                );
-
-
-            if (vencido) {
-
-
-                tdEstado.textContent =
-                    "Vencido";
-
-
-                tdEstado.className =
-                    "estado-vencido";
-
-
-            } else {
-
-
-                tdEstado.textContent =
-                    "Prestado";
-
-
-                tdEstado.className =
-                    "estado-prestado";
-
-            }
-
-
-            /* Comentarios */
-
-            const tdComentarios =
-                document.createElement(
-                    "td"
-                );
-
-
-            tdComentarios.className =
-                "comentarios";
-
-
-            const comentario =
-                String(
-                    prestamo.comentarios ||
-                    ""
-                ).trim();
-
-
-            tdComentarios.textContent =
-                comentario ||
-                "—";
-
-
-            /* Acciones */
-
-            const tdAccion =
-                document.createElement(
-                    "td"
-                );
-
-
-            const boton =
-                document.createElement(
-                    "button"
-                );
-
-
-            boton.type =
-                "button";
-
-
-            boton.className =
-                "btn-devolver";
-
-
-            boton.textContent =
-                "Devolver";
-
-
-            boton.addEventListener(
-
-                "click",
-
-                function() {
-
-                    seleccionarPrestamo(
-                        prestamo
-                    );
-
-                }
-
-            );
-
-
-            tdAccion.appendChild(
-                boton
-            );
-
-
-            fila.appendChild(
-                tdFamilia
-            );
-
-
-            fila.appendChild(
-                tdPersona
-            );
-
-
-            fila.appendChild(
-                tdLibro
-            );
-
-
-            fila.appendChild(
-                tdPrestamo
-            );
-
-
-            fila.appendChild(
-                tdDevolucion
-            );
-
-
-            fila.appendChild(
-                tdEstado
-            );
-
-
-            fila.appendChild(
-                tdComentarios
-            );
-
-
-            fila.appendChild(
-                tdAccion
-            );
-
-
-            tablaPrestamos.appendChild(
-                fila
-            );
-
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   SELECCIONAR PRÉSTAMO
-========================================================= */
-
-function seleccionarPrestamo(
-    prestamo
-) {
-
-
-    prestamoSeleccionado =
-        prestamo;
-
-
-    detalle.innerHTML = `
-
-        <p>
-
-            <strong>
-                FamiliaId:
-            </strong>
-
-            ${escapeHtml(
-                prestamo.FamiliaId ||
-                "—"
-            )}
-
-        </p>
-
-
-        <p>
-
-            <strong>
-                PersonaId:
-            </strong>
-
-            ${escapeHtml(
-                prestamo.PersonaId ||
-                "—"
-            )}
-
-        </p>
-
-
-        <p>
-
-            <strong>
-                Persona:
-            </strong>
-
-            ${escapeHtml(
-                prestamo.Nombres ||
-                ""
-            )}
-
-            ${escapeHtml(
-                prestamo.Apellidos ||
-                ""
-            )}
-
-        </p>
-
-
-        <p>
-
-            <strong>
-                Libro:
-            </strong>
-
-            ${escapeHtml(
-                prestamo.nombreLibro ||
-                "—"
-            )}
-
-        </p>
-
-
-        <p>
-
-            <strong>
-                Código:
-            </strong>
-
-            ${escapeHtml(
-                formatearCodigo(
-                    prestamo.codigoLibro
-                )
-            )}
-
-        </p>
-
-
-        <p>
-
-            <strong>
-                Fecha del préstamo:
-            </strong>
-
-            ${formatearFecha(
-                prestamo.fechaPrestamo
-            )}
-
-        </p>
-
-
-        <p>
-
-            <strong>
-                Fecha límite:
-            </strong>
-
-            ${formatearFecha(
-                prestamo.fechaDevolucion
-            )}
-
-        </p>
-
-
-        <div class="campo-comentario">
-
-            <label
-                for="comentarioDevolucion"
-            >
-                Comentarios de la devolución
-            </label>
-
-
-            <select
-                id="comentarioDevolucion"
-            >
-
-                <option value="">
-                    Vacío
-                </option>
-
-                <option value="Roto">
-                    Roto
-                </option>
-
-                <option value="Mojado">
-                    Mojado
-                </option>
-
-                <option value="Manchado">
-                    Manchado
-                </option>
-
-                <option value="Extraviado">
-                    Extraviado
-                </option>
-
-            </select>
+            </div>
 
 
             <div
                 id="avisoExtraviado"
                 class="aviso-extraviado"
             >
-                ⚠️ Si selecciona <strong>Extraviado</strong>,
-                el libro quedará en estado <strong>Baja</strong>
-                y no estará disponible para nuevos préstamos.
+                ⚠️ Al registrar el libro como <strong>Extraviado</strong>,
+                su estado cambiará a <strong>Baja</strong> y no volverá
+                a aparecer como disponible.
             </div>
 
         </div>
 
-    `;
+
+        <div id="confirmacion" class="confirmacion">
+
+            <div class="confirmacion-contenido">
+
+                <div class="confirmacion-texto">
+                    <strong>
+                        ¿Desea registrar la devolución de este libro?
+                    </strong>
+                </div>
+
+                <div class="acciones-confirmacion">
+
+                    <button
+                        class="btn-cancelar"
+                        id="btnCancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        class="btn-confirmar"
+                        id="btnConfirmar"
+                    >
+                        Sí, registrar devolución
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+let prestamos = [];
+let prestamoSeleccionado = null;
+
+
+const tablaPrestamos =
+    document.getElementById("tablaPrestamos");
+
+const buscarInput =
+    document.getElementById("buscar");
+
+const mensaje =
+    document.getElementById("mensaje");
+
+const detalle =
+    document.getElementById("detalle");
+
+const confirmacion =
+    document.getElementById("confirmacion");
+
+const comentarioDevolucion =
+    document.getElementById("comentarioDevolucion");
+
+const avisoExtraviado =
+    document.getElementById("avisoExtraviado");
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    cargarDatos
+);
+
+
+/* ==========================================
+   CARGAR PRÉSTAMOS ACTIVOS
+   ========================================== */
+
+async function cargarDatos() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("prestamos")
+            .select("*")
+            .eq("estado", "Prestado")
+            .order(
+                "fechaPrestamo",
+                {
+                    ascending: false
+                }
+            );
+
+        if (error) {
+            throw error;
+        }
+
+        prestamos = data || [];
+
+        actualizarResumen();
+
+        mostrarPrestamos(prestamos);
+
+    } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+            "No fue posible cargar los préstamos.",
+            "error"
+        );
+    }
+}
+
+
+/* ==========================================
+   RESUMEN
+   ========================================== */
+
+async function actualizarResumen() {
+
+    const totalActivos =
+        prestamos.length;
+
+    const ahora =
+        new Date();
+
+    const totalVencidos =
+        prestamos.filter(
+            prestamo =>
+                new Date(
+                    prestamo.fechaDevolucion
+                ) < ahora
+        ).length;
+
+
+    document.getElementById(
+        "totalActivos"
+    ).textContent = totalActivos;
+
+
+    document.getElementById(
+        "totalVencidos"
+    ).textContent = totalVencidos;
+
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("libros")
+            .select("id, estado");
+
+        if (error) {
+            throw error;
+        }
+
+        const disponibles =
+            (data || []).filter(
+                libro =>
+                    libro.estado === "Disponible"
+            ).length;
+
+
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent = disponibles;
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent = "—";
+    }
+}
+
+
+/* ==========================================
+   MOSTRAR PRÉSTAMOS
+   ========================================== */
+
+function mostrarPrestamos(lista) {
+
+    tablaPrestamos.innerHTML = "";
+
+
+    if (!lista.length) {
+
+        tablaPrestamos.innerHTML = `
+            <tr>
+                <td colspan="8" style="padding:20px;">
+                    No hay préstamos activos.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    const ahora =
+        new Date();
+
+
+    lista.forEach(prestamo => {
+
+        const vencido =
+            new Date(
+                prestamo.fechaDevolucion
+            ) < ahora;
+
+
+        const fila =
+            document.createElement("tr");
+
+
+        if (vencido) {
+            fila.classList.add("vencido");
+        }
+
+
+        const tdFamilia =
+            document.createElement("td");
+
+        tdFamilia.textContent =
+            prestamo.FamiliaId;
+
+
+        const tdPersonaId =
+            document.createElement("td");
+
+        tdPersonaId.textContent =
+            prestamo.PersonaId;
+
+
+        const tdLibro =
+            document.createElement("td");
+
+        tdLibro.className =
+            "nombre";
+
+        tdLibro.textContent =
+            `${formatearCodigo(
+                prestamo.codigoLibro
+            )} - ${prestamo.nombreLibro}`;
+
+
+        const tdPrestamo =
+            document.createElement("td");
+
+        tdPrestamo.textContent =
+            formatearFecha(
+                prestamo.fechaPrestamo
+            );
+
+
+        const tdDevolucion =
+            document.createElement("td");
+
+        tdDevolucion.textContent =
+            formatearFecha(
+                prestamo.fechaDevolucion
+            );
+
+
+        const tdEstado =
+            document.createElement("td");
+
+
+        if (vencido) {
+
+            tdEstado.textContent =
+                "Vencido";
+
+            tdEstado.className =
+                "estado-vencido";
+
+        } else {
+
+            tdEstado.textContent =
+                "Prestado";
+
+            tdEstado.className =
+                "estado-prestado";
+        }
+
+
+        const tdComentarios =
+            document.createElement("td");
+
+        tdComentarios.textContent =
+            prestamo.comentarios ||
+            "—";
+
+
+        const tdAccion =
+            document.createElement("td");
+
+
+        const boton =
+            document.createElement("button");
+
+
+        boton.type =
+            "button";
+
+        boton.className =
+            "btn-devolver";
+
+        boton.textContent =
+            "Devolver";
+
+
+        boton.addEventListener(
+            "click",
+            function() {
+
+                seleccionarPrestamo(
+                    prestamo
+                );
+
+            }
+        );
+
+
+        tdAccion.appendChild(
+            boton
+        );
+
+
+        fila.appendChild(
+            tdFamilia
+        );
+
+        fila.appendChild(
+            tdPersonaId
+        );
+
+        fila.appendChild(
+            tdLibro
+        );
+
+        fila.appendChild(
+            tdPrestamo
+        );
+
+        fila.appendChild(
+            tdDevolucion
+        );
+
+        fila.appendChild(
+            tdEstado
+        );
+
+        fila.appendChild(
+            tdComentarios
+        );
+
+        fila.appendChild(
+            tdAccion
+        );
+
+
+        tablaPrestamos.appendChild(
+            fila
+        );
+
+    });
+}
+
+
+/* ==========================================
+   SELECCIONAR PRÉSTAMO
+   ========================================== */
+
+function seleccionarPrestamo(prestamo) {
+
+    prestamoSeleccionado =
+        prestamo;
+
+
+    document.getElementById(
+        "detalleFamilia"
+    ).textContent =
+        prestamo.FamiliaId || "";
+
+
+    document.getElementById(
+        "detallePersona"
+    ).textContent =
+        `${prestamo.Nombres || ""} ${
+            prestamo.Apellidos || ""
+        }`.trim();
+
+
+    document.getElementById(
+        "detallePersonaId"
+    ).textContent =
+        prestamo.PersonaId || "";
+
+
+    document.getElementById(
+        "detalleLibro"
+    ).textContent =
+        prestamo.nombreLibro || "";
+
+
+    document.getElementById(
+        "detalleCodigo"
+    ).textContent =
+        formatearCodigo(
+            prestamo.codigoLibro
+        );
+
+
+    document.getElementById(
+        "detallePrestamo"
+    ).textContent =
+        formatearFecha(
+            prestamo.fechaPrestamo
+        );
+
+
+    document.getElementById(
+        "detalleDevolucion"
+    ).textContent =
+        formatearFecha(
+            prestamo.fechaDevolucion
+        );
+
+
+    comentarioDevolucion.value =
+        "";
+
+
+    avisoExtraviado.style.display =
+        "none";
 
 
     detalle.style.display =
@@ -1644,267 +1064,183 @@ function seleccionarPrestamo(
         "block";
 
 
-    const selectComentario =
-        document.getElementById(
-            "comentarioDevolucion"
-        );
-
-
-    const avisoExtraviado =
-        document.getElementById(
-            "avisoExtraviado"
-        );
-
-
-    selectComentario.addEventListener(
-
-        "change",
-
-        function() {
-
-
-            if (
-                selectComentario.value ===
-                "Extraviado"
-            ) {
-
-
-                avisoExtraviado.style.display =
-                    "block";
-
-
-            } else {
-
-
-                avisoExtraviado.style.display =
-                    "none";
-
-            }
-
-        }
-
-    );
-
-
     detalle.scrollIntoView({
-
-        behavior:
-            "smooth",
-
-        block:
-            "nearest"
-
+        behavior: "smooth",
+        block: "nearest"
     });
 
 }
 
 
-/* =========================================================
+/* ==========================================
+   CAMBIO DE COMENTARIO
+   ========================================== */
+
+comentarioDevolucion.addEventListener(
+    "change",
+    function() {
+
+        if (
+            comentarioDevolucion.value ===
+            "Extraviado"
+        ) {
+
+            avisoExtraviado.style.display =
+                "block";
+
+        } else {
+
+            avisoExtraviado.style.display =
+                "none";
+        }
+
+    }
+);
+
+
+/* ==========================================
    CONFIRMAR DEVOLUCIÓN
-========================================================= */
+   ========================================== */
 
 async function confirmarDevolucion() {
 
-
     if (!prestamoSeleccionado) {
 
-
         mostrarMensaje(
-
             "Seleccione un préstamo.",
-
             "error"
-
         );
 
-
         return;
-
     }
 
 
-    const selectComentario =
-        document.getElementById(
-            "comentarioDevolucion"
-        );
-
-
-    const comentario =
-        selectComentario
-            ? selectComentario.value
-            : "";
-
-
     try {
-
 
         const fechaReal =
             new Date();
 
 
-        /*
-         * 1. Actualizar préstamo
-         */
+        const comentario =
+            comentarioDevolucion.value.trim();
+
+
+        /* ------------------------------------
+           ACTUALIZAR PRÉSTAMO
+           ------------------------------------ */
 
         const {
             error: errorPrestamo
         } = await supabaseClient
-
             .from("prestamos")
-
             .update({
 
-                estado:
-                    "Devuelto",
+                estado: "Devuelto",
 
                 fechaDevolucionReal:
                     fechaReal.toISOString(),
 
                 comentarios:
-                    comentario ||
-                    null
+                    comentario || null
 
             })
-
             .eq(
-
                 "id",
-
                 prestamoSeleccionado.id
-
             );
 
 
         if (errorPrestamo) {
-
             throw errorPrestamo;
-
         }
 
 
-        /*
-         * 2. Buscar el libro exacto
-         */
+        /* ------------------------------------
+           BUSCAR LIBRO
+           ------------------------------------ */
 
         const {
             data: libros,
             error: errorLibroConsulta
         } = await supabaseClient
-
             .from("libros")
-
             .select(
                 "id, codigoLibro"
             );
 
 
         if (errorLibroConsulta) {
-
             throw errorLibroConsulta;
-
         }
 
 
         const codigoNormalizado =
             normalizarCodigo(
-
                 prestamoSeleccionado.codigoLibro
-
             );
 
 
         const libro =
             (libros || []).find(
-
                 item =>
-
                     normalizarCodigo(
                         item.codigoLibro
                     ) ===
                     codigoNormalizado
-
             );
 
 
-        /*
-         * 3. Determinar el estado final
-         */
-
-        const estadoLibro =
-            comentario ===
-            "Extraviado"
-
-                ? "Baja"
-
-                : "Disponible";
-
-
-        /*
-         * 4. Cambiar estado del libro
-         */
+        /* ------------------------------------
+           ACTUALIZAR ESTADO DEL LIBRO
+           ------------------------------------ */
 
         if (libro) {
+
+            const nuevoEstado =
+                comentario === "Extraviado"
+                    ? "Baja"
+                    : "Disponible";
 
 
             const {
                 error: errorLibroUpdate
             } = await supabaseClient
-
                 .from("libros")
-
                 .update({
 
                     estado:
-                        estadoLibro
+                        nuevoEstado
 
                 })
-
                 .eq(
-
                     "id",
-
                     libro.id
-
                 );
 
 
             if (errorLibroUpdate) {
-
                 throw errorLibroUpdate;
-
             }
 
         }
 
 
-        /*
-         * 5. Mensaje final
-         */
+        /* ------------------------------------
+           MENSAJE FINAL
+           ------------------------------------ */
 
-        if (
-            comentario ===
-            "Extraviado"
-        ) {
-
+        if (comentario === "Extraviado") {
 
             mostrarMensaje(
-
                 "Devolución registrada. El libro fue marcado como Baja por extravío.",
-
                 "exito"
-
             );
-
 
         } else {
 
-
             mostrarMensaje(
-
                 "Devolución registrada correctamente.",
-
                 "exito"
-
             );
 
         }
@@ -1922,42 +1258,39 @@ async function confirmarDevolucion() {
             "none";
 
 
+        comentarioDevolucion.value =
+            "";
+
+
+        avisoExtraviado.style.display =
+            "none";
+
+
         await cargarDatos();
 
 
     } catch (error) {
 
-
         console.error(error);
 
-
         mostrarMensaje(
-
             "No fue posible registrar la devolución: " +
-
             (
-
                 error.message ||
-
                 "error desconocido"
-
             ),
-
             "error"
-
         );
 
     }
-
 }
 
 
-/* =========================================================
+/* ==========================================
    CANCELAR
-========================================================= */
+   ========================================== */
 
 function cancelarDevolucion() {
-
 
     prestamoSeleccionado =
         null;
@@ -1970,90 +1303,103 @@ function cancelarDevolucion() {
     confirmacion.style.display =
         "none";
 
+
+    comentarioDevolucion.value =
+        "";
+
+
+    avisoExtraviado.style.display =
+        "none";
 }
 
 
-/* =========================================================
+/* ==========================================
    BUSCAR
-========================================================= */
+   ========================================== */
 
 function buscar() {
 
-
     const texto =
-        normalizarTexto(
-            buscarInput.value
-        );
+        buscarInput.value
+            .trim()
+            .toLowerCase();
 
 
     if (!texto) {
-
 
         mostrarPrestamos(
             prestamos
         );
 
-
         limpiarMensaje();
 
-
         return;
-
     }
 
 
     const resultados =
         prestamos.filter(
-
             prestamo => {
-
 
                 return (
 
-                    normalizarTexto(
+                    String(
                         prestamo.FamiliaId
                     )
-                    .includes(texto)
+                        .toLowerCase()
+                        .includes(texto)
 
                     ||
 
-                    normalizarTexto(
+                    String(
                         prestamo.PersonaId
                     )
-                    .includes(texto)
+                        .toLowerCase()
+                        .includes(texto)
 
                     ||
 
-                    normalizarTexto(
+                    String(
                         prestamo.Nombres
                     )
-                    .includes(texto)
+                        .toLowerCase()
+                        .includes(texto)
 
                     ||
 
-                    normalizarTexto(
+                    String(
                         prestamo.Apellidos
                     )
-                    .includes(texto)
+                        .toLowerCase()
+                        .includes(texto)
 
                     ||
 
-                    normalizarTexto(
+                    String(
                         prestamo.codigoLibro
                     )
-                    .includes(texto)
+                        .toLowerCase()
+                        .includes(texto)
 
                     ||
 
-                    normalizarTexto(
+                    String(
                         prestamo.nombreLibro
                     )
-                    .includes(texto)
+                        .toLowerCase()
+                        .includes(texto)
+
+                    ||
+
+                    String(
+                        prestamo.comentarios
+                    )
+                        .toLowerCase()
+                        .includes(texto)
 
                 );
 
             }
-
         );
 
 
@@ -2064,403 +1410,147 @@ function buscar() {
 
     if (!resultados.length) {
 
-
         mostrarMensaje(
-
             "No se encontraron préstamos con ese criterio.",
-
             "error"
-
         );
 
-
     } else {
-
 
         limpiarMensaje();
 
     }
-
 }
 
 
-/* =========================================================
-   NORMALIZAR TEXTO
-========================================================= */
+/* ==========================================
+   FECHAS
+   ========================================== */
 
-function normalizarTexto(
-    valor
-) {
-
-
-    return String(
-        valor ?? ""
-    )
-
-        .normalize(
-            "NFD"
-        )
-
-        .replace(
-            /[\u0300-\u036f]/g,
-            ""
-        )
-
-        .toLowerCase()
-
-        .trim();
-
-}
-
-
-/* =========================================================
-   FECHA SOLO DÍA
-========================================================= */
-
-function obtenerFechaSoloDia(
-    fecha
-) {
-
+function formatearFecha(fecha) {
 
     if (!fecha) {
-
-        return null;
-
-    }
-
-
-    const texto =
-        String(
-            fecha
-        ).trim();
-
-
-    if (!texto) {
-
-        return null;
-
-    }
-
-
-    if (
-        /^\d{4}-\d{2}-\d{2}/
-            .test(texto)
-    ) {
-
-
-        const partes =
-            texto
-                .substring(
-                    0,
-                    10
-                )
-                .split("-");
-
-
-        return new Date(
-
-            Number(
-                partes[0]
-            ),
-
-            Number(
-                partes[1]
-            ) - 1,
-
-            Number(
-                partes[2]
-            )
-
-        );
-
-    }
-
-
-    const match =
-        texto.match(
-
-            /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
-
-        );
-
-
-    if (match) {
-
-
-        return new Date(
-
-            Number(
-                match[3]
-            ),
-
-            Number(
-                match[2]
-            ) - 1,
-
-            Number(
-                match[1]
-            )
-
-        );
-
-    }
-
-
-    const fechaConvertida =
-        new Date(
-            texto
-        );
-
-
-    if (
-        isNaN(
-            fechaConvertida.getTime()
-        )
-    ) {
-
-        return null;
-
-    }
-
-
-    return new Date(
-
-        fechaConvertida.getFullYear(),
-
-        fechaConvertida.getMonth(),
-
-        fechaConvertida.getDate()
-
-    );
-
-}
-
-
-/* =========================================================
-   OBTENER HOY
-========================================================= */
-
-function obtenerHoy() {
-
-
-    const ahora =
-        new Date();
-
-
-    return new Date(
-
-        ahora.getFullYear(),
-
-        ahora.getMonth(),
-
-        ahora.getDate()
-
-    );
-
-}
-
-
-/* =========================================================
-   FORMATO FECHA
-========================================================= */
-
-function formatearFecha(
-    fecha
-) {
-
-
-    const fechaObj =
-        obtenerFechaSoloDia(
-            fecha
-        );
-
-
-    if (!fechaObj) {
-
         return "";
-
     }
 
 
-    const dia =
-        String(
-            fechaObj.getDate()
-        )
-        .padStart(
-            2,
-            "0"
+    return new Date(fecha)
+        .toLocaleDateString(
+            "es-GT",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
         );
-
-
-    const mes =
-        String(
-            fechaObj.getMonth() + 1
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    const anio =
-        fechaObj.getFullYear();
-
-
-    return `${dia}/${mes}/${anio}`;
-
 }
 
 
-/* =========================================================
+/* ==========================================
    NORMALIZAR CÓDIGO
-========================================================= */
+   ========================================== */
 
-function normalizarCodigo(
-    codigo
-) {
+function normalizarCodigo(codigo) {
 
-
-    return String(
-        codigo ?? ""
-    )
-
-        .replace(
-            /\D/g,
-            ""
-        )
-
-        .replace(
-            /^0+/,
-            ""
-        )
-
-        || "0";
-
+    return String(codigo || "")
+        .replace(/\D/g, "")
+        .replace(/^0+/, "") || "0";
 }
 
 
-/* =========================================================
+/* ==========================================
    FORMATEAR CÓDIGO
-========================================================= */
+   ========================================== */
 
-function formatearCodigo(
-    codigo
-) {
+function formatearCodigo(codigo) {
 
-
-    const valor =
-        normalizarCodigo(
-            codigo
-        );
+    const numero =
+        String(codigo || "")
+            .replace(/\D/g, "");
 
 
-    if (
-        valor ===
-        "0"
-    ) {
-
-        return "—";
-
+    if (!numero) {
+        return "";
     }
 
 
-    return valor.padStart(
+    return numero.padStart(
         8,
         "0"
     );
-
 }
 
 
-/* =========================================================
+/* ==========================================
    MENSAJES
-========================================================= */
+   ========================================== */
 
 function mostrarMensaje(
     texto,
     tipo
 ) {
 
-
     mensaje.textContent =
         texto;
 
-
     mensaje.className =
-        "mensaje " +
-        tipo;
-
+        "mensaje " + tipo;
 }
 
 
 function limpiarMensaje() {
 
-
     mensaje.textContent =
         "";
 
-
     mensaje.className =
         "mensaje";
-
 }
 
 
-/* =========================================================
-   ESCAPAR HTML
-========================================================= */
+/* ==========================================
+   SEGURIDAD HTML
+   ========================================== */
 
-function escapeHtml(
-    valor
-) {
-
+function escapeHtml(valor) {
 
     return String(
         valor ?? ""
     )
-
         .replace(
             /&/g,
             "&amp;"
         )
-
         .replace(
             /</g,
             "&lt;"
         )
-
         .replace(
             />/g,
             "&gt;"
         )
-
         .replace(
             /"/g,
             "&quot;"
         )
-
         .replace(
             /'/g,
             "&#039;"
         );
-
 }
 
 
-/* =========================================================
+/* ==========================================
    EVENTOS
-========================================================= */
+   ========================================== */
 
 document
     .getElementById(
         "btnBuscar"
     )
     .addEventListener(
-
         "click",
-
         buscar
-
     );
 
 
@@ -2469,11 +1559,8 @@ document
         "btnConfirmar"
     )
     .addEventListener(
-
         "click",
-
         confirmarDevolucion
-
     );
 
 
@@ -2482,39 +1569,25 @@ document
         "btnCancelar"
     )
     .addEventListener(
-
         "click",
-
         cancelarDevolucion
-
     );
 
 
-buscarInput
-    .addEventListener(
+buscarInput.addEventListener(
+    "keydown",
+    function(event) {
 
-        "keydown",
+        if (event.key === "Enter") {
 
-        function(event) {
-
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                buscar();
-
-            }
+            buscar();
 
         }
 
-    );
-
+    }
+);
 
 </script>
 
-
 </body>
-
 </html>
