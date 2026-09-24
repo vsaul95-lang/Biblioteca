@@ -1356,7 +1356,6 @@
 
     <script>
 
-
         /* =========================================================
            VARIABLES
         ========================================================== */
@@ -1383,16 +1382,12 @@
         function normalizarTexto(valor) {
 
             return String(valor ?? "")
-
                 .normalize("NFD")
-
                 .replace(
                     /[\u0300-\u036f]/g,
                     ""
                 )
-
                 .toLowerCase()
-
                 .trim();
 
         }
@@ -1406,9 +1401,7 @@
 
             let valor =
                 String(codigo ?? "")
-
                     .trim()
-
                     .replace(
                         /\D/g,
                         ""
@@ -1461,27 +1454,22 @@
         function escapeHtml(valor) {
 
             return String(valor ?? "")
-
                 .replace(
                     /&/g,
                     "&amp;"
                 )
-
                 .replace(
                     /</g,
                     "&lt;"
                 )
-
                 .replace(
                     />/g,
                     "&gt;"
                 )
-
                 .replace(
                     /"/g,
                     "&quot;"
                 )
-
                 .replace(
                     /'/g,
                     "&#039;"
@@ -1512,8 +1500,7 @@
             }
 
             if (
-                /^\d{4}-\d{2}-\d{2}/
-                    .test(texto)
+                /^\d{4}-\d{2}-\d{2}/.test(texto)
             ) {
 
                 const partes =
@@ -1522,13 +1509,9 @@
                         .split("-");
 
                 return new Date(
-
                     Number(partes[0]),
-
                     Number(partes[1]) - 1,
-
                     Number(partes[2])
-
                 );
 
             }
@@ -1541,13 +1524,9 @@
             if (match) {
 
                 return new Date(
-
                     Number(match[3]),
-
                     Number(match[2]) - 1,
-
                     Number(match[1])
-
                 );
 
             }
@@ -1566,13 +1545,9 @@
             }
 
             return new Date(
-
                 fechaConvertida.getFullYear(),
-
                 fechaConvertida.getMonth(),
-
                 fechaConvertida.getDate()
-
             );
 
         }
@@ -1613,13 +1588,9 @@
                 new Date();
 
             return new Date(
-
                 ahora.getFullYear(),
-
                 ahora.getMonth(),
-
                 ahora.getDate()
-
             );
 
         }
@@ -1632,8 +1603,7 @@
         function obtenerEstado(prestamo) {
 
             if (
-                prestamo.estado ===
-                "Devuelto"
+                prestamo.estado === "Devuelto"
             ) {
 
                 return "Devuelto";
@@ -1749,14 +1719,10 @@
         function obtenerNombrePersona(prestamo) {
 
             const nombres =
-                obtenerNombres(
-                    prestamo
-                );
+                obtenerNombres(prestamo);
 
             const apellidos =
-                obtenerApellidos(
-                    prestamo
-                );
+                obtenerApellidos(prestamo);
 
             const nombreCompleto =
                 `${nombres} ${apellidos}`.trim();
@@ -1768,9 +1734,7 @@
             }
 
             return (
-                obtenerPersonaId(
-                    prestamo
-                ) ||
+                obtenerPersonaId(prestamo) ||
                 "Sin nombre"
             );
 
@@ -1814,11 +1778,9 @@
             return libros.find(
 
                 libro =>
-
                     normalizarCodigo(
                         libro.codigoLibro
-                    ) ===
-                    codigoBuscado
+                    ) === codigoBuscado
 
             ) || null;
 
@@ -1892,27 +1854,17 @@
                     error
                 } =
                     await supabaseClient
-
                         .from("libros")
-
                         .select("*")
-
                         .order(
                             "id",
                             {
-                                ascending:
-                                    true
+                                ascending: true
                             }
                         )
-
                         .range(
-
                             desde,
-
-                            desde +
-                            cantidad -
-                            1
-
+                            desde + cantidad - 1
                         );
 
                 if (error) {
@@ -1938,8 +1890,7 @@
                 libros.push(...data);
 
                 if (
-                    data.length <
-                    cantidad
+                    data.length < cantidad
                 ) {
 
                     break;
@@ -1972,27 +1923,17 @@
                     error
                 } =
                     await supabaseClient
-
                         .from("prestamos")
-
                         .select("*")
-
                         .order(
                             "fechaPrestamo",
                             {
-                                ascending:
-                                    false
+                                ascending: false
                             }
                         )
-
                         .range(
-
                             desde,
-
-                            desde +
-                            cantidad -
-                            1
-
+                            desde + cantidad - 1
                         );
 
                 if (error) {
@@ -2018,8 +1959,7 @@
                 prestamos.push(...data);
 
                 if (
-                    data.length <
-                    cantidad
+                    data.length < cantidad
                 ) {
 
                     break;
@@ -2080,8 +2020,7 @@
                 libros.filter(
 
                     libro =>
-                        libro.estado !==
-                        "Baja"
+                        libro.estado !== "Baja"
 
                 );
 
@@ -2089,8 +2028,7 @@
                 prestamos.filter(
 
                     prestamo =>
-                        prestamo.estado ===
-                        "Prestado"
+                        prestamo.estado === "Prestado"
 
                 );
 
@@ -2098,10 +2036,7 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(
-                            prestamo
-                        ) ===
-                        "Vencido"
+                        obtenerEstado(prestamo) === "Vencido"
 
                 );
 
@@ -2159,11 +2094,8 @@
                 prestamos.length;
 
             actualizarGraficaLibros(
-
                 disponibles.length,
-
                 prestamosActivos.length
-
             );
 
             actualizarGraficaActividad();
@@ -2185,6 +2117,12 @@
                     "graficaLibros"
                 );
 
+            if (!canvas) {
+
+                return;
+
+            }
+
             if (graficaLibros) {
 
                 graficaLibros.destroy();
@@ -2193,21 +2131,15 @@
 
             graficaLibros =
                 new Chart(
-
                     canvas,
-
                     {
-
                         type: "doughnut",
 
                         data: {
 
                             labels: [
-
                                 "Disponibles",
-
                                 "Prestados"
-
                             ],
 
                             datasets: [
@@ -2215,11 +2147,8 @@
                                 {
 
                                     data: [
-
                                         disponibles,
-
                                         prestados
-
                                     ],
 
                                     borderWidth: 2
@@ -2234,8 +2163,7 @@
 
                             responsive: true,
 
-                            maintainAspectRatio:
-                                false,
+                            maintainAspectRatio: false,
 
                             cutout: "60%",
 
@@ -2243,8 +2171,7 @@
 
                                 legend: {
 
-                                    position:
-                                        "bottom",
+                                    position: "bottom",
 
                                     labels: {
 
@@ -2253,9 +2180,7 @@
                                         boxWidth: 11,
 
                                         font: {
-
                                             size: 10
-
                                         }
 
                                     }
@@ -2267,7 +2192,6 @@
                         }
 
                     }
-
                 );
 
         }
@@ -2353,6 +2277,12 @@
                     "graficaMeses"
                 );
 
+            if (!canvas) {
+
+                return;
+
+            }
+
             if (graficaMeses) {
 
                 graficaMeses.destroy();
@@ -2361,11 +2291,8 @@
 
             graficaMeses =
                 new Chart(
-
                     canvas,
-
                     {
-
                         type: "line",
 
                         data: {
@@ -2408,16 +2335,13 @@
 
                             responsive: true,
 
-                            maintainAspectRatio:
-                                false,
+                            maintainAspectRatio: false,
 
                             interaction: {
 
-                                intersect:
-                                    false,
+                                intersect: false,
 
-                                mode:
-                                    "index"
+                                mode: "index"
 
                             },
 
@@ -2425,25 +2349,18 @@
 
                                 legend: {
 
-                                    display:
-                                        true,
+                                    display: true,
 
-                                    position:
-                                        "bottom",
+                                    position: "bottom",
 
                                     labels: {
 
-                                        boxWidth:
-                                            12,
+                                        boxWidth: 12,
 
-                                        padding:
-                                            8,
+                                        padding: 8,
 
                                         font: {
-
-                                            size:
-                                                10
-
+                                            size: 10
                                         }
 
                                     }
@@ -2456,19 +2373,14 @@
 
                                 y: {
 
-                                    beginAtZero:
-                                        true,
+                                    beginAtZero: true,
 
                                     ticks: {
 
-                                        precision:
-                                            0,
+                                        precision: 0,
 
                                         font: {
-
-                                            size:
-                                                9
-
+                                            size: 9
                                         }
 
                                     }
@@ -2480,17 +2392,12 @@
                                     ticks: {
 
                                         font: {
-
-                                            size:
-                                                8
-
+                                            size: 8
                                         },
 
-                                        maxRotation:
-                                            0,
+                                        maxRotation: 0,
 
-                                        minRotation:
-                                            0
+                                        minRotation: 0
 
                                     }
 
@@ -2501,7 +2408,6 @@
                         }
 
                     }
-
                 );
 
         }
@@ -2517,9 +2423,7 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(
-                            prestamo
-                        ) ===
+                        obtenerEstado(prestamo) ===
                         "Prestado"
 
                 ).length;
@@ -2528,9 +2432,7 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(
-                            prestamo
-                        ) ===
+                        obtenerEstado(prestamo) ===
                         "Vencido"
 
                 ).length;
@@ -2539,9 +2441,7 @@
                 prestamos.filter(
 
                     prestamo =>
-                        obtenerEstado(
-                            prestamo
-                        ) ===
+                        obtenerEstado(prestamo) ===
                         "Devuelto"
 
                 ).length;
@@ -2551,6 +2451,12 @@
                     "graficaActividad"
                 );
 
+            if (!canvas) {
+
+                return;
+
+            }
+
             if (graficaActividad) {
 
                 graficaActividad.destroy();
@@ -2559,11 +2465,8 @@
 
             graficaActividad =
                 new Chart(
-
                     canvas,
-
                     {
-
                         type: "bar",
 
                         data: {
@@ -2595,8 +2498,7 @@
 
                                     ],
 
-                                    borderWidth:
-                                        1
+                                    borderWidth: 1
 
                                 }
 
@@ -2608,15 +2510,13 @@
 
                             responsive: true,
 
-                            maintainAspectRatio:
-                                false,
+                            maintainAspectRatio: false,
 
                             plugins: {
 
                                 legend: {
 
-                                    display:
-                                        false
+                                    display: false
 
                                 }
 
@@ -2626,19 +2526,14 @@
 
                                 y: {
 
-                                    beginAtZero:
-                                        true,
+                                    beginAtZero: true,
 
                                     ticks: {
 
-                                        precision:
-                                            0,
+                                        precision: 0,
 
                                         font: {
-
-                                            size:
-                                                9
-
+                                            size: 9
                                         }
 
                                     }
@@ -2650,10 +2545,7 @@
                                     ticks: {
 
                                         font: {
-
-                                            size:
-                                                10
-
+                                            size: 10
                                         }
 
                                     }
@@ -2665,7 +2557,6 @@
                         }
 
                     }
-
                 );
 
         }
@@ -2681,6 +2572,12 @@
                 document.getElementById(
                     "filtroSitio"
                 );
+
+            if (!select) {
+
+                return;
+
+            }
 
             const sitios = [
 
@@ -2703,18 +2600,11 @@
 
                 (a, b) =>
                     a.localeCompare(
-
                         b,
-
                         "es",
-
                         {
-
-                            sensitivity:
-                                "base"
-
+                            sensitivity: "base"
                         }
-
                     )
 
             );
@@ -2759,6 +2649,12 @@
                     "filtroBiblioteca"
                 );
 
+            if (!select) {
+
+                return;
+
+            }
+
             const bibliotecas = [
 
                 ...new Set(
@@ -2769,8 +2665,7 @@
 
                             libro =>
                                 String(
-                                    libro.Biblioteca ??
-                                    ""
+                                    libro.Biblioteca ?? ""
                                 )
                                     .trim()
                                     .toUpperCase()
@@ -2921,13 +2816,9 @@
 
 
             if (
-
                 fechaDesde &&
-
                 fechaHasta &&
-
                 fechaDesde > fechaHasta
-
             ) {
 
                 alert(
@@ -3006,13 +2897,10 @@
 
 
                         if (
-
                             busqueda &&
-
                             !textoCompleto.includes(
                                 busqueda
                             )
-
                         ) {
 
                             return false;
@@ -3021,13 +2909,8 @@
 
 
                         if (
-
-                            estadoFiltro !==
-                                "Todos" &&
-
-                            estado !==
-                                estadoFiltro
-
+                            estadoFiltro !== "Todos" &&
+                            estado !== estadoFiltro
                         ) {
 
                             return false;
@@ -3036,13 +2919,8 @@
 
 
                         if (
-
-                            sitioFiltro !==
-                                "Todos" &&
-
-                            sitioPrestamo !==
-                                sitioFiltro
-
+                            sitioFiltro !== "Todos" &&
+                            sitioPrestamo !== sitioFiltro
                         ) {
 
                             return false;
@@ -3052,26 +2930,15 @@
 
                         const biblioteca =
                             String(
-
-                                datosLibro.biblioteca ||
-
-                                ""
-
+                                datosLibro.biblioteca || ""
                             )
-
                                 .trim()
-
                                 .toUpperCase();
 
 
                         if (
-
-                            bibliotecaFiltro !==
-                                "Todos" &&
-
-                            biblioteca !==
-                                bibliotecaFiltro
-
+                            bibliotecaFiltro !== "Todos" &&
+                            biblioteca !== bibliotecaFiltro
                         ) {
 
                             return false;
@@ -3081,33 +2948,23 @@
 
                         const fechaPrestamo =
                             obtenerFechaSoloDia(
-
                                 prestamo.fechaPrestamo
-
                             );
 
 
                         if (
-
                             fechaDesde &&
-
                             fechaPrestamo
-
                         ) {
 
                             const desde =
                                 new Date(
-
                                     fechaDesde +
                                     "T00:00:00"
-
                                 );
 
                             if (
-
-                                fechaPrestamo <
-                                desde
-
+                                fechaPrestamo < desde
                             ) {
 
                                 return false;
@@ -3118,26 +2975,18 @@
 
 
                         if (
-
                             fechaHasta &&
-
                             fechaPrestamo
-
                         ) {
 
                             const hasta =
                                 new Date(
-
                                     fechaHasta +
                                     "T00:00:00"
-
                                 );
 
                             if (
-
-                                fechaPrestamo >
-                                hasta
-
+                                fechaPrestamo > hasta
                             ) {
 
                                 return false;
@@ -3163,8 +3012,7 @@
                 (a, b) => {
 
                     if (
-                        orden ===
-                        "reciente"
+                        orden === "reciente"
                     ) {
 
                         const fechaA =
@@ -3178,18 +3026,15 @@
                             );
 
                         return (
-
                             (fechaB || 0) -
                             (fechaA || 0)
-
                         );
 
                     }
 
 
                     if (
-                        orden ===
-                        "antiguo"
+                        orden === "antiguo"
                     ) {
 
                         const fechaA =
@@ -3203,79 +3048,48 @@
                             );
 
                         return (
-
                             (fechaA || 0) -
                             (fechaB || 0)
-
                         );
 
                     }
 
 
                     if (
-                        orden ===
-                        "familia"
+                        orden === "familia"
                     ) {
 
                         return String(
-
-                            obtenerFamiliaId(
-                                a
-                            )
-
+                            obtenerFamiliaId(a)
                         ).localeCompare(
-
                             String(
-
-                                obtenerFamiliaId(
-                                    b
-                                )
-
+                                obtenerFamiliaId(b)
                             ),
-
                             "es"
-
                         );
 
                     }
 
 
                     if (
-                        orden ===
-                        "persona"
+                        orden === "persona"
                     ) {
 
-                        return (
-
-                            obtenerNombrePersona(
-                                a
-                            )
-
-                            .localeCompare(
-
-                                obtenerNombrePersona(
-                                    b
-                                ),
-
-                                "es",
-
-                                {
-
-                                    sensitivity:
-                                        "base"
-
-                                }
-
-                            )
-
+                        return obtenerNombrePersona(
+                            a
+                        ).localeCompare(
+                            obtenerNombrePersona(b),
+                            "es",
+                            {
+                                sensitivity: "base"
+                            }
                         );
 
                     }
 
 
                     if (
-                        orden ===
-                        "libro"
+                        orden === "libro"
                     ) {
 
                         const libroA =
@@ -3285,30 +3099,15 @@
                             obtenerDatosLibro(b);
 
                         return String(
-
-                            libroA.nombre ||
-
-                            ""
-
+                            libroA.nombre || ""
                         ).localeCompare(
-
                             String(
-
-                                libroB.nombre ||
-
-                                ""
-
+                                libroB.nombre || ""
                             ),
-
                             "es",
-
                             {
-
-                                sensitivity:
-                                    "base"
-
+                                sensitivity: "base"
                             }
-
                         );
 
                     }
@@ -3349,9 +3148,7 @@
 
                 `${prestamosFiltrados.length} ${
                     prestamosFiltrados.length === 1
-
                         ? "resultado"
-
                         : "resultados"
                 }`;
 
@@ -3400,8 +3197,7 @@
                         "estado-prestado";
 
                     if (
-                        estado ===
-                        "Vencido"
+                        estado === "Vencido"
                     ) {
 
                         claseEstado =
@@ -3410,8 +3206,7 @@
                     }
 
                     if (
-                        estado ===
-                        "Devuelto"
+                        estado === "Devuelto"
                     ) {
 
                         claseEstado =
@@ -3424,12 +3219,8 @@
                         prestamo.fechaDevolucion;
 
                     if (
-
-                        estado ===
-                            "Devuelto" &&
-
+                        estado === "Devuelto" &&
                         prestamo.fechaDevolucionReal
-
                     ) {
 
                         fechaDevolucion =
@@ -3482,174 +3273,106 @@
                     fila.innerHTML = `
 
                         <td>
-
                             ${escapeHtml(
                                 sitioPrestamo
                             )}
-
                         </td>
-
 
                         <td>
-
                             ${escapeHtml(
-                                familiaId ||
-                                "—"
+                                familiaId || "—"
                             )}
-
                         </td>
-
 
                         <td>
-
                             ${escapeHtml(
-                                personaId ||
-                                "—"
+                                personaId || "—"
                             )}
-
                         </td>
-
 
                         <td class="nombres">
-
                             ${escapeHtml(
-                                nombres ||
-                                "—"
+                                nombres || "—"
                             )}
-
                         </td>
-
 
                         <td class="apellidos">
-
                             ${escapeHtml(
-                                apellidos ||
-                                "—"
+                                apellidos || "—"
                             )}
-
                         </td>
 
-
                         <td>
-
                             <strong>
-
                                 ${escapeHtml(
-
                                     formatearCodigo(
                                         datosLibro.codigo
                                     )
-
                                 )}
-
                             </strong>
-
                         </td>
-
 
                         <td class="libro">
-
                             ${escapeHtml(
-
                                 datosLibro.nombre ||
                                 "Sin nombre"
-
                             )}
-
                         </td>
-
 
                         <td class="autor">
-
                             ${escapeHtml(
-
                                 datosLibro.autor ||
                                 "—"
-
                             )}
-
                         </td>
-
 
                         <td class="genero">
-
                             ${escapeHtml(
-
                                 datosLibro.genero ||
                                 "—"
-
                             )}
-
                         </td>
-
 
                         <td class="editorial">
-
                             ${escapeHtml(
-
                                 datosLibro.editorial ||
                                 "—"
-
                             )}
-
                         </td>
 
-
                         <td>
-
                             ${escapeHtml(
-
                                 datosLibro.anio ||
                                 "—"
-
                             )}
-
                         </td>
 
-
                         <td>
-
                             ${escapeHtml(
                                 biblioteca
                             )}
-
                         </td>
 
-
                         <td>
-
                             ${formatearFecha(
-
                                 prestamo.fechaPrestamo
-
                             )}
-
                         </td>
 
-
                         <td>
-
                             ${formatearFecha(
-
                                 fechaDevolucion
-
                             )}
-
                         </td>
 
-
                         <td>
-
                             <span
                                 class="estado ${claseEstado}"
                             >
-
                                 ${escapeHtml(
                                     estado
                                 )}
-
                             </span>
-
                         </td>
 
                     `;
@@ -3676,9 +3399,7 @@
         function actualizarGraficosFiltrados() {
 
             actualizarGraficaMeses(
-
                 prestamosFiltrados
-
             );
 
         }
@@ -3726,51 +3447,34 @@
             if (busqueda) {
 
                 elementos.push(
-
                     `Buscar: "${busqueda}"`
-
                 );
 
             }
 
 
-            if (
-                estado !==
-                "Todos"
-            ) {
+            if (estado !== "Todos") {
 
                 elementos.push(
-
                     `Estado: ${estado}`
-
                 );
 
             }
 
 
-            if (
-                sitioPrestamo !==
-                "Todos"
-            ) {
+            if (sitioPrestamo !== "Todos") {
 
                 elementos.push(
-
                     `SitioPréstamo: ${sitioPrestamo}`
-
                 );
 
             }
 
 
-            if (
-                biblioteca !==
-                "Todos"
-            ) {
+            if (biblioteca !== "Todos") {
 
                 elementos.push(
-
                     `Biblioteca: ${biblioteca}`
-
                 );
 
             }
@@ -3779,11 +3483,9 @@
             if (desde) {
 
                 elementos.push(
-
                     `Desde: ${formatearFecha(
                         desde
                     )}`
-
                 );
 
             }
@@ -3792,11 +3494,9 @@
             if (hasta) {
 
                 elementos.push(
-
                     `Hasta: ${formatearFecha(
                         hasta
                     )}`
-
                 );
 
             }
@@ -3861,12 +3561,8 @@
 
 
                         if (
-
-                            estado ===
-                                "Devuelto" &&
-
+                            estado === "Devuelto" &&
                             prestamo.fechaDevolucionReal
-
                         ) {
 
                             fechaDevolucion =
@@ -3884,99 +3580,64 @@
                         return {
 
                             "SitioPréstamo":
-
                                 obtenerSitioPrestamo(
                                     prestamo
                                 ),
 
-
                             "FamiliaId":
-
                                 obtenerFamiliaId(
                                     prestamo
                                 ),
 
-
                             "PersonaId":
-
                                 obtenerPersonaId(
                                     prestamo
                                 ),
 
-
                             "Nombres":
-
                                 obtenerNombres(
                                     prestamo
                                 ),
 
-
                             "Apellidos":
-
                                 obtenerApellidos(
                                     prestamo
                                 ),
 
-
                             "Código":
-
                                 formatearCodigo(
                                     datosLibro.codigo
                                 ),
 
-
                             "Libro":
-
-                                datosLibro.nombre ||
-                                "",
-
+                                datosLibro.nombre || "",
 
                             "Autor":
-
-                                datosLibro.autor ||
-                                "",
-
+                                datosLibro.autor || "",
 
                             "Género":
-
-                                datosLibro.genero ||
-                                "",
-
+                                datosLibro.genero || "",
 
                             "Editorial":
-
-                                datosLibro.editorial ||
-                                "",
-
+                                datosLibro.editorial || "",
 
                             "Año":
-
-                                datosLibro.anio ||
-                                "",
-
+                                datosLibro.anio || "",
 
                             "Biblioteca":
-
-                                datosLibro.biblioteca ||
-                                "",
-
+                                datosLibro.biblioteca || "",
 
                             "Préstamo":
-
                                 formatearFecha(
                                     prestamo.fechaPrestamo
                                 ),
 
-
                             "Devolución":
-
                                 formatearFecha(
                                     fechaDevolucion
                                 ),
 
-
                             "Estado":
-
                                 estado
 
                         };
@@ -3997,22 +3658,15 @@
 
 
             XLSX.utils.book_append_sheet(
-
                 libroExcel,
-
                 hoja,
-
                 "Reporte"
-
             );
 
 
             XLSX.writeFile(
-
                 libroExcel,
-
                 "Reporte_Biblioteca.xlsx"
-
             );
 
         }
@@ -4062,128 +3716,174 @@
 
 
         /* =========================================================
-           EVENTOS
+           REGISTRAR EVENTOS
+           Se ejecuta después de que el DOM esté disponible.
         ========================================================== */
 
-        document.getElementById(
-            "btnBuscar"
-        ).addEventListener(
+        function registrarEventosReportes() {
 
-            "click",
+            const btnBuscar =
+                document.getElementById(
+                    "btnBuscar"
+                );
 
-            aplicarFiltros
+            const btnLimpiar =
+                document.getElementById(
+                    "btnLimpiar"
+                );
 
-        );
+            const btnExcel =
+                document.getElementById(
+                    "btnExcel"
+                );
+
+            const busqueda =
+                document.getElementById(
+                    "busqueda"
+                );
+
+            const filtroEstado =
+                document.getElementById(
+                    "filtroEstado"
+                );
+
+            const filtroSitio =
+                document.getElementById(
+                    "filtroSitio"
+                );
+
+            const filtroBiblioteca =
+                document.getElementById(
+                    "filtroBiblioteca"
+                );
+
+            const filtroOrden =
+                document.getElementById(
+                    "filtroOrden"
+                );
+
+            const fechaDesde =
+                document.getElementById(
+                    "fechaDesde"
+                );
+
+            const fechaHasta =
+                document.getElementById(
+                    "fechaHasta"
+                );
 
 
-        document.getElementById(
-            "btnLimpiar"
-        ).addEventListener(
+            if (btnBuscar) {
 
-            "click",
-
-            limpiarFiltros
-
-        );
-
-
-        document.getElementById(
-            "btnExcel"
-        ).addEventListener(
-
-            "click",
-
-            exportarExcel
-
-        );
-
-
-        document.getElementById(
-            "busqueda"
-        ).addEventListener(
-
-            "keydown",
-
-            function(event) {
-
-                if (
-                    event.key ===
-                    "Enter"
-                ) {
-
-                    aplicarFiltros();
-
-                }
+                btnBuscar.addEventListener(
+                    "click",
+                    aplicarFiltros
+                );
 
             }
 
-        );
+
+            if (btnLimpiar) {
+
+                btnLimpiar.addEventListener(
+                    "click",
+                    limpiarFiltros
+                );
+
+            }
 
 
-        document.getElementById(
-            "filtroEstado"
-        ).addEventListener(
+            if (btnExcel) {
 
-            "change",
+                btnExcel.addEventListener(
+                    "click",
+                    exportarExcel
+                );
 
-            aplicarFiltros
-
-        );
-
-
-        document.getElementById(
-            "filtroSitio"
-        ).addEventListener(
-
-            "change",
-
-            aplicarFiltros
-
-        );
+            }
 
 
-        document.getElementById(
-            "filtroBiblioteca"
-        ).addEventListener(
+            if (busqueda) {
 
-            "change",
+                busqueda.addEventListener(
+                    "keydown",
+                    function(event) {
 
-            aplicarFiltros
+                        if (
+                            event.key ===
+                            "Enter"
+                        ) {
 
-        );
+                            aplicarFiltros();
 
+                        }
 
-        document.getElementById(
-            "filtroOrden"
-        ).addEventListener(
+                    }
+                );
 
-            "change",
-
-            aplicarFiltros
-
-        );
-
-
-        document.getElementById(
-            "fechaDesde"
-        ).addEventListener(
-
-            "change",
-
-            aplicarFiltros
-
-        );
+            }
 
 
-        document.getElementById(
-            "fechaHasta"
-        ).addEventListener(
+            if (filtroEstado) {
 
-            "change",
+                filtroEstado.addEventListener(
+                    "change",
+                    aplicarFiltros
+                );
 
-            aplicarFiltros
+            }
 
-        );
+
+            if (filtroSitio) {
+
+                filtroSitio.addEventListener(
+                    "change",
+                    aplicarFiltros
+                );
+
+            }
+
+
+            if (filtroBiblioteca) {
+
+                filtroBiblioteca.addEventListener(
+                    "change",
+                    aplicarFiltros
+                );
+
+            }
+
+
+            if (filtroOrden) {
+
+                filtroOrden.addEventListener(
+                    "change",
+                    aplicarFiltros
+                );
+
+            }
+
+
+            if (fechaDesde) {
+
+                fechaDesde.addEventListener(
+                    "change",
+                    aplicarFiltros
+                );
+
+            }
+
+
+            if (fechaHasta) {
+
+                fechaHasta.addEventListener(
+                    "change",
+                    aplicarFiltros
+                );
+
+            }
+
+        }
 
 
         /* =========================================================
@@ -4209,13 +3909,14 @@
 
             reportesIniciados = true;
 
+            registrarEventosReportes();
+
             await cargarDatos();
 
         }
 
 
         iniciarReportes();
-
 
     </script>
 
