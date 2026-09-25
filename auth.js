@@ -1,79 +1,51 @@
-// ==========================================
-// PROTECCIÓN DE ACCESO Y ROLES
-// ==========================================
-
 window.usuarioSesion = null;
 window.perfilUsuario = null;
 window.rolUsuario = null;
 window.estadoUsuario = null;
 
-
-// ==========================================
-// NORMALIZAR TEXTO
-// ==========================================
-
 function normalizarTexto(valor) {
-
-    return String(valor || "")
-        .trim()
-        .toUpperCase();
-
+    return String(valor || "").trim().toUpperCase();
 }
-
-
-// ==========================================
-// COMPROBAR SESIÓN
-// ==========================================
 
 window.protegerPagina = async function () {
 
+    console.log("AUTH REAL INICIADO");
+
     try {
-
-        console.log("Comprobando sesión...");
-
 
         const resultadoSesion =
             await supabaseClient.auth.getSession();
 
-
         if (resultadoSesion.error) {
 
             console.error(
-                "Error al comprobar la sesión:",
+                "ERROR SESION:",
                 resultadoSesion.error
             );
 
             return false;
         }
 
-
         const session =
             resultadoSesion.data.session;
-
 
         if (!session) {
 
             console.error(
-                "No existe una sesión activa."
+                "NO HAY SESION"
             );
 
             return false;
         }
 
-
         console.log(
-            "Sesión encontrada:",
+            "SESION ENCONTRADA:",
             session.user.email
         );
-
 
         window.usuarioSesion =
             session.user;
 
-
-        // ==========================================
-        // CONSULTAR PERFIL
-        // ==========================================
 
         const resultadoPerfil =
             await supabaseClient
@@ -91,7 +63,7 @@ window.protegerPagina = async function () {
         if (resultadoPerfil.error) {
 
             console.error(
-                "Error al consultar el perfil:",
+                "ERROR PERFIL:",
                 resultadoPerfil.error
             );
 
@@ -106,7 +78,7 @@ window.protegerPagina = async function () {
         if (!perfil) {
 
             console.error(
-                "No se encontró el usuario en la tabla usuarios."
+                "PERFIL NO ENCONTRADO"
             );
 
             return false;
@@ -114,7 +86,7 @@ window.protegerPagina = async function () {
 
 
         console.log(
-            "Perfil encontrado:",
+            "PERFIL ENCONTRADO:",
             perfil
         );
 
@@ -122,12 +94,10 @@ window.protegerPagina = async function () {
         window.perfilUsuario =
             perfil;
 
-
         window.rolUsuario =
             normalizarTexto(
                 perfil.rol
             );
-
 
         window.estadoUsuario =
             normalizarTexto(
@@ -135,17 +105,14 @@ window.protegerPagina = async function () {
             );
 
 
-        // ==========================================
-        // COMPROBAR ESTADO
-        // ==========================================
-
         if (
             window.estadoUsuario !==
             "ACTIVO"
         ) {
 
             console.error(
-                "El usuario está inactivo."
+                "USUARIO INACTIVO:",
+                perfil.estado
             );
 
             return false;
@@ -153,7 +120,7 @@ window.protegerPagina = async function () {
 
 
         console.log(
-            "Usuario autorizado:",
+            "USUARIO AUTORIZADO:",
             window.rolUsuario
         );
 
@@ -164,19 +131,14 @@ window.protegerPagina = async function () {
     } catch (error) {
 
         console.error(
-            "Error inesperado al validar usuario:",
+            "ERROR AUTH:",
             error
         );
 
         return false;
     }
-
 };
 
-
-// ==========================================
-// FUNCIONES DE ROLES
-// ==========================================
 
 window.esAdministrador = function () {
 
