@@ -111,8 +111,6 @@
         }
 
 
-        /* ENCABEZADO */
-
         .encabezado .encabezado-contenido {
 
             display: flex;
@@ -270,8 +268,6 @@
         }
 
 
-        /* SECCIÓN DE GRÁFICAS */
-
         .graficos-seccion {
 
             margin-bottom: 14px;
@@ -399,21 +395,6 @@
         }
 
 
-        .grafico-titulo-fila {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 8px;
-
-            margin-bottom: 8px;
-
-        }
-
-
         .grafico-card h2 {
 
             margin: 0 0 8px;
@@ -433,8 +414,6 @@
 
         }
 
-
-        /* GRÁFICA CIRCULAR */
 
         .grafico-libros .grafico-contenedor {
 
@@ -504,8 +483,6 @@
 
         }
 
-
-        /* RESULTADOS */
 
         .resultados-seccion {
 
@@ -924,8 +901,6 @@
 
         }
 
-
-        /* PAGINACIÓN */
 
         .paginacion-resultados {
 
@@ -1371,6 +1346,10 @@
 
                         <option value="Z">
                             Z
+                        </option>
+
+                        <option value="NE">
+                            NE
                         </option>
 
                     </select>
@@ -2057,11 +2036,16 @@
 
 
             return (
+
                 tipo === "colaborador" ||
+
                 Boolean(
+
                     prestamo.CodigoColaborador ||
                     prestamo.codigoColaborador
+
                 )
+
             );
 
         }
@@ -2079,9 +2063,13 @@
         function obtenerCodigoColaborador(prestamo) {
 
             return (
+
                 prestamo.CodigoColaborador ||
+
                 prestamo.codigoColaborador ||
+
                 "—"
+
             );
 
         }
@@ -2090,9 +2078,13 @@
         function obtenerNombreColaborador(prestamo) {
 
             return (
+
                 prestamo.NombreColaborador ||
+
                 prestamo.nombreColaborador ||
+
                 "Sin nombre"
+
             );
 
         }
@@ -2101,9 +2093,13 @@
         function obtenerAreaColaborador(prestamo) {
 
             return (
+
                 prestamo.AreaColaborador ||
+
                 prestamo.areaColaborador ||
+
                 "—"
+
             );
 
         }
@@ -2111,35 +2107,24 @@
 
         function obtenerSitioPrestamo(prestamo) {
 
-            return (
-
-                prestamo.sitioPrestamo ||
-
-                prestamo.SitioPrestamo ||
-
-                prestamo.sitio ||
+            const sitio =
 
                 prestamo.Sitio ||
 
-                prestamo.sede ||
+                prestamo.sitio ||
 
-                prestamo.Sede ||
+                prestamo.SitioPrestamo ||
 
-                prestamo.centro ||
+                prestamo.sitioPrestamo ||
 
-                prestamo.Centro ||
+                "";
 
-                prestamo.ubicacion ||
 
-                prestamo.Ubicacion ||
+            const valor =
+                String(sitio).trim().toUpperCase();
 
-                prestamo.lugar ||
 
-                prestamo.Lugar ||
-
-                "Sin sitio registrado"
-
-            );
+            return valor || "Sin sitio registrado";
 
         }
 
@@ -2160,7 +2145,8 @@
                     "M",
                     "N",
                     "R",
-                    "Z"
+                    "Z",
+                    "NE"
                 ].includes(valor)
             ) {
 
@@ -2240,6 +2226,7 @@
                 libros.find(
 
                     libro =>
+
                         normalizarCodigo(
                             libro.codigoLibro
                         ) ===
@@ -2251,13 +2238,16 @@
             return {
 
                 codigo:
+
                     codigo ||
 
                     libroEncontrado?.codigoLibro ||
 
                     "—",
 
+
                 nombre:
+
                     prestamo.nombreLibro ||
 
                     prestamo.NombreLibro ||
@@ -2266,27 +2256,37 @@
 
                     "Sin nombre",
 
+
                 autor:
+
                     libroEncontrado?.autor ||
 
                     "",
 
+
                 genero:
+
                     libroEncontrado?.genero ||
 
                     "",
 
+
                 editorial:
+
                     libroEncontrado?.editorial ||
 
                     "",
 
+
                 anio:
+
                     libroEncontrado?.["año"] ||
 
                     "",
 
+
                 biblioteca:
+
                     libroEncontrado?.Biblioteca ||
 
                     ""
@@ -2311,6 +2311,7 @@
                     data,
                     error
                 } =
+
                     await supabaseClient
 
                         .from("libros")
@@ -2393,6 +2394,7 @@
                     data,
                     error
                 } =
+
                     await supabaseClient
 
                         .from("prestamos")
@@ -2500,6 +2502,7 @@
                 libros.filter(
 
                     libro =>
+
                         normalizarTexto(
                             libro.estado
                         ) !==
@@ -2512,6 +2515,7 @@
                 prestamos.filter(
 
                     prestamo =>
+
                         normalizarTexto(
                             prestamo.estado
                         ) ===
@@ -2524,6 +2528,7 @@
                 prestamos.filter(
 
                     prestamo =>
+
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -2538,6 +2543,7 @@
                     prestamosActivos.map(
 
                         prestamo =>
+
                             normalizarCodigo(
                                 prestamo.codigoLibro
                             )
@@ -2551,6 +2557,7 @@
                 librosActivos.filter(
 
                     libro =>
+
                         !codigosPrestados.has(
 
                             normalizarCodigo(
@@ -2646,12 +2653,10 @@
 
                         return (
 
-                            normalizarTexto(
+                            obtenerCodigoSitio(
                                 libro.Biblioteca
                             ) ===
-                            normalizarTexto(
-                                sitioSeleccionado
-                            )
+                            sitioSeleccionado
 
                         );
 
@@ -2664,6 +2669,7 @@
                 datosPrestamosSitio.filter(
 
                     prestamo =>
+
                         normalizarTexto(
                             prestamo.estado
                         ) ===
@@ -2678,6 +2684,7 @@
                     prestamosActivos.map(
 
                         prestamo =>
+
                             normalizarCodigo(
                                 prestamo.codigoLibro
                             )
@@ -2691,6 +2698,7 @@
                 librosActivos.filter(
 
                     libro =>
+
                         !codigosPrestados.has(
 
                             normalizarCodigo(
@@ -2882,11 +2890,7 @@
         }
 
 
-        function actualizarGraficaMeses(
-
-            datos
-
-        ) {
+        function actualizarGraficaMeses(datos) {
 
             const ahora =
                 new Date();
@@ -2960,11 +2964,9 @@
                     }
 
 
-                    const mes =
-                        fecha.getMonth();
-
-
-                    conteoMeses[mes]++;
+                    conteoMeses[
+                        fecha.getMonth()
+                    ]++;
 
                 }
 
@@ -3149,16 +3151,13 @@
         }
 
 
-        function actualizarGraficaActividad(
-
-            datos
-
-        ) {
+        function actualizarGraficaActividad(datos) {
 
             const prestados =
                 datos.filter(
 
                     prestamo =>
+
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -3171,6 +3170,7 @@
                 datos.filter(
 
                     prestamo =>
+
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -3183,6 +3183,7 @@
                 datos.filter(
 
                     prestamo =>
+
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -3299,16 +3300,7 @@
                                         weight:
                                             "bold"
 
-                                    },
-
-                                    formatter:
-                                        function(
-                                            value
-                                        ) {
-
-                                            return value;
-
-                                        }
+                                    }
 
                                 }
 
@@ -3384,6 +3376,7 @@
                         prestamos.map(
 
                             prestamo =>
+
                                 obtenerSitioPrestamo(
                                     prestamo
                                 )
@@ -3566,19 +3559,11 @@
 
                                     prestamo.FamiliaId,
 
-                                    prestamo.familiaId,
-
                                     prestamo.PersonaId,
-
-                                    prestamo.personaId,
 
                                     prestamo.Nombres,
 
-                                    prestamo.nombres,
-
                                     prestamo.Apellidos,
-
-                                    prestamo.apellidos,
 
                                     nombrePersona,
 
@@ -3625,10 +3610,10 @@
                         if (
 
                             estadoFiltro !==
-                                "Todos" &&
+                            "Todos" &&
 
                             estado !==
-                                estadoFiltro
+                            estadoFiltro
 
                         ) {
 
@@ -3640,10 +3625,10 @@
                         if (
 
                             sitioFiltro !==
-                                "Todos" &&
+                            "Todos" &&
 
                             sitio !==
-                                sitioFiltro
+                            sitioFiltro
 
                         ) {
 
@@ -3670,18 +3655,14 @@
 
                             const desde =
                                 new Date(
-
                                     fechaDesde +
                                     "T00:00:00"
-
                                 );
 
 
                             if (
-
                                 fechaPrestamo <
                                 desde
-
                             ) {
 
                                 return false;
@@ -3701,18 +3682,14 @@
 
                             const hasta =
                                 new Date(
-
                                     fechaHasta +
                                     "T00:00:00"
-
                                 );
 
 
                             if (
-
                                 fechaPrestamo >
                                 hasta
-
                             ) {
 
                                 return false;
@@ -3835,10 +3812,8 @@
                                 "es",
 
                                 {
-
                                     sensitivity:
                                         "base"
-
                                 }
 
                             )
@@ -3853,30 +3828,23 @@
                         "libro"
                     ) {
 
-                        return String(
+                        return (
 
-                            a.nombreLibro ||
+                            obtenerDatosLibro(a)
+                                .nombre
+                                .localeCompare(
 
-                            ""
+                                    obtenerDatosLibro(b)
+                                        .nombre,
 
-                        ).localeCompare(
+                                    "es",
 
-                            String(
+                                    {
+                                        sensitivity:
+                                            "base"
+                                    }
 
-                                b.nombreLibro ||
-
-                                ""
-
-                            ),
-
-                            "es",
-
-                            {
-
-                                sensitivity:
-                                    "base"
-
-                            }
+                                )
 
                         );
 
@@ -3928,13 +3896,9 @@
             cantidad.textContent =
 
                 `${prestamosFiltrados.length} ${
-
                     prestamosFiltrados.length === 1
-
                         ? "resultado"
-
                         : "resultados"
-
                 }`;
 
 
@@ -4054,7 +4018,7 @@
                     if (
 
                         estado ===
-                            "Devuelto" &&
+                        "Devuelto" &&
 
                         prestamo.fechaDevolucionReal
 
@@ -4096,8 +4060,6 @@
 
                                 prestamo.FamiliaId ||
 
-                                prestamo.familiaId ||
-
                                 "—"
 
                             );
@@ -4118,8 +4080,6 @@
                             (
 
                                 prestamo.PersonaId ||
-
-                                prestamo.personaId ||
 
                                 "—"
 
@@ -4154,8 +4114,6 @@
                             (
 
                                 prestamo.Apellidos ||
-
-                                prestamo.apellidos ||
 
                                 "—"
 
@@ -4267,9 +4225,13 @@
 
 
             renderizarPaginacion(
+
                 totalPaginas,
+
                 inicio,
+
                 registrosPagina.length
+
             );
 
 
@@ -4352,10 +4314,12 @@
 
                 "click",
 
-                function() {
+                function () {
 
                     cambiarPaginaResultados(
+
                         paginaResultados - 1
+
                     );
 
                 }
@@ -4369,10 +4333,12 @@
 
                 "click",
 
-                function() {
+                function () {
 
                     cambiarPaginaResultados(
+
                         paginaResultados + 1
+
                     );
 
                 }
@@ -4544,9 +4510,7 @@
             if (busqueda) {
 
                 elementos.push(
-
                     `Buscar: "${busqueda}"`
-
                 );
 
             }
@@ -4558,9 +4522,7 @@
             ) {
 
                 elementos.push(
-
                     `Estado: ${estado}`
-
                 );
 
             }
@@ -4572,9 +4534,7 @@
             ) {
 
                 elementos.push(
-
                     `Sitio: ${sitio}`
-
                 );
 
             }
@@ -4663,7 +4623,7 @@
                         if (
 
                             estado ===
-                                "Devuelto" &&
+                            "Devuelto" &&
 
                             prestamo.fechaDevolucionReal
 
@@ -4712,13 +4672,8 @@
                                     :
 
                                     (
-
                                         prestamo.FamiliaId ||
-
-                                        prestamo.familiaId ||
-
                                         ""
-
                                     ),
 
 
@@ -4735,13 +4690,8 @@
                                     :
 
                                     (
-
                                         prestamo.PersonaId ||
-
-                                        prestamo.personaId ||
-
                                         ""
-
                                     ),
 
 
@@ -4771,13 +4721,8 @@
                                     :
 
                                     (
-
                                         prestamo.Apellidos ||
-
-                                        prestamo.apellidos ||
-
                                         ""
-
                                     ),
 
 
@@ -4947,7 +4892,7 @@
 
             "keydown",
 
-            function(event) {
+            function (event) {
 
                 if (
                     event.key ===
@@ -5024,7 +4969,7 @@
 
             "change",
 
-            function() {
+            function () {
 
                 actualizarGraficosFiltrados();
 
