@@ -423,10 +423,6 @@
 <div class="contenedor">
 
 ```
-<!-- =====================================================
-     1. SOLICITANTE
-====================================================== -->
-
 <section class="seccion">
 
     <h2>1. ¿Quién solicita el préstamo?</h2>
@@ -450,11 +446,6 @@
         </button>
 
     </div>
-
-
-    <!-- =================================================
-         BUSCAR AFILIADO
-    ================================================== -->
 
     <div id="seccionAfiliado">
 
@@ -500,11 +491,6 @@
         </div>
 
     </div>
-
-
-    <!-- =================================================
-         BUSCAR COLABORADOR
-    ================================================== -->
 
     <div id="seccionColaborador" style="display:none;">
 
@@ -555,11 +541,6 @@
 
 </section>
 
-
-<!-- =====================================================
-     2. LIBRO
-====================================================== -->
-
 <section class="seccion">
 
     <h2>2. Buscar libro</h2>
@@ -589,11 +570,6 @@
 
 </section>
 
-
-<!-- =====================================================
-     3. CONFIRMAR PRÉSTAMO
-===================================================== -->
-
 <section class="seccion">
 
     <h2>3. Confirmar préstamo</h2>
@@ -612,8 +588,6 @@
             <div class="contenido-resumen">
 
                 <div class="datos-persona-libro">
-
-                    <!-- PERSONA / COLABORADOR -->
 
                     <div class="tarjeta-dato">
 
@@ -661,9 +635,6 @@
 
                     </div>
 
-
-                    <!-- LIBRO -->
-
                     <div class="tarjeta-dato">
 
                         <h3>📚 Libro</h3>
@@ -690,9 +661,6 @@
             </div>
 
         </div>
-
-
-        <!-- FECHAS Y SITIO -->
 
         <div class="bloque-resumen">
 
@@ -721,7 +689,6 @@
 
                     </div>
 
-
                     <div class="campo-fecha">
 
                         <label for="fechaDevolucion">
@@ -738,7 +705,6 @@
                         </span>
 
                     </div>
-
 
                     <div class="campo-fecha">
 
@@ -767,9 +733,6 @@
             </div>
 
         </div>
-
-
-        <!-- CONFIRMACIÓN -->
 
         <div
             id="confirmacion"
@@ -805,7 +768,6 @@
         </div>
 
     </div>
-
 
     <div
         id="mensajeFinal"
@@ -997,13 +959,11 @@ function normalizarCodigoColaborador(codigo) {
             .trim()
             .toUpperCase();
 
-
     valor =
         valor.replace(
             /^C/,
             ""
         );
-
 
     valor =
         valor.replace(
@@ -1011,18 +971,15 @@ function normalizarCodigoColaborador(codigo) {
             ""
         );
 
-
     valor =
         valor.replace(
             /^0+/,
             ""
         );
 
-
     if (!valor) {
         return "";
     }
-
 
     return "C" + valor;
 }
@@ -1079,7 +1036,6 @@ function agregarUnMes(fechaTexto) {
     const dia =
         Number(partes[2]);
 
-
     const fecha =
         new Date(
             año,
@@ -1090,11 +1046,9 @@ function agregarUnMes(fechaTexto) {
             0
         );
 
-
     fecha.setMonth(
         fecha.getMonth() + 1
     );
-
 
     const nuevoAño =
         fecha.getFullYear();
@@ -1108,7 +1062,6 @@ function agregarUnMes(fechaTexto) {
         String(
             fecha.getDate()
         ).padStart(2, "0");
-
 
     return `${nuevoAño}-${nuevoMes}-${nuevoDia}`;
 }
@@ -1139,7 +1092,6 @@ function fechaLocalDesdeInput(fechaTexto) {
 
     const dia =
         Number(partes[2]);
-
 
     return new Date(
         año,
@@ -1192,7 +1144,6 @@ function obtenerSitio(persona) {
         }
     }
 
-
     if (persona && persona.FamiliaId) {
 
         const sitio =
@@ -1208,7 +1159,6 @@ function obtenerSitio(persona) {
             return sitio;
         }
     }
-
 
     return null;
 }
@@ -1227,7 +1177,6 @@ function obtenerSitioPrestamo() {
         .trim()
         .toUpperCase();
 
-
     if (
         ["F", "M", "R", "N", "Z"]
             .includes(sitio)
@@ -1235,8 +1184,41 @@ function obtenerSitioPrestamo() {
         return sitio;
     }
 
-
     return null;
+}
+
+
+/* =========================================================
+   OBTENER USUARIO ACTUAL
+=========================================================
+
+   auth.js deja disponible:
+
+   window.perfilUsuario
+
+   y dentro:
+
+   window.perfilUsuario.nombre
+
+   Este dato se guarda en PrestadoPor para que
+   el reporte conserve quién realizó realmente
+   el préstamo.
+========================================================= */
+
+function obtenerUsuarioActual() {
+
+    if (
+        window.perfilUsuario &&
+        window.perfilUsuario.nombre
+    ) {
+
+        return String(
+            window.perfilUsuario.nombre
+        ).trim();
+
+    }
+
+    return "";
 }
 
 
@@ -1252,7 +1234,6 @@ function prepararFechas() {
             obtenerFechaLocalInput();
 
     }
-
 
     if (
         !fechaDevolucionModificada
@@ -1280,7 +1261,6 @@ function validarFechas() {
     const fechaDevolucion =
         fechaDevolucionInput.value;
 
-
     if (!fechaPrestamo) {
 
         mostrarMensaje(
@@ -1293,7 +1273,6 @@ function validarFechas() {
 
         return false;
     }
-
 
     if (!fechaDevolucion) {
 
@@ -1308,7 +1287,6 @@ function validarFechas() {
         return false;
     }
 
-
     const fechaInicio =
         fechaLocalDesdeInput(
             fechaPrestamo
@@ -1318,7 +1296,6 @@ function validarFechas() {
         fechaLocalDesdeInput(
             fechaDevolucion
         );
-
 
     if (
         !fechaInicio ||
@@ -1333,7 +1310,6 @@ function validarFechas() {
 
         return false;
     }
-
 
     if (
         fechaFin < fechaInicio
@@ -1350,7 +1326,6 @@ function validarFechas() {
         return false;
     }
 
-
     return true;
 }
 
@@ -1363,7 +1338,6 @@ function validarSitioPrestamo() {
 
     const sitio =
         obtenerSitioPrestamo();
-
 
     if (!sitio) {
 
@@ -1378,7 +1352,6 @@ function validarSitioPrestamo() {
         return false;
     }
 
-
     return true;
 }
 
@@ -1392,13 +1365,11 @@ function cambiarTipoSolicitante(tipo) {
     tipoSolicitante =
         tipo;
 
-
     personaSeleccionada =
         null;
 
     colaboradorSeleccionado =
         null;
-
 
     limpiarMensaje(
         mensajeFamilia
@@ -1408,13 +1379,11 @@ function cambiarTipoSolicitante(tipo) {
         mensajeColaborador
     );
 
-
     cuerpoFamilia.innerHTML =
         "";
 
     cuerpoColaborador.innerHTML =
         "";
-
 
     tablaFamilia.style.display =
         "none";
@@ -1422,13 +1391,11 @@ function cambiarTipoSolicitante(tipo) {
     tablaColaborador.style.display =
         "none";
 
-
     buscarFamiliaInput.value =
         "";
 
     buscarColaboradorInput.value =
         "";
-
 
     if (tipo === "Afiliado") {
 
@@ -1439,7 +1406,6 @@ function cambiarTipoSolicitante(tipo) {
         btnTipoColaborador.classList.remove(
             "activa"
         );
-
 
         seccionAfiliado.style.display =
             "block";
@@ -1457,7 +1423,6 @@ function cambiarTipoSolicitante(tipo) {
             "activa"
         );
 
-
         seccionAfiliado.style.display =
             "none";
 
@@ -1465,7 +1430,6 @@ function cambiarTipoSolicitante(tipo) {
             "block";
 
     }
-
 
     actualizarDetalle();
 }
@@ -1491,7 +1455,6 @@ async function buscarFamilia() {
 
     actualizarDetalle();
 
-
     if (!familia) {
 
         mostrarMensaje(
@@ -1502,7 +1465,6 @@ async function buscarFamilia() {
 
         return;
     }
-
 
     try {
 
@@ -1533,11 +1495,9 @@ async function buscarFamilia() {
                     }
                 );
 
-
         if (error) {
             throw error;
         }
-
 
         if (
             !data ||
@@ -1553,12 +1513,10 @@ async function buscarFamilia() {
             return;
         }
 
-
         data.forEach(persona => {
 
             const fila =
                 document.createElement("tr");
-
 
             const tdPersona =
                 document.createElement("td");
@@ -1566,13 +1524,11 @@ async function buscarFamilia() {
             tdPersona.textContent =
                 persona.PersonaId;
 
-
             const tdFamilia =
                 document.createElement("td");
 
             tdFamilia.textContent =
                 persona.FamiliaId;
-
 
             const tdNombre =
                 document.createElement("td");
@@ -1583,17 +1539,14 @@ async function buscarFamilia() {
             tdNombre.textContent =
                 `${persona.Nombres} ${persona.Apellidos}`;
 
-
             const tdEstado =
                 document.createElement("td");
 
             tdEstado.textContent =
                 persona.estado;
 
-
             const tdAccion =
                 document.createElement("td");
-
 
             const boton =
                 document.createElement("button");
@@ -1606,7 +1559,6 @@ async function buscarFamilia() {
 
             boton.textContent =
                 "Seleccionar";
-
 
             boton.addEventListener(
                 "click",
@@ -1621,11 +1573,9 @@ async function buscarFamilia() {
                 }
             );
 
-
             tdAccion.appendChild(
                 boton
             );
-
 
             fila.appendChild(
                 tdPersona
@@ -1647,17 +1597,14 @@ async function buscarFamilia() {
                 tdAccion
             );
 
-
             cuerpoFamilia.appendChild(
                 fila
             );
 
         });
 
-
         tablaFamilia.style.display =
             "table";
-
 
     } catch (error) {
 
@@ -1692,12 +1639,10 @@ function seleccionarPersona(
                 "seleccionada"
             );
 
-
             const boton =
                 fila.querySelector(
                     ".btn-seleccionar"
                 );
-
 
             if (boton) {
 
@@ -1711,27 +1656,22 @@ function seleccionarPersona(
 
         });
 
-
     filaSeleccionada.classList.add(
         "seleccionada"
     );
-
 
     botonSeleccionado.classList.add(
         "seleccionada"
     );
 
-
     botonSeleccionado.textContent =
         "✓ Seleccionada";
-
 
     personaSeleccionada =
         persona;
 
     colaboradorSeleccionado =
         null;
-
 
     actualizarDetalle();
 }
@@ -1746,11 +1686,9 @@ async function buscarColaborador() {
     const codigoIngresado =
         buscarColaboradorInput.value.trim();
 
-
     limpiarMensaje(
         mensajeColaborador
     );
-
 
     cuerpoColaborador.innerHTML =
         "";
@@ -1758,13 +1696,10 @@ async function buscarColaborador() {
     tablaColaborador.style.display =
         "none";
 
-
     colaboradorSeleccionado =
         null;
 
-
     actualizarDetalle();
-
 
     if (!codigoIngresado) {
 
@@ -1777,12 +1712,10 @@ async function buscarColaborador() {
         return;
     }
 
-
     const codigoNormalizado =
         normalizarCodigoColaborador(
             codigoIngresado
         );
-
 
     if (!codigoNormalizado) {
 
@@ -1794,7 +1727,6 @@ async function buscarColaborador() {
 
         return;
     }
-
 
     try {
 
@@ -1813,11 +1745,9 @@ async function buscarColaborador() {
                     "Activo"
                 );
 
-
         if (error) {
             throw error;
         }
-
 
         const colaboradoresEncontrados =
             (data || []).filter(
@@ -1827,7 +1757,6 @@ async function buscarColaborador() {
                     ) ===
                     codigoNormalizado
             );
-
 
         if (
             colaboradoresEncontrados.length === 0
@@ -1842,20 +1771,17 @@ async function buscarColaborador() {
             return;
         }
 
-
         colaboradoresEncontrados.forEach(
             colaborador => {
 
                 const fila =
                     document.createElement("tr");
 
-
                 const tdCodigo =
                     document.createElement("td");
 
                 tdCodigo.textContent =
                     colaborador.CodigoColaborador;
-
 
                 const tdNombre =
                     document.createElement("td");
@@ -1866,13 +1792,11 @@ async function buscarColaborador() {
                 tdNombre.textContent =
                     colaborador.Nombre || "";
 
-
                 const tdArea =
                     document.createElement("td");
 
                 tdArea.textContent =
                     colaborador.Area || "";
-
 
                 const tdEstado =
                     document.createElement("td");
@@ -1880,10 +1804,8 @@ async function buscarColaborador() {
                 tdEstado.textContent =
                     colaborador.estado;
 
-
                 const tdAccion =
                     document.createElement("td");
-
 
                 const boton =
                     document.createElement("button");
@@ -1896,7 +1818,6 @@ async function buscarColaborador() {
 
                 boton.textContent =
                     "Seleccionar";
-
 
                 boton.addEventListener(
                     "click",
@@ -1911,11 +1832,9 @@ async function buscarColaborador() {
                     }
                 );
 
-
                 tdAccion.appendChild(
                     boton
                 );
-
 
                 fila.appendChild(
                     tdCodigo
@@ -1937,7 +1856,6 @@ async function buscarColaborador() {
                     tdAccion
                 );
 
-
                 cuerpoColaborador.appendChild(
                     fila
                 );
@@ -1945,10 +1863,8 @@ async function buscarColaborador() {
             }
         );
 
-
         tablaColaborador.style.display =
             "table";
-
 
     } catch (error) {
 
@@ -1983,12 +1899,10 @@ function seleccionarColaborador(
                 "seleccionada"
             );
 
-
             const boton =
                 fila.querySelector(
                     ".btn-seleccionar"
                 );
-
 
             if (boton) {
 
@@ -2002,27 +1916,22 @@ function seleccionarColaborador(
 
         });
 
-
     filaSeleccionada.classList.add(
         "seleccionada"
     );
-
 
     botonSeleccionado.classList.add(
         "seleccionada"
     );
 
-
     botonSeleccionado.textContent =
         "✓ Seleccionado";
-
 
     colaboradorSeleccionado =
         colaborador;
 
     personaSeleccionada =
         null;
-
 
     actualizarDetalle();
 }
@@ -2047,7 +1956,6 @@ async function buscarLibro() {
 
     actualizarDetalle();
 
-
     if (!codigoIngresado) {
 
         mostrarMensaje(
@@ -2059,12 +1967,10 @@ async function buscarLibro() {
         return;
     }
 
-
     const codigoNormalizado =
         normalizarCodigo(
             codigoIngresado
         );
-
 
     try {
 
@@ -2078,11 +1984,9 @@ async function buscarLibro() {
 
                 .select("*");
 
-
         if (error) {
             throw error;
         }
-
 
         const libro =
             (data || []).find(
@@ -2091,7 +1995,6 @@ async function buscarLibro() {
                         item.codigoLibro
                     ) === codigoNormalizado
             );
-
 
         if (!libro) {
 
@@ -2103,7 +2006,6 @@ async function buscarLibro() {
 
             return;
         }
-
 
         if (
             libro.estado === "Baja"
@@ -2117,7 +2019,6 @@ async function buscarLibro() {
 
             return;
         }
-
 
         const {
             data: prestamosActivos,
@@ -2134,11 +2035,9 @@ async function buscarLibro() {
                     "Prestado"
                 );
 
-
         if (errorPrestamos) {
             throw errorPrestamos;
         }
-
 
         const yaPrestado =
             (prestamosActivos || [])
@@ -2149,7 +2048,6 @@ async function buscarLibro() {
                         ) ===
                         codigoNormalizado
                 );
-
 
         if (
             yaPrestado ||
@@ -2165,10 +2063,8 @@ async function buscarLibro() {
             return;
         }
 
-
         libroSeleccionado =
             libro;
-
 
         libroInfo.innerHTML = `
             <strong>Libro encontrado</strong><br>
@@ -2177,13 +2073,10 @@ async function buscarLibro() {
             Estado: Disponible
         `;
 
-
         libroInfo.style.display =
             "block";
 
-
         actualizarDetalle();
-
 
     } catch (error) {
 
@@ -2209,7 +2102,6 @@ function actualizarDetalle() {
             ? !!personaSeleccionada
             : !!colaboradorSeleccionado;
 
-
     if (
         !haySolicitante ||
         !libroSeleccionado
@@ -2224,9 +2116,7 @@ function actualizarDetalle() {
         return;
     }
 
-
     prepararFechas();
-
 
     if (
         tipoSolicitante === "Afiliado"
@@ -2235,154 +2125,80 @@ function actualizarDetalle() {
         tituloResumenPersona.textContent =
             "👤 Afiliado";
 
-
         etiquetaIdentificador.textContent =
             "Familia";
-
 
         etiquetaPersonaId.textContent =
             "PersonaId";
 
-
         etiquetaNombre.textContent =
             "Nombre";
-
 
         resumenFamilia.textContent =
             personaSeleccionada.FamiliaId || "";
 
-
         resumenPersonaId.textContent =
             personaSeleccionada.PersonaId || "";
-
 
         resumenNombre.textContent =
             `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
 
-
         resumenArea.textContent =
             "";
 
-
         filaAreaResumen.style.display =
             "none";
-
 
         resumenSitio.textContent =
             obtenerSitio(
                 personaSeleccionada
             ) || "No definido";
 
-
     } else {
 
         tituloResumenPersona.textContent =
             "👤 Colaborador";
 
-
         etiquetaIdentificador.textContent =
             "Código";
-
 
         etiquetaPersonaId.textContent =
             "Tipo";
 
-
         etiquetaNombre.textContent =
             "Nombre";
-
 
         resumenFamilia.textContent =
             colaboradorSeleccionado.CodigoColaborador || "";
 
-
         resumenPersonaId.textContent =
             "Colaborador";
-
 
         resumenNombre.textContent =
             colaboradorSeleccionado.Nombre || "";
 
-
         resumenArea.textContent =
             colaboradorSeleccionado.Area || "No definida";
 
-
         filaAreaResumen.style.display =
             "flex";
-
 
         resumenSitio.textContent =
             sitioPrestamoInput.value || "No definido";
 
     }
 
-
     resumenCodigoLibro.textContent =
         libroSeleccionado.codigoLibro || "";
-
 
     resumenNombreLibro.textContent =
         libroSeleccionado.nombreLibro || "";
 
-
     resumenPrestamo.style.display =
         "block";
 
-
     confirmacion.style.display =
         "block";
-}
-
-
-/* =========================================================
-   OBTENER USUARIO QUE REGISTRA EL PRÉSTAMO
-========================================================= */
-
-async function obtenerUsuarioActual() {
-
-    /*
-       Si auth.js todavía no ha cargado el perfil,
-       intentamos proteger/validar la página y cargarlo.
-    */
-
-    if (
-        !window.perfilUsuario &&
-        typeof window.protegerPagina === "function"
-    ) {
-
-        const autorizado =
-            await window.protegerPagina();
-
-        if (!autorizado) {
-            return null;
-        }
-    }
-
-
-    if (!window.perfilUsuario) {
-        return null;
-    }
-
-
-    const nombre =
-        String(
-            window.perfilUsuario.nombre || ""
-        ).trim();
-
-
-    const correo =
-        String(
-            window.perfilUsuario.correo || ""
-        ).trim();
-
-
-    /*
-       Preferimos guardar el nombre del usuario.
-       Si el nombre no existe, usamos el correo.
-    */
-
-    return nombre || correo || null;
 }
 
 
@@ -2393,6 +2209,30 @@ async function obtenerUsuarioActual() {
 async function confirmarPrestamo() {
 
     limpiarMensaje(mensajeFinal);
+
+
+    /* =====================================================
+       VERIFICAR USUARIO QUE REALIZA LA OPERACIÓN
+    ===================================================== */
+
+    const usuarioActual =
+        obtenerUsuarioActual();
+
+
+    if (!usuarioActual) {
+
+        mostrarMensaje(
+            mensajeFinal,
+            "No se pudo identificar al usuario que está realizando el préstamo. Cierre sesión, vuelva a ingresar e inténtelo nuevamente.",
+            "error"
+        );
+
+        console.error(
+            "No existe window.perfilUsuario.nombre"
+        );
+
+        return;
+    }
 
 
     const haySolicitante =
@@ -2433,26 +2273,6 @@ async function confirmarPrestamo() {
 
 
     try {
-
-        /* =================================================
-           IDENTIFICAR USUARIO ACTUAL
-        ================================================= */
-
-        const usuarioActual =
-            await obtenerUsuarioActual();
-
-
-        if (!usuarioActual) {
-
-            mostrarMensaje(
-                mensajeFinal,
-                "No se pudo identificar al usuario que está realizando el préstamo. Cierre sesión, vuelva a ingresar e inténtelo nuevamente.",
-                "error"
-            );
-
-            return;
-        }
-
 
         const {
             data: prestamosExistentes,
@@ -2687,6 +2507,12 @@ async function confirmarPrestamo() {
         }
 
 
+        console.log(
+            "Registrando préstamo realizado por:",
+            usuarioActual
+        );
+
+
         const {
             data: prestamoGuardado,
             error: errorInsertar
@@ -2783,14 +2609,11 @@ async function confirmarPrestamo() {
         buscarFamiliaInput.value =
             "";
 
-
         cuerpoFamilia.innerHTML =
             "";
 
-
         tablaFamilia.style.display =
             "none";
-
 
         limpiarMensaje(
             mensajeFamilia
@@ -2802,14 +2625,11 @@ async function confirmarPrestamo() {
         buscarColaboradorInput.value =
             "";
 
-
         cuerpoColaborador.innerHTML =
             "";
 
-
         tablaColaborador.style.display =
             "none";
-
 
         limpiarMensaje(
             mensajeColaborador
@@ -2821,10 +2641,8 @@ async function confirmarPrestamo() {
         buscarLibroInput.value =
             "";
 
-
         libroInfo.innerHTML =
             "";
-
 
         libroInfo.style.display =
             "none";
@@ -2835,7 +2653,6 @@ async function confirmarPrestamo() {
         resumenPrestamo.style.display =
             "none";
 
-
         confirmacion.style.display =
             "none";
 
@@ -2844,7 +2661,6 @@ async function confirmarPrestamo() {
 
         fechaPrestamoInput.value =
             obtenerFechaLocalInput();
-
 
         fechaDevolucionInput.value =
             agregarUnMes(
@@ -2884,14 +2700,11 @@ function cancelarPrestamo() {
     libroSeleccionado =
         null;
 
-
     libroInfo.style.display =
         "none";
 
-
     buscarLibroInput.value =
         "";
-
 
     actualizarDetalle();
 }
@@ -2916,7 +2729,6 @@ fechaPrestamoInput.addEventListener(
 
         }
 
-
         actualizarDetalle();
 
     }
@@ -2933,7 +2745,6 @@ fechaDevolucionInput.addEventListener(
 
         fechaDevolucionModificada =
             true;
-
 
         actualizarDetalle();
 
