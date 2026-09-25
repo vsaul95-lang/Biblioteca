@@ -416,13 +416,18 @@
 
         .busqueda {
             display: grid;
-            grid-template-columns: 1fr auto auto auto;
-            gap: 10px;
+            grid-template-columns: minmax(180px, 2fr) minmax(125px, 1fr) minmax(125px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr) auto;
+            gap: 8px;
             align-items: end;
         }
 
         .busqueda .campo {
             min-width: 0;
+        }
+
+        .busqueda .btn-principal {
+            min-width: 92px;
+            white-space: nowrap;
         }
 
         .barra-resultados {
@@ -683,15 +688,16 @@
             }
 
             .busqueda {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .busqueda .campo {
-                grid-column: span 1;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
 
             .busqueda .campo:first-child {
                 grid-column: 1 / -1;
+            }
+
+            .busqueda .btn-principal {
+                grid-column: 1 / -1;
+                justify-self: end;
             }
 
         }
@@ -995,10 +1001,7 @@
 
             </div>
 
-        </div>
-
-
-    </section>
+        </div></section>
 
 
     <!-- =====================================================
@@ -1202,6 +1205,40 @@
                     placeholder="Escribe un código, nombre, autor..."
                     autocomplete="off"
                 >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="filtroAutor">
+                    Autor
+                </label>
+
+                <select id="filtroAutor">
+
+                    <option value="Todos">
+                        Todos
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="filtroGenero">
+                    Género
+                </label>
+
+                <select id="filtroGenero">
+
+                    <option value="Todos">
+                        Todos
+                    </option>
+
+                </select>
 
             </div>
 
@@ -1952,6 +1989,16 @@
             "busqueda"
         );
 
+    const filtroAutor =
+        document.getElementById(
+            "filtroAutor"
+        );
+
+    const filtroGenero =
+        document.getElementById(
+            "filtroGenero"
+        );
+
     const filtroEstado =
         document.getElementById(
             "filtroEstado"
@@ -1997,8 +2044,7 @@
 
     const btnSiguienteLibros =
         document.getElementById(
-            "btnSiguienteLibros"
-        );
+            "btnSiguienteLibros");
 
     const paginaInfoLibros =
         document.getElementById(
@@ -2831,6 +2877,9 @@
             await sincronizarEstados();
 
 
+            actualizarOpcionesFiltros();
+
+
             actualizarEstadisticas();
 
 
@@ -2997,9 +3046,7 @@
                     biblioteca,
 
                 estado:
-                    "Disponible"
-
-            };
+                    "Disponible"};
 
 
             const {
@@ -3025,6 +3072,9 @@
                     data
                 )
             );
+
+
+            actualizarOpcionesFiltros();
 
 
             actualizarEstadisticas();
@@ -3100,6 +3150,157 @@
 
 
     /* =========================================================
+       ACTUALIZAR FILTROS DE AUTOR Y GÉNERO
+    ========================================================== */
+
+    function actualizarOpcionesFiltros() {
+
+        const autorSeleccionado =
+            filtroAutor.value;
+
+        const generoSeleccionado =
+            filtroGenero.value;
+
+
+        const autores =
+            [
+                ...new Set(
+                    libros
+                        .map(
+                            libro =>
+                                String(
+                                    libro.autor ||
+                                    ""
+                                ).trim()
+                        )
+                        .filter(Boolean)
+                )
+            ]
+                .sort(
+                    (a, b) =>
+                        a.localeCompare(
+                            b,
+                            "es",
+                            {
+                                sensitivity: "base"
+                            }
+                        )
+                );
+
+
+        const generos =
+            [
+                ...new Set(
+                    libros
+                        .map(
+                            libro =>
+                                String(
+                                    libro.genero ||
+                                    ""
+                                ).trim()
+                        )
+                        .filter(Boolean)
+                )
+            ]
+                .sort(
+                    (a, b) =>
+                        a.localeCompare(
+                            b,
+                            "es",
+                            {
+                                sensitivity: "base"
+                            }
+                        )
+                );
+
+
+        filtroAutor.innerHTML =
+            `<option value="Todos">Todos</option>`;
+
+        autores.forEach(
+            autor => {
+
+                const opcion =
+                    document.createElement(
+                        "option"
+                    );
+
+                opcion.value =
+                    autor;
+
+                opcion.textContent =
+                    autor;
+
+                filtroAutor.appendChild(
+                    opcion
+                );
+
+            }
+        );
+
+
+        filtroGenero.innerHTML =
+            `<option value="Todos">Todos</option>`;
+
+        generos.forEach(
+            genero => {
+
+                const opcion =
+                    document.createElement(
+                        "option"
+                    );
+
+                opcion.value =
+                    genero;
+
+                opcion.textContent =
+                    genero;
+
+                filtroGenero.appendChild(
+                    opcion
+                );
+
+            }
+        );
+
+
+        if (
+            autores.includes(
+                autorSeleccionado
+            )
+        ) {
+
+            filtroAutor.value =
+                autorSeleccionado;
+
+        } else {
+
+            filtroAutor.value =
+                "Todos";
+
+        }
+
+
+        if (
+            generos.includes(
+                generoSeleccionado
+            )
+        ) {
+
+            filtroGenero.value =
+                generoSeleccionado;
+
+        } else {
+
+            filtroGenero.value =
+                "Todos";
+
+        }
+
+    }
+
+
+    /* =========================================================
        BUSCAR LIBROS
     ========================================================== */
 
@@ -3109,6 +3310,14 @@
             normalizarTexto(
                 busqueda.value
             );
+
+
+        const autor =
+            filtroAutor.value;
+
+
+        const genero =
+            filtroGenero.value;
 
 
         const estado =
@@ -3150,6 +3359,28 @@
                         );
 
 
+                    const coincideAutor =
+                        autor ===
+                            "Todos" ||
+                        normalizarTexto(
+                            libro.autor
+                        ) ===
+                        normalizarTexto(
+                            autor
+                        );
+
+
+                    const coincideGenero =
+                        genero ===
+                            "Todos" ||
+                        normalizarTexto(
+                            libro.genero
+                        ) ===
+                        normalizarTexto(
+                            genero
+                        );
+
+
                     const coincideEstado =
                         estado ===
                             "Todos" ||
@@ -3166,6 +3397,8 @@
 
                     return (
                         coincideTexto &&
+                        coincideAutor &&
+                        coincideGenero &&
                         coincideEstado &&
                         coincideBiblioteca
                     );
@@ -3997,10 +4230,7 @@
 
             return;
 
-        }
-
-
-        const nombre =
+        }const nombre =
             editarNombre.value.trim();
 
 
@@ -4100,6 +4330,9 @@
 
 
             cerrarEdicion();
+
+
+            actualizarOpcionesFiltros();
 
 
             actualizarEstadisticas();
@@ -4995,10 +5228,7 @@
                         errores.length
                     } filas con errores y no fueron agregadas.`;
 
-            }
-
-
-            mostrarMensaje(
+            }mostrarMensaje(
                 mensajeImportacion,
                 mensaje,
                 "exito"
@@ -5255,6 +5485,32 @@
                 buscarLibros();
 
             }
+
+        }
+    );
+
+
+    filtroAutor.addEventListener(
+        "change",
+        function () {
+
+            paginaLibros =
+                1;
+
+            buscarLibros();
+
+        }
+    );
+
+
+    filtroGenero.addEventListener(
+        "change",
+        function () {
+
+            paginaLibros =
+                1;
+
+            buscarLibros();
 
         }
     );
