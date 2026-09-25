@@ -17,11 +17,6 @@
         href="estilos.css"
     >
 
-
-    <!-- =========================================================
-         OCULTAR LA PÁGINA MIENTRAS SE COMPRUEBA LA SESIÓN
-    ========================================================== -->
-
     <style id="bloqueo-acceso">
 
         html {
@@ -30,38 +25,36 @@
 
     </style>
 
-
-    <!-- =========================================================
-         SUPABASE
-    ========================================================== -->
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase.js"></script>
 
+    <!-- Protección central de sesión y rol -->
+    <script src="auth.js?v=1002"></script>
 
-    <!-- =========================================================
-         PROTECCIÓN DIRECTA DE ESTA PÁGINA
-    ========================================================== -->
-
+    <!-- Protección directa de esta página -->
     <script>
 
         window.reportesAuth = (async function () {
 
             try {
 
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.auth.getSession();
+                const autorizado =
+                    await window.protegerPagina();
 
 
-                if (
-                    error ||
-                    !data ||
-                    !data.session
-                ) {
+                if (!autorizado) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return false;
+
+                }
+
+
+                if (!window.esAdministrador()) {
 
                     window.location.replace(
                         "index.html"
@@ -82,7 +75,7 @@
             } catch (error) {
 
                 console.error(
-                    "Error al comprobar la sesión:",
+                    "Error al comprobar permisos de reportes:",
                     error
                 );
 
@@ -100,17 +93,7 @@
 
     </script>
 
-
-    <!-- =========================================================
-         EXCEL
-    ========================================================== -->
-
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
-
-    <!-- =========================================================
-         CHART.JS
-    ========================================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -118,11 +101,6 @@
 
 
     <style>
-
-
-        /* =========================================================
-           CONTENEDOR
-        ========================================================== */
 
         .reportes-contenedor {
 
@@ -134,10 +112,6 @@
 
         }
 
-
-        /* =========================================================
-           ENCABEZADO
-        ========================================================== */
 
         .reporte-encabezado {
 
@@ -191,10 +165,6 @@
 
         }
 
-
-        /* =========================================================
-           ESTADÍSTICAS
-        ========================================================== */
 
         .estadisticas-reportes {
 
@@ -262,10 +232,6 @@
 
         }
 
-
-        /* =========================================================
-           GRÁFICAS
-        ========================================================== */
 
         .graficos-grid {
 
@@ -372,10 +338,6 @@
         }
 
 
-        /* =========================================================
-           GRÁFICA DE ACTIVIDAD
-        ========================================================== */
-
         .grafico-actividad {
 
             grid-column: 1 / 3;
@@ -390,10 +352,6 @@
 
         }
 
-
-        /* =========================================================
-           RESULTADOS
-        ========================================================== */
 
         .resultados-seccion {
 
@@ -439,10 +397,6 @@
 
         }
 
-
-        /* =========================================================
-           FILTROS
-        ========================================================== */
 
         .filtros {
 
@@ -553,10 +507,6 @@
         }
 
 
-        /* =========================================================
-           BOTONES
-        ========================================================== */
-
         .botones-filtros {
 
             display: flex;
@@ -633,10 +583,6 @@
         }
 
 
-        /* =========================================================
-           RESUMEN DE RESULTADOS
-        ========================================================== */
-
         .resultado-resumen {
 
             display: flex;
@@ -677,10 +623,6 @@
 
         }
 
-
-        /* =========================================================
-           TABLA
-        ========================================================== */
 
         .tabla-contenedor {
 
@@ -762,10 +704,6 @@
         }
 
 
-        /* =========================================================
-           ESTADOS
-        ========================================================== */
-
         .estado {
 
             display: inline-block;
@@ -822,10 +760,6 @@
 
         }
 
-
-        /* =========================================================
-           RESPONSIVE
-        ========================================================== */
 
         @media (max-width: 950px) {
 
@@ -940,10 +874,6 @@
 <body>
 
 
-    <!-- =========================================================
-         ENCABEZADO
-    ========================================================== -->
-
     <header class="encabezado">
 
         <div class="encabezado-contenido">
@@ -973,16 +903,8 @@
     </header>
 
 
-    <!-- =========================================================
-         CONTENIDO
-    ========================================================== -->
-
     <main class="reportes-contenedor">
 
-
-        <!-- =====================================================
-             ENCABEZADO
-        ====================================================== -->
 
         <section class="reporte-encabezado">
 
@@ -1003,10 +925,6 @@
 
         </section>
 
-
-        <!-- =====================================================
-             ESTADÍSTICAS
-        ====================================================== -->
 
         <section class="estadisticas-reportes">
 
@@ -1114,14 +1032,8 @@
         </section>
 
 
-        <!-- =====================================================
-             GRÁFICAS
-        ====================================================== -->
-
         <section class="graficos-grid">
 
-
-            <!-- PRÉSTAMOS POR MES -->
 
             <div class="grafico-card">
 
@@ -1176,8 +1088,6 @@
             </div>
 
 
-            <!-- ESTADO ACTUAL DE LOS LIBROS -->
-
             <div class="grafico-card">
 
                 <h2>
@@ -1194,8 +1104,6 @@
 
             </div>
 
-
-            <!-- ACTIVIDAD -->
 
             <div class="grafico-card grafico-actividad">
 
@@ -1253,10 +1161,6 @@
         </section>
 
 
-        <!-- =====================================================
-             RESULTADOS
-        ====================================================== -->
-
         <section class="resultados-seccion">
 
 
@@ -1272,10 +1176,6 @@
 
             </div>
 
-
-            <!-- =================================================
-                 FILTROS
-            ================================================== -->
 
             <div class="filtros">
 
@@ -1442,10 +1342,6 @@
             </div>
 
 
-            <!-- =================================================
-                 RESUMEN
-            ================================================== -->
-
             <div class="resultado-resumen">
 
                 <div
@@ -1466,10 +1362,6 @@
             </div>
 
 
-            <!-- =================================================
-                 TABLA
-            ================================================== -->
-
             <div class="tabla-contenedor">
 
                 <table class="tabla-resultados">
@@ -1478,57 +1370,31 @@
 
                         <tr>
 
-                            <th>
-                                Tipo
-                            </th>
+                            <th>Tipo</th>
 
-                            <th>
-                                SitioPréstamo
-                            </th>
+                            <th>SitioPréstamo</th>
 
-                            <th>
-                                FamiliaId
-                            </th>
+                            <th>FamiliaId</th>
 
-                            <th>
-                                PersonaId / Código
-                            </th>
+                            <th>PersonaId / Código</th>
 
-                            <th>
-                                Nombres / Colaborador
-                            </th>
+                            <th>Nombres / Colaborador</th>
 
-                            <th>
-                                Apellidos
-                            </th>
+                            <th>Apellidos</th>
 
-                            <th>
-                                Área
-                            </th>
+                            <th>Área</th>
 
-                            <th>
-                                Código
-                            </th>
+                            <th>Código</th>
 
-                            <th>
-                                Libro
-                            </th>
+                            <th>Libro</th>
 
-                            <th>
-                                Género
-                            </th>
+                            <th>Género</th>
 
-                            <th>
-                                Préstamo
-                            </th>
+                            <th>Préstamo</th>
 
-                            <th>
-                                Devolución
-                            </th>
+                            <th>Devolución</th>
 
-                            <th>
-                                Estado
-                            </th>
+                            <th>Estado</th>
 
                         </tr>
 
@@ -1547,16 +1413,7 @@
     </main>
 
 
-    <!-- =========================================================
-         JAVASCRIPT DE REPORTES
-    ========================================================== -->
-
     <script>
-
-
-        /* =========================================================
-           VARIABLES
-        ========================================================== */
 
         let libros = [];
 
@@ -1572,10 +1429,6 @@
 
         let reportesIniciados = false;
 
-
-        /* =========================================================
-           NORMALIZAR TEXTO
-        ========================================================== */
 
         function normalizarTexto(valor) {
 
@@ -1594,10 +1447,6 @@
 
         }
 
-
-        /* =========================================================
-           NORMALIZAR CÓDIGO
-        ========================================================== */
 
         function normalizarCodigo(codigo) {
 
@@ -1631,10 +1480,6 @@
         }
 
 
-        /* =========================================================
-           HTML SEGURO
-        ========================================================== */
-
         function escapeHtml(valor) {
 
             return String(valor ?? "")
@@ -1666,10 +1511,6 @@
 
         }
 
-
-        /* =========================================================
-           FECHAS
-        ========================================================== */
 
         function obtenerFechaSoloDia(fecha) {
 
@@ -1817,10 +1658,6 @@
         }
 
 
-        /* =========================================================
-           ESTADO DEL PRÉSTAMO
-        ========================================================== */
-
         function obtenerEstado(prestamo) {
 
             if (
@@ -1859,10 +1696,6 @@
 
         }
 
-
-        /* =========================================================
-           COLABORADORES
-        ========================================================== */
 
         function esColaborador(prestamo) {
 
@@ -1926,10 +1759,6 @@
 
         }
 
-
-        /* =========================================================
-           SITIO DEL PRÉSTAMO
-        ========================================================== */
 
         function obtenerSitioPrestamo(prestamo) {
 
@@ -1996,10 +1825,6 @@
         }
 
 
-        /* =========================================================
-           PERSONA
-        ========================================================== */
-
         function obtenerNombrePersona(prestamo) {
 
             const nombres =
@@ -2049,10 +1874,6 @@
 
         }
 
-
-        /* =========================================================
-           DATOS DEL LIBRO
-        ========================================================== */
 
         function obtenerDatosLibro(prestamo) {
 
@@ -2125,10 +1946,6 @@
 
         }
 
-
-        /* =========================================================
-           CARGAR LIBROS
-        ========================================================== */
 
         async function cargarLibros() {
 
@@ -2212,10 +2029,6 @@
         }
 
 
-        /* =========================================================
-           CARGAR PRÉSTAMOS
-        ========================================================== */
-
         async function cargarPrestamos() {
 
             prestamos = [];
@@ -2298,10 +2111,6 @@
         }
 
 
-        /* =========================================================
-           CARGAR TODO
-        ========================================================== */
-
         async function cargarDatos() {
 
             try {
@@ -2335,10 +2144,6 @@
 
         }
 
-
-        /* =========================================================
-           ESTADÍSTICAS
-        ========================================================== */
 
         function actualizarEstadisticas() {
 
@@ -2451,10 +2256,6 @@
 
         }
 
-
-        /* =========================================================
-           GRÁFICA CIRCULAR
-        ========================================================== */
 
         function actualizarGraficaLibros(
 
@@ -2668,10 +2469,6 @@
 
         }
 
-
-        /* =========================================================
-           GRÁFICA DE MESES
-        ========================================================== */
 
         function actualizarGraficaMeses(
 
@@ -2940,10 +2737,6 @@
         }
 
 
-        /* =========================================================
-           GRÁFICA DE ACTIVIDAD
-        ========================================================== */
-
         function actualizarGraficaActividad() {
 
             const selector =
@@ -3199,10 +2992,6 @@
         }
 
 
-        /* =========================================================
-           CARGAR SITIOS DE LA TABLA
-        ========================================================== */
-
         function cargarSitios() {
 
             const select =
@@ -3284,10 +3073,6 @@
 
         }
 
-
-        /* =========================================================
-           APLICAR FILTROS
-        ========================================================== */
 
         function aplicarFiltros() {
 
@@ -3568,10 +3353,6 @@
                 );
 
 
-            /* =====================================================
-               ORDEN
-            ====================================================== */
-
             prestamosFiltrados.sort(
 
                 (a, b) => {
@@ -3739,10 +3520,6 @@
 
         }
 
-
-        /* =========================================================
-           RESULTADOS
-        ========================================================== */
 
         function actualizarResultados() {
 
@@ -3987,116 +3764,56 @@
                     fila.innerHTML = `
 
                         <td>
-
-                            ${escapeHtml(
-                                tipo
-                            )}
-
+                            ${escapeHtml(tipo)}
                         </td>
-
 
                         <td>
-
-                            ${escapeHtml(
-                                sitio
-                            )}
-
+                            ${escapeHtml(sitio)}
                         </td>
-
 
                         <td>
-
-                            ${escapeHtml(
-                                familia
-                            )}
-
+                            ${escapeHtml(familia)}
                         </td>
-
 
                         <td>
-
-                            ${escapeHtml(
-                                personaCodigo
-                            )}
-
+                            ${escapeHtml(personaCodigo)}
                         </td>
-
 
                         <td class="nombre">
-
-                            ${escapeHtml(
-                                nombre
-                            )}
-
+                            ${escapeHtml(nombre)}
                         </td>
-
 
                         <td>
-
-                            ${escapeHtml(
-                                apellidos
-                            )}
-
+                            ${escapeHtml(apellidos)}
                         </td>
-
 
                         <td>
-
-                            ${escapeHtml(
-                                area
-                            )}
-
+                            ${escapeHtml(area)}
                         </td>
-
 
                         <td>
-
-                            ${escapeHtml(
-                                datosLibro.codigo
-                            )}
-
+                            ${escapeHtml(datosLibro.codigo)}
                         </td>
-
 
                         <td class="libro">
-
-                            ${escapeHtml(
-                                datosLibro.nombre
-                            )}
-
+                            ${escapeHtml(datosLibro.nombre)}
                         </td>
 
-
                         <td>
-
-                            ${escapeHtml(
-                                genero
-                            )}
-
+                            ${escapeHtml(genero)}
                         </td>
 
-
                         <td>
-
                             ${formatearFecha(
-
                                 prestamo.fechaPrestamo
-
                             )}
-
                         </td>
-
 
                         <td>
-
                             ${formatearFecha(
-
                                 fechaDevolucion
-
                             )}
-
                         </td>
-
 
                         <td>
 
@@ -4104,9 +3821,7 @@
                                 class="estado ${claseEstado}"
                             >
 
-                                ${escapeHtml(
-                                    estado
-                                )}
+                                ${escapeHtml(estado)}
 
                             </span>
 
@@ -4128,10 +3843,6 @@
 
         }
 
-
-        /* =========================================================
-           GRÁFICAS FILTRADAS
-        ========================================================== */
 
         function actualizarGraficosFiltrados() {
 
@@ -4186,10 +3897,6 @@
 
         }
 
-
-        /* =========================================================
-           FILTROS ACTIVOS
-        ========================================================== */
 
         function actualizarFiltrosActivos() {
 
@@ -4314,10 +4021,6 @@
 
         }
 
-
-        /* =========================================================
-           EXPORTAR EXCEL
-        ========================================================== */
 
         function exportarExcel() {
 
@@ -4557,10 +4260,6 @@
         }
 
 
-        /* =========================================================
-           LIMPIAR
-        ========================================================== */
-
         function limpiarFiltros() {
 
             document.getElementById(
@@ -4600,10 +4299,6 @@
 
         }
 
-
-        /* =========================================================
-           EVENTOS
-        ========================================================== */
 
         document.getElementById(
             "btnBuscar"
@@ -4715,10 +4410,6 @@
         );
 
 
-        /* =========================================================
-           SELECTOR DE SITIO - PRÉSTAMOS POR MES
-        ========================================================== */
-
         document.getElementById(
             "filtroSitioGraficaMeses"
         ).addEventListener(
@@ -4734,10 +4425,6 @@
         );
 
 
-        /* =========================================================
-           SELECTOR DE SITIO - ACTIVIDAD
-        ========================================================== */
-
         document.getElementById(
             "filtroSitioGraficaActividad"
         ).addEventListener(
@@ -4752,10 +4439,6 @@
 
         );
 
-
-        /* =========================================================
-           INICIAR REPORTES
-        ========================================================== */
 
         async function iniciarReportes() {
 
@@ -4786,7 +4469,6 @@
 
 
         iniciarReportes();
-
 
     </script>
 
