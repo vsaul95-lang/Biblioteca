@@ -35,10 +35,6 @@ window.protegerPagina = async function () {
         } = await supabaseClient.auth.getSession();
 
 
-        // ------------------------------------------
-        // SI NO HAY SESIÓN
-        // ------------------------------------------
-
         if (error) {
 
             console.error(
@@ -60,16 +56,8 @@ window.protegerPagina = async function () {
         }
 
 
-        // ------------------------------------------
-        // GUARDAR USUARIO DE SESIÓN
-        // ------------------------------------------
-
         window.usuarioSesion = session.user;
 
-
-        // ------------------------------------------
-        // CONSULTAR PERFIL
-        // ------------------------------------------
 
         const {
             data: perfil,
@@ -95,10 +83,6 @@ window.protegerPagina = async function () {
             .maybeSingle();
 
 
-        // ------------------------------------------
-        // SI HUBO ERROR AL CONSULTAR PERFIL
-        // ------------------------------------------
-
         if (errorPerfil) {
 
             console.error(
@@ -106,21 +90,9 @@ window.protegerPagina = async function () {
                 errorPerfil
             );
 
-            /*
-             * IMPORTANTE:
-             * No cerramos la sesión aquí.
-             *
-             * La sesión de Supabase puede estar correcta
-             * aunque temporalmente falle la consulta.
-             */
-
             return false;
         }
 
-
-        // ------------------------------------------
-        // SI NO EXISTE PERFIL
-        // ------------------------------------------
 
         if (!perfil) {
 
@@ -132,10 +104,6 @@ window.protegerPagina = async function () {
         }
 
 
-        // ------------------------------------------
-        // GUARDAR PERFIL
-        // ------------------------------------------
-
         window.perfilUsuario = perfil;
 
 
@@ -146,10 +114,6 @@ window.protegerPagina = async function () {
         window.estadoUsuario =
             normalizarTexto(perfil.estado);
 
-
-        // ------------------------------------------
-        // COMPROBAR ESTADO
-        // ------------------------------------------
 
         if (
             window.estadoUsuario !==
@@ -168,10 +132,6 @@ window.protegerPagina = async function () {
         }
 
 
-        // ------------------------------------------
-        // TODO CORRECTO
-        // ------------------------------------------
-
         return true;
 
 
@@ -181,11 +141,6 @@ window.protegerPagina = async function () {
             "Error al comprobar la sesión y el rol:",
             error
         );
-
-        /*
-         * No cerramos la sesión automáticamente
-         * por un error inesperado.
-         */
 
         return false;
     }
@@ -233,32 +188,3 @@ window.tieneRol = function (rol) {
     );
 
 };
-
-
-// ==========================================
-// EJECUTAR PROTECCIÓN
-// ==========================================
-
-(async function iniciarProteccion() {
-
-    const autorizado =
-        await window.protegerPagina();
-
-
-    /*
-     * Si hubo un error al consultar el perfil,
-     * no hacemos nada más.
-     *
-     * La página podrá mostrar el error en consola
-     * sin cerrar la sesión de Supabase.
-     */
-
-    if (!autorizado) {
-
-        console.warn(
-            "No fue posible completar la validación del perfil."
-        );
-
-    }
-
-})();
