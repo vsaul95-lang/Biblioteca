@@ -39,9 +39,9 @@
             position: absolute;
             right: 20px;
             top: 14px;
-            background: #7f8c8d;
+            background: #3d5368;
             color: white;
-            border: none;
+            border: 1px solid rgba(255,255,255,0.65);
             padding: 7px 12px;
             border-radius: 5px;
             cursor: pointer;
@@ -50,7 +50,7 @@
         }
 
         .boton-volver:hover {
-            background: #687476;
+            background: #465f76;
         }
 
         .contenedor {
@@ -225,7 +225,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
-            min-width: 1030px;
+            min-width: 930px;
         }
 
         thead {
@@ -401,20 +401,11 @@
             </div>
 
             <div class="campo">
-                <label for="familia">Familia</label>
+                <label for="familia">Familia / Colaborador</label>
                 <input
                     type="text"
                     id="familia"
                     placeholder="F1068"
-                >
-            </div>
-
-            <div class="campo">
-                <label for="persona">Persona / Afiliado</label>
-                <input
-                    type="text"
-                    id="persona"
-                    placeholder="F1234"
                 >
             </div>
 
@@ -429,11 +420,22 @@
 
             <div class="campo">
                 <label for="sitio">Sitio</label>
-                <input
-                    type="text"
-                    id="sitio"
-                    placeholder="NE"
-                >
+                <select id="sitio">
+                    <option value="">Todos los sitios</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="biblioteca">Biblioteca</label>
+                <select id="biblioteca">
+                    <option value="">Todas las bibliotecas</option>
+                    <option value="F">F</option>
+                    <option value="M">M</option>
+                    <option value="N">N</option>
+                    <option value="R">R</option>
+                    <option value="Z">Z</option>
+                    <option value="NE">NE</option>
+                </select>
             </div>
 
             <div class="campo">
@@ -516,7 +518,6 @@
                         <th>Familia</th>
                         <th>Persona / Código</th>
                         <th>Nombre</th>
-                        <th>Área</th>
                         <th>Código</th>
                         <th>Libro</th>
                         <th>Préstamo</th>
@@ -530,7 +531,7 @@
                 <tbody id="tablaResultados">
 
                     <tr>
-                        <td colspan="12" class="sin-resultados">
+                        <td colspan="11" class="sin-resultados">
                             Realiza una búsqueda para mostrar resultados.
                         </td>
                     </tr>
@@ -549,6 +550,7 @@
 
 let prestamos = [];
 let resultadosActuales = [];
+let mapaLibros = new Map();
 
 /* =========================
    IDENTIFICAR COLABORADOR
@@ -613,6 +615,147 @@ function obtenerSitio(prestamo) {
 }
 
 /* =========================
+   NORMALIZAR CÓDIGO LIBRO
+========================= */
+
+function normalizarCodigoLibro(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined
+    ) {
+        return "";
+    }
+
+    const texto =
+        String(valor).trim();
+
+    if (/^\d+$/.test(texto)) {
+        return String(
+            parseInt(texto, 10)
+        );
+    }
+
+    return texto.toLowerCase();
+}
+
+/* =========================
+   CARGAR LIBROS
+========================= */
+
+async function cargarLibros() {
+
+    mapaLibros = new Map();
+
+    let desde = 0;
+    const cantidad = 1000;
+
+    while (true) {
+
+        const { data, error } =
+            await supabaseClient
+                .from("libros")
+                .select("codigoLibro, nombreLibro, Biblioteca")
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
+
+        if (error) {
+
+            console.error(error);
+
+            alert(
+                "No se pudieron cargar los datos de los libros."
+            );
+
+            return false;
+        }
+
+        if (!data || data.length === 0) {
+            break;
+        }
+
+        data.forEach(libro => {
+
+            const codigo =
+                normalizarCodigoLibro(
+                    libro.codigoLibro
+                );
+
+            if (codigo) {
+
+                mapaLibros.set(
+                    codigo,
+                    libro
+                );
+            }
+        });
+
+        if (data.length < cantidad) {
+            break;
+        }
+
+        desde += cantidad;
+    }
+
+    return true;
+}
+
+/* =========================
+   CARGAR SITIOS
+========================= */
+
+function cargarSitios() {
+
+    const select =
+        document.getElementById("sitio");
+
+    const sitios =
+        new Set();
+
+    prestamos.forEach(prestamo => {
+
+        const sitio =
+            obtenerSitio(prestamo);
+
+        if (
+            sitio &&
+            sitio !== "-"
+        ) {
+            sitios.add(
+                String(sitio).trim()
+            );
+        }
+    });
+
+    const sitiosOrdenados =
+        Array.from(sitios)
+            .sort((a, b) =>
+                a.localeCompare(
+                    b,
+                    "es",
+                    { sensitivity: "base" }
+                )
+            );
+
+    select.innerHTML = `
+        <option value="">Todos los sitios</option>
+    `;
+
+    sitiosOrdenados.forEach(sitio => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = sitio;
+        option.textContent = sitio;
+
+        select.appendChild(option);
+    });
+}
+
+/* =========================
    CARGAR PRÉSTAMOS
 ========================= */
 
@@ -625,17 +768,26 @@ async function cargarPrestamos() {
 
     while (true) {
 
-        const { data, error } = await supabaseClient
-            .from("prestamos")
-            .select("*")
-            .order("fechaPrestamo", { ascending: false })
-            .range(desde, desde + cantidad - 1);
+        const { data, error } =
+            await supabaseClient
+                .from("prestamos")
+                .select("*")
+                .order(
+                    "fechaPrestamo",
+                    { ascending: false }
+                )
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
 
         if (error) {
 
             console.error(error);
 
-            alert("No se pudieron cargar los préstamos.");
+            alert(
+                "No se pudieron cargar los préstamos."
+            );
 
             return;
         }
@@ -653,6 +805,8 @@ async function cargarPrestamos() {
         desde += cantidad;
     }
 
+    cargarSitios();
+
     mostrarResultados(prestamos);
 }
 
@@ -662,13 +816,33 @@ async function cargarPrestamos() {
 
 function normalizar(valor) {
 
-    if (valor === null || valor === undefined) {
+    if (
+        valor === null ||
+        valor === undefined
+    ) {
         return "";
     }
 
     return String(valor)
         .toLowerCase()
         .trim();
+}
+
+/* =========================
+   OBTENER BIBLIOTECA
+========================= */
+
+function obtenerBiblioteca(prestamo) {
+
+    const codigo =
+        normalizarCodigoLibro(
+            prestamo.codigoLibro
+        );
+
+    const libro =
+        mapaLibros.get(codigo);
+
+    return libro?.Biblioteca || "";
 }
 
 /* =========================
@@ -686,7 +860,9 @@ function obtenerEstado(prestamo) {
     }
 
     const fechaLimite =
-        new Date(prestamo.fechaDevolucion);
+        new Date(
+            prestamo.fechaDevolucion
+        );
 
     const ahora =
         new Date();
@@ -726,34 +902,48 @@ function buscar() {
 
     const busquedaGeneral =
         normalizar(
-            document.getElementById("busquedaGeneral").value
+            document.getElementById(
+                "busquedaGeneral"
+            ).value
         );
 
     const familia =
         normalizar(
-            document.getElementById("familia").value
-        );
-
-    const persona =
-        normalizar(
-            document.getElementById("persona").value
+            document.getElementById(
+                "familia"
+            ).value
         );
 
     const codigoLibro =
         normalizar(
-            document.getElementById("codigoLibro").value
+            document.getElementById(
+                "codigoLibro"
+            ).value
         );
 
     const sitio =
         normalizar(
-            document.getElementById("sitio").value
+            document.getElementById(
+                "sitio"
+            ).value
+        );
+
+    const bibliotecaSeleccionada =
+        normalizar(
+            document.getElementById(
+                "biblioteca"
+            ).value
         );
 
     const estadoSeleccionado =
-        document.getElementById("estado").value;
+        document.getElementById(
+            "estado"
+        ).value;
 
     const fechaDesde =
-        document.getElementById("fechaDesde").value;
+        document.getElementById(
+            "fechaDesde"
+        ).value;
 
     resultadosActuales =
         prestamos.filter(prestamo => {
@@ -765,16 +955,25 @@ function buscar() {
                 obtenerEstado(prestamo);
 
             const codigoColaborador =
-                obtenerCodigoColaborador(prestamo);
+                obtenerCodigoColaborador(
+                    prestamo
+                );
 
             const nombreColaborador =
-                obtenerNombreColaborador(prestamo);
+                obtenerNombreColaborador(
+                    prestamo
+                );
 
             const areaColaborador =
-                obtenerAreaColaborador(prestamo);
+                obtenerAreaColaborador(
+                    prestamo
+                );
 
             const sitioPrestamo =
                 obtenerSitio(prestamo);
+
+            const biblioteca =
+                obtenerBiblioteca(prestamo);
 
             /* =========================
                BÚSQUEDA GENERAL
@@ -796,7 +995,8 @@ function buscar() {
                 nombreColaborador,
                 areaColaborador,
 
-                sitioPrestamo
+                sitioPrestamo,
+                biblioteca
 
             ]
             .map(normalizar)
@@ -804,51 +1004,32 @@ function buscar() {
 
             if (
                 busquedaGeneral &&
-                !textoGeneral.includes(busquedaGeneral)
+                !textoGeneral.includes(
+                    busquedaGeneral
+                )
             ) {
                 return false;
             }
 
             /* =========================
-               FILTRO FAMILIA
+               FILTRO FAMILIA / COLABORADOR
             ========================= */
 
             if (familia) {
 
-                if (colaborador) {
-                    return false;
-                }
+                const coincideFamilia =
+                    normalizar(
+                        prestamo.FamiliaId
+                    ).includes(familia);
+
+                const coincideCodigoColaborador =
+                    normalizar(
+                        codigoColaborador
+                    ).includes(familia);
 
                 if (
-                    !normalizar(prestamo.FamiliaId)
-                        .includes(familia)
-                ) {
-                    return false;
-                }
-            }
-
-            /* =========================
-               FILTRO PERSONA / COLABORADOR
-            ========================= */
-
-            if (persona) {
-
-                const coincidePersona =
-                    normalizar(prestamo.PersonaId)
-                        .includes(persona);
-
-                const coincideColaboradorCodigo =
-                    normalizar(codigoColaborador)
-                        .includes(persona);
-
-                const coincideColaboradorNombre =
-                    normalizar(nombreColaborador)
-                        .includes(persona);
-
-                if (
-                    !coincidePersona &&
-                    !coincideColaboradorCodigo &&
-                    !coincideColaboradorNombre
+                    !coincideFamilia &&
+                    !coincideCodigoColaborador
                 ) {
                     return false;
                 }
@@ -860,8 +1041,9 @@ function buscar() {
 
             if (
                 codigoLibro &&
-                !normalizar(prestamo.codigoLibro)
-                    .includes(codigoLibro)
+                !normalizar(
+                    prestamo.codigoLibro
+                ).includes(codigoLibro)
             ) {
                 return false;
             }
@@ -872,8 +1054,22 @@ function buscar() {
 
             if (
                 sitio &&
-                !normalizar(sitioPrestamo)
-                    .includes(sitio)
+                normalizar(
+                    sitioPrestamo
+                ) !== sitio
+            ) {
+                return false;
+            }
+
+            /* =========================
+               FILTRO BIBLIOTECA
+            ========================= */
+
+            if (
+                bibliotecaSeleccionada &&
+                normalizar(
+                    biblioteca
+                ) !== bibliotecaSeleccionada
             ) {
                 return false;
             }
@@ -896,14 +1092,19 @@ function buscar() {
             if (fechaDesde) {
 
                 const fechaPrestamo =
-                    new Date(prestamo.fechaPrestamo);
+                    new Date(
+                        prestamo.fechaPrestamo
+                    );
 
                 const desde =
                     new Date(
-                        fechaDesde + "T00:00:00"
+                        fechaDesde +
+                        "T00:00:00"
                     );
 
-                if (fechaPrestamo < desde) {
+                if (
+                    fechaPrestamo < desde
+                ) {
                     return false;
                 }
             }
@@ -911,7 +1112,9 @@ function buscar() {
             return true;
         });
 
-    mostrarResultados(resultadosActuales);
+    mostrarResultados(
+        resultadosActuales
+    );
 }
 
 /* =========================
@@ -921,7 +1124,9 @@ function buscar() {
 function mostrarResultados(lista) {
 
     const tbody =
-        document.getElementById("tablaResultados");
+        document.getElementById(
+            "tablaResultados"
+        );
 
     tbody.innerHTML = "";
 
@@ -945,21 +1150,34 @@ function mostrarResultados(lista) {
         if (esColaborador(prestamo)) {
 
             const codigo =
-                obtenerCodigoColaborador(prestamo);
+                obtenerCodigoColaborador(
+                    prestamo
+                );
 
-            if (codigo && codigo !== "-") {
-                colaboradores.add(codigo);
+            if (
+                codigo &&
+                codigo !== "-"
+            ) {
+                colaboradores.add(
+                    codigo
+                );
             }
 
         } else {
 
             if (prestamo.PersonaId) {
-                personas.add(prestamo.PersonaId);
+                personas.add(
+                    prestamo.PersonaId
+                );
             }
         }
 
         if (prestamo.codigoLibro) {
-            libros.add(prestamo.codigoLibro);
+            libros.add(
+                normalizarCodigoLibro(
+                    prestamo.codigoLibro
+                )
+            );
         }
 
         if (estado === "Prestado") {
@@ -976,23 +1194,32 @@ function mostrarResultados(lista) {
        afiliados + colaboradores
     */
 
-    document.getElementById("totalPersonas").textContent =
-        personas.size + colaboradores.size;
+    document.getElementById(
+        "totalPersonas"
+    ).textContent =
+        personas.size +
+        colaboradores.size;
 
-    document.getElementById("totalLibros").textContent =
+    document.getElementById(
+        "totalLibros"
+    ).textContent =
         libros.size;
 
-    document.getElementById("totalActivos").textContent =
+    document.getElementById(
+        "totalActivos"
+    ).textContent =
         activos;
 
-    document.getElementById("totalVencidos").textContent =
+    document.getElementById(
+        "totalVencidos"
+    ).textContent =
         vencidos;
 
     if (lista.length === 0) {
 
         tbody.innerHTML = `
             <tr>
-                <td colspan="12" class="sin-resultados">
+                <td colspan="11" class="sin-resultados">
                     No se encontraron resultados.
                 </td>
             </tr>
@@ -1009,15 +1236,18 @@ function mostrarResultados(lista) {
         let claseEstado = "";
 
         if (estado === "Prestado") {
-            claseEstado = "estado-prestado";
+            claseEstado =
+                "estado-prestado";
         }
 
         if (estado === "Vencido") {
-            claseEstado = "estado-vencido";
+            claseEstado =
+                "estado-vencido";
         }
 
         if (estado === "Devuelto") {
-            claseEstado = "estado-devuelto";
+            claseEstado =
+                "estado-devuelto";
         }
 
         const colaborador =
@@ -1029,34 +1259,42 @@ function mostrarResultados(lista) {
         let familia = "";
         let personaCodigo = "";
         let nombre = "";
-        let area = "";
 
         if (colaborador) {
 
-            tipoTexto = "Colaborador";
-            tipoClase = "tipo-colaborador";
+            tipoTexto =
+                "Colaborador";
+
+            tipoClase =
+                "tipo-colaborador";
 
             familia = "-";
 
             personaCodigo =
-                obtenerCodigoColaborador(prestamo);
+                obtenerCodigoColaborador(
+                    prestamo
+                );
 
             nombre =
-                obtenerNombreColaborador(prestamo);
-
-            area =
-                obtenerAreaColaborador(prestamo);
+                obtenerNombreColaborador(
+                    prestamo
+                );
 
         } else {
 
-            tipoTexto = "Afiliado";
-            tipoClase = "tipo-afiliado";
+            tipoTexto =
+                "Afiliado";
+
+            tipoClase =
+                "tipo-afiliado";
 
             familia =
-                prestamo.FamiliaId || "-";
+                prestamo.FamiliaId ||
+                "-";
 
             personaCodigo =
-                prestamo.PersonaId || "-";
+                prestamo.PersonaId ||
+                "-";
 
             nombre =
                 `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`
@@ -1065,8 +1303,6 @@ function mostrarResultados(lista) {
             if (!nombre) {
                 nombre = "-";
             }
-
-            area = "-";
         }
 
         const sitio =
@@ -1106,10 +1342,6 @@ function mostrarResultados(lista) {
 
             <td>
                 ${nombre}
-            </td>
-
-            <td>
-                ${area}
             </td>
 
             <td>
@@ -1154,23 +1386,39 @@ function mostrarResultados(lista) {
 
 function limpiarFiltros() {
 
-    document.getElementById("busquedaGeneral").value = "";
+    document.getElementById(
+        "busquedaGeneral"
+    ).value = "";
 
-    document.getElementById("familia").value = "";
+    document.getElementById(
+        "familia"
+    ).value = "";
 
-    document.getElementById("persona").value = "";
+    document.getElementById(
+        "codigoLibro"
+    ).value = "";
 
-    document.getElementById("codigoLibro").value = "";
+    document.getElementById(
+        "sitio"
+    ).value = "";
 
-    document.getElementById("sitio").value = "";
+    document.getElementById(
+        "biblioteca"
+    ).value = "";
 
-    document.getElementById("estado").value = "Todos";
+    document.getElementById(
+        "estado"
+    ).value = "Todos";
 
-    document.getElementById("fechaDesde").value = "";
+    document.getElementById(
+        "fechaDesde"
+    ).value = "";
 
     resultadosActuales = [];
 
-    mostrarResultados(prestamos);
+    mostrarResultados(
+        prestamos
+    );
 }
 
 /* =========================
@@ -1206,7 +1454,14 @@ function volverAtras() {
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
+    async function() {
+
+        const librosCargados =
+            await cargarLibros();
+
+        if (!librosCargados) {
+            return;
+        }
 
         cargarPrestamos();
 
@@ -1217,4 +1472,3 @@ document.addEventListener(
 
 </body>
 </html>
-```
