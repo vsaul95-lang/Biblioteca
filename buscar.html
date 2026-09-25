@@ -14,6 +14,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -309,6 +313,46 @@
             font-size: 13px;
         }
 
+        /* PAGINACIÓN */
+
+        .paginacion {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .boton-paginacion {
+            background: #34495e;
+            color: white;
+            border: 1px solid #34495e;
+            padding: 7px 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .boton-paginacion:hover:not(:disabled) {
+            background: #3d5368;
+        }
+
+        .boton-paginacion:disabled {
+            background: #d5d8dc;
+            border-color: #d5d8dc;
+            color: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        .info-paginacion {
+            font-size: 12px;
+            color: #566573;
+            font-weight: bold;
+            min-width: 90px;
+            text-align: center;
+        }
+
         /* RESPONSIVO */
 
         @media (max-width: 1200px) {
@@ -502,7 +546,7 @@
 
     <!-- RESULTADOS -->
 
-    <div class="resultados">
+    <div class="resultados" id="seccionResultados">
 
         <h2>Resultados</h2>
 
@@ -542,6 +586,33 @@
 
         </div>
 
+        <div class="paginacion" id="paginacion">
+
+            <button
+                class="boton-paginacion"
+                id="botonAnterior"
+                onclick="paginaAnterior()"
+            >
+                ← Anterior
+            </button>
+
+            <span
+                class="info-paginacion"
+                id="infoPaginacion"
+            >
+                Página 1
+            </span>
+
+            <button
+                class="boton-paginacion"
+                id="botonSiguiente"
+                onclick="paginaSiguiente()"
+            >
+                Siguiente →
+            </button>
+
+        </div>
+
     </div>
 
 </div>
@@ -551,6 +622,10 @@
 let prestamos = [];
 let resultadosActuales = [];
 let mapaLibros = new Map();
+
+const REGISTROS_POR_PAGINA = 25;
+
+let paginaActual = 1;
 
 /* =========================
    IDENTIFICAR COLABORADOR
@@ -655,7 +730,9 @@ async function cargarLibros() {
         const { data, error } =
             await supabaseClient
                 .from("libros")
-                .select("codigoLibro, nombreLibro, Biblioteca")
+                .select(
+                    "codigoLibro, nombreLibro, Biblioteca"
+                )
                 .range(
                     desde,
                     desde + cantidad - 1
@@ -807,7 +884,10 @@ async function cargarPrestamos() {
 
     cargarSitios();
 
-    mostrarResultados(prestamos);
+    resultadosActuales = prestamos;
+    paginaActual = 1;
+
+    mostrarResultados(resultadosActuales);
 }
 
 /* =========================
@@ -1112,6 +1192,8 @@ function buscar() {
             return true;
         });
 
+    paginaActual = 1;
+
     mostrarResultados(
         resultadosActuales
     );
@@ -1215,6 +1297,37 @@ function mostrarResultados(lista) {
     ).textContent =
         vencidos;
 
+    /* =========================
+       PAGINACIÓN
+    ========================= */
+
+    const totalPaginas =
+        Math.max(
+            1,
+            Math.ceil(
+                lista.length /
+                REGISTROS_POR_PAGINA
+            )
+        );
+
+    if (paginaActual > totalPaginas) {
+        paginaActual = totalPaginas;
+    }
+
+    const inicio =
+        (paginaActual - 1) *
+        REGISTROS_POR_PAGINA;
+
+    const fin =
+        inicio +
+        REGISTROS_POR_PAGINA;
+
+    const registrosPagina =
+        lista.slice(
+            inicio,
+            fin
+        );
+
     if (lista.length === 0) {
 
         tbody.innerHTML = `
@@ -1225,10 +1338,12 @@ function mostrarResultados(lista) {
             </tr>
         `;
 
+        actualizarPaginacion(0);
+
         return;
     }
 
-    lista.forEach(prestamo => {
+    registrosPagina.forEach(prestamo => {
 
         const estado =
             obtenerEstado(prestamo);
@@ -1378,6 +1493,118 @@ function mostrarResultados(lista) {
 
         tbody.appendChild(fila);
     });
+
+    actualizarPaginacion(
+        lista.length
+    );
+}
+
+/* =========================
+   ACTUALIZAR PAGINACIÓN
+========================= */
+
+function actualizarPaginacion(totalRegistros) {
+
+    const botonAnterior =
+        document.getElementById(
+            "botonAnterior"
+        );
+
+    const botonSiguiente =
+        document.getElementById(
+            "botonSiguiente"
+        );
+
+    const info =
+        document.getElementById(
+            "infoPaginacion"
+        );
+
+    const totalPaginas =
+        Math.max(
+            1,
+            Math.ceil(
+                totalRegistros /
+                REGISTROS_POR_PAGINA
+            )
+        );
+
+    botonAnterior.disabled =
+        paginaActual <= 1;
+
+    botonSiguiente.disabled =
+        paginaActual >= totalPaginas;
+
+    info.textContent =
+        `Página ${paginaActual} de ${totalPaginas}`;
+}
+
+/* =========================
+   IR AL INICIO DE RESULTADOS
+========================= */
+
+function subirAResultados() {
+
+    const seccion =
+        document.getElementById(
+            "seccionResultados"
+        );
+
+    if (!seccion) {
+        return;
+    }
+
+    seccion.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+/* =========================
+   PÁGINA ANTERIOR
+========================= */
+
+function paginaAnterior() {
+
+    if (paginaActual <= 1) {
+        return;
+    }
+
+    paginaActual--;
+
+    mostrarResultados(
+        resultadosActuales
+    );
+
+    subirAResultados();
+}
+
+/* =========================
+   PÁGINA SIGUIENTE
+========================= */
+
+function paginaSiguiente() {
+
+    const totalPaginas =
+        Math.max(
+            1,
+            Math.ceil(
+                resultadosActuales.length /
+                REGISTROS_POR_PAGINA
+            )
+        );
+
+    if (paginaActual >= totalPaginas) {
+        return;
+    }
+
+    paginaActual++;
+
+    mostrarResultados(
+        resultadosActuales
+    );
+
+    subirAResultados();
 }
 
 /* =========================
@@ -1414,11 +1641,55 @@ function limpiarFiltros() {
         "fechaDesde"
     ).value = "";
 
-    resultadosActuales = [];
+    resultadosActuales =
+        prestamos;
+
+    paginaActual = 1;
 
     mostrarResultados(
-        prestamos
+        resultadosActuales
     );
+}
+
+/* =========================
+   FILTROS AUTOMÁTICOS
+========================= */
+
+function activarFiltrosAutomaticos() {
+
+    const ids = [
+        "busquedaGeneral",
+        "familia",
+        "codigoLibro",
+        "sitio",
+        "biblioteca",
+        "estado",
+        "fechaDesde"
+    ];
+
+    ids.forEach(id => {
+
+        const elemento =
+            document.getElementById(id);
+
+        if (!elemento) {
+            return;
+        }
+
+        elemento.addEventListener(
+            "input",
+            function() {
+                buscar();
+            }
+        );
+
+        elemento.addEventListener(
+            "change",
+            function() {
+                buscar();
+            }
+        );
+    });
 }
 
 /* =========================
@@ -1455,6 +1726,8 @@ function volverAtras() {
 document.addEventListener(
     "DOMContentLoaded",
     async function() {
+
+        activarFiltrosAutomaticos();
 
         const librosCargados =
             await cargarLibros();
