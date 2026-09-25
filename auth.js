@@ -1,7 +1,7 @@
 ```javascript
 // ==========================================
 // PROTECCIÓN DE ACCESO Y ROLES
-// Biblioteca FFdE
+// BIBLIOTECA FFdE
 // ==========================================
 
 window.usuarioSesion = null;
@@ -24,7 +24,7 @@ function normalizarTexto(valor) {
 
 
 // ==========================================
-// COMPROBAR SESIÓN Y CARGAR PERFIL
+// PROTEGER PÁGINA
 // ==========================================
 
 window.protegerPagina = async function () {
@@ -33,27 +33,51 @@ window.protegerPagina = async function () {
     console.log("AUTH - INICIANDO VALIDACIÓN");
     console.log("==========================================");
 
+
     try {
 
         // ==========================================
-        // 1. COMPROBAR SESIÓN DE SUPABASE
+        // COMPROBAR SESIÓN
         // ==========================================
 
-        const {
-            data: { session },
-            error
-        } = await supabaseClient.auth.getSession();
+        const resultadoSesion =
+            await supabaseClient.auth.getSession();
 
 
-        console.log("AUTH - Sesión encontrada:", session);
-        console.log("AUTH - Error de sesión:", error);
+        console.log(
+            "AUTH - Resultado completo de sesión:",
+            resultadoSesion
+        );
 
 
-        if (error) {
+        const session =
+            resultadoSesion?.data?.session;
+
+
+        const errorSesion =
+            resultadoSesion?.error;
+
+
+        console.log(
+            "AUTH - Sesión encontrada:",
+            session
+        );
+
+
+        console.log(
+            "AUTH - Error de sesión:",
+            errorSesion
+        );
+
+
+        if (errorSesion) {
 
             console.error(
-                "AUTH - Error al comprobar la sesión:",
-                error
+                "AUTH - ERROR AL OBTENER LA SESIÓN"
+            );
+
+            console.error(
+                errorSesion
             );
 
             return false;
@@ -63,7 +87,7 @@ window.protegerPagina = async function () {
         if (!session) {
 
             console.error(
-                "AUTH - NO EXISTE UNA SESIÓN ACTIVA."
+                "AUTH - NO EXISTE UNA SESIÓN ACTIVA"
             );
 
             return false;
@@ -71,49 +95,73 @@ window.protegerPagina = async function () {
 
 
         // ==========================================
-        // 2. GUARDAR USUARIO AUTENTICADO
+        // USUARIO AUTENTICADO
         // ==========================================
 
-        window.usuarioSesion = session.user;
+        window.usuarioSesion =
+            session.user;
 
 
         console.log(
-            "AUTH - Usuario autenticado:",
+            "AUTH - USUARIO AUTENTICADO"
+        );
+
+
+        console.log(
+            "AUTH - Email:",
             session.user.email
         );
 
+
         console.log(
-            "AUTH - ID del usuario:",
+            "AUTH - ID:",
             session.user.id
         );
 
 
         // ==========================================
-        // 3. CONSULTAR PERFIL EN usuarios
+        // CONSULTAR PERFIL
         // ==========================================
 
-        const {
-            data: perfil,
-            error: errorPerfil
-        } = await supabaseClient
+        console.log(
+            "AUTH - CONSULTANDO TABLA usuarios..."
+        );
 
-            .from("usuarios")
 
-            .select(`
-                id,
-                correo,
-                nombre,
-                rol,
-                estado,
-                fechaRegistro
-            `)
+        const resultadoPerfil =
+            await supabaseClient
 
-            .eq(
-                "id",
-                session.user.id
-            )
+                .from("usuarios")
 
-            .maybeSingle();
+                .select(`
+                    id,
+                    correo,
+                    nombre,
+                    rol,
+                    estado,
+                    fechaRegistro
+                `)
+
+                .eq(
+                    "id",
+                    session.user.id
+                )
+
+                .maybeSingle();
+
+
+        console.log(
+            "AUTH - Resultado completo del perfil:",
+            resultadoPerfil
+        );
+
+
+        const perfil =
+            resultadoPerfil?.data;
+
+
+        const errorPerfil =
+            resultadoPerfil?.error;
 
 
         console.log(
@@ -121,83 +169,104 @@ window.protegerPagina = async function () {
             perfil
         );
 
+
         console.log(
-            "AUTH - Error al consultar perfil:",
+            "AUTH - Error del perfil:",
             errorPerfil
         );
 
 
         // ==========================================
-        // 4. ERROR EN LA CONSULTA DEL PERFIL
+        // ERROR CONSULTANDO USUARIOS
         // ==========================================
 
         if (errorPerfil) {
 
             console.error(
-                "AUTH - ERROR CONSULTANDO usuarios:",
-                errorPerfil
+                "AUTH - ERROR CONSULTANDO usuarios"
             );
 
+
             console.error(
-                "AUTH - Código del error:",
+                "AUTH - Código:",
                 errorPerfil.code
             );
 
+
             console.error(
-                "AUTH - Mensaje del error:",
+                "AUTH - Mensaje:",
                 errorPerfil.message
             );
 
+
             console.error(
-                "AUTH - Detalles del error:",
+                "AUTH - Detalles:",
                 errorPerfil.details
             );
 
+
             console.error(
-                "AUTH - Hint del error:",
+                "AUTH - Hint:",
                 errorPerfil.hint
             );
+
 
             return false;
         }
 
 
         // ==========================================
-        // 5. NO EXISTE PERFIL
+        // PERFIL NO ENCONTRADO
         // ==========================================
 
         if (!perfil) {
 
             console.error(
-                "AUTH - NO SE ENCONTRÓ EL PERFIL EN usuarios."
+                "AUTH - NO EXISTE PERFIL PARA ESTE USUARIO"
             );
 
+
             console.error(
-                "AUTH - Se buscó el ID:",
+                "AUTH - ID buscado:",
                 session.user.id
             );
+
 
             return false;
         }
 
 
         // ==========================================
-        // 6. GUARDAR PERFIL
+        // GUARDAR PERFIL
         // ==========================================
 
-        window.perfilUsuario = perfil;
+        window.perfilUsuario =
+            perfil;
 
 
         // ==========================================
-        // 7. OBTENER ROL Y ESTADO
+        // OBTENER ROL
         // ==========================================
 
         window.rolUsuario =
-            normalizarTexto(perfil.rol);
+            normalizarTexto(
+                perfil.rol
+            );
 
+
+        // ==========================================
+        // OBTENER ESTADO
+        // ==========================================
 
         window.estadoUsuario =
-            normalizarTexto(perfil.estado);
+            normalizarTexto(
+                perfil.estado
+            );
+
+
+        console.log(
+            "AUTH - DATOS DEL PERFIL"
+        );
 
 
         console.log(
@@ -205,25 +274,30 @@ window.protegerPagina = async function () {
             perfil.nombre
         );
 
+
         console.log(
             "AUTH - Correo:",
             perfil.correo
         );
 
+
         console.log(
-            "AUTH - Rol:",
+            "AUTH - Rol original:",
             perfil.rol
         );
+
 
         console.log(
             "AUTH - Rol normalizado:",
             window.rolUsuario
         );
 
+
         console.log(
-            "AUTH - Estado:",
+            "AUTH - Estado original:",
             perfil.estado
         );
+
 
         console.log(
             "AUTH - Estado normalizado:",
@@ -232,7 +306,7 @@ window.protegerPagina = async function () {
 
 
         // ==========================================
-        // 8. COMPROBAR ESTADO
+        // COMPROBAR ESTADO
         // ==========================================
 
         if (
@@ -241,20 +315,21 @@ window.protegerPagina = async function () {
         ) {
 
             console.error(
-                "AUTH - EL USUARIO NO ESTÁ ACTIVO."
+                "AUTH - EL USUARIO NO ESTÁ ACTIVO"
             );
+
 
             console.error(
                 "AUTH - Estado recibido:",
                 perfil.estado
             );
 
+
             /*
-             * IMPORTANTE:
-             * NO cerramos sesión automáticamente.
+             * NO CERRAMOS SESIÓN.
              *
-             * Primero necesitamos identificar
-             * cualquier problema de permisos.
+             * Esta versión solamente devuelve false
+             * para poder identificar el problema.
              */
 
             return false;
@@ -262,29 +337,40 @@ window.protegerPagina = async function () {
 
 
         // ==========================================
-        // 9. VALIDACIÓN CORRECTA
+        // VALIDACIÓN CORRECTA
         // ==========================================
+
+        console.log(
+            "=========================================="
+        );
+
 
         console.log(
             "AUTH - VALIDACIÓN CORRECTA"
         );
+
 
         console.log(
             "AUTH - Usuario:",
             perfil.nombre
         );
 
+
         console.log(
             "AUTH - Rol:",
             perfil.rol
         );
+
 
         console.log(
             "AUTH - Estado:",
             perfil.estado
         );
 
-        console.log("==========================================");
+
+        console.log(
+            "=========================================="
+        );
 
 
         return true;
@@ -293,19 +379,36 @@ window.protegerPagina = async function () {
     } catch (error) {
 
         console.error(
-            "AUTH - ERROR INESPERADO:",
+            "=========================================="
+        );
+
+
+        console.error(
+            "AUTH - ERROR INESPERADO"
+        );
+
+
+        console.error(
             error
         );
 
+
         console.error(
             "AUTH - Mensaje:",
-            error.message
+            error?.message
         );
+
 
         console.error(
             "AUTH - Stack:",
-            error.stack
+            error?.stack
         );
+
+
+        console.error(
+            "=========================================="
+        );
+
 
         return false;
     }
@@ -314,7 +417,7 @@ window.protegerPagina = async function () {
 
 
 // ==========================================
-// COMPROBAR SI ES ADMINISTRADOR
+// COMPROBAR ADMINISTRADOR
 // ==========================================
 
 window.esAdministrador = function () {
@@ -328,7 +431,7 @@ window.esAdministrador = function () {
 
 
 // ==========================================
-// COMPROBAR SI ES USUARIO NORMAL
+// COMPROBAR USUARIO NORMAL
 // ==========================================
 
 window.esUsuario = function () {
@@ -342,7 +445,7 @@ window.esUsuario = function () {
 
 
 // ==========================================
-// COMPROBAR UN ROL ESPECÍFICO
+// COMPROBAR ROL
 // ==========================================
 
 window.tieneRol = function (rol) {
