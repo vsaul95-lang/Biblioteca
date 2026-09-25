@@ -446,11 +446,6 @@
 
         </div>
 
-
-        <!-- =================================================
-             BUSCAR AFILIADO
-        ================================================== -->
-
         <div id="seccionAfiliado">
 
             <div class="fila-busqueda">
@@ -495,11 +490,6 @@
             </div>
 
         </div>
-
-
-        <!-- =================================================
-             BUSCAR COLABORADOR
-        ================================================== -->
 
         <div id="seccionColaborador" style="display:none;">
 
@@ -608,8 +598,6 @@
 
                     <div class="datos-persona-libro">
 
-                        <!-- PERSONA / COLABORADOR -->
-
                         <div class="tarjeta-dato">
 
                             <h3 id="tituloResumenPersona">
@@ -657,8 +645,6 @@
                         </div>
 
 
-                        <!-- LIBRO -->
-
                         <div class="tarjeta-dato">
 
                             <h3>📚 Libro</h3>
@@ -686,8 +672,6 @@
 
             </div>
 
-
-            <!-- FECHAS Y SITIO -->
 
             <div class="bloque-resumen">
 
@@ -748,6 +732,7 @@
                                 <option value="R">R</option>
                                 <option value="N">N</option>
                                 <option value="Z">Z</option>
+                                <option value="NE">NE - Escuela Nueva Esperanza</option>
 
                             </select>
 
@@ -763,8 +748,6 @@
 
             </div>
 
-
-            <!-- CONFIRMACIÓN -->
 
             <div
                 id="confirmacion"
@@ -983,19 +966,6 @@ function normalizarCodigo(codigo) {
 
 /* =========================================================
    NORMALIZAR CÓDIGO DE COLABORADOR
-=========================================================
-
-   Ejemplos:
-
-   C014 -> C14
-   c014 -> C14
-   C14  -> C14
-   c14  -> C14
-   014  -> C14
-   14   -> C14
-
-   De esta forma la búsqueda no depende de mayúsculas
-   ni de los ceros que tenga el código.
 ========================================================= */
 
 function normalizarCodigoColaborador(codigo) {
@@ -1193,7 +1163,7 @@ function obtenerSitio(persona) {
                 .toUpperCase();
 
         if (
-            ["F", "M", "R", "N", "Z"]
+            ["F", "M", "R", "N", "Z", "NE"]
                 .includes(sitio)
         ) {
             return sitio;
@@ -1210,7 +1180,7 @@ function obtenerSitio(persona) {
                 .toUpperCase();
 
         if (
-            ["F", "M", "R", "N", "Z"]
+            ["F", "M", "R", "N", "Z", "NE"]
                 .includes(sitio)
         ) {
             return sitio;
@@ -1237,7 +1207,7 @@ function obtenerSitioPrestamo() {
 
 
     if (
-        ["F", "M", "R", "N", "Z"]
+        ["F", "M", "R", "N", "Z", "NE"]
             .includes(sitio)
     ) {
         return sitio;
@@ -1786,17 +1756,6 @@ async function buscarColaborador() {
     }
 
 
-    /*
-       Normalizamos lo que escribió el usuario.
-
-       Ejemplos:
-
-       c14  -> C14
-       C14  -> C14
-       c014 -> C14
-       C014 -> C14
-    */
-
     const codigoNormalizado =
         normalizarCodigoColaborador(
             codigoIngresado
@@ -1816,14 +1775,6 @@ async function buscarColaborador() {
 
 
     try {
-
-        /*
-           No hacemos .eq() directamente porque Supabase
-           distingue el formato almacenado.
-
-           Traemos los colaboradores activos y después
-           comparamos sus códigos ya normalizados.
-        */
 
         const {
             data,
@@ -2674,18 +2625,12 @@ async function confirmarPrestamo() {
         }
 
 
-        /* =================================================
-           PRÉSTAMO REGISTRADO CORRECTAMENTE
-        ================================================= */
-
         mostrarMensaje(
             mensajeFinal,
             "Préstamo registrado correctamente.",
             "exito"
         );
 
-
-        /* LIMPIAR SELECCIONES */
 
         personaSeleccionada =
             null;
@@ -2699,8 +2644,6 @@ async function confirmarPrestamo() {
         fechaDevolucionModificada =
             false;
 
-
-        /* RESTABLECER TIPO */
 
         tipoSolicitante =
             "Afiliado";
@@ -2722,8 +2665,6 @@ async function confirmarPrestamo() {
             "none";
 
 
-        /* LIMPIAR BUSCAR FAMILIA */
-
         buscarFamiliaInput.value =
             "";
 
@@ -2740,8 +2681,6 @@ async function confirmarPrestamo() {
             mensajeFamilia
         );
 
-
-        /* LIMPIAR BUSCAR COLABORADOR */
 
         buscarColaboradorInput.value =
             "";
@@ -2760,8 +2699,6 @@ async function confirmarPrestamo() {
         );
 
 
-        /* LIMPIAR BUSCAR LIBRO */
-
         buscarLibroInput.value =
             "";
 
@@ -2774,8 +2711,6 @@ async function confirmarPrestamo() {
             "none";
 
 
-        /* OCULTAR RESUMEN */
-
         resumenPrestamo.style.display =
             "none";
 
@@ -2783,8 +2718,6 @@ async function confirmarPrestamo() {
         confirmacion.style.display =
             "none";
 
-
-        /* REINICIAR FECHAS */
 
         fechaPrestamoInput.value =
             obtenerFechaLocalInput();
@@ -2795,8 +2728,6 @@ async function confirmarPrestamo() {
                 fechaPrestamoInput.value
             );
 
-
-        /* REINICIAR SITIO */
 
         sitioPrestamoInput.value =
             "F";
