@@ -1146,6 +1146,8 @@
     let prestamoSeleccionado = null;
     let modoDetalle = "devolucion";
 
+    let autenticacionLista = false;
+
 
     function normalizar(valor) {
 
@@ -2087,6 +2089,47 @@
         }
 
 
+        /*
+         * ==========================================================
+         * OBTENER AUTOMÁTICAMENTE EL USUARIO QUE REALIZA
+         * LA DEVOLUCIÓN
+         * ==========================================================
+         */
+
+        let nombreUsuario = "";
+
+        if (
+            typeof window.obtenerNombreUsuarioActual ===
+            "function"
+        ) {
+
+            nombreUsuario =
+                window.obtenerNombreUsuarioActual();
+
+        } else if (
+            window.perfilUsuario &&
+            window.perfilUsuario.nombre
+        ) {
+
+            nombreUsuario =
+                String(
+                    window.perfilUsuario.nombre
+                ).trim();
+
+        }
+
+
+        if (!nombreUsuario) {
+
+            mostrarMensaje(
+                "No fue posible identificar al usuario que realiza la devolución.",
+                "error"
+            );
+
+            return;
+        }
+
+
         const comentario =
             document.getElementById(
                 "comentarioDevolucion"
@@ -2101,6 +2144,15 @@
             new Date().toISOString();
 
 
+        /*
+         * ==========================================================
+         * REGISTRAR DEVOLUCIÓN Y USUARIO
+         *
+         * DevueltoPor guarda automáticamente el nombre
+         * del usuario que inició sesión.
+         * ==========================================================
+         */
+
         const {
             error
         } = await supabaseClient
@@ -2113,7 +2165,10 @@
                     fechaActual,
 
                 comentarios:
-                    comentario || null
+                    comentario || null,
+
+                DevueltoPor:
+                    nombreUsuario
 
             })
             .eq(
@@ -2840,19 +2895,81 @@
 
         try {
 
-            await window.devolucionesAuth;
+            /*
+             * ======================================================
+             * AUTENTICACIÓN
+             *
+             * auth.js obtiene el usuario actual y su nombre
+             * desde la tabla usuarios.
+             * ======================================================
+             */
+
+            if (
+                typeof window.protegerPagina !==
+                "function"
+            ) {
+
+                throw new Error(
+                    "La función protegerPagina no está disponible."
+                );
+
+            }
+
+
+            const autorizado =
+                await window.protegerPagina();
+
+
+            if (!autorizado) {
+
+                console.error(
+                    "Usuario no autorizado."
+                );
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+                mostrarMensaje(
+                    "No fue posible verificar el usuario.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            autenticacionLista = true;
+
+
+            console.log(
+                "Usuario listo para registrar devoluciones:",
+                window.obtenerNombreUsuarioActual
+                    ? window.obtenerNombreUsuarioActual()
+                    : window.perfilUsuario?.nombre
+            );
+
 
             await cargarDatos();
+
 
             document.documentElement.style.visibility =
                 "visible";
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "ERROR AL INICIAR DEVOLUCIONES:",
+                error
+            );
 
             document.documentElement.style.visibility =
                 "visible";
+
+            mostrarMensaje(
+                "No fue posible iniciar el módulo de devoluciones.",
+                "error"
+            );
 
         }
 
