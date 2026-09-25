@@ -1,412 +1,416 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuevo préstamo - Biblioteca</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase.js"></script>
-    <script src="auth.js"></script>
+```
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
 
-    <style>
-        * {
-            box-sizing: border-box;
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #333;
+    }
+
+    .encabezado {
+        background: #263238;
+        color: white;
+        padding: 18px 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .encabezado h1 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .btn-volver {
+        background: #546e7a;
+        color: white;
+        text-decoration: none;
+        padding: 9px 14px;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .contenedor {
+        max-width: 1100px;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .seccion {
+        background: white;
+        border-radius: 8px;
+        padding: 18px;
+        margin-bottom: 18px;
+        box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+
+    .seccion h2 {
+        margin: 0 0 15px;
+        font-size: 18px;
+    }
+
+    .fila-busqueda {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    input {
+        flex: 1;
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    button {
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .btn-buscar {
+        background: #1976d2;
+        color: white;
+    }
+
+    .mensaje {
+        margin-top: 12px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+    }
+
+    .mensaje.exito {
+        display: block;
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .mensaje.error {
+        display: block;
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .tabla-contenedor {
+        overflow-x: auto;
+        margin-top: 15px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    th {
+        background: #eceff1;
+        padding: 9px;
+        border-bottom: 1px solid #ccc;
+        text-align: center;
+    }
+
+    td {
+        padding: 9px;
+        border-bottom: 1px solid #eee;
+        text-align: center;
+    }
+
+    td.nombre {
+        text-align: left;
+    }
+
+    tr.seleccionada {
+        background: #e8f5e9;
+        border-left: 4px solid #2e7d32;
+    }
+
+    .btn-seleccionar {
+        background: #1976d2;
+        color: white;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .btn-seleccionar.seleccionada {
+        background: #2e7d32;
+    }
+
+    /* =====================================================
+       TIPO DE SOLICITANTE
+    ===================================================== */
+
+    .tipo-solicitante {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .opcion-tipo {
+        flex: 1;
+        border: 1px solid #ccc;
+        background: #f7f9fa;
+        color: #37474f;
+        padding: 11px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .opcion-tipo:hover {
+        background: #eceff1;
+    }
+
+    .opcion-tipo.activa {
+        background: #37474f;
+        color: white;
+        border-color: #37474f;
+    }
+
+    /* =====================================================
+       PASO 3 - RESUMEN
+    ===================================================== */
+
+    .resumen-prestamo {
+        display: none;
+    }
+
+    .bloque-resumen {
+        border: 1px solid #e0e0e0;
+        border-radius: 7px;
+        overflow: hidden;
+        margin-top: 15px;
+    }
+
+    .titulo-bloque {
+        background: #eceff1;
+        padding: 10px 13px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #37474f;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .contenido-resumen {
+        padding: 14px;
+    }
+
+    .datos-persona-libro {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .tarjeta-dato {
+        background: #f7f9fa;
+        border-radius: 6px;
+        padding: 12px;
+        border: 1px solid #e8ecee;
+    }
+
+    .tarjeta-dato h3 {
+        margin: 0 0 9px;
+        font-size: 14px;
+        color: #455a64;
+    }
+
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 5px 0;
+        border-bottom: 1px solid #e5e8ea;
+        font-size: 13px;
+    }
+
+    .dato:last-child {
+        border-bottom: none;
+    }
+
+    .dato span:first-child {
+        color: #607d8b;
+    }
+
+    .dato span:last-child {
+        font-weight: 600;
+        text-align: right;
+        color: #333;
+    }
+
+    /* =====================================================
+       FECHAS Y SITIO DE PRÉSTAMO
+    ===================================================== */
+
+    .fechas-prestamo {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+    }
+
+    .campo-fecha {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .campo-fecha label {
+        font-size: 13px;
+        font-weight: bold;
+        color: #455a64;
+    }
+
+    .campo-fecha input,
+    .campo-fecha select {
+        width: 100%;
+        flex: none;
+        background: white;
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .campo-fecha select {
+        cursor: pointer;
+    }
+
+    .ayuda-fecha {
+        font-size: 11px;
+        color: #78909c;
+        margin-top: 1px;
+        line-height: 1.3;
+    }
+
+    /* =====================================================
+       CONFIRMACIÓN
+    ===================================================== */
+
+    .confirmacion {
+        background: #fff8e1;
+        border: 1px solid #ffe082;
+        border-radius: 7px;
+        padding: 15px;
+        margin-top: 18px;
+        display: none;
+    }
+
+    .confirmacion-titulo {
+        font-size: 15px;
+        font-weight: bold;
+        color: #e65100;
+        margin-bottom: 5px;
+    }
+
+    .confirmacion-texto {
+        font-size: 13px;
+        color: #5d4037;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .acciones-confirmacion {
+        margin-top: 13px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-confirmar {
+        background: #2e7d32;
+        color: white;
+    }
+
+    .btn-cancelar {
+        background: #757575;
+        color: white;
+    }
+
+    .libro-info {
+        margin-top: 12px;
+        padding: 12px;
+        background: #e3f2fd;
+        border-radius: 6px;
+        display: none;
+    }
+
+    .libro-info strong {
+        color: #1565c0;
+    }
+
+    @media (max-width: 850px) {
+
+        .fechas-prestamo {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 700px) {
+
+        .fila-busqueda {
+            flex-direction: column;
+            align-items: stretch;
         }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #333;
+        .tipo-solicitante {
+            flex-direction: column;
         }
 
         .encabezado {
-            background: #263238;
-            color: white;
-            padding: 18px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .encabezado h1 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .btn-volver {
-            background: #546e7a;
-            color: white;
-            text-decoration: none;
-            padding: 9px 14px;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .contenedor {
-            max-width: 1100px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        .seccion {
-            background: white;
-            border-radius: 8px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 6px rgba(0,0,0,.08);
-        }
-
-        .seccion h2 {
-            margin: 0 0 15px;
-            font-size: 18px;
-        }
-
-        .fila-busqueda {
-            display: flex;
             gap: 10px;
-            align-items: center;
-        }
-
-        input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        button {
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn-buscar {
-            background: #1976d2;
-            color: white;
-        }
-
-        .mensaje {
-            margin-top: 12px;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .mensaje.exito {
-            display: block;
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .mensaje.error {
-            display: block;
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .tabla-contenedor {
-            overflow-x: auto;
-            margin-top: 15px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        th {
-            background: #eceff1;
-            padding: 9px;
-            border-bottom: 1px solid #ccc;
-            text-align: center;
-        }
-
-        td {
-            padding: 9px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-        }
-
-        td.nombre {
-            text-align: left;
-        }
-
-        tr.seleccionada {
-            background: #e8f5e9;
-            border-left: 4px solid #2e7d32;
-        }
-
-        .btn-seleccionar {
-            background: #1976d2;
-            color: white;
-            padding: 6px 10px;
-            font-size: 12px;
-        }
-
-        .btn-seleccionar.seleccionada {
-            background: #2e7d32;
-        }
-
-        /* =====================================================
-           TIPO DE SOLICITANTE
-        ===================================================== */
-
-        .tipo-solicitante {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .opcion-tipo {
-            flex: 1;
-            border: 1px solid #ccc;
-            background: #f7f9fa;
-            color: #37474f;
-            padding: 11px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .opcion-tipo:hover {
-            background: #eceff1;
-        }
-
-        .opcion-tipo.activa {
-            background: #37474f;
-            color: white;
-            border-color: #37474f;
-        }
-
-        /* =====================================================
-           PASO 3 - RESUMEN
-        ===================================================== */
-
-        .resumen-prestamo {
-            display: none;
-        }
-
-        .bloque-resumen {
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
-            overflow: hidden;
-            margin-top: 15px;
-        }
-
-        .titulo-bloque {
-            background: #eceff1;
-            padding: 10px 13px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #37474f;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .contenido-resumen {
-            padding: 14px;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .datos-persona-libro {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr;
         }
-
-        .tarjeta-dato {
-            background: #f7f9fa;
-            border-radius: 6px;
-            padding: 12px;
-            border: 1px solid #e8ecee;
-        }
-
-        .tarjeta-dato h3 {
-            margin: 0 0 9px;
-            font-size: 14px;
-            color: #455a64;
-        }
-
-        .dato {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 5px 0;
-            border-bottom: 1px solid #e5e8ea;
-            font-size: 13px;
-        }
-
-        .dato:last-child {
-            border-bottom: none;
-        }
-
-        .dato span:first-child {
-            color: #607d8b;
-        }
-
-        .dato span:last-child {
-            font-weight: 600;
-            text-align: right;
-            color: #333;
-        }
-
-        /* =====================================================
-           FECHAS Y SITIO DE PRÉSTAMO
-        ===================================================== */
 
         .fechas-prestamo {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-        }
-
-        .campo-fecha {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .campo-fecha label {
-            font-size: 13px;
-            font-weight: bold;
-            color: #455a64;
-        }
-
-        .campo-fecha input,
-        .campo-fecha select {
-            width: 100%;
-            flex: none;
-            background: white;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .campo-fecha select {
-            cursor: pointer;
-        }
-
-        .ayuda-fecha {
-            font-size: 11px;
-            color: #78909c;
-            margin-top: 1px;
-            line-height: 1.3;
-        }
-
-        /* =====================================================
-           CONFIRMACIÓN
-        ===================================================== */
-
-        .confirmacion {
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: 7px;
-            padding: 15px;
-            margin-top: 18px;
-            display: none;
-        }
-
-        .confirmacion-titulo {
-            font-size: 15px;
-            font-weight: bold;
-            color: #e65100;
-            margin-bottom: 5px;
-        }
-
-        .confirmacion-texto {
-            font-size: 13px;
-            color: #5d4037;
-            margin: 0;
-            line-height: 1.5;
+            grid-template-columns: 1fr;
         }
 
         .acciones-confirmacion {
-            margin-top: 13px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            flex-wrap: wrap;
+            flex-direction: column;
         }
 
-        .btn-confirmar {
-            background: #2e7d32;
-            color: white;
+        .acciones-confirmacion button {
+            width: 100%;
         }
 
-        .btn-cancelar {
-            background: #757575;
-            color: white;
+        .dato {
+            flex-direction: column;
+            gap: 2px;
         }
 
-        .libro-info {
-            margin-top: 12px;
-            padding: 12px;
-            background: #e3f2fd;
-            border-radius: 6px;
-            display: none;
+        .dato span:last-child {
+            text-align: left;
         }
+    }
+</style>
+```
 
-        .libro-info strong {
-            color: #1565c0;
-        }
-
-        @media (max-width: 850px) {
-
-            .fechas-prestamo {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 700px) {
-
-            .fila-busqueda {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .tipo-solicitante {
-                flex-direction: column;
-            }
-
-            .encabezado {
-                gap: 10px;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .datos-persona-libro {
-                grid-template-columns: 1fr;
-            }
-
-            .fechas-prestamo {
-                grid-template-columns: 1fr;
-            }
-
-            .acciones-confirmacion {
-                flex-direction: column;
-            }
-
-            .acciones-confirmacion button {
-                width: 100%;
-            }
-
-            .dato {
-                flex-direction: column;
-                gap: 2px;
-            }
-
-            .dato span:last-child {
-                text-align: left;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -418,382 +422,268 @@
 
 <div class="contenedor">
 
-    <!-- =====================================================
-         1. SOLICITANTE
-    ====================================================== -->
+```
+<!-- =====================================================
+     1. SOLICITANTE
+====================================================== -->
 
-    <section class="seccion">
+<section class="seccion">
 
-        <h2>1. ¿Quién solicita el préstamo?</h2>
+    <h2>1. ¿Quién solicita el préstamo?</h2>
 
-        <div class="tipo-solicitante">
+    <div class="tipo-solicitante">
 
-            <button
-                type="button"
-                id="btnTipoAfiliado"
-                class="opcion-tipo activa"
-            >
-                👨‍👩‍👧 Afiliado
-            </button>
+        <button
+            type="button"
+            id="btnTipoAfiliado"
+            class="opcion-tipo activa"
+        >
+            👨‍👩‍👧 Afiliado
+        </button>
 
-            <button
-                type="button"
-                id="btnTipoColaborador"
-                class="opcion-tipo"
-            >
-                👤 Colaborador
-            </button>
+        <button
+            type="button"
+            id="btnTipoColaborador"
+            class="opcion-tipo"
+        >
+            👤 Colaborador
+        </button>
 
-        </div>
-
-
-        <!-- =================================================
-             BUSCAR AFILIADO
-        ================================================== -->
-
-        <div id="seccionAfiliado">
-
-            <div class="fila-busqueda">
-
-                <input
-                    type="text"
-                    id="buscarFamilia"
-                    placeholder="Ingrese número de familia..."
-                >
-
-                <button
-                    class="btn-buscar"
-                    id="btnBuscarFamilia"
-                >
-                    Buscar
-                </button>
-
-            </div>
-
-            <div id="mensajeFamilia" class="mensaje"></div>
-
-            <div class="tabla-contenedor">
-
-                <table id="tablaFamilia" style="display:none;">
-
-                    <thead>
-
-                        <tr>
-                            <th>PersonaId</th>
-                            <th>FamiliaId</th>
-                            <th>Nombre</th>
-                            <th>Estado</th>
-                            <th>Seleccionar</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="cuerpoFamilia"></tbody>
-
-                </table>
-
-            </div>
-
-        </div>
+    </div>
 
 
-        <!-- =================================================
-             BUSCAR COLABORADOR
-        ================================================== -->
+    <!-- =================================================
+         BUSCAR AFILIADO
+    ================================================== -->
 
-        <div id="seccionColaborador" style="display:none;">
-
-            <div class="fila-busqueda">
-
-                <input
-                    type="text"
-                    id="buscarColaborador"
-                    placeholder="Ingrese código del colaborador..."
-                    maxlength="30"
-                    autocomplete="off"
-                >
-
-                <button
-                    class="btn-buscar"
-                    id="btnBuscarColaborador"
-                >
-                    Buscar
-                </button>
-
-            </div>
-
-            <div id="mensajeColaborador" class="mensaje"></div>
-
-            <div class="tabla-contenedor">
-
-                <table id="tablaColaborador" style="display:none;">
-
-                    <thead>
-
-                        <tr>
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Área</th>
-                            <th>Estado</th>
-                            <th>Seleccionar</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="cuerpoColaborador"></tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         2. LIBRO
-    ====================================================== -->
-
-    <section class="seccion">
-
-        <h2>2. Buscar libro</h2>
+    <div id="seccionAfiliado">
 
         <div class="fila-busqueda">
 
             <input
                 type="text"
-                id="buscarLibro"
-                placeholder="Ingrese código del libro..."
-                maxlength="8"
-                inputmode="numeric"
+                id="buscarFamilia"
+                placeholder="Ingrese número de familia..."
             >
 
             <button
                 class="btn-buscar"
-                id="btnBuscarLibro"
+                id="btnBuscarFamilia"
             >
                 Buscar
             </button>
 
         </div>
 
-        <div id="mensajeLibro" class="mensaje"></div>
+        <div id="mensajeFamilia" class="mensaje"></div>
 
-        <div id="libroInfo" class="libro-info"></div>
+        <div class="tabla-contenedor">
 
-    </section>
+            <table id="tablaFamilia" style="display:none;">
 
+                <thead>
 
-    <!-- =====================================================
-         3. CONFIRMAR PRÉSTAMO
-    ====================================================== -->
+                    <tr>
+                        <th>PersonaId</th>
+                        <th>FamiliaId</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Seleccionar</th>
+                    </tr>
 
-    <section class="seccion">
+                </thead>
 
-        <h2>3. Confirmar préstamo</h2>
+                <tbody id="cuerpoFamilia"></tbody>
 
-        <div
-            id="resumenPrestamo"
-            class="resumen-prestamo"
-        >
+            </table>
 
-            <div class="bloque-resumen">
+        </div>
 
-                <div class="titulo-bloque">
-                    Resumen del préstamo
-                </div>
+    </div>
 
-                <div class="contenido-resumen">
 
-                    <div class="datos-persona-libro">
+    <!-- =================================================
+         BUSCAR COLABORADOR
+    ================================================== -->
 
-                        <!-- PERSONA / COLABORADOR -->
+    <div id="seccionColaborador" style="display:none;">
 
-                        <div class="tarjeta-dato">
+        <div class="fila-busqueda">
 
-                            <h3 id="tituloResumenPersona">
-                                👤 Afiliado
-                            </h3>
-
-                            <div class="dato">
-                                <span id="etiquetaIdentificador">
-                                    Familia
-                                </span>
-
-                                <span id="resumenFamilia"></span>
-                            </div>
-
-                            <div class="dato">
-                                <span id="etiquetaPersonaId">
-                                    PersonaId
-                                </span>
-
-                                <span id="resumenPersonaId"></span>
-                            </div>
-
-                            <div class="dato">
-                                <span id="etiquetaNombre">
-                                    Nombre
-                                </span>
-
-                                <span id="resumenNombre"></span>
-                            </div>
-
-                            <div
-                                class="dato"
-                                id="filaAreaResumen"
-                                style="display:none;"
-                            >
-                                <span>Área</span>
-                                <span id="resumenArea"></span>
-                            </div>
-
-                            <div class="dato">
-                                <span>Sitio</span>
-                                <span id="resumenSitio"></span>
-                            </div>
-
-                        </div>
-
-
-                        <!-- LIBRO -->
-
-                        <div class="tarjeta-dato">
-
-                            <h3>📚 Libro</h3>
-
-                            <div class="dato">
-                                <span>Código</span>
-                                <span id="resumenCodigoLibro"></span>
-                            </div>
-
-                            <div class="dato">
-                                <span>Nombre</span>
-                                <span id="resumenNombreLibro"></span>
-                            </div>
-
-                            <div class="dato">
-                                <span>Estado</span>
-                                <span>Disponible</span>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- FECHAS Y SITIO -->
-
-            <div class="bloque-resumen">
-
-                <div class="titulo-bloque">
-                    Fechas del préstamo
-                </div>
-
-                <div class="contenido-resumen">
-
-                    <div class="fechas-prestamo">
-
-                        <div class="campo-fecha">
-
-                            <label for="fechaPrestamo">
-                                Fecha del préstamo
-                            </label>
-
-                            <input
-                                type="date"
-                                id="fechaPrestamo"
-                            >
-
-                            <span class="ayuda-fecha">
-                                Se coloca automáticamente la fecha actual, pero puede modificarse.
-                            </span>
-
-                        </div>
-
-
-                        <div class="campo-fecha">
-
-                            <label for="fechaDevolucion">
-                                Fecha de devolución prevista
-                            </label>
-
-                            <input
-                                type="date"
-                                id="fechaDevolucion"
-                            >
-
-                            <span class="ayuda-fecha">
-                                Puede elegir libremente cuándo debe regresar el libro.
-                            </span>
-
-                        </div>
-
-
-                        <div class="campo-fecha">
-
-                            <label for="sitioPrestamo">
-                                Sitio de préstamo
-                            </label>
-
-                            <select id="sitioPrestamo">
-
-                                <option value="F">F</option>
-                                <option value="M">M</option>
-                                <option value="R">R</option>
-                                <option value="N">N</option>
-                                <option value="Z">Z</option>
-
-                            </select>
-
-                            <span class="ayuda-fecha">
-                                Seleccione el sitio donde se realiza el préstamo.
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- CONFIRMACIÓN -->
-
-            <div
-                id="confirmacion"
-                class="confirmacion"
+            <input
+                type="text"
+                id="buscarColaborador"
+                placeholder="Ingrese código del colaborador..."
+                maxlength="30"
+                autocomplete="off"
             >
 
-                <div class="confirmacion-titulo">
-                    ¿Desea registrar este préstamo?
-                </div>
+            <button
+                class="btn-buscar"
+                id="btnBuscarColaborador"
+            >
+                Buscar
+            </button>
 
-                <p class="confirmacion-texto">
-                    Revise que la persona, el libro, el sitio y las fechas sean correctos antes de continuar.
-                </p>
+        </div>
 
-                <div class="acciones-confirmacion">
+        <div id="mensajeColaborador" class="mensaje"></div>
 
-                    <button
-                        class="btn-cancelar"
-                        id="btnCancelar"
-                    >
-                        Cancelar
-                    </button>
+        <div class="tabla-contenedor">
 
-                    <button
-                        class="btn-confirmar"
-                        id="btnConfirmar"
-                    >
-                        Sí, registrar préstamo
-                    </button>
+            <table id="tablaColaborador" style="display:none;">
+
+                <thead>
+
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Área</th>
+                        <th>Estado</th>
+                        <th>Seleccionar</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="cuerpoColaborador"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     2. LIBRO
+====================================================== -->
+
+<section class="seccion">
+
+    <h2>2. Buscar libro</h2>
+
+    <div class="fila-busqueda">
+
+        <input
+            type="text"
+            id="buscarLibro"
+            placeholder="Ingrese código del libro..."
+            maxlength="8"
+            inputmode="numeric"
+        >
+
+        <button
+            class="btn-buscar"
+            id="btnBuscarLibro"
+        >
+            Buscar
+        </button>
+
+    </div>
+
+    <div id="mensajeLibro" class="mensaje"></div>
+
+    <div id="libroInfo" class="libro-info"></div>
+
+</section>
+
+
+<!-- =====================================================
+     3. CONFIRMAR PRÉSTAMO
+===================================================== -->
+
+<section class="seccion">
+
+    <h2>3. Confirmar préstamo</h2>
+
+    <div
+        id="resumenPrestamo"
+        class="resumen-prestamo"
+    >
+
+        <div class="bloque-resumen">
+
+            <div class="titulo-bloque">
+                Resumen del préstamo
+            </div>
+
+            <div class="contenido-resumen">
+
+                <div class="datos-persona-libro">
+
+                    <!-- PERSONA / COLABORADOR -->
+
+                    <div class="tarjeta-dato">
+
+                        <h3 id="tituloResumenPersona">
+                            👤 Afiliado
+                        </h3>
+
+                        <div class="dato">
+                            <span id="etiquetaIdentificador">
+                                Familia
+                            </span>
+
+                            <span id="resumenFamilia"></span>
+                        </div>
+
+                        <div class="dato">
+                            <span id="etiquetaPersonaId">
+                                PersonaId
+                            </span>
+
+                            <span id="resumenPersonaId"></span>
+                        </div>
+
+                        <div class="dato">
+                            <span id="etiquetaNombre">
+                                Nombre
+                            </span>
+
+                            <span id="resumenNombre"></span>
+                        </div>
+
+                        <div
+                            class="dato"
+                            id="filaAreaResumen"
+                            style="display:none;"
+                        >
+                            <span>Área</span>
+                            <span id="resumenArea"></span>
+                        </div>
+
+                        <div class="dato">
+                            <span>Sitio</span>
+                            <span id="resumenSitio"></span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- LIBRO -->
+
+                    <div class="tarjeta-dato">
+
+                        <h3>📚 Libro</h3>
+
+                        <div class="dato">
+                            <span>Código</span>
+                            <span id="resumenCodigoLibro"></span>
+                        </div>
+
+                        <div class="dato">
+                            <span>Nombre</span>
+                            <span id="resumenNombreLibro"></span>
+                        </div>
+
+                        <div class="dato">
+                            <span>Estado</span>
+                            <span>Disponible</span>
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -802,15 +692,130 @@
         </div>
 
 
-        <div
-            id="mensajeFinal"
-            class="mensaje"
-        ></div>
+        <!-- FECHAS Y SITIO -->
 
-    </section>
+        <div class="bloque-resumen">
+
+            <div class="titulo-bloque">
+                Fechas del préstamo
+            </div>
+
+            <div class="contenido-resumen">
+
+                <div class="fechas-prestamo">
+
+                    <div class="campo-fecha">
+
+                        <label for="fechaPrestamo">
+                            Fecha del préstamo
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaPrestamo"
+                        >
+
+                        <span class="ayuda-fecha">
+                            Se coloca automáticamente la fecha actual, pero puede modificarse.
+                        </span>
+
+                    </div>
+
+
+                    <div class="campo-fecha">
+
+                        <label for="fechaDevolucion">
+                            Fecha de devolución prevista
+                        </label>
+
+                        <input
+                            type="date"
+                            id="fechaDevolucion"
+                        >
+
+                        <span class="ayuda-fecha">
+                            Puede elegir libremente cuándo debe regresar el libro.
+                        </span>
+
+                    </div>
+
+
+                    <div class="campo-fecha">
+
+                        <label for="sitioPrestamo">
+                            Sitio de préstamo
+                        </label>
+
+                        <select id="sitioPrestamo">
+
+                            <option value="F">F</option>
+                            <option value="M">M</option>
+                            <option value="R">R</option>
+                            <option value="N">N</option>
+                            <option value="Z">Z</option>
+
+                        </select>
+
+                        <span class="ayuda-fecha">
+                            Seleccione el sitio donde se realiza el préstamo.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFIRMACIÓN -->
+
+        <div
+            id="confirmacion"
+            class="confirmacion"
+        >
+
+            <div class="confirmacion-titulo">
+                ¿Desea registrar este préstamo?
+            </div>
+
+            <p class="confirmacion-texto">
+                Revise que la persona, el libro, el sitio y las fechas sean correctos antes de continuar.
+            </p>
+
+            <div class="acciones-confirmacion">
+
+                <button
+                    class="btn-cancelar"
+                    id="btnCancelar"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    class="btn-confirmar"
+                    id="btnConfirmar"
+                >
+                    Sí, registrar préstamo
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="mensajeFinal"
+        class="mensaje"
+    ></div>
+
+</section>
+```
 
 </div>
-
 
 <script>
 
@@ -983,19 +988,6 @@ function normalizarCodigo(codigo) {
 
 /* =========================================================
    NORMALIZAR CÓDIGO DE COLABORADOR
-=========================================================
-
-   Ejemplos:
-
-   C014 -> C14
-   c014 -> C14
-   C14  -> C14
-   c14  -> C14
-   014  -> C14
-   14   -> C14
-
-   De esta forma la búsqueda no depende de mayúsculas
-   ni de los ceros que tenga el código.
 ========================================================= */
 
 function normalizarCodigoColaborador(codigo) {
@@ -1786,17 +1778,6 @@ async function buscarColaborador() {
     }
 
 
-    /*
-       Normalizamos lo que escribió el usuario.
-
-       Ejemplos:
-
-       c14  -> C14
-       C14  -> C14
-       c014 -> C14
-       C014 -> C14
-    */
-
     const codigoNormalizado =
         normalizarCodigoColaborador(
             codigoIngresado
@@ -1816,14 +1797,6 @@ async function buscarColaborador() {
 
 
     try {
-
-        /*
-           No hacemos .eq() directamente porque Supabase
-           distingue el formato almacenado.
-
-           Traemos los colaboradores activos y después
-           comparamos sus códigos ya normalizados.
-        */
 
         const {
             data,
@@ -2363,6 +2336,57 @@ function actualizarDetalle() {
 
 
 /* =========================================================
+   OBTENER USUARIO QUE REGISTRA EL PRÉSTAMO
+========================================================= */
+
+async function obtenerUsuarioActual() {
+
+    /*
+       Si auth.js todavía no ha cargado el perfil,
+       intentamos proteger/validar la página y cargarlo.
+    */
+
+    if (
+        !window.perfilUsuario &&
+        typeof window.protegerPagina === "function"
+    ) {
+
+        const autorizado =
+            await window.protegerPagina();
+
+        if (!autorizado) {
+            return null;
+        }
+    }
+
+
+    if (!window.perfilUsuario) {
+        return null;
+    }
+
+
+    const nombre =
+        String(
+            window.perfilUsuario.nombre || ""
+        ).trim();
+
+
+    const correo =
+        String(
+            window.perfilUsuario.correo || ""
+        ).trim();
+
+
+    /*
+       Preferimos guardar el nombre del usuario.
+       Si el nombre no existe, usamos el correo.
+    */
+
+    return nombre || correo || null;
+}
+
+
+/* =========================================================
    CONFIRMAR PRÉSTAMO
 ========================================================= */
 
@@ -2409,6 +2433,26 @@ async function confirmarPrestamo() {
 
 
     try {
+
+        /* =================================================
+           IDENTIFICAR USUARIO ACTUAL
+        ================================================= */
+
+        const usuarioActual =
+            await obtenerUsuarioActual();
+
+
+        if (!usuarioActual) {
+
+            mostrarMensaje(
+                mensajeFinal,
+                "No se pudo identificar al usuario que está realizando el préstamo. Cierre sesión, vuelva a ingresar e inténtelo nuevamente.",
+                "error"
+            );
+
+            return;
+        }
+
 
         const {
             data: prestamosExistentes,
@@ -2567,6 +2611,12 @@ async function confirmarPrestamo() {
                     "Prestado",
 
                 fechaDevolucionReal:
+                    null,
+
+                PrestadoPor:
+                    usuarioActual,
+
+                DevueltoPor:
                     null
             };
 
@@ -2625,6 +2675,12 @@ async function confirmarPrestamo() {
                     "Prestado",
 
                 fechaDevolucionReal:
+                    null,
+
+                PrestadoPor:
+                    usuarioActual,
+
+                DevueltoPor:
                     null
             };
 
