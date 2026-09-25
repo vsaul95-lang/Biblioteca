@@ -30,14 +30,16 @@
         .encabezado-contenido {
             max-width: 1100px;
             margin: auto;
-            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
         }
 
         .marca {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding-right: 130px;
         }
 
         .marca-icono {
@@ -55,68 +57,81 @@
             color: #cfd8dc;
         }
 
+        /* =========================================
+           BOTÓN VOLVER AL INICIO
+        ========================================= */
+
         .volver {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #7f8c8d;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            border-radius: 6px;
+            background: rgba(38, 50, 56, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            color: #ffffff !important;
             text-decoration: none;
-            border: none;
-            padding: 7px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
         }
 
         .volver:hover {
-            background: #6f7c7d;
+            background: rgba(38, 50, 56, 0.72);
+            border-color: #ffffff;
+            color: #ffffff !important;
+            text-decoration: none;
         }
 
         main {
             max-width: 1100px;
-            margin: 20px auto;
+            margin: 18px auto;
             padding: 0 15px;
         }
 
         .titulo-seccion {
-            margin-bottom: 15px;
+            margin-bottom: 13px;
         }
 
         .titulo-seccion h2 {
             margin: 0;
-            font-size: 24px;
+            font-size: 23px;
             color: #263238;
         }
 
         .titulo-seccion p {
-            margin: 5px 0 0;
+            margin: 4px 0 0;
             color: #607d8b;
-            font-size: 14px;
+            font-size: 13px;
         }
+
+        /* =========================================
+           TARJETAS
+        ========================================= */
 
         .tarjeta {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 18px;
+            padding: 17px 18px;
+            margin-bottom: 14px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .tarjeta h3 {
-            margin: 0 0 7px;
-            font-size: 17px;
+            margin: 0 0 5px;
+            font-size: 16px;
             color: #263238;
         }
 
         .descripcion {
-            margin: 0 0 18px;
+            margin: 0 0 14px;
             color: #607d8b;
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.45;
         }
 
         /* =========================================
@@ -126,54 +141,54 @@
         .datos {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 12px;
         }
 
         .dato {
             background: #f8fafb;
             border: 1px solid #dfe5e8;
             border-radius: 7px;
-            padding: 15px 10px;
+            padding: 12px 8px;
             text-align: center;
         }
 
         .dato-numero {
             display: block;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: #37474f;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .dato-label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: #607d8b;
             font-weight: bold;
         }
 
         .dato-total {
-            margin-top: 12px;
+            margin-top: 10px;
             background: #f8fafb;
             border: 1px solid #cfd8dc;
             border-radius: 7px;
-            padding: 14px 18px;
+            padding: 11px 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             text-align: center;
         }
 
         .dato-total-numero {
-            font-size: 25px;
+            font-size: 23px;
             font-weight: bold;
             color: #263238;
         }
 
         .dato-total-texto {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #546e7a;
         }
@@ -185,15 +200,15 @@
         .acciones-principales {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
+            gap: 12px;
         }
 
         .boton {
             width: 100%;
             border: none;
             border-radius: 6px;
-            padding: 13px 16px;
-            font-size: 14px;
+            padding: 11px 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s ease;
@@ -221,26 +236,52 @@
             background: #256b29;
         }
 
-        /* Zonas de mantenimiento */
+        /* =========================================
+           MANTENIMIENTO
+        ========================================= */
 
-        .zona-mantenimiento {
-            margin-top: 18px;
-            padding-top: 18px;
+        .zonas-mantenimiento {
+            margin-top: 16px;
+            padding-top: 15px;
             border-top: 1px solid #e0e0e0;
         }
 
         .zona-titulo {
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 4px;
+            font-size: 13px;
             font-weight: bold;
             color: #455a64;
         }
 
         .zona-descripcion {
-            margin: 0 0 12px;
+            margin: 0 0 10px;
             color: #607d8b;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .mantenimiento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .mantenimiento-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 12px;
+            background: #fafbfc;
+        }
+
+        .mantenimiento-item .zona-titulo {
             font-size: 12px;
-            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .mantenimiento-item .zona-descripcion {
+            min-height: 48px;
+            margin-bottom: 9px;
         }
 
         /* Limpiar préstamos */
@@ -259,7 +300,6 @@
         .boton-limpiar-todo {
             background: #b71c1c;
             color: white;
-            margin-top: 12px;
         }
 
         .boton-limpiar-todo:hover {
@@ -273,11 +313,11 @@
         .informacion {
             background: #f7f9fa;
             border-left: 4px solid #78909c;
-            padding: 12px 14px;
+            padding: 10px 13px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 11px;
             color: #546e7a;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .informacion strong {
@@ -290,10 +330,10 @@
 
         #mensaje {
             display: none;
-            margin-bottom: 15px;
-            padding: 11px 14px;
+            margin-bottom: 13px;
+            padding: 10px 13px;
             border-radius: 5px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
@@ -332,9 +372,9 @@
 
         .modal-confirmacion {
             width: 100%;
-            max-width: 520px;
+            max-width: 420px;
             background: white;
-            border-radius: 9px;
+            border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 10px 35px rgba(0,0,0,0.25);
         }
@@ -342,38 +382,38 @@
         .modal-cabecera {
             background: #263238;
             color: white;
-            padding: 15px 18px;
+            padding: 12px 16px;
         }
 
         .modal-cabecera h3 {
             margin: 0;
-            font-size: 17px;
+            font-size: 15px;
         }
 
         .modal-contenido {
-            padding: 20px 18px 10px;
+            padding: 15px 16px 5px;
         }
 
         .modal-contenido p {
             margin: 0;
             color: #455a64;
-            font-size: 14px;
-            line-height: 1.6;
+            font-size: 12px;
+            line-height: 1.5;
             white-space: pre-line;
         }
 
         .modal-acciones {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            padding: 15px 18px 18px;
+            gap: 8px;
+            padding: 12px 16px 15px;
         }
 
         .modal-boton {
             border: none;
             border-radius: 5px;
-            padding: 9px 15px;
-            font-size: 13px;
+            padding: 8px 13px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -400,7 +440,7 @@
             text-align: center;
             color: #90a4ae;
             font-size: 11px;
-            padding: 20px 0 30px;
+            padding: 16px 0 25px;
         }
 
         /* =========================================
@@ -417,13 +457,12 @@
                 grid-template-columns: 1fr;
             }
 
-            .marca {
-                padding-right: 115px;
+            .mantenimiento-grid {
+                grid-template-columns: 1fr;
             }
 
-            .volver {
-                right: 0;
-                padding: 7px 10px;
+            .mantenimiento-item .zona-descripcion {
+                min-height: auto;
             }
         }
 
@@ -431,6 +470,10 @@
 
             header {
                 padding: 12px 10px;
+            }
+
+            .encabezado-contenido {
+                gap: 10px;
             }
 
             .marca-texto h1 {
@@ -445,12 +488,9 @@
                 font-size: 21px;
             }
 
-            .marca {
-                padding-right: 105px;
-            }
-
             .volver {
                 font-size: 11px;
+                padding: 7px 10px;
             }
 
             main {
@@ -493,7 +533,7 @@
 
         </div>
 
-        <a href="index.html" class="volver">Volver atrás</a>
+        <a href="index.html" class="volver">Volver al inicio</a>
 
     </div>
 </header>
@@ -617,8 +657,7 @@
         <h3>Administración de datos</h3>
 
         <p class="descripcion">
-            Utiliza estas opciones para guardar una copia completa de la
-            información o restaurar los datos desde un respaldo anterior.
+            Guarda una copia completa de la información o restaura datos desde un respaldo anterior.
         </p>
 
 
@@ -651,51 +690,66 @@
 
 
         <!-- =====================================
-             LIMPIAR PRÉSTAMOS
+             MANTENIMIENTO
         ====================================== -->
 
-        <div class="zona-mantenimiento">
+        <div class="zonas-mantenimiento">
 
             <div class="zona-titulo">
-                Mantenimiento de préstamos
+                Mantenimiento de la biblioteca
             </div>
 
             <p class="zona-descripcion">
-                Elimina únicamente los registros de préstamos. Los libros,
-                afiliados y colaboradores permanecerán en la base de datos.
+                Utiliza estas opciones únicamente cuando sea necesario realizar una limpieza de datos.
             </p>
 
-            <button
-                type="button"
-                class="boton boton-limpiar"
-                onclick="limpiarPrestamos()">
-                Limpiar préstamos
-            </button>
 
-        </div>
+            <div class="mantenimiento-grid">
+
+                <!-- LIMPIAR PRÉSTAMOS -->
+
+                <div class="mantenimiento-item">
+
+                    <div class="zona-titulo">
+                        Limpiar préstamos
+                    </div>
+
+                    <p class="zona-descripcion">
+                        Elimina los préstamos históricos y actuales. Los libros, afiliados y colaboradores permanecen.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="boton boton-limpiar"
+                        onclick="limpiarPrestamos()">
+                        Limpiar préstamos
+                    </button>
+
+                </div>
 
 
-        <!-- =====================================
-             LIMPIAR TODO
-        ====================================== -->
+                <!-- LIMPIAR TODO -->
 
-        <div class="zona-mantenimiento">
+                <div class="mantenimiento-item">
 
-            <div class="zona-titulo">
-                Reinicio completo de la biblioteca
+                    <div class="zona-titulo">
+                        Reinicio completo
+                    </div>
+
+                    <p class="zona-descripcion">
+                        Elimina todos los registros actuales para comenzar nuevamente desde cero.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="boton boton-limpiar-todo"
+                        onclick="limpiarTodo()">
+                        Limpiar todo
+                    </button>
+
+                </div>
+
             </div>
-
-            <p class="zona-descripcion">
-                Esta opción elimina todos los datos actuales para permitir
-                comenzar nuevamente desde cero después de una presentación o prueba.
-            </p>
-
-            <button
-                type="button"
-                class="boton boton-limpiar-todo"
-                onclick="limpiarTodo()">
-                Limpiar todo
-            </button>
 
         </div>
 
@@ -722,9 +776,9 @@
 
             <strong>Importante:</strong><br>
 
-            La opción "Limpiar todo" elimina los datos almacenados
-            actualmente en las cuatro tablas principales. Esta acción
-            no elimina las tablas ni la estructura del sistema.
+            "Limpiar todo" elimina los datos almacenados actualmente
+            en las cuatro tablas principales. No elimina las tablas
+            ni la estructura del sistema.
 
             <br><br>
 
@@ -1529,7 +1583,7 @@
 
                     "Restaurar respaldo",
 
-                    "El archivo contiene:\n\n" +
+                    "El respaldo contiene:\n\n" +
 
                     afiliados.length
                         .toLocaleString("es-GT") +
@@ -1553,9 +1607,9 @@
 
                     " registros.\n\n" +
 
-                    "La restauración reemplazará los datos actuales de la biblioteca.\n\n" +
+                    "Se reemplazarán los datos actuales.\n" +
 
-                    "Fecha del respaldo: " +
+                    "Respaldo: " +
 
                     fechaRespaldo +
 
@@ -1694,15 +1748,15 @@
 
                     "Limpiar préstamos",
 
-                    "Actualmente existen " +
+                    "Hay " +
 
                     cantidad.toLocaleString("es-GT") +
 
                     " registros de préstamos.\n\n" +
 
-                    "Esta acción eliminará todos los préstamos, incluyendo los históricos y los ya devueltos.\n\n" +
+                    "Se eliminarán todos, incluidos los históricos.\n\n" +
 
-                    "Los libros, afiliados y colaboradores no serán eliminados.\n\n" +
+                    "Los libros, afiliados y colaboradores permanecerán.\n\n" +
 
                     "¿Deseas continuar?",
 
@@ -1726,11 +1780,11 @@
 
                     cantidad.toLocaleString("es-GT") +
 
-                    " registros de préstamos.\n\n" +
+                    " préstamos.\n\n" +
 
                     "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
 
-                    "¿Confirmas que deseas eliminarlos?",
+                    "¿Confirmas la limpieza?",
 
                     "Limpiar préstamos"
 
@@ -1857,7 +1911,7 @@
 
                     "Limpiar toda la biblioteca",
 
-                    "Esta opción eliminará TODOS los datos actuales.\n\n" +
+                    "Se eliminarán todos los datos actuales:\n\n" +
 
                     afiliados.toLocaleString("es-GT") +
                     " afiliados\n" +
@@ -1877,9 +1931,7 @@
 
                     " registros.\n\n" +
 
-                    "Los datos activos, inactivos, dados de baja y el historial de préstamos serán eliminados.\n\n" +
-
-                    "Las tablas y la estructura del sistema permanecerán intactas.\n\n" +
+                    "Las tablas y la estructura permanecerán intactas.\n\n" +
 
                     "¿Deseas continuar?",
 
@@ -1901,13 +1953,11 @@
 
                     "Se eliminarán TODOS los datos de la biblioteca.\n\n" +
 
-                    "Después de esta acción, el sistema quedará vacío para comenzar nuevamente desde cero.\n\n" +
+                    "El sistema quedará vacío para comenzar nuevamente.\n\n" +
 
                     "Esta acción no se puede deshacer desde esta pantalla.\n\n" +
 
-                    "Se recomienda crear un respaldo antes de continuar.\n\n" +
-
-                    "¿Confirmas que deseas limpiar toda la biblioteca?",
+                    "¿Confirmas la limpieza?",
 
                     "Limpiar todo"
 
