@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Administración - Biblioteca</title>
 
     <style>
-
         html {
             visibility: hidden;
         }
@@ -19,759 +17,602 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
-            color: #263238;
+            background: #f3f4f6;
+            color: #1f2937;
         }
 
-        /* =========================
-           ENCABEZADO
-        ========================= */
-
         header {
-            background: #263238;
+            background: #374151;
             color: white;
-            padding: 14px 20px;
-            position: relative;
-            min-height: 62px;
+            padding: 18px 30px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            gap: 20px;
         }
 
         .encabezado-contenido {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .encabezado-icono {
-            font-size: 25px;
+            font-size: 30px;
+        }
+
+        .encabezado-texto {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
 
         .encabezado-texto strong {
-            display: block;
-            font-size: 18px;
+            font-size: 21px;
         }
 
         .encabezado-texto span {
-            display: block;
-            font-size: 12px;
-            color: #cfd8dc;
-            margin-top: 2px;
+            font-size: 14px;
+            color: #d1d5db;
         }
 
         .boton-volver {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #7f8c8d;
-            color: white;
+            background: white;
+            color: #374151;
             border: none;
-            padding: 7px 12px;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 7px;
+            padding: 10px 18px;
             font-weight: bold;
-            font-size: 12px;
+            cursor: pointer;
         }
 
         .boton-volver:hover {
-            background: #6d7b7c;
+            background: #e5e7eb;
         }
-
-        /* =========================
-           CONTENEDOR
-        ========================= */
 
         .contenedor {
-            max-width: 1250px;
-            margin: 0 auto;
-            padding: 25px 20px 40px;
+            width: min(1250px, calc(100% - 40px));
+            margin: 30px auto 50px;
         }
-
-        .titulo-principal {
-            margin: 0 0 6px;
-            font-size: 25px;
-            color: #263238;
-        }
-
-        .subtitulo-principal {
-            margin: 0 0 25px;
-            color: #607d8b;
-            font-size: 14px;
-        }
-
-        /* =========================
-           SECCIONES
-        ========================= */
 
         .seccion {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             overflow: hidden;
         }
 
         .seccion-titulo {
-            background: #eceff1;
-            border-bottom: 1px solid #dfe3e5;
-            padding: 12px 16px;
-            font-size: 16px;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 20px;
+            font-size: 18px;
             font-weight: bold;
-            color: #263238;
+            color: #374151;
         }
 
         .seccion-contenido {
-            padding: 18px;
+            padding: 20px;
         }
 
         .descripcion-seccion {
-            margin: 0 0 15px;
-            color: #607d8b;
-            font-size: 13px;
+            margin: 0 0 18px;
+            color: #6b7280;
             line-height: 1.5;
         }
-
-        /* =========================
-           INFORMACION SISTEMA
-        ========================= */
 
         .grid-informacion {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 15px;
         }
 
         .dato {
-            background: #f7f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 13px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fafafa;
         }
 
         .dato-label {
             display: block;
-            color: #607d8b;
-            font-size: 11px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 6px;
         }
 
         .dato-valor {
             display: block;
-            font-size: 14px;
             font-weight: bold;
-            color: #263238;
-            word-break: break-word;
+            color: #111827;
         }
 
-        .estado-conexion {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .estado-ok {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .estado-error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .estado-pendiente {
-            background: #eceff1;
-            color: #546e7a;
-        }
-
-        /* =========================
-           ESTADISTICAS
-        ========================= */
-
-        .grid-estadisticas {
+        .estadisticas {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
 
         .tarjeta-estadistica {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
-            padding: 15px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
             text-align: center;
+            background: #fafafa;
         }
 
-        .tarjeta-estadistica .numero {
-            font-size: 25px;
-            font-weight: bold;
-            color: #263238;
-            margin-bottom: 5px;
-        }
-
-        .tarjeta-estadistica .texto {
-            font-size: 12px;
-            color: #607d8b;
-        }
-
-        .tarjeta-estadistica.total {
-            background: #263238;
-            border-color: #263238;
-        }
-
-        .tarjeta-estadistica.total .numero,
-        .tarjeta-estadistica.total .texto {
-            color: white;
-        }
-
-        .subtitulo-estadistica {
-            margin: 20px 0 10px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #37474f;
-        }
-
-        .grid-estadisticas-secundarias {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .estadistica-secundaria {
-            background: #f7f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .estadistica-secundaria strong {
+        .tarjeta-estadistica strong {
             display: block;
-            font-size: 20px;
-            color: #37474f;
-            margin-bottom: 4px;
+            font-size: 28px;
+            color: #374151;
+            margin-bottom: 7px;
         }
 
-        .estadistica-secundaria span {
-            font-size: 11px;
-            color: #607d8b;
+        .tarjeta-estadistica span {
+            font-size: 14px;
+            color: #6b7280;
         }
-
-        /* =========================
-           DIAGNOSTICO
-        ========================= */
 
         .tabla-contenedor {
+            width: 100%;
             overflow-x: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 760px;
         }
 
         th {
-            background: #eceff1;
-            color: #37474f;
-            font-size: 12px;
-            padding: 10px 8px;
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 13px;
             text-align: left;
-            border-bottom: 1px solid #dfe3e5;
+            padding: 12px;
+            border-bottom: 1px solid #d1d5db;
+            white-space: nowrap;
         }
 
         td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #eeeeee;
-            font-size: 12px;
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
             vertical-align: middle;
         }
 
-        tbody tr:hover {
-            background: #fafafa;
+        tr:last-child td {
+            border-bottom: none;
         }
 
-        .estado-tabla {
+        .estado-activo {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 12px;
             font-weight: bold;
         }
 
-        .estado-disponible {
-            background: #d4edda;
-            color: #155724;
+        .estado-inactivo {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        .estado-problema {
-            background: #f8d7da;
-            color: #721c24;
+        .rol-administrador {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        .estado-revision {
-            background: #fff3cd;
-            color: #856404;
+        .rol-usuario {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #e5e7eb;
+            color: #374151;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        /* =========================
-           INTEGRIDAD
-        ========================= */
+        .diagnostico-ok {
+            color: #166534;
+            font-weight: bold;
+        }
 
-        .lista-integridad {
+        .diagnostico-error {
+            color: #991b1b;
+            font-weight: bold;
+        }
+
+        .diagnostico-cargando {
+            color: #6b7280;
+        }
+
+        .integridad-lista {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
 
-        .item-integridad {
-            border: 1px solid #e0e0e0;
-            background: #f7f9fa;
-            border-radius: 7px;
-            padding: 13px;
+        .integridad-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 13px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 15px;
         }
 
-        .integridad-texto strong {
-            display: block;
+        .integridad-item strong {
+            font-size: 14px;
+        }
+
+        .integridad-estado {
             font-size: 13px;
-            margin-bottom: 4px;
-            color: #37474f;
-        }
-
-        .integridad-texto span {
-            display: block;
-            font-size: 11px;
-            color: #78909c;
-            line-height: 1.4;
-        }
-
-        .resultado-integridad {
-            min-width: 95px;
-            text-align: center;
-            padding: 5px 8px;
-            border-radius: 12px;
-            font-size: 10px;
             font-weight: bold;
-            background: #eceff1;
-            color: #546e7a;
+            white-space: nowrap;
         }
 
-        .resultado-ok {
-            background: #d4edda;
-            color: #155724;
+        .integridad-correcta {
+            color: #166534;
         }
 
-        .resultado-aviso {
-            background: #fff3cd;
-            color: #856404;
+        .integridad-observacion {
+            color: #92400e;
         }
 
-        .resultado-error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* =========================
-           SITIOS
-        ========================= */
-
-        .grid-sitios {
+        .sitios {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+            gap: 15px;
         }
 
         .sitio {
-            border: 1px solid #e0e0e0;
-            background: #f7f9fa;
-            border-radius: 7px;
-            padding: 16px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 18px;
             text-align: center;
+            background: #fafafa;
         }
 
         .sitio-codigo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #37474f;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 9px;
-            font-size: 17px;
+            font-size: 25px;
             font-weight: bold;
+            color: #374151;
+            margin-bottom: 8px;
         }
 
-        .sitio strong {
-            display: block;
-            font-size: 12px;
-            color: #37474f;
-            line-height: 1.3;
+        .sitio-nombre {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.4;
         }
-
-        .sitio span {
-            display: block;
-            font-size: 10px;
-            color: #78909c;
-            margin-top: 5px;
-        }
-
-        /* =========================
-           USUARIOS
-        ========================= */
 
         .usuarios-preparacion {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 18px;
+            gap: 18px;
+            margin-bottom: 20px;
         }
 
         .tarjeta-rol {
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
-            background: #f7f9fa;
-            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 18px;
+            background: #fafafa;
         }
 
         .tarjeta-rol h3 {
             margin: 0 0 8px;
-            font-size: 15px;
-            color: #263238;
+            color: #374151;
         }
 
         .tarjeta-rol p {
-            margin: 0 0 10px;
-            color: #607d8b;
-            font-size: 12px;
+            margin: 0 0 12px;
+            color: #6b7280;
             line-height: 1.5;
+            font-size: 14px;
         }
 
         .tarjeta-rol ul {
             margin: 0;
-            padding-left: 18px;
-            color: #455a64;
-            font-size: 11px;
+            padding-left: 20px;
+            color: #4b5563;
             line-height: 1.7;
-        }
-
-        .estado-preparacion {
-            margin-top: 15px;
-            padding: 12px;
-            background: #eceff1;
-            border-radius: 6px;
-            color: #546e7a;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .usuarios-resumen {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .usuario-resumen {
-            background: #f7f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
             text-align: center;
+            background: #fafafa;
         }
 
         .usuario-resumen strong {
             display: block;
-            font-size: 20px;
-            color: #37474f;
-            margin-bottom: 4px;
+            font-size: 25px;
+            color: #374151;
+            margin-bottom: 5px;
         }
 
         .usuario-resumen span {
-            font-size: 11px;
-            color: #607d8b;
+            color: #6b7280;
+            font-size: 13px;
         }
 
-        .rol-usuario {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            background: #eceff1;
-            color: #455a64;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .rol-administrador {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            background: #dbe5ea;
-            color: #263238;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .usuario-activo {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            background: #d4edda;
-            color: #155724;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .usuario-inactivo {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            background: #f8d7da;
-            color: #721c24;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .usuarios-cargando {
-            text-align: center;
-            padding: 20px;
-            color: #78909c;
-            font-size: 12px;
-        }
-
+        .usuarios-cargando,
         .usuarios-vacio {
             text-align: center;
-            padding: 20px;
-            color: #78909c;
-            font-size: 12px;
+            color: #6b7280;
+            padding: 25px;
         }
 
-        /* =========================
-           SESION
-        ========================= */
+        .estado-preparacion {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.5;
+        }
 
-        .sesion-acciones {
+        .acciones-usuarios {
             display: flex;
             justify-content: flex-end;
-            gap: 8px;
-            margin-top: 15px;
+            margin-bottom: 18px;
         }
-
-        /* =========================
-           BOTONES
-        ========================= */
 
         .boton {
             border: none;
-            border-radius: 5px;
-            padding: 8px 13px;
-            cursor: pointer;
-            font-size: 12px;
+            border-radius: 7px;
+            padding: 10px 18px;
             font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .boton-principal {
-            background: #37474f;
+            background: #374151;
             color: white;
         }
 
         .boton-principal:hover {
-            background: #263238;
-        }
-
-        .boton-principal:disabled {
-            background: #90a4ae;
-            cursor: wait;
+            background: #1f2937;
         }
 
         .boton-secundario {
-            background: #eceff1;
-            color: #37474f;
+            background: #e5e7eb;
+            color: #374151;
         }
 
         .boton-secundario:hover {
-            background: #cfd8dc;
+            background: #d1d5db;
         }
 
         .boton-rojo {
-            background: #c0392b;
+            background: #b91c1c;
             color: white;
         }
 
         .boton-rojo:hover {
-            background: #a93226;
+            background: #991b1b;
         }
 
-        .acciones-seccion {
+        .sesion-acciones {
             display: flex;
             justify-content: flex-end;
-            gap: 8px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        /* =========================
-           MODAL
-        ========================= */
+        .pie {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            padding: 20px;
+        }
+
+        /* MODALES */
 
         .modal-fondo {
             display: none;
             position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
             z-index: 1000;
-            align-items: center;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
             justify-content: center;
+            align-items: center;
             padding: 20px;
         }
 
-        .modal-fondo.mostrar {
+        .modal-fondo.visible {
             display: flex;
         }
 
         .modal {
-            width: 100%;
-            max-width: 480px;
             background: white;
-            border-radius: 8px;
+            width: min(500px, 100%);
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-grande {
+            width: min(560px, 100%);
         }
 
         .modal-cabecera {
-            background: #263238;
+            background: #374151;
             color: white;
-            padding: 13px 16px;
-            font-size: 15px;
+            padding: 16px 20px;
+            font-size: 18px;
             font-weight: bold;
         }
 
         .modal-cuerpo {
-            padding: 18px;
-            color: #455a64;
-            font-size: 13px;
+            padding: 22px 20px;
+            color: #374151;
             line-height: 1.5;
         }
 
         .modal-pie {
-            padding: 10px 16px;
+            padding: 14px 20px;
+            border-top: 1px solid #e5e7eb;
             display: flex;
             justify-content: flex-end;
-            gap: 8px;
-            border-top: 1px solid #eeeeee;
+            gap: 10px;
         }
 
-        /* =========================
-           PIE
-        ========================= */
-
-        footer {
-            text-align: center;
-            color: #90a4ae;
-            font-size: 11px;
-            padding: 15px;
+        .formulario {
+            display: grid;
+            gap: 16px;
         }
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-        @media (max-width: 1000px) {
+        .campo label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+        }
 
-            .grid-estadisticas {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .campo input,
+        .campo select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            padding: 11px 12px;
+            font-size: 14px;
+            color: #1f2937;
+            background: white;
+            outline: none;
+        }
 
-            .grid-sitios {
-                grid-template-columns: repeat(3, 1fr);
-            }
+        .campo input:focus,
+        .campo select:focus {
+            border-color: #6b7280;
+            box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.12);
+        }
 
-            .grid-informacion {
+        .formulario-nota {
+            background: #f3f4f6;
+            border-radius: 7px;
+            padding: 12px;
+            color: #4b5563;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error-formulario {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 7px;
+            padding: 11px 12px;
+            font-size: 13px;
+        }
+
+        .error-formulario.visible {
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .grid-informacion,
+            .estadisticas {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .grid-estadisticas-secundarias {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .usuarios-resumen {
+            .sitios {
                 grid-template-columns: repeat(3, 1fr);
             }
-
         }
 
         @media (max-width: 700px) {
+            header {
+                padding: 15px;
+            }
 
             .contenedor {
-                padding: 18px 10px 30px;
+                width: min(100% - 20px, 1250px);
+                margin-top: 15px;
             }
 
-            header {
-                padding: 12px 10px;
-            }
-
-            .boton-volver {
-                right: 10px;
-            }
-
-            .encabezado-texto strong {
-                font-size: 15px;
-            }
-
-            .encabezado-texto span {
-                font-size: 10px;
-            }
-
-            .grid-estadisticas,
-            .grid-estadisticas-secundarias,
             .grid-informacion,
-            .grid-sitios,
-            .lista-integridad,
+            .estadisticas,
             .usuarios-preparacion,
             .usuarios-resumen {
                 grid-template-columns: 1fr;
             }
 
-            .titulo-principal {
-                font-size: 21px;
+            .sitios {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .item-integridad {
-                align-items: flex-start;
+            .encabezado-icono {
+                display: none;
             }
 
-            .resultado-integridad {
-                min-width: 80px;
+            .encabezado-texto strong {
+                font-size: 18px;
             }
 
+            .encabezado-texto span {
+                font-size: 12px;
+            }
+
+            .boton-volver {
+                padding: 9px 12px;
+            }
+
+            .sesion-acciones {
+                flex-direction: column;
+            }
+
+            .sesion-acciones .boton {
+                width: 100%;
+            }
         }
-
     </style>
 </head>
 
 <body>
 
 <header>
-
     <div class="encabezado-contenido">
-
         <div class="encabezado-icono">⚙️</div>
 
         <div class="encabezado-texto">
-
             <strong>Biblioteca</strong>
-
-            <span>
-                Administración del sistema
-            </span>
-
+            <span>Administración del sistema</span>
         </div>
-
     </div>
 
     <button
@@ -780,76 +621,241 @@
         onclick="volverAtras()">
         Volver atrás
     </button>
-
 </header>
-
 
 <main class="contenedor">
 
-    <h1 class="titulo-principal">
-        Administración
-    </h1>
-
-    <p class="subtitulo-principal">
-        Centro de control, diagnóstico y configuración del sistema de biblioteca.
-    </p>
-
-
-    <!-- =========================
-         INFORMACION DEL SISTEMA
-    ========================== -->
+    <!-- INFORMACIÓN DEL SISTEMA -->
 
     <section class="seccion">
-
         <div class="seccion-titulo">
             Información del sistema
         </div>
 
         <div class="seccion-contenido">
-
             <div class="grid-informacion">
 
                 <div class="dato">
-                    <span class="dato-label">
-                        Sistema
-                    </span>
-
-                    <span class="dato-valor">
-                        Biblioteca
-                    </span>
+                    <span class="dato-label">Sistema</span>
+                    <span class="dato-valor">Biblioteca</span>
                 </div>
 
-
                 <div class="dato">
-                    <span class="dato-label">
-                        Versión
-                    </span>
-
-                    <span class="dato-valor">
-                        1.0
-                    </span>
+                    <span class="dato-label">Base de datos</span>
+                    <span class="dato-valor">Supabase</span>
                 </div>
 
-
                 <div class="dato">
-                    <span class="dato-label">
-                        Base de datos
-                    </span>
-
-                    <span class="dato-valor">
-                        Supabase
-                    </span>
+                    <span class="dato-label">Estado</span>
+                    <span class="dato-valor">Operativo</span>
                 </div>
 
-
                 <div class="dato">
-                    <span class="dato-label">
-                        Conexión
-                    </span>
-
+                    <span class="dato-label">Usuario actual</span>
                     <span
-                        id="estadoConexion"
-                        class="estado-conexion estado-pendiente">
+                        id="usuarioActual"
+                        class="dato-valor">
+                        Comprobando...
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ESTADÍSTICAS -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Estadísticas generales
+        </div>
+
+        <div class="seccion-contenido">
+
+            <div class="estadisticas">
+
+                <div class="tarjeta-estadistica">
+                    <strong id="estadisticaLibros">0</strong>
+                    <span>Libros</span>
+                </div>
+
+                <div class="tarjeta-estadistica">
+                    <strong id="estadisticaAfiliados">0</strong>
+                    <span>Afiliados</span>
+                </div>
+
+                <div class="tarjeta-estadistica">
+                    <strong id="estadisticaColaboradores">0</strong>
+                    <span>Colaboradores</span>
+                </div>
+
+                <div class="tarjeta-estadistica">
+                    <strong id="estadisticaPrestamos">0</strong>
+                    <span>Préstamos</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DIAGNÓSTICO -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Diagnóstico del sistema
+        </div>
+
+        <div class="seccion-contenido">
+
+            <p class="descripcion-seccion">
+                Comprobación básica de las tablas principales utilizadas por el sistema.
+            </p>
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Elemento</th>
+                            <th>Estado</th>
+                            <th>Registros</th>
+                            <th>Observación</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Afiliados</td>
+                            <td id="diagnosticoAfiliadosEstado" class="diagnostico-cargando">
+                                Comprobando...
+                            </td>
+                            <td id="diagnosticoAfiliadosCantidad">-</td>
+                            <td id="diagnosticoAfiliadosMensaje">-</td>
+                        </tr>
+
+                        <tr>
+                            <td>Libros</td>
+                            <td id="diagnosticoLibrosEstado" class="diagnostico-cargando">
+                                Comprobando...
+                            </td>
+                            <td id="diagnosticoLibrosCantidad">-</td>
+                            <td id="diagnosticoLibrosMensaje">-</td>
+                        </tr>
+
+                        <tr>
+                            <td>Colaboradores</td>
+                            <td id="diagnosticoColaboradoresEstado" class="diagnostico-cargando">
+                                Comprobando...
+                            </td>
+                            <td id="diagnosticoColaboradoresCantidad">-</td>
+                            <td id="diagnosticoColaboradoresMensaje">-</td>
+                        </tr>
+
+                        <tr>
+                            <td>Préstamos</td>
+                            <td id="diagnosticoPrestamosEstado" class="diagnostico-cargando">
+                                Comprobando...
+                            </td>
+                            <td id="diagnosticoPrestamosCantidad">-</td>
+                            <td id="diagnosticoPrestamosMensaje">-</td>
+                        </tr>
+
+                        <tr>
+                            <td>Usuarios</td>
+                            <td id="diagnosticoUsuariosEstado" class="diagnostico-cargando">
+                                Comprobando...
+                            </td>
+                            <td id="diagnosticoUsuariosCantidad">-</td>
+                            <td id="diagnosticoUsuariosMensaje">-</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INTEGRIDAD -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Integridad de datos
+        </div>
+
+        <div class="seccion-contenido">
+
+            <p class="descripcion-seccion">
+                Revisiones básicas para detectar situaciones que podrían afectar el funcionamiento del sistema.
+            </p>
+
+            <div class="integridad-lista">
+
+                <div class="integridad-item">
+                    <strong>Libros con código repetido</strong>
+                    <span id="integridadCodigosLibros" class="integridad-estado">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="integridad-item">
+                    <strong>Afiliados con PersonaId repetido</strong>
+                    <span id="integridadPersonaId" class="integridad-estado">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="integridad-item">
+                    <strong>Familias sin identificador</strong>
+                    <span id="integridadFamiliaId" class="integridad-estado">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="integridad-item">
+                    <strong>Libros sin estado</strong>
+                    <span id="integridadLibrosEstado" class="integridad-estado">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="integridad-item">
+                    <strong>Afiliados sin estado</strong>
+                    <span id="integridadAfiliadosEstado" class="integridad-estado">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="integridad-item">
+                    <strong>Colaboradores sin estado</strong>
+                    <span id="integridadColaboradoresEstado" class="integridad-estado">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="integridad-item">
+                    <strong>Préstamos sin código de libro</strong>
+                    <span id="integridadPrestamosLibro" class="integridad-estado">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="integridad-item">
+                    <strong>Usuarios sin rol</strong>
+                    <span id="integridadUsuariosRol" class="integridad-estado">
                         Comprobando...
                     </span>
                 </div>
@@ -861,611 +867,51 @@
     </section>
 
 
-    <!-- =========================
-         ESTADISTICAS GENERALES
-    ========================== -->
+    <!-- SITIOS -->
 
     <section class="seccion">
 
         <div class="seccion-titulo">
-            Estadísticas generales
+            Sitios
         </div>
 
         <div class="seccion-contenido">
 
-            <p class="descripcion-seccion">
-                Resumen general de la información registrada actualmente en el sistema.
-            </p>
-
-
-            <div class="grid-estadisticas">
-
-                <div class="tarjeta-estadistica">
-                    <div
-                        class="numero"
-                        id="totalLibros">
-                        0
-                    </div>
-
-                    <div class="texto">
-                        Libros
-                    </div>
-                </div>
-
-
-                <div class="tarjeta-estadistica">
-                    <div
-                        class="numero"
-                        id="totalAfiliados">
-                        0
-                    </div>
-
-                    <div class="texto">
-                        Afiliados
-                    </div>
-                </div>
-
-
-                <div class="tarjeta-estadistica">
-                    <div
-                        class="numero"
-                        id="totalColaboradores">
-                        0
-                    </div>
-
-                    <div class="texto">
-                        Colaboradores
-                    </div>
-                </div>
-
-
-                <div class="tarjeta-estadistica">
-                    <div
-                        class="numero"
-                        id="totalPrestamos">
-                        0
-                    </div>
-
-                    <div class="texto">
-                        Préstamos
-                    </div>
-                </div>
-
-
-                <div class="tarjeta-estadistica total">
-                    <div
-                        class="numero"
-                        id="totalRegistros">
-                        0
-                    </div>
-
-                    <div class="texto">
-                        Registros totales
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="subtitulo-estadistica">
-                Estado actual
-            </div>
-
-
-            <div class="grid-estadisticas-secundarias">
-
-                <div class="estadistica-secundaria">
-                    <strong id="librosDisponibles">
-                        0
-                    </strong>
-
-                    <span>
-                        Libros disponibles
-                    </span>
-                </div>
-
-
-                <div class="estadistica-secundaria">
-                    <strong id="librosPrestados">
-                        0
-                    </strong>
-
-                    <span>
-                        Libros prestados
-                    </span>
-                </div>
-
-
-                <div class="estadistica-secundaria">
-                    <strong id="afiliadosActivos">
-                        0
-                    </strong>
-
-                    <span>
-                        Afiliados activos
-                    </span>
-                </div>
-
-
-                <div class="estadistica-secundaria">
-                    <strong id="afiliadosInactivos">
-                        0
-                    </strong>
-
-                    <span>
-                        Afiliados inactivos
-                    </span>
-                </div>
-
-
-                <div class="estadistica-secundaria">
-                    <strong id="colaboradoresActivos">
-                        0
-                    </strong>
-
-                    <span>
-                        Colaboradores activos
-                    </span>
-                </div>
-
-
-                <div class="estadistica-secundaria">
-                    <strong id="colaboradoresInactivos">
-                        0
-                    </strong>
-
-                    <span>
-                        Colaboradores inactivos
-                    </span>
-                </div>
-
-
-                <div class="estadistica-secundaria">
-                    <strong id="prestamosAfiliados">
-                        0
-                    </strong>
-
-                    <span>
-                        Préstamos de afiliados
-                    </span>
-                </div>
-
-
-                <div class="estadistica-secundaria">
-                    <strong id="prestamosColaboradores">
-                        0
-                    </strong>
-
-                    <span>
-                        Préstamos de colaboradores
-                    </span>
-                </div>
-
-            </div>
-
-
-            <div class="acciones-seccion">
-
-                <button
-                    type="button"
-                    class="boton boton-principal"
-                    id="botonActualizar"
-                    onclick="actualizarInformacion()">
-                    Actualizar información
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         DIAGNOSTICO
-    ========================== -->
-
-    <section class="seccion">
-
-        <div class="seccion-titulo">
-            Diagnóstico del sistema
-        </div>
-
-        <div class="seccion-contenido">
-
-            <p class="descripcion-seccion">
-                Comprueba que las principales tablas de la base de datos estén disponibles
-                y puedan ser consultadas.
-            </p>
-
-
-            <div class="tabla-contenedor">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Tabla</th>
-                            <th>Función</th>
-                            <th>Registros</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-
-
-                    <tbody id="tablaDiagnostico">
-
-                        <tr>
-                            <td>afiliados</td>
-                            <td>Familias y afiliados</td>
-                            <td>—</td>
-                            <td>
-                                <span class="estado-tabla estado-revision">
-                                    Pendiente
-                                </span>
-                            </td>
-                        </tr>
-
-
-                        <tr>
-                            <td>libros</td>
-                            <td>Catálogo de libros</td>
-                            <td>—</td>
-                            <td>
-                                <span class="estado-tabla estado-revision">
-                                    Pendiente
-                                </span>
-                            </td>
-                        </tr>
-
-
-                        <tr>
-                            <td>colaboradores</td>
-                            <td>Personal colaborador</td>
-                            <td>—</td>
-                            <td>
-                                <span class="estado-tabla estado-revision">
-                                    Pendiente
-                                </span>
-                            </td>
-                        </tr>
-
-
-                        <tr>
-                            <td>prestamos</td>
-                            <td>Préstamos y devoluciones</td>
-                            <td>—</td>
-                            <td>
-                                <span class="estado-tabla estado-revision">
-                                    Pendiente
-                                </span>
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-            <div class="acciones-seccion">
-
-                <button
-                    type="button"
-                    class="boton boton-principal"
-                    id="botonDiagnostico"
-                    onclick="ejecutarDiagnostico()">
-                    Comprobar sistema
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         INTEGRIDAD
-    ========================== -->
-
-    <section class="seccion">
-
-        <div class="seccion-titulo">
-            Integridad de datos
-        </div>
-
-        <div class="seccion-contenido">
-
-            <p class="descripcion-seccion">
-                Revisión básica de posibles registros incompletos o inconsistencias.
-                Esta sección no modifica ni elimina información.
-            </p>
-
-
-            <div class="lista-integridad">
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Afiliados sin estado
-                        </strong>
-
-                        <span>
-                            Registros que no tienen definido Activo o Inactivo.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadAfiliadosEstado"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Afiliados sin sitio
-                        </strong>
-
-                        <span>
-                            Registros que no tienen definido F, M, N, R o Z.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadAfiliadosSitio"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Libros sin sitio
-                        </strong>
-
-                        <span>
-                            Libros cuyo campo Biblioteca está vacío o no corresponde a un sitio válido.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadLibrosSitio"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Libros sin código
-                        </strong>
-
-                        <span>
-                            Libros que no tienen código de identificación.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadLibrosCodigo"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Colaboradores sin estado
-                        </strong>
-
-                        <span>
-                            Registros que no tienen definido Activo o Inactivo.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadColaboradoresEstado"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Colaboradores sin código
-                        </strong>
-
-                        <span>
-                            Registros que no tienen código de colaborador.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadColaboradoresCodigo"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Libros con estado inválido
-                        </strong>
-
-                        <span>
-                            Registros cuyo estado no corresponde a un estado conocido.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadLibrosEstado"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-
-                <div class="item-integridad">
-
-                    <div class="integridad-texto">
-                        <strong>
-                            Préstamos sin libro
-                        </strong>
-
-                        <span>
-                            Préstamos que no tienen código o referencia de libro.
-                        </span>
-                    </div>
-
-                    <div
-                        id="integridadPrestamosLibro"
-                        class="resultado-integridad">
-                        Pendiente
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="acciones-seccion">
-
-                <button
-                    type="button"
-                    class="boton boton-principal"
-                    id="botonIntegridad"
-                    onclick="revisarIntegridad()">
-                    Revisar integridad
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         SITIOS
-    ========================== -->
-
-    <section class="seccion">
-
-        <div class="seccion-titulo">
-            Sitios de la Fundación
-        </div>
-
-        <div class="seccion-contenido">
-
-            <p class="descripcion-seccion">
-                Sitios actualmente utilizados por el sistema de biblioteca.
-                Los códigos se mantienen porque forman parte de los identificadores
-                de familias y personas.
-            </p>
-
-
-            <div class="grid-sitios">
+            <div class="sitios">
 
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        F
+                    <div class="sitio-codigo">F</div>
+                    <div class="sitio-nombre">
+                        Antigua Guatemala
                     </div>
-
-                    <strong>
-                        Antigua
-                    </strong>
-
-                    <span>
-                        Familias F
-                    </span>
                 </div>
 
-
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        M
-                    </div>
-
-                    <strong>
+                    <div class="sitio-codigo">M</div>
+                    <div class="sitio-nombre">
                         San Miguel Milpas Altas
-                    </strong>
-
-                    <span>
-                        Familias M
-                    </span>
+                    </div>
                 </div>
 
-
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        R
-                    </div>
-
-                    <strong>
+                    <div class="sitio-codigo">R</div>
+                    <div class="sitio-nombre">
                         San Rafael el Arado
-                    </strong>
-
-                    <span>
-                        Familias R
-                    </span>
+                    </div>
                 </div>
 
-
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        N
-                    </div>
-
-                    <strong>
+                    <div class="sitio-codigo">N</div>
+                    <div class="sitio-nombre">
                         Nueva Esperanza
-                    </strong>
-
-                    <span>
-                        Familias N
-                    </span>
+                    </div>
                 </div>
 
-
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        Z
-                    </div>
-
-                    <strong>
+                    <div class="sitio-codigo">Z</div>
+                    <div class="sitio-nombre">
                         Zapote
-                    </strong>
-
-                    <span>
-                        Familias Z
-                    </span>
+                    </div>
                 </div>
 
             </div>
@@ -1475,9 +921,7 @@
     </section>
 
 
-    <!-- =========================
-         USUARIOS
-    ========================== -->
+    <!-- USUARIOS -->
 
     <section class="seccion">
 
@@ -1489,7 +933,6 @@
 
             <p class="descripcion-seccion">
                 Usuarios registrados en el sistema y rol asignado a cada cuenta.
-                En esta etapa la sección permite consultar la información de usuarios.
             </p>
 
 
@@ -1497,13 +940,10 @@
 
                 <div class="tarjeta-rol">
 
-                    <h3>
-                        Usuario
-                    </h3>
+                    <h3>Usuario</h3>
 
                     <p>
-                        Perfil pensado para las personas que realizarán las tareas
-                        cotidianas de la biblioteca.
+                        Perfil pensado para las personas que realizarán las tareas cotidianas de la biblioteca.
                     </p>
 
                     <ul>
@@ -1519,13 +959,10 @@
 
                 <div class="tarjeta-rol">
 
-                    <h3>
-                        Administrador
-                    </h3>
+                    <h3>Administrador</h3>
 
                     <p>
-                        Perfil con acceso completo para administrar la información
-                        y el funcionamiento del sistema.
+                        Perfil con acceso completo para administrar la información y el funcionamiento del sistema.
                     </p>
 
                     <ul>
@@ -1543,48 +980,43 @@
             </div>
 
 
+            <!-- NUEVO USUARIO -->
+
+            <div class="acciones-usuarios">
+
+                <button
+                    type="button"
+                    class="boton boton-principal"
+                    onclick="abrirModalNuevoUsuario()">
+                    Nuevo usuario
+                </button>
+
+            </div>
+
+
+            <!-- RESUMEN DE USUARIOS -->
+
             <div class="usuarios-resumen">
 
                 <div class="usuario-resumen">
-
-                    <strong id="totalUsuarios">
-                        0
-                    </strong>
-
-                    <span>
-                        Usuarios registrados
-                    </span>
-
+                    <strong id="totalUsuarios">0</strong>
+                    <span>Usuarios registrados</span>
                 </div>
 
-
                 <div class="usuario-resumen">
-
-                    <strong id="usuariosAdministradores">
-                        0
-                    </strong>
-
-                    <span>
-                        Administradores
-                    </span>
-
+                    <strong id="usuariosAdministradores">0</strong>
+                    <span>Administradores</span>
                 </div>
 
-
                 <div class="usuario-resumen">
-
-                    <strong id="usuariosActivos">
-                        0
-                    </strong>
-
-                    <span>
-                        Usuarios activos
-                    </span>
-
+                    <strong id="usuariosActivos">0</strong>
+                    <span>Usuarios activos</span>
                 </div>
 
             </div>
 
+
+            <!-- TABLA DE USUARIOS -->
 
             <div class="tabla-contenedor">
 
@@ -1601,7 +1033,6 @@
                         </tr>
 
                     </thead>
-
 
                     <tbody id="tablaUsuarios">
 
@@ -1622,10 +1053,7 @@
 
             <div class="estado-preparacion">
 
-                <strong>
-                    Estado:
-                </strong>
-
+                <strong>Estado:</strong>
                 La gestión de usuarios está conectada con Supabase.
                 Los usuarios mostrados corresponden a los registros existentes
                 en la tabla de usuarios del sistema.
@@ -1637,9 +1065,7 @@
     </section>
 
 
-    <!-- =========================
-         SESION
-    ========================== -->
+    <!-- SESIÓN -->
 
     <section class="seccion">
 
@@ -1652,34 +1078,23 @@
             <div class="grid-informacion">
 
                 <div class="dato">
-                    <span class="dato-label">
-                        Usuario
-                    </span>
-
+                    <span class="dato-label">Usuario</span>
                     <span
-                        id="usuarioActual"
+                        id="usuarioActualSesion"
                         class="dato-valor">
                         Comprobando...
                     </span>
                 </div>
 
-
                 <div class="dato">
-                    <span class="dato-label">
-                        Estado
-                    </span>
-
+                    <span class="dato-label">Estado</span>
                     <span class="dato-valor">
                         Sesión activa
                     </span>
                 </div>
 
-
                 <div class="dato">
-                    <span class="dato-label">
-                        Acceso
-                    </span>
-
+                    <span class="dato-label">Acceso</span>
                     <span
                         id="rolActual"
                         class="dato-valor">
@@ -1687,12 +1102,8 @@
                     </span>
                 </div>
 
-
                 <div class="dato">
-                    <span class="dato-label">
-                        Base de datos
-                    </span>
-
+                    <span class="dato-label">Base de datos</span>
                     <span class="dato-valor">
                         Conectada
                     </span>
@@ -1726,14 +1137,12 @@
 </main>
 
 
-<footer>
+<div class="pie">
     Sistema de Biblioteca
-</footer>
+</div>
 
 
-<!-- =========================
-     MODAL
-========================== -->
+<!-- MODAL DE MENSAJES -->
 
 <div
     id="modalMensaje"
@@ -1769,17 +1178,159 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- MODAL NUEVO USUARIO -->
 
+<div
+    id="modalNuevoUsuario"
+    class="modal-fondo">
+
+    <div class="modal modal-grande">
+
+        <div class="modal-cabecera">
+            Nuevo usuario
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <form
+                id="formNuevoUsuario"
+                class="formulario"
+                onsubmit="guardarNuevoUsuario(event)">
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioNombre">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nuevoUsuarioNombre"
+                        placeholder="Nombre completo"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioCorreo">
+                        Correo
+                    </label>
+
+                    <input
+                        type="email"
+                        id="nuevoUsuarioCorreo"
+                        placeholder="correo@ejemplo.com"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioRol">
+                        Rol
+                    </label>
+
+                    <select
+                        id="nuevoUsuarioRol"
+                        required>
+
+                        <option value="Usuario">
+                            Usuario
+                        </option>
+
+                        <option value="Administrador">
+                            Administrador
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioEstado">
+                        Estado
+                    </label>
+
+                    <select
+                        id="nuevoUsuarioEstado"
+                        required>
+
+                        <option value="Activo">
+                            Activo
+                        </option>
+
+                        <option value="Inactivo">
+                            Inactivo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="formulario-nota">
+
+                    En esta etapa estamos preparando la información del usuario.
+                    La creación de la cuenta de acceso se conectará posteriormente
+                    con Supabase Auth para evitar crear registros que no puedan iniciar sesión.
+
+                </div>
+
+
+                <div
+                    id="errorFormularioUsuario"
+                    class="error-formulario">
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-secundario"
+                onclick="cerrarModalNuevoUsuario()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-principal"
+                onclick="guardarNuevoUsuario()">
+                Continuar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="auth.js"></script>
 
 
 <script>
 
-    /* ==========================================================
-       VARIABLES
-    ========================================================== */
+    let usuarioSesionActual = null;
+    let perfilUsuarioActual = null;
+
+    window.administracionAutorizado = false;
+
 
     let datosAdministracion = {
         afiliados: [],
@@ -1790,318 +1341,70 @@
     };
 
 
-    let usuarioSesionActual = null;
-    let perfilUsuarioActual = null;
-
-
-    /* ==========================================================
-       AUTENTICACION Y ROL
-    ========================================================== */
-
-    window.administracionAutorizado = false;
-
-    window.administracionAuth = (async function protegerAdministracion() {
-
-        try {
-
-            const {
-                data: { session },
-                error
-            } = await supabaseClient.auth.getSession();
-
-
-            if (error || !session) {
-
-                window.location.href = "index.html";
-
-                return;
-
-            }
-
-
-            usuarioSesionActual =
-                session.user;
-
-
-            const elementoUsuario =
-                document.getElementById(
-                    "usuarioActual"
-                );
-
-
-            if (elementoUsuario) {
-
-                elementoUsuario.textContent =
-                    usuarioSesionActual.email ||
-                    "Usuario autenticado";
-
-            }
-
-
-            const {
-                data: perfil,
-                error: errorPerfil
-            } = await supabaseClient
-                .from("usuarios")
-                .select(`
-                    id,
-                    correo,
-                    nombre,
-                    rol,
-                    estado,
-                    fechaRegistro
-                `)
-                .eq(
-                    "id",
-                    usuarioSesionActual.id
-                )
-                .maybeSingle();
-
-
-            if (errorPerfil) {
-
-                throw errorPerfil;
-
-            }
-
-
-            if (!perfil) {
-
-                document.documentElement.style.visibility =
-                    "visible";
-
-
-                mostrarModal(
-                    "Acceso no configurado",
-                    "La cuenta ha iniciado sesión, pero todavía no tiene un registro de usuario en el sistema de biblioteca."
-                );
-
-
-                setTimeout(function() {
-
-                    window.location.href =
-                        "index.html";
-
-                }, 2500);
-
-
-                return;
-
-            }
-
-
-            perfilUsuarioActual =
-                perfil;
-
-
-            const rol =
-                normalizar(
-                    perfil.rol
-                );
-
-
-            const estado =
-                normalizar(
-                    perfil.estado
-                );
-
-
-            if (
-                rol !== "ADMINISTRADOR" ||
-                estado !== "ACTIVO"
-            ) {
-
-                document.documentElement.style.visibility =
-                    "visible";
-
-
-                if (
-                    rol !== "ADMINISTRADOR"
-                ) {
-
-                    mostrarModal(
-                        "Acceso restringido",
-                        "Tu cuenta no tiene permisos de administrador para acceder a esta sección."
-                    );
-
-                } else {
-
-                    mostrarModal(
-                        "Usuario inactivo",
-                        "Tu cuenta está marcada como inactiva y no puede acceder a esta sección."
-                    );
-
-                }
-
-
-                setTimeout(function() {
-
-                    window.location.href =
-                        "index.html";
-
-                }, 2500);
-
-
-                return;
-
-            }
-
-
-            window.administracionAutorizado =
-                true;
-
-
-            const elementoRol =
-                document.getElementById(
-                    "rolActual"
-                );
-
-
-            if (elementoRol) {
-
-                elementoRol.textContent =
-                    "Administrador";
-
-            }
-
-
-            const estadoPreparacion =
-                document.querySelector(
-                    ".estado-preparacion"
-                );
-
-
-            if (estadoPreparacion) {
-
-                estadoPreparacion.innerHTML =
-                    "<strong>Estado:</strong> Administración de usuarios conectada. El usuario actual tiene permisos de administrador.";
-
-            }
-
-
-            document.documentElement.style.visibility =
-                "visible";
-
-
-            await cargarTodo();
-
-
-        } catch (error) {
-
-            console.error(
-                "Error de autenticación o permisos:",
-                error
-            );
-
-
-            document.documentElement.style.visibility =
-                "visible";
-
-
-            mostrarModal(
-                "Error",
-                "No fue posible comprobar los permisos de la cuenta. Será necesario volver a iniciar sesión."
-            );
-
-
-            setTimeout(function() {
-
-                window.location.href =
-                    "index.html";
-
-            }, 2500);
-
-        }
-
-    })();
-
-
-    /* ==========================================================
-       UTILIDADES
-    ========================================================== */
+    /* =========================================================
+       FUNCIONES GENERALES
+    ========================================================= */
 
     function normalizar(valor) {
 
-        return String(valor ?? "")
+        if (valor === null || valor === undefined) {
+            return "";
+        }
+
+        return String(valor)
             .trim()
             .toUpperCase();
 
     }
 
 
-    function obtenerSitioValido(valor) {
+    function obtenerValor(objeto, campo, valorPredeterminado = "") {
 
-        const sitio =
-            normalizar(valor);
-
-
-        if (
-            ["F", "M", "N", "R", "Z"]
-                .includes(sitio)
-        ) {
-
-            return sitio;
-
+        if (!objeto) {
+            return valorPredeterminado;
         }
 
+        if (
+            objeto[campo] === null ||
+            objeto[campo] === undefined
+        ) {
+            return valorPredeterminado;
+        }
 
-        return "";
+        return objeto[campo];
 
     }
 
 
     function esEstadoActivo(valor) {
 
-        const estado =
-            normalizar(valor);
-
-
-        return (
-            estado === "ACTIVO" ||
-            estado === "ACTIVE"
-        );
+        return normalizar(valor) === "ACTIVO";
 
     }
 
 
     function esEstadoInactivo(valor) {
 
-        const estado =
-            normalizar(valor);
-
-
-        return (
-            estado === "INACTIVO" ||
-            estado === "INACTIVE"
-        );
+        return normalizar(valor) === "INACTIVO";
 
     }
 
 
-    function obtenerValor(objeto, nombres) {
+    function escapeHtml(valor) {
 
-        if (!objeto) {
-
+        if (
+            valor === null ||
+            valor === undefined
+        ) {
             return "";
-
         }
 
-
-        for (const nombre of nombres) {
-
-            if (
-                objeto[nombre] !== undefined &&
-                objeto[nombre] !== null
-            ) {
-
-                return objeto[nombre];
-
-            }
-
-        }
-
-
-        return "";
+        return String(valor)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
     }
 
@@ -2109,250 +1412,349 @@
     function formatearFecha(fecha) {
 
         if (!fecha) {
-
-            return "—";
-
+            return "-";
         }
 
+        const fechaObjeto = new Date(fecha);
 
-        const fechaObjeto =
-            new Date(fecha);
-
-
-        if (
-            Number.isNaN(
-                fechaObjeto.getTime()
-            )
-        ) {
-
+        if (Number.isNaN(fechaObjeto.getTime())) {
             return String(fecha);
-
         }
-
 
         return fechaObjeto.toLocaleDateString(
             "es-GT",
             {
-                day: "2-digit",
+                year: "numeric",
                 month: "2-digit",
-                year: "numeric"
+                day: "2-digit"
             }
         );
 
     }
 
 
-    /* ==========================================================
-       MODAL
-    ========================================================== */
+    /* =========================================================
+       MODAL GENERAL
+    ========================================================= */
 
     function mostrarModal(titulo, mensaje) {
 
-        const tituloElemento =
-            document.getElementById(
-                "modalTitulo"
-            );
+        document.getElementById("modalTitulo").textContent = titulo;
 
-        const mensajeElemento =
-            document.getElementById(
-                "modalMensajeTexto"
-            );
+        document.getElementById("modalMensajeTexto").textContent = mensaje;
 
-        const modal =
-            document.getElementById(
-                "modalMensaje"
-            );
-
-
-        if (
-            !tituloElemento ||
-            !mensajeElemento ||
-            !modal
-        ) {
-
-            console.error(
-                "No se encontró la estructura del modal."
-            );
-
-            return;
-
-        }
-
-
-        tituloElemento.textContent =
-            titulo;
-
-
-        mensajeElemento.textContent =
-            mensaje;
-
-
-        modal.classList.add(
-            "mostrar"
-        );
+        document
+            .getElementById("modalMensaje")
+            .classList.add("visible");
 
     }
 
 
     function cerrarModal() {
 
-        const modal =
-            document.getElementById(
-                "modalMensaje"
-            );
+        document
+            .getElementById("modalMensaje")
+            .classList.remove("visible");
+
+    }
 
 
-        if (modal) {
+    /* =========================================================
+       MODAL NUEVO USUARIO
+    ========================================================= */
 
-            modal.classList.remove(
-                "mostrar"
-            );
+    function abrirModalNuevoUsuario() {
 
+        const formulario =
+            document.getElementById("formNuevoUsuario");
+
+        if (formulario) {
+            formulario.reset();
         }
 
-    }
+        const error =
+            document.getElementById("errorFormularioUsuario");
 
+        if (error) {
+            error.textContent = "";
+            error.classList.remove("visible");
+        }
 
-    /* ==========================================================
-       VOLVER
-    ========================================================== */
+        document
+            .getElementById("modalNuevoUsuario")
+            .classList.add("visible");
 
-    function volverAtras() {
+        setTimeout(function() {
 
-        window.location.href =
-            "index.html";
+            const nombre =
+                document.getElementById("nuevoUsuarioNombre");
 
-    }
-
-
-    /* ==========================================================
-       ACTUALIZAR INFORMACION
-    ========================================================== */
-
-    async function actualizarInformacion() {
-
-        await cargarTodo(true);
-
-    }
-
-
-    /* ==========================================================
-       CARGAR TODO
-    ========================================================== */
-
-    async function cargarTodo(mostrarMensaje = false) {
-
-        if (!window.administracionAutorizado) {
-
-            if (mostrarMensaje) {
-
-                mostrarModal(
-                    "Sesión",
-                    "La sesión todavía no está disponible. Espere un momento e inténtelo nuevamente."
-                );
-
+            if (nombre) {
+                nombre.focus();
             }
+
+        }, 100);
+
+    }
+
+
+    function cerrarModalNuevoUsuario() {
+
+        document
+            .getElementById("modalNuevoUsuario")
+            .classList.remove("visible");
+
+    }
+
+
+    function guardarNuevoUsuario(evento) {
+
+        if (evento) {
+            evento.preventDefault();
+        }
+
+        const nombre =
+            document
+                .getElementById("nuevoUsuarioNombre")
+                .value
+                .trim();
+
+        const correo =
+            document
+                .getElementById("nuevoUsuarioCorreo")
+                .value
+                .trim();
+
+        const rol =
+            document
+                .getElementById("nuevoUsuarioRol")
+                .value;
+
+        const estado =
+            document
+                .getElementById("nuevoUsuarioEstado")
+                .value;
+
+        const elementoError =
+            document.getElementById(
+                "errorFormularioUsuario"
+            );
+
+
+        if (!nombre) {
+
+            mostrarErrorFormulario(
+                "Es necesario ingresar el nombre del usuario."
+            );
 
             return;
 
         }
 
 
-        const boton =
-            document.getElementById(
-                "botonActualizar"
+        if (!correo) {
+
+            mostrarErrorFormulario(
+                "Es necesario ingresar el correo electrónico."
             );
 
-
-        if (boton) {
-
-            boton.disabled = true;
-
-            boton.textContent =
-                "Actualizando...";
+            return;
 
         }
 
 
+        if (!correo.includes("@")) {
+
+            mostrarErrorFormulario(
+                "El correo electrónico no parece tener un formato válido."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            rol !== "Usuario" &&
+            rol !== "Administrador"
+        ) {
+
+            mostrarErrorFormulario(
+                "Selecciona un rol válido."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            estado !== "Activo" &&
+            estado !== "Inactivo"
+        ) {
+
+            mostrarErrorFormulario(
+                "Selecciona un estado válido."
+            );
+
+            return;
+
+        }
+
+
+        if (elementoError) {
+            elementoError.textContent = "";
+            elementoError.classList.remove("visible");
+        }
+
+
+        /*
+            IMPORTANTE:
+
+            No insertamos todavía en public.usuarios.
+
+            La tabla usuarios utiliza el ID de Supabase Auth.
+            Crear aquí un UUID inventado produciría un registro que
+            no tendría una cuenta real para iniciar sesión.
+
+            Primero se prueba el formulario.
+            La creación real de la cuenta se conectará en el
+            siguiente paso mediante un mecanismo seguro.
+        */
+
+
+        cerrarModalNuevoUsuario();
+
+        mostrarModal(
+            "Información del usuario",
+            "El formulario funciona correctamente. El usuario " +
+            nombre +
+            " está preparado para ser creado con el rol " +
+            rol +
+            " y estado " +
+            estado +
+            ". La creación de la cuenta de acceso se conectará en el siguiente paso."
+        );
+
+    }
+
+
+    function mostrarErrorFormulario(mensaje) {
+
+        const elemento =
+            document.getElementById(
+                "errorFormularioUsuario"
+            );
+
+        if (!elemento) {
+            return;
+        }
+
+        elemento.textContent = mensaje;
+
+        elemento.classList.add("visible");
+
+    }
+
+
+    /* =========================================================
+       NAVEGACIÓN
+    ========================================================= */
+
+    function volverAtras() {
+
+        window.location.href = "index.html";
+
+    }
+
+
+    /* =========================================================
+       INFORMACIÓN
+    ========================================================= */
+
+    function actualizarInformacion() {
+
+        const correo =
+            usuarioSesionActual &&
+            usuarioSesionActual.email
+                ? usuarioSesionActual.email
+                : "Usuario autenticado";
+
+
+        const usuarioActual =
+            document.getElementById("usuarioActual");
+
+        const usuarioActualSesion =
+            document.getElementById(
+                "usuarioActualSesion"
+            );
+
+
+        if (usuarioActual) {
+            usuarioActual.textContent = correo;
+        }
+
+
+        if (usuarioActualSesion) {
+            usuarioActualSesion.textContent = correo;
+        }
+
+
+        const rolActual =
+            document.getElementById("rolActual");
+
+        if (rolActual) {
+            rolActual.textContent = "Administrador";
+        }
+
+    }
+
+
+    /* =========================================================
+       CARGA PRINCIPAL
+    ========================================================= */
+
+    async function cargarTodo() {
+
         try {
 
             await Promise.all([
-
                 cargarAfiliados(),
-
                 cargarLibros(),
-
                 cargarColaboradores(),
-
                 cargarPrestamos(),
-
                 cargarUsuarios()
-
             ]);
 
 
             actualizarEstadisticas();
 
-            actualizarDiagnosticoBase();
-
             actualizarUsuarios();
 
-            actualizarEstadoConexion(
-                true
-            );
+            actualizarDiagnosticoBase();
 
-
-            if (mostrarMensaje) {
-
-                mostrarModal(
-                    "Información actualizada",
-                    "La información del sistema se actualizó correctamente."
-                );
-
-            }
-
+            await revisarIntegridad();
 
         } catch (error) {
 
             console.error(
-                "Error cargando administración:",
+                "Error al cargar administración:",
                 error
             );
 
-
-            actualizarEstadoConexion(
-                false
+            mostrarModal(
+                "Error",
+                "No fue posible cargar toda la información de administración. Revisa la consola para conocer el detalle."
             );
-
-
-            if (mostrarMensaje) {
-
-                mostrarModal(
-                    "Error",
-                    "No fue posible actualizar toda la información del sistema. Revise la consola del navegador para obtener más detalles."
-                );
-
-            }
-
-        } finally {
-
-            if (boton) {
-
-                boton.disabled = false;
-
-                boton.textContent =
-                    "Actualizar información";
-
-            }
 
         }
 
     }
 
 
-    /* ==========================================================
-       CARGAR AFILIADOS
-    ========================================================== */
+    /* =========================================================
+       AFILIADOS
+    ========================================================= */
 
     async function cargarAfiliados() {
 
@@ -2370,15 +1772,7 @@
                 error
             } = await supabaseClient
                 .from("afiliados")
-                .select(`
-                    id,
-                    PersonaId,
-                    FamiliaId,
-                    Nombres,
-                    Apellidos,
-                    estado,
-                    Sitio
-                `)
+                .select("*")
                 .range(
                     desde,
                     desde + cantidad - 1
@@ -2386,9 +1780,7 @@
 
 
             if (error) {
-
                 throw error;
-
             }
 
 
@@ -2396,24 +1788,17 @@
                 !data ||
                 data.length === 0
             ) {
-
                 break;
-
             }
 
 
-            registros.push(
-                ...data
-            );
+            registros.push(...data);
 
 
             if (
-                data.length <
-                cantidad
+                data.length < cantidad
             ) {
-
                 break;
-
             }
 
 
@@ -2428,9 +1813,9 @@
     }
 
 
-    /* ==========================================================
-       CARGAR LIBROS
-    ========================================================== */
+    /* =========================================================
+       LIBROS
+    ========================================================= */
 
     async function cargarLibros() {
 
@@ -2448,17 +1833,7 @@
                 error
             } = await supabaseClient
                 .from("libros")
-                .select(`
-                    id,
-                    codigoLibro,
-                    nombreLibro,
-                    autor,
-                    genero,
-                    editorial,
-                    año,
-                    Biblioteca,
-                    estado
-                `)
+                .select("*")
                 .range(
                     desde,
                     desde + cantidad - 1
@@ -2466,9 +1841,7 @@
 
 
             if (error) {
-
                 throw error;
-
             }
 
 
@@ -2476,24 +1849,17 @@
                 !data ||
                 data.length === 0
             ) {
-
                 break;
-
             }
 
 
-            registros.push(
-                ...data
-            );
+            registros.push(...data);
 
 
             if (
-                data.length <
-                cantidad
+                data.length < cantidad
             ) {
-
                 break;
-
             }
 
 
@@ -2508,9 +1874,9 @@
     }
 
 
-    /* ==========================================================
-       CARGAR COLABORADORES
-    ========================================================== */
+    /* =========================================================
+       COLABORADORES
+    ========================================================= */
 
     async function cargarColaboradores() {
 
@@ -2528,15 +1894,7 @@
                 error
             } = await supabaseClient
                 .from("colaboradores")
-                .select(`
-                    id,
-                    CodigoColaborador,
-                    Nombre,
-                    Area,
-                    Telefono,
-                    Correo,
-                    estado
-                `)
+                .select("*")
                 .range(
                     desde,
                     desde + cantidad - 1
@@ -2544,9 +1902,7 @@
 
 
             if (error) {
-
                 throw error;
-
             }
 
 
@@ -2554,24 +1910,17 @@
                 !data ||
                 data.length === 0
             ) {
-
                 break;
-
             }
 
 
-            registros.push(
-                ...data
-            );
+            registros.push(...data);
 
 
             if (
-                data.length <
-                cantidad
+                data.length < cantidad
             ) {
-
                 break;
-
             }
 
 
@@ -2586,9 +1935,9 @@
     }
 
 
-    /* ==========================================================
-       CARGAR PRESTAMOS
-    ========================================================== */
+    /* =========================================================
+       PRÉSTAMOS
+    ========================================================= */
 
     async function cargarPrestamos() {
 
@@ -2614,9 +1963,7 @@
 
 
             if (error) {
-
                 throw error;
-
             }
 
 
@@ -2624,24 +1971,17 @@
                 !data ||
                 data.length === 0
             ) {
-
                 break;
-
             }
 
 
-            registros.push(
-                ...data
-            );
+            registros.push(...data);
 
 
             if (
-                data.length <
-                cantidad
+                data.length < cantidad
             ) {
-
                 break;
-
             }
 
 
@@ -2656,9 +1996,9 @@
     }
 
 
-    /* ==========================================================
-       CARGAR USUARIOS
-    ========================================================== */
+    /* =========================================================
+       USUARIOS
+    ========================================================= */
 
     async function cargarUsuarios() {
 
@@ -2698,9 +2038,7 @@
 
 
             if (error) {
-
                 throw error;
-
             }
 
 
@@ -2708,24 +2046,17 @@
                 !data ||
                 data.length === 0
             ) {
-
                 break;
-
             }
 
 
-            registros.push(
-                ...data
-            );
+            registros.push(...data);
 
 
             if (
-                data.length <
-                cantidad
+                data.length < cantidad
             ) {
-
                 break;
-
             }
 
 
@@ -2740,266 +2071,43 @@
     }
 
 
-    /* ==========================================================
-       ESTADISTICAS
-    ========================================================== */
+    /* =========================================================
+       ESTADÍSTICAS
+    ========================================================= */
 
     function actualizarEstadisticas() {
 
-        const afiliados =
-            datosAdministracion.afiliados;
-
-        const libros =
-            datosAdministracion.libros;
-
-        const colaboradores =
-            datosAdministracion.colaboradores;
-
-        const prestamos =
-            datosAdministracion.prestamos;
-
-
-        const librosDisponibles =
-            libros.filter(
-                libro => {
-
-                    return normalizar(
-                        libro.estado
-                    ) === "DISPONIBLE";
-
-                }
-            ).length;
-
-
-        const librosPrestados =
-            libros.filter(
-                libro => {
-
-                    return normalizar(
-                        libro.estado
-                    ) !== "DISPONIBLE";
-
-                }
-            ).length;
-
-
-        const afiliadosActivos =
-            afiliados.filter(
-                afiliado => {
-
-                    return esEstadoActivo(
-                        afiliado.estado
-                    );
-
-                }
-            ).length;
-
-
-        const afiliadosInactivos =
-            afiliados.filter(
-                afiliado => {
-
-                    return esEstadoInactivo(
-                        afiliado.estado
-                    );
-
-                }
-            ).length;
-
-
-        const colaboradoresActivos =
-            colaboradores.filter(
-                colaborador => {
-
-                    return esEstadoActivo(
-                        colaborador.estado
-                    );
-
-                }
-            ).length;
-
-
-        const colaboradoresInactivos =
-            colaboradores.filter(
-                colaborador => {
-
-                    return esEstadoInactivo(
-                        colaborador.estado
-                    );
-
-                }
-            ).length;
-
-
-        let prestamosAfiliados = 0;
-
-        let prestamosColaboradores = 0;
-
-
-        prestamos.forEach(
-            prestamo => {
-
-                const tipo =
-                    normalizar(
-                        obtenerValor(
-                            prestamo,
-                            [
-                                "tipoPrestamo",
-                                "TipoPrestamo"
-                            ]
-                        )
-                    );
-
-
-                const codigoColaborador =
-                    obtenerValor(
-                        prestamo,
-                        [
-                            "CodigoColaborador",
-                            "codigoColaborador"
-                        ]
-                    );
-
-
-                if (
-                    tipo === "COLABORADOR" ||
-                    codigoColaborador
-                ) {
-
-                    prestamosColaboradores++;
-
-                } else {
-
-                    prestamosAfiliados++;
-
-                }
-
-            }
-        );
-
-
-        const totalRegistros =
-            libros.length +
-            afiliados.length +
-            colaboradores.length +
-            prestamos.length;
+        document.getElementById(
+            "estadisticaLibros"
+        ).textContent =
+            datosAdministracion.libros.length;
 
 
         document.getElementById(
-            "totalLibros"
+            "estadisticaAfiliados"
         ).textContent =
-            libros.length.toLocaleString(
-                "es-GT"
-            );
+            datosAdministracion.afiliados.length;
 
 
         document.getElementById(
-            "totalAfiliados"
+            "estadisticaColaboradores"
         ).textContent =
-            afiliados.length.toLocaleString(
-                "es-GT"
-            );
+            datosAdministracion.colaboradores.length;
 
 
         document.getElementById(
-            "totalColaboradores"
+            "estadisticaPrestamos"
         ).textContent =
-            colaboradores.length.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "totalPrestamos"
-        ).textContent =
-            prestamos.length.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "totalRegistros"
-        ).textContent =
-            totalRegistros.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "librosDisponibles"
-        ).textContent =
-            librosDisponibles.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "librosPrestados"
-        ).textContent =
-            librosPrestados.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "afiliadosActivos"
-        ).textContent =
-            afiliadosActivos.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "afiliadosInactivos"
-        ).textContent =
-            afiliadosInactivos.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "colaboradoresActivos"
-        ).textContent =
-            colaboradoresActivos.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "colaboradoresInactivos"
-        ).textContent =
-            colaboradoresInactivos.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "prestamosAfiliados"
-        ).textContent =
-            prestamosAfiliados.toLocaleString(
-                "es-GT"
-            );
-
-
-        document.getElementById(
-            "prestamosColaboradores"
-        ).textContent =
-            prestamosColaboradores.toLocaleString(
-                "es-GT"
-            );
+            datosAdministracion.prestamos.length;
 
     }
 
 
-    /* ==========================================================
-       MOSTRAR USUARIOS
-    ========================================================== */
+    /* =========================================================
+       TABLA DE USUARIOS
+    ========================================================= */
 
     function actualizarUsuarios() {
-
-        const usuarios =
-            datosAdministracion.usuarios;
-
 
         const tabla =
             document.getElementById(
@@ -3007,80 +2115,47 @@
             );
 
 
-        const totalUsuarios =
-            document.getElementById(
-                "totalUsuarios"
-            );
+        const usuarios =
+            datosAdministracion.usuarios;
 
 
-        const usuariosAdministradores =
-            document.getElementById(
-                "usuariosAdministradores"
-            );
+        document.getElementById(
+            "totalUsuarios"
+        ).textContent =
+            usuarios.length;
 
 
-        const usuariosActivos =
-            document.getElementById(
-                "usuariosActivos"
-            );
+        const administradores =
+            usuarios.filter(function(usuario) {
+
+                return normalizar(usuario.rol) ===
+                    "ADMINISTRADOR";
+
+            });
 
 
-        const cantidadAdministradores =
-            usuarios.filter(
-                usuario =>
-                    normalizar(
-                        usuario.rol
-                    ) === "ADMINISTRADOR"
-            ).length;
+        const activos =
+            usuarios.filter(function(usuario) {
+
+                return normalizar(usuario.estado) ===
+                    "ACTIVO";
+
+            });
 
 
-        const cantidadActivos =
-            usuarios.filter(
-                usuario =>
-                    esEstadoActivo(
-                        usuario.estado
-                    )
-            ).length;
+        document.getElementById(
+            "usuariosAdministradores"
+        ).textContent =
+            administradores.length;
 
 
-        if (totalUsuarios) {
-
-            totalUsuarios.textContent =
-                usuarios.length.toLocaleString(
-                    "es-GT"
-                );
-
-        }
+        document.getElementById(
+            "usuariosActivos"
+        ).textContent =
+            activos.length;
 
 
-        if (usuariosAdministradores) {
-
-            usuariosAdministradores.textContent =
-                cantidadAdministradores.toLocaleString(
-                    "es-GT"
-                );
-
-        }
-
-
-        if (usuariosActivos) {
-
-            usuariosActivos.textContent =
-                cantidadActivos.toLocaleString(
-                    "es-GT"
-                );
-
-        }
-
-
-        if (!tabla) {
-
-            return;
-
-        }
-
-
-        if (usuarios.length === 0) {
+        if (!usuarios.length) {
 
             tabla.innerHTML = `
                 <tr>
@@ -3095,966 +2170,473 @@
         }
 
 
-        tabla.innerHTML = "";
-
-
-        usuarios.forEach(
-            usuario => {
-
-                const fila =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                const nombre =
-                    usuario.nombre ||
-                    "Sin nombre";
-
-
-                const correo =
-                    usuario.correo ||
-                    "Sin correo";
-
+        tabla.innerHTML =
+            usuarios.map(function(usuario) {
 
                 const rol =
-                    normalizar(
-                        usuario.rol
+                    obtenerValor(
+                        usuario,
+                        "rol",
+                        "-"
                     );
 
 
                 const estado =
-                    normalizar(
-                        usuario.estado
+                    obtenerValor(
+                        usuario,
+                        "estado",
+                        "-"
                     );
 
 
                 const claseRol =
-                    rol === "ADMINISTRADOR"
+                    normalizar(rol) ===
+                    "ADMINISTRADOR"
                         ? "rol-administrador"
                         : "rol-usuario";
 
 
-                const textoRol =
-                    rol === "ADMINISTRADOR"
-                        ? "Administrador"
-                        : "Usuario";
-
-
                 const claseEstado =
-                    estado === "ACTIVO"
-                        ? "usuario-activo"
-                        : "usuario-inactivo";
+                    normalizar(estado) ===
+                    "ACTIVO"
+                        ? "estado-activo"
+                        : "estado-inactivo";
 
 
-                const textoEstado =
-                    estado === "ACTIVO"
-                        ? "Activo"
-                        : "Inactivo";
+                return `
+                    <tr>
 
+                        <td>
+                            ${escapeHtml(
+                                obtenerValor(
+                                    usuario,
+                                    "nombre",
+                                    "-"
+                                )
+                            )}
+                        </td>
 
-                fila.innerHTML = `
+                        <td>
+                            ${escapeHtml(
+                                obtenerValor(
+                                    usuario,
+                                    "correo",
+                                    "-"
+                                )
+                            )}
+                        </td>
 
-                    <td>
-                        ${escapeHtml(nombre)}
-                    </td>
+                        <td>
+                            <span class="${claseRol}">
+                                ${escapeHtml(rol)}
+                            </span>
+                        </td>
 
-                    <td>
-                        ${escapeHtml(correo)}
-                    </td>
+                        <td>
+                            <span class="${claseEstado}">
+                                ${escapeHtml(estado)}
+                            </span>
+                        </td>
 
-                    <td>
-                        <span class="${claseRol}">
-                            ${textoRol}
-                        </span>
-                    </td>
+                        <td>
+                            ${escapeHtml(
+                                formatearFecha(
+                                    usuario.fechaRegistro
+                                )
+                            )}
+                        </td>
 
-                    <td>
-                        <span class="${claseEstado}">
-                            ${textoEstado}
-                        </span>
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            formatearFecha(
-                                usuario.fechaRegistro
-                            )
-                        )}
-                    </td>
-
+                    </tr>
                 `;
 
-
-                tabla.appendChild(
-                    fila
-                );
-
-            }
-        );
+            }).join("");
 
     }
 
 
-    /* ==========================================================
-       PROTECCION DE TEXTO
-    ========================================================== */
+    /* =========================================================
+       DIAGNÓSTICO
+    ========================================================= */
 
-    function escapeHtml(valor) {
-
-        return String(
-            valor ?? ""
-        )
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
-    }
-
-
-    /* ==========================================================
-       ESTADO DE CONEXION
-    ========================================================== */
-
-    function actualizarEstadoConexion(
-        conectado
+    function actualizarFilaDiagnostico(
+        nombre,
+        cantidad,
+        correcto,
+        mensaje
     ) {
 
-        const elemento =
+        const mapa = {
+            "Afiliados": "Afiliados",
+            "Libros": "Libros",
+            "Colaboradores": "Colaboradores",
+            "Préstamos": "Prestamos",
+            "Usuarios": "Usuarios"
+        };
+
+
+        const clave =
+            mapa[nombre];
+
+
+        if (!clave) {
+            return;
+        }
+
+
+        const estado =
             document.getElementById(
-                "estadoConexion"
+                "diagnostico" +
+                clave +
+                "Estado"
             );
 
 
-        if (!elemento) {
+        const cantidadElemento =
+            document.getElementById(
+                "diagnostico" +
+                clave +
+                "Cantidad"
+            );
 
-            return;
+
+        const mensajeElemento =
+            document.getElementById(
+                "diagnostico" +
+                clave +
+                "Mensaje"
+            );
+
+
+        if (estado) {
+
+            estado.textContent =
+                correcto
+                    ? "Correcto"
+                    : "Revisar";
+
+            estado.className =
+                correcto
+                    ? "diagnostico-ok"
+                    : "diagnostico-error";
 
         }
 
 
-        if (conectado) {
-
-            elemento.textContent =
-                "Conectada";
-
-
-            elemento.className =
-                "estado-conexion estado-ok";
-
-        } else {
-
-            elemento.textContent =
-                "Error";
+        if (cantidadElemento) {
+            cantidadElemento.textContent =
+                cantidad;
+        }
 
 
-            elemento.className =
-                "estado-conexion estado-error";
-
+        if (mensajeElemento) {
+            mensajeElemento.textContent =
+                mensaje;
         }
 
     }
 
-
-    /* ==========================================================
-       DIAGNOSTICO
-    ========================================================== */
 
     function actualizarDiagnosticoBase() {
 
         actualizarFilaDiagnostico(
-            "afiliados",
+            "Afiliados",
+            datosAdministracion.afiliados.length,
             true,
-            datosAdministracion
-                .afiliados.length
+            "Tabla disponible."
         );
 
 
         actualizarFilaDiagnostico(
-            "libros",
+            "Libros",
+            datosAdministracion.libros.length,
             true,
-            datosAdministracion
-                .libros.length
+            "Tabla disponible."
         );
 
 
         actualizarFilaDiagnostico(
-            "colaboradores",
+            "Colaboradores",
+            datosAdministracion.colaboradores.length,
             true,
-            datosAdministracion
-                .colaboradores.length
+            "Tabla disponible."
         );
 
 
         actualizarFilaDiagnostico(
-            "prestamos",
+            "Préstamos",
+            datosAdministracion.prestamos.length,
             true,
-            datosAdministracion
-                .prestamos.length
+            "Tabla disponible."
+        );
+
+
+        actualizarFilaDiagnostico(
+            "Usuarios",
+            datosAdministracion.usuarios.length,
+            true,
+            "Tabla disponible."
         );
 
     }
 
 
-    function actualizarFilaDiagnostico(
-        nombreTabla,
-        disponible,
-        cantidad
-    ) {
-
-        const filas =
-            document.querySelectorAll(
-                "#tablaDiagnostico tr"
-            );
-
-
-        filas.forEach(
-            fila => {
-
-                const nombre =
-                    fila.children[0]
-                        ?.textContent
-                        .trim();
-
-
-                if (
-                    nombre !==
-                    nombreTabla
-                ) {
-
-                    return;
-
-                }
-
-
-                fila.children[2]
-                    .textContent =
-                    disponible
-                        ? cantidad.toLocaleString(
-                            "es-GT"
-                        )
-                        : "—";
-
-
-                const estado =
-                    fila.children[3]
-                        .querySelector(
-                            ".estado-tabla"
-                        );
-
-
-                if (!estado) {
-
-                    return;
-
-                }
-
-
-                if (disponible) {
-
-                    estado.textContent =
-                        "Disponible";
-
-
-                    estado.className =
-                        "estado-tabla estado-disponible";
-
-                } else {
-
-                    estado.textContent =
-                        "No disponible";
-
-
-                    estado.className =
-                        "estado-tabla estado-problema";
-
-                }
-
-            }
-        );
-
-    }
-
-
-    async function ejecutarDiagnostico() {
-
-        if (!window.administracionAutorizado) {
-
-            mostrarModal(
-                "Sesión",
-                "La sesión todavía no está disponible."
-            );
-
-            return;
-
-        }
-
-
-        const boton =
-            document.getElementById(
-                "botonDiagnostico"
-            );
-
-
-        boton.disabled = true;
-
-        boton.textContent =
-            "Comprobando...";
-
-
-        try {
-
-            const tablas = [
-                "afiliados",
-                "libros",
-                "colaboradores",
-                "prestamos"
-            ];
-
-
-            const resultados = {};
-
-
-            for (
-                const tabla of tablas
-            ) {
-
-                const {
-                    count,
-                    error
-                } = await supabaseClient
-                    .from(tabla)
-                    .select(
-                        "id",
-                        {
-                            count: "exact",
-                            head: true
-                        }
-                    );
-
-
-                resultados[tabla] = {
-
-                    disponible:
-                        !error,
-
-                    cantidad:
-                        error
-                            ? 0
-                            : (
-                                count ||
-                                0
-                            )
-
-                };
-
-            }
-
-
-            tablas.forEach(
-                tabla => {
-
-                    actualizarFilaDiagnostico(
-                        tabla,
-                        resultados[tabla]
-                            .disponible,
-                        resultados[tabla]
-                            .cantidad
-                    );
-
-                }
-            );
-
-
-            const errores =
-                tablas.filter(
-                    tabla =>
-                        !resultados[
-                            tabla
-                        ].disponible
-                );
-
-
-            if (
-                errores.length === 0
-            ) {
-
-                actualizarEstadoConexion(
-                    true
-                );
-
-
-                mostrarModal(
-                    "Diagnóstico completado",
-                    "Las principales tablas del sistema están disponibles y pueden ser consultadas correctamente."
-                );
-
-            } else {
-
-                actualizarEstadoConexion(
-                    false
-                );
-
-
-                mostrarModal(
-                    "Diagnóstico",
-                    "Se detectaron problemas al consultar una o más tablas del sistema."
-                );
-
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Error en diagnóstico:",
-                error
-            );
-
-
-            actualizarEstadoConexion(
-                false
-            );
-
-
-            mostrarModal(
-                "Error",
-                "No fue posible completar el diagnóstico del sistema."
-            );
-
-
-        } finally {
-
-            boton.disabled = false;
-
-            boton.textContent =
-                "Comprobar sistema";
-
-        }
-
-    }
-
-
-    /* ==========================================================
+    /* =========================================================
        INTEGRIDAD
-    ========================================================== */
+    ========================================================= */
 
-    function establecerResultado(
+    function establecerIntegridad(
         id,
-        cantidad
+        correcto,
+        mensaje
     ) {
 
         const elemento =
-            document.getElementById(
-                id
-            );
+            document.getElementById(id);
 
 
         if (!elemento) {
-
             return;
-
-        }
-
-
-        if (
-            cantidad === 0
-        ) {
-
-            elemento.textContent =
-                "Correcto";
-
-
-            elemento.className =
-                "resultado-integridad resultado-ok";
-
-        } else {
-
-            elemento.textContent =
-                cantidad.toLocaleString(
-                    "es-GT"
-                ) +
-                " encontrados";
-
-
-            elemento.className =
-                "resultado-integridad resultado-aviso";
-
-        }
-
-    }
-
-
-    function establecerResultadoError(
-        id
-    ) {
-
-        const elemento =
-            document.getElementById(
-                id
-            );
-
-
-        if (!elemento) {
-
-            return;
-
         }
 
 
         elemento.textContent =
-            "Error";
+            mensaje;
 
 
         elemento.className =
-            "resultado-integridad resultado-error";
-
-    }
-
-
-    function establecerResultadoRevisando(
-        id
-    ) {
-
-        const elemento =
-            document.getElementById(
-                id
-            );
-
-
-        if (!elemento) {
-
-            return;
-
-        }
-
-
-        elemento.textContent =
-            "Revisando...";
-
-
-        elemento.className =
-            "resultado-integridad";
+            correcto
+                ? "integridad-estado integridad-correcta"
+                : "integridad-estado integridad-observacion";
 
     }
 
 
     async function revisarIntegridad() {
 
-        if (!window.administracionAutorizado) {
+        const libros =
+            datosAdministracion.libros;
 
-            mostrarModal(
-                "Sesión",
-                "La sesión todavía no está disponible."
-            );
+        const afiliados =
+            datosAdministracion.afiliados;
 
-            return;
+        const colaboradores =
+            datosAdministracion.colaboradores;
 
-        }
+        const prestamos =
+            datosAdministracion.prestamos;
 
-
-        const boton =
-            document.getElementById(
-                "botonIntegridad"
-            );
+        const usuarios =
+            datosAdministracion.usuarios;
 
 
-        boton.disabled = true;
+        /* Códigos de libros */
 
-        boton.textContent =
-            "Revisando...";
+        const codigos =
+            libros
+                .map(function(libro) {
+                    return normalizar(
+                        libro.codigoLibro
+                    );
+                })
+                .filter(Boolean);
 
 
-        const elementos = [
+        const codigosUnicos =
+            new Set(codigos);
 
-            "integridadAfiliadosEstado",
 
-            "integridadAfiliadosSitio",
+        establecerIntegridad(
+            "integridadCodigosLibros",
+            codigos.length === codigosUnicos.size,
+            codigos.length === codigosUnicos.size
+                ? "Correcto"
+                : "Se encontraron códigos repetidos"
+        );
 
-            "integridadLibrosSitio",
 
-            "integridadLibrosCodigo",
+        /* PersonaId */
 
-            "integridadColaboradoresEstado",
+        const personaIds =
+            afiliados
+                .map(function(afiliado) {
+                    return normalizar(
+                        afiliado.PersonaId
+                    );
+                })
+                .filter(Boolean);
 
-            "integridadColaboradoresCodigo",
 
+        const personaIdsUnicos =
+            new Set(personaIds);
+
+
+        establecerIntegridad(
+            "integridadPersonaId",
+            personaIds.length === personaIdsUnicos.size,
+            personaIds.length === personaIdsUnicos.size
+                ? "Correcto"
+                : "Se encontraron PersonaId repetidos"
+        );
+
+
+        /* FamiliaId */
+
+        const familiasSinId =
+            afiliados.filter(function(afiliado) {
+
+                return !String(
+                    obtenerValor(
+                        afiliado,
+                        "FamiliaId",
+                        ""
+                    )
+                ).trim();
+
+            }).length;
+
+
+        establecerIntegridad(
+            "integridadFamiliaId",
+            familiasSinId === 0,
+            familiasSinId === 0
+                ? "Correcto"
+                : familiasSinId + " registros sin FamiliaId"
+        );
+
+
+        /* Libros sin estado */
+
+        const librosSinEstado =
+            libros.filter(function(libro) {
+
+                return !String(
+                    obtenerValor(
+                        libro,
+                        "estado",
+                        ""
+                    )
+                ).trim();
+
+            }).length;
+
+
+        establecerIntegridad(
             "integridadLibrosEstado",
-
-            "integridadPrestamosLibro"
-
-        ];
-
-
-        elementos.forEach(
-            establecerResultadoRevisando
+            librosSinEstado === 0,
+            librosSinEstado === 0
+                ? "Correcto"
+                : librosSinEstado + " libros sin estado"
         );
 
 
-        try {
+        /* Afiliados sin estado */
 
-            const necesitaCarga =
-                datosAdministracion
-                    .afiliados.length === 0 &&
-                datosAdministracion
-                    .libros.length === 0 &&
-                datosAdministracion
-                    .colaboradores.length === 0 &&
-                datosAdministracion
-                    .prestamos.length === 0;
+        const afiliadosSinEstado =
+            afiliados.filter(function(afiliado) {
 
+                return !String(
+                    obtenerValor(
+                        afiliado,
+                        "estado",
+                        ""
+                    )
+                ).trim();
 
-            if (
-                necesitaCarga
-            ) {
+            }).length;
 
-                await cargarTodoSinIntegridad();
 
-            }
+        establecerIntegridad(
+            "integridadAfiliadosEstado",
+            afiliadosSinEstado === 0,
+            afiliadosSinEstado === 0
+                ? "Correcto"
+                : afiliadosSinEstado + " afiliados sin estado"
+        );
 
 
-            const afiliados =
-                datosAdministracion
-                    .afiliados;
+        /* Colaboradores sin estado */
 
+        const colaboradoresSinEstado =
+            colaboradores.filter(function(colaborador) {
 
-            const libros =
-                datosAdministracion
-                    .libros;
+                return !String(
+                    obtenerValor(
+                        colaborador,
+                        "estado",
+                        ""
+                    )
+                ).trim();
 
+            }).length;
 
-            const colaboradores =
-                datosAdministracion
-                    .colaboradores;
 
+        establecerIntegridad(
+            "integridadColaboradoresEstado",
+            colaboradoresSinEstado === 0,
+            colaboradoresSinEstado === 0
+                ? "Correcto"
+                : colaboradoresSinEstado +
+                  " colaboradores sin estado"
+        );
 
-            const prestamos =
-                datosAdministracion
-                    .prestamos;
 
+        /* Préstamos sin código */
 
-            const afiliadosSinEstado =
-                afiliados.filter(
-                    afiliado => {
+        const prestamosSinLibro =
+            prestamos.filter(function(prestamo) {
 
-                        return (
-                            !esEstadoActivo(
-                                afiliado.estado
-                            ) &&
-                            !esEstadoInactivo(
-                                afiliado.estado
-                            )
-                        );
+                return !String(
+                    obtenerValor(
+                        prestamo,
+                        "codigoLibro",
+                        ""
+                    )
+                ).trim();
 
-                    }
-                ).length;
+            }).length;
 
 
-            establecerResultado(
-                "integridadAfiliadosEstado",
-                afiliadosSinEstado
-            );
+        establecerIntegridad(
+            "integridadPrestamosLibro",
+            prestamosSinLibro === 0,
+            prestamosSinLibro === 0
+                ? "Correcto"
+                : prestamosSinLibro +
+                  " préstamos sin código de libro"
+        );
 
 
-            const afiliadosSinSitio =
-                afiliados.filter(
-                    afiliado => {
+        /* Usuarios sin rol */
 
-                        return !obtenerSitioValido(
-                            afiliado.Sitio
-                        );
+        const usuariosSinRol =
+            usuarios.filter(function(usuario) {
 
-                    }
-                ).length;
+                return !String(
+                    obtenerValor(
+                        usuario,
+                        "rol",
+                        ""
+                    )
+                ).trim();
 
+            }).length;
 
-            establecerResultado(
-                "integridadAfiliadosSitio",
-                afiliadosSinSitio
-            );
 
-
-            const librosSinSitio =
-                libros.filter(
-                    libro => {
-
-                        return !obtenerSitioValido(
-                            libro.Biblioteca
-                        );
-
-                    }
-                ).length;
-
-
-            establecerResultado(
-                "integridadLibrosSitio",
-                librosSinSitio
-            );
-
-
-            const librosSinCodigo =
-                libros.filter(
-                    libro => {
-
-                        return !String(
-                            libro.codigoLibro ??
-                            ""
-                        ).trim();
-
-                    }
-                ).length;
-
-
-            establecerResultado(
-                "integridadLibrosCodigo",
-                librosSinCodigo
-            );
-
-
-            const colaboradoresSinEstado =
-                colaboradores.filter(
-                    colaborador => {
-
-                        return (
-                            !esEstadoActivo(
-                                colaborador.estado
-                            ) &&
-                            !esEstadoInactivo(
-                                colaborador.estado
-                            )
-                        );
-
-                    }
-                ).length;
-
-
-            establecerResultado(
-                "integridadColaboradoresEstado",
-                colaboradoresSinEstado
-            );
-
-
-            const colaboradoresSinCodigo =
-                colaboradores.filter(
-                    colaborador => {
-
-                        return !String(
-                            colaborador.CodigoColaborador ??
-                            ""
-                        ).trim();
-
-                    }
-                ).length;
-
-
-            establecerResultado(
-                "integridadColaboradoresCodigo",
-                colaboradoresSinCodigo
-            );
-
-
-            const estadosLibroValidos = [
-                "DISPONIBLE",
-                "PRESTADO",
-                "BAJA",
-                "INACTIVO"
-            ];
-
-
-            const librosEstadoInvalido =
-                libros.filter(
-                    libro => {
-
-                        const estado =
-                            normalizar(
-                                libro.estado
-                            );
-
-
-                        return (
-                            !estado ||
-                            !estadosLibroValidos
-                                .includes(
-                                    estado
-                                )
-                        );
-
-                    }
-                ).length;
-
-
-            establecerResultado(
-                "integridadLibrosEstado",
-                librosEstadoInvalido
-            );
-
-
-            const prestamosSinLibro =
-                prestamos.filter(
-                    prestamo => {
-
-                        const codigoLibro =
-                            obtenerValor(
-                                prestamo,
-                                [
-                                    "codigoLibro",
-                                    "CodigoLibro",
-                                    "codigo",
-                                    "Codigo"
-                                ]
-                            );
-
-
-                        const nombreLibro =
-                            obtenerValor(
-                                prestamo,
-                                [
-                                    "nombreLibro",
-                                    "NombreLibro"
-                                ]
-                            );
-
-
-                        return (
-                            !String(
-                                codigoLibro ??
-                                ""
-                            ).trim() &&
-                            !String(
-                                nombreLibro ??
-                                ""
-                            ).trim()
-                        );
-
-                    }
-                ).length;
-
-
-            establecerResultado(
-                "integridadPrestamosLibro",
-                prestamosSinLibro
-            );
-
-
-            const problemas =
-                afiliadosSinEstado +
-                afiliadosSinSitio +
-                librosSinSitio +
-                librosSinCodigo +
-                colaboradoresSinEstado +
-                colaboradoresSinCodigo +
-                librosEstadoInvalido +
-                prestamosSinLibro;
-
-
-            if (
-                problemas === 0
-            ) {
-
-                mostrarModal(
-                    "Todo correcto",
-                    "La revisión de integridad terminó correctamente. No se encontraron registros incompletos ni inconsistencias en las comprobaciones realizadas."
-                );
-
-            } else {
-
-                mostrarModal(
-                    "Revisión completada",
-                    "La revisión terminó correctamente, pero se encontraron " +
-                    problemas.toLocaleString(
-                        "es-GT"
-                    ) +
-                    " registros o situaciones que requieren revisión."
-                );
-
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Error revisando integridad:",
-                error
-            );
-
-
-            elementos.forEach(
-                establecerResultadoError
-            );
-
-
-            mostrarModal(
-                "Error en la revisión",
-                "No fue posible completar la revisión de integridad. Revise la consola del navegador para obtener más información."
-            );
-
-
-        } finally {
-
-            boton.disabled = false;
-
-            boton.textContent =
-                "Revisar integridad";
-
-        }
-
-    }
-
-
-    /* ==========================================================
-       CARGA AUXILIAR
-    ========================================================== */
-
-    async function cargarTodoSinIntegridad() {
-
-        await Promise.all([
-
-            cargarAfiliados(),
-
-            cargarLibros(),
-
-            cargarColaboradores(),
-
-            cargarPrestamos(),
-
-            cargarUsuarios()
-
-        ]);
-
-
-        actualizarEstadisticas();
-
-        actualizarDiagnosticoBase();
-
-        actualizarUsuarios();
-
-        actualizarEstadoConexion(
-            true
+        establecerIntegridad(
+            "integridadUsuariosRol",
+            usuariosSinRol === 0,
+            usuariosSinRol === 0
+                ? "Correcto"
+                : usuariosSinRol +
+                  " usuarios sin rol"
         );
 
     }
 
 
-    /* ==========================================================
-       CERRAR SESION
-    ========================================================== */
+    /* =========================================================
+       CERRAR SESIÓN
+    ========================================================= */
 
     async function cerrarSesion() {
 
@@ -4062,34 +2644,27 @@
 
             const {
                 error
-            } =
-                await supabaseClient
-                    .auth
-                    .signOut();
+            } = await supabaseClient.auth.signOut();
 
 
             if (error) {
-
                 throw error;
-
             }
 
 
             window.location.href =
                 "index.html";
 
-
         } catch (error) {
 
             console.error(
-                "Error cerrando sesión:",
+                "Error al cerrar sesión:",
                 error
             );
 
-
             mostrarModal(
                 "Error",
-                "No fue posible cerrar la sesión."
+                "No fue posible cerrar la sesión correctamente."
             );
 
         }
@@ -4097,28 +2672,275 @@
     }
 
 
-    /* ==========================================================
-       CERRAR MODAL AL HACER CLIC FUERA
-    ========================================================== */
+    /* =========================================================
+       CLIC FUERA DE LOS MODALES
+    ========================================================= */
 
     document
-        .getElementById(
-            "modalMensaje"
-        )
+        .getElementById("modalMensaje")
         .addEventListener(
             "click",
-            function(event) {
+            function(evento) {
 
                 if (
-                    event.target === this
+                    evento.target ===
+                    this
                 ) {
-
                     cerrarModal();
-
                 }
 
             }
         );
+
+
+    document
+        .getElementById("modalNuevoUsuario")
+        .addEventListener(
+            "click",
+            function(evento) {
+
+                if (
+                    evento.target ===
+                    this
+                ) {
+                    cerrarModalNuevoUsuario();
+                }
+
+            }
+        );
+
+
+    /* =========================================================
+       AUTENTICACIÓN Y PERMISOS
+    ========================================================= */
+
+    window.administracionAuth =
+        (async function protegerAdministracion() {
+
+            try {
+
+                const {
+                    data: {
+                        session
+                    },
+                    error
+                } =
+                    await supabaseClient.auth.getSession();
+
+
+                if (
+                    error ||
+                    !session
+                ) {
+
+                    window.location.href =
+                        "index.html";
+
+                    return;
+
+                }
+
+
+                usuarioSesionActual =
+                    session.user;
+
+
+                const elementoUsuario =
+                    document.getElementById(
+                        "usuarioActual"
+                    );
+
+
+                if (elementoUsuario) {
+
+                    elementoUsuario.textContent =
+                        usuarioSesionActual.email ||
+                        "Usuario autenticado";
+
+                }
+
+
+                const {
+                    data: perfil,
+                    error: errorPerfil
+                } =
+                    await supabaseClient
+                        .from("usuarios")
+                        .select(`
+                            id,
+                            correo,
+                            nombre,
+                            rol,
+                            estado,
+                            fechaRegistro
+                        `)
+                        .eq(
+                            "id",
+                            usuarioSesionActual.id
+                        )
+                        .maybeSingle();
+
+
+                if (errorPerfil) {
+                    throw errorPerfil;
+                }
+
+
+                if (!perfil) {
+
+                    document
+                        .documentElement
+                        .style
+                        .visibility = "visible";
+
+
+                    mostrarModal(
+                        "Acceso no configurado",
+                        "La cuenta ha iniciado sesión, pero todavía no tiene un registro de usuario en el sistema de biblioteca."
+                    );
+
+
+                    setTimeout(
+                        function() {
+
+                            window.location.href =
+                                "index.html";
+
+                        },
+                        2500
+                    );
+
+
+                    return;
+
+                }
+
+
+                perfilUsuarioActual =
+                    perfil;
+
+
+                const rol =
+                    normalizar(
+                        perfil.rol
+                    );
+
+
+                const estado =
+                    normalizar(
+                        perfil.estado
+                    );
+
+
+                if (
+                    rol !== "ADMINISTRADOR" ||
+                    estado !== "ACTIVO"
+                ) {
+
+                    document
+                        .documentElement
+                        .style
+                        .visibility = "visible";
+
+
+                    if (
+                        rol !== "ADMINISTRADOR"
+                    ) {
+
+                        mostrarModal(
+                            "Acceso restringido",
+                            "Tu cuenta no tiene permisos de administrador para acceder a esta sección."
+                        );
+
+                    } else {
+
+                        mostrarModal(
+                            "Usuario inactivo",
+                            "Tu cuenta está marcada como inactiva y no puede acceder a esta sección."
+                        );
+
+                    }
+
+
+                    setTimeout(
+                        function() {
+
+                            window.location.href =
+                                "index.html";
+
+                        },
+                        2500
+                    );
+
+
+                    return;
+
+                }
+
+
+                window.administracionAutorizado =
+                    true;
+
+
+                const elementoRol =
+                    document.getElementById(
+                        "rolActual"
+                    );
+
+
+                if (elementoRol) {
+
+                    elementoRol.textContent =
+                        "Administrador";
+
+                }
+
+
+                actualizarInformacion();
+
+
+                document
+                    .documentElement
+                    .style
+                    .visibility = "visible";
+
+
+                await cargarTodo();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error de autenticación o permisos:",
+                    error
+                );
+
+
+                document
+                    .documentElement
+                    .style
+                    .visibility = "visible";
+
+
+                mostrarModal(
+                    "Error",
+                    "No fue posible comprobar los permisos de la cuenta. Será necesario volver a iniciar sesión."
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "index.html";
+
+                    },
+                    2500
+                );
+
+            }
+
+        })();
 
 </script>
 
