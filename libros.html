@@ -1,76 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Libros - Biblioteca</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Biblioteca - Libros</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script src="supabase.js"></script>
+
     <script src="auth.js?v=1002"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
 
         html {
             visibility: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             background: #f4f6f8;
-            color: #263238;
+            color: #222;
         }
 
         .encabezado {
             background: #263238;
             color: white;
-            padding: 18px 24px;
-        }
-
-        .encabezado-contenido {
-            max-width: 1200px;
-            margin: auto;
+            padding: 18px 30px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             gap: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .marca {
             display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .icono-marca {
-            font-size: 32px;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .marca h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 25px;
         }
 
         .marca p {
-            margin: 3px 0 0;
-            font-size: 13px;
-            color: #cfd8dc;
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.85;
         }
 
         .volver {
-            display: inline-block;
             color: white;
             text-decoration: none;
-            font-size: 14px;
             background: #37474f;
-            padding: 8px 13px;
+            padding: 10px 16px;
             border-radius: 6px;
+            transition: 0.2s;
+            white-space: nowrap;
         }
 
         .volver:hover {
@@ -78,77 +80,73 @@
         }
 
         .contenedor {
-            max-width: 1200px;
-            margin: 25px auto;
-            padding: 0 18px;
+            width: 95%;
+            max-width: 1500px;
+            margin: 25px auto 40px;
         }
 
         .titulo-pagina {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .titulo-pagina h2 {
             margin: 0 0 5px;
-            font-size: 25px;
+            font-size: 28px;
+            color: #263238;
         }
 
         .titulo-pagina p {
             margin: 0;
-            color: #607d8b;
-            font-size: 14px;
+            color: #666;
         }
 
         .estadisticas {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 22px;
         }
 
         .tarjeta-estadistica {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 9px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .estadistica-icono {
-            width: 42px;
-            height: 42px;
             border-radius: 8px;
-            background: #eceff1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
+            padding: 18px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #607d8b;
         }
 
-        .estadistica-numero {
-            font-size: 23px;
+        .tarjeta-estadistica h3 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .tarjeta-estadistica .numero {
+            font-size: 28px;
             font-weight: bold;
-            line-height: 1;
-        }
-
-        .estadistica-texto {
-            margin-top: 4px;
-            color: #607d8b;
-            font-size: 12px;
+            color: #263238;
         }
 
         .seccion {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 9px;
-            padding: 18px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
         }
 
-        .seccion-titulo {
-            margin: 0 0 14px;
-            font-size: 18px;
+        .seccion h3 {
+            margin: 0 0 18px;
+            color: #263238;
+            font-size: 20px;
+        }
+
+        .seccion-descripcion {
+            margin: -8px 0 18px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .solo-administrador {
@@ -157,83 +155,55 @@
 
         .formulario {
             display: grid;
-            grid-template-columns: 1fr 2fr auto;
-            gap: 10px;
-            align-items: end;
-        }
-
-        .formulario-libro {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .formulario-libro .campo-codigo {
-            grid-column: span 1;
-        }
-
-        .formulario-libro .campo-nombre {
-            grid-column: span 2;
-        }
-
-        .formulario-libro .campo-biblioteca {
-            grid-column: span 1;
-        }
-
-        .formulario-libro .campo-completo {
-            grid-column: span 1;
-        }
-
-        .formulario-libro .acciones-formulario {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 4px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
         }
 
         .campo {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
         .campo label {
-            font-size: 12px;
             font-weight: bold;
+            font-size: 14px;
             color: #455a64;
         }
 
         .campo input,
         .campo select {
-            width: 100%;
-            height: 38px;
+            padding: 10px 11px;
             border: 1px solid #cfd8dc;
-            border-radius: 6px;
-            padding: 0 10px;
-            font-size: 13px;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
             background: white;
-            color: #263238;
         }
 
         .campo input:focus,
         .campo select:focus {
-            outline: none;
             border-color: #607d8b;
+        }
+
+        .campo-completo {
+            grid-column: 1 / -1;
+        }
+
+        .botones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
         }
 
         button {
             border: none;
-            border-radius: 6px;
-            padding: 9px 15px;
-            font-size: 13px;
+            border-radius: 5px;
+            padding: 10px 15px;
             cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+            font-size: 14px;
+            transition: 0.2s;
         }
 
         .btn-principal {
@@ -245,252 +215,220 @@
             background: #37474f;
         }
 
-        .btn-secundario {
-            background: #eceff1;
-            color: #37474f;
-        }
-
-        .btn-secundario:hover {
-            background: #cfd8dc;
-        }
-
-        .btn-importar {
-            background: #546e7a;
+        .btn-verde {
+            background: #2e7d32;
             color: white;
         }
 
-        .btn-importar:hover {
-            background: #455a64;
+        .btn-verde:hover {
+            background: #256628;
         }
 
-        .btn-baja {
-            background: #fff3cd;
-            color: #856404;
+        .btn-azul {
+            background: #1565c0;
+            color: white;
         }
 
-        .btn-reactivar {
-            background: #d1e7dd;
-            color: #0f5132;
+        .btn-azul:hover {
+            background: #0d47a1;
         }
 
-        .btn-eliminar {
-            background: #f8d7da;
-            color: #842029;
+        .btn-gris {
+            background: #607d8b;
+            color: white;
         }
 
-        .btn-editar {
-            background: #d9eaf2;
-            color: #24576b;
+        .btn-gris:hover {
+            background: #546e7a;
         }
 
-        .btn-pequeno {
-            padding: 6px 9px;
-            font-size: 11px;
-            margin: 2px;
+        .btn-rojo {
+            background: #c62828;
+            color: white;
         }
 
-        .importacion {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+        .btn-rojo:hover {
+            background: #a91f1f;
         }
 
-        .importacion input[type="file"] {
-            max-width: 100%;
-            font-size: 13px;
+        .btn-naranja {
+            background: #ef6c00;
+            color: white;
         }
 
-        .ayuda {
-            margin-top: 10px;
-            color: #607d8b;
-            font-size: 12px;
-            line-height: 1.5;
+        .btn-naranja:hover {
+            background: #d45f00;
         }
 
         .busqueda {
             display: grid;
-            grid-template-columns: 1fr auto auto auto;
-            gap: 10px;
-            align-items: end;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
         }
 
-        .busqueda .campo {
-            min-width: 0;
-        }
-
-        .barra-resultados {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-
-        .resultado-texto {
-            color: #546e7a;
-            font-size: 13px;
+        .busqueda input,
+        .busqueda select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cfd8dc;
+            border-radius: 5px;
+            font-size: 14px;
         }
 
         .tabla-contenedor {
             overflow-x: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1250px;
+            min-width: 1100px;
         }
 
-        thead th {
-            background: #37474f;
+        th {
+            background: #455a64;
             color: white;
-            padding: 10px 8px;
-            font-size: 12px;
-            text-align: center;
+            padding: 11px 9px;
+            text-align: left;
+            font-size: 13px;
             white-space: nowrap;
         }
 
-        tbody td {
-            border-bottom: 1px solid #eceff1;
-            padding: 9px 8px;
-            font-size: 12px;
-            text-align: center;
+        td {
+            padding: 10px 9px;
+            border-bottom: 1px solid #eeeeee;
+            font-size: 13px;
             vertical-align: middle;
         }
 
         tbody tr:hover {
-            background: #f8fafb;
-        }
-
-        .texto-izquierda {
-            text-align: left !important;
-        }
-
-        .nombre-libro {
-            min-width: 230px;
-        }
-
-        .autor-libro {
-            min-width: 170px;
-        }
-
-        .genero-libro {
-            min-width: 130px;
-        }
-
-        .editorial-libro {
-            min-width: 130px;
-        }
-
-        .biblioteca {
-            font-weight: bold;
-            color: #37474f;
+            background: #f7f9fa;
         }
 
         .estado {
             display: inline-block;
             padding: 5px 9px;
-            border-radius: 15px;
-            font-size: 11px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: bold;
             white-space: nowrap;
         }
 
         .estado-disponible {
-            background: #d1e7dd;
-            color: #0f5132;
+            background: #e8f5e9;
+            color: #2e7d32;
         }
 
         .estado-prestado {
-            background: #fff3cd;
-            color: #856404;
+            background: #fff3e0;
+            color: #ef6c00;
         }
 
         .estado-baja {
-            background: #e0e0e0;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .estado-inactivo {
+            background: #eceff1;
             color: #455a64;
         }
 
-        .mensaje {
-            display: none;
-            padding: 11px 13px;
-            border-radius: 6px;
-            margin-top: 12px;
-            font-size: 13px;
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
-        .mensaje-exito {
-            background: #d1e7dd;
-            color: #0f5132;
-        }
-
-        .mensaje-error {
-            background: #f8d7da;
-            color: #842029;
-        }
-
-        .sin-resultados {
-            text-align: center;
-            padding: 35px 20px;
-            color: #78909c;
-        }
-
-        .sin-resultados strong {
-            display: block;
-            color: #546e7a;
-            margin-bottom: 5px;
-        }
-
-        .seccion-bajas {
-            border-top: 4px solid #90a4ae;
-        }
-
-        .seccion-importacion {
-            border-top: 4px solid #607d8b;
-        }
-
-        .seccion-administracion {
-            border-top: 4px solid #842029;
+        .acciones button {
+            padding: 6px 9px;
+            font-size: 12px;
         }
 
         .paginacion {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
         }
 
-        .btn-paginacion {
+        .paginacion button {
             background: #eceff1;
-            color: #37474f;
-            padding: 7px 12px;
-            font-size: 12px;
-            min-width: 85px;
+            color: #263238;
         }
 
-        .btn-paginacion:hover:not(:disabled) {
+        .paginacion button:hover {
             background: #cfd8dc;
         }
 
-        .btn-paginacion:disabled {
+        .paginacion button:disabled {
             opacity: 0.45;
+            cursor: not-allowed;
         }
 
         .pagina-info {
-            color: #546e7a;
-            font-size: 12px;
-            padding: 0 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .importacion {
+            border: 1px dashed #90a4ae;
+            border-radius: 7px;
+            padding: 18px;
+            background: #fafafa;
+        }
+
+        .importacion input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cfd8dc;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .nota-importacion {
+            background: #eceff1;
+            border-left: 4px solid #607d8b;
+            padding: 12px;
+            margin-top: 15px;
+            color: #455a64;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .administracion {
+            border: 1px solid #ffcdd2;
+            background: #fff8f8;
+            border-radius: 7px;
+            padding: 18px;
+        }
+
+        .administracion p {
+            margin-top: 0;
+            color: #555;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .historial {
+            background: #fafafa;
+        }
+
+        .sin-registros {
+            text-align: center;
+            padding: 25px;
+            color: #777;
         }
 
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(38, 50, 56, 0.55);
+            background: rgba(0, 0, 0, 0.55);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -500,234 +438,122 @@
         .modal-contenido {
             background: white;
             width: 100%;
-            max-width: 850px;
+            max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
-            border-radius: 9px;
-            box-shadow: 0 8px 30px rgba(0,0,0,.2);
-            padding: 20px;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
-        .modal-cabecera {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 18px;
-            border-bottom: 1px solid #eceff1;
-            padding-bottom: 12px;
+        .modal-contenido h3 {
+            margin-top: 0;
+            color: #263238;
         }
 
-        .modal-cabecera h3 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .modal-cerrar {
-            background: #eceff1;
-            color: #37474f;
-            width: 32px;
-            height: 32px;
-            padding: 0;
-            font-size: 18px;
-        }
-
-        .modal-formulario {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .modal-formulario .campo-completo {
-            grid-column: 1 / -1;
-        }
-
-        .modal-acciones {
+        .modal-botones {
             display: flex;
             justify-content: flex-end;
-            gap: 8px;
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px solid #eceff1;
+            gap: 10px;
+            margin-top: 20px;
         }
 
-        @media (max-width: 1050px) {
-
-            .formulario-libro {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .formulario-libro .campo-codigo,
-            .formulario-libro .campo-nombre,
-            .formulario-libro .campo-biblioteca,
-            .formulario-libro .campo-completo {
-                grid-column: span 1;
-            }
-
-            .formulario-libro .acciones-formulario {
-                grid-column: 1 / -1;
-            }
-
-            .busqueda {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .busqueda .campo {
-                grid-column: span 1;
-            }
-
-            .busqueda .campo:first-child {
-                grid-column: 1 / -1;
-            }
+        .mensaje {
+            text-align: center;
+            padding: 18px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            display: none;
         }
 
-        @media (max-width: 900px) {
+        .mensaje.exito {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .mensaje.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .mensaje.info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+
+        .archivo-nombre {
+            margin-top: 8px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1000px) {
 
             .estadisticas {
                 grid-template-columns: repeat(2, 1fr);
             }
 
             .formulario {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .formulario button {
-                grid-column: span 2;
-            }
         }
 
-        @media (max-width: 650px) {
-
-            .formulario-libro {
-                grid-template-columns: 1fr;
-            }
-
-            .formulario-libro .campo-codigo,
-            .formulario-libro .campo-nombre,
-            .formulario-libro .campo-biblioteca,
-            .formulario-libro .campo-completo {
-                grid-column: auto;
-            }
-
-            .formulario-libro .acciones-formulario {
-                grid-column: auto;
-                flex-direction: column;
-            }
-
-            .formulario-libro .acciones-formulario button {
-                width: 100%;
-            }
-
-            .busqueda {
-                grid-template-columns: 1fr;
-            }
-
-            .busqueda .campo,
-            .busqueda .campo:first-child {
-                grid-column: auto;
-            }
-
-            .busqueda button {
-                width: 100%;
-            }
-
-            .modal-formulario {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-formulario .campo-completo {
-                grid-column: auto;
-            }
-
-            .modal-acciones {
-                flex-direction: column;
-            }
-
-            .modal-acciones button {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 550px) {
+        @media (max-width: 700px) {
 
             .encabezado {
                 padding: 15px;
-            }
-
-            .encabezado-contenido {
                 flex-direction: column;
-                align-items: stretch;
-            }
-
-            .volver {
-                align-self: flex-end;
+                align-items: flex-start;
             }
 
             .contenedor {
-                padding: 0 12px;
-                margin-top: 18px;
+                width: 94%;
             }
 
             .estadisticas {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .tarjeta-estadistica {
-                padding: 11px;
-            }
-
-            .estadistica-icono {
-                width: 35px;
-                height: 35px;
-                font-size: 17px;
-            }
-
-            .estadistica-numero {
-                font-size: 19px;
+                grid-template-columns: 1fr;
             }
 
             .formulario {
                 grid-template-columns: 1fr;
             }
 
-            .formulario button {
+            .campo-completo {
                 grid-column: auto;
             }
 
-            .modal {
-                padding: 10px;
+            .busqueda {
+                grid-template-columns: 1fr;
             }
 
-            .modal-contenido {
-                padding: 15px;
-            }
         }
+
     </style>
+
 </head>
 
 <body>
 
 <header class="encabezado">
 
-    <div class="encabezado-contenido">
+    <div class="marca">
 
-        <div class="marca">
+        <h1>📚 Biblioteca</h1>
 
-            <div class="icono-marca">📚</div>
-
-            <div>
-                <h1>Biblioteca</h1>
-                <p>Sistema de control de préstamos</p>
-            </div>
-
-        </div>
-
-        <a href="index.html" class="volver">
-            ← Volver al inicio
-        </a>
+        <p>Sistema de control de préstamos</p>
 
     </div>
+
+    <a
+        href="index.html"
+        class="volver"
+    >
+        ← Volver al inicio
+    </a>
 
 </header>
 
@@ -739,21 +565,31 @@
         <h2>Libros</h2>
 
         <p>
-            Administración del catálogo de libros de la biblioteca.
+            Registro, consulta y control de los libros de la biblioteca.
         </p>
 
     </div>
 
 
+    <div
+        id="mensaje"
+        class="mensaje"
+    ></div>
+
+
+    <!-- ESTADÍSTICAS -->
+
     <section class="estadisticas">
 
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">📚</div>
+            <h3>Total de libros</h3>
 
-            <div>
-                <div class="estadistica-numero" id="totalLibros">0</div>
-                <div class="estadistica-texto">Total de libros</div>
+            <div
+                id="totalLibros"
+                class="numero"
+            >
+                0
             </div>
 
         </div>
@@ -761,11 +597,13 @@
 
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">✅</div>
+            <h3>Disponibles</h3>
 
-            <div>
-                <div class="estadistica-numero" id="totalDisponibles">0</div>
-                <div class="estadistica-texto">Disponibles</div>
+            <div
+                id="librosDisponibles"
+                class="numero"
+            >
+                0
             </div>
 
         </div>
@@ -773,11 +611,13 @@
 
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">📖</div>
+            <h3>Prestados</h3>
 
-            <div>
-                <div class="estadistica-numero" id="totalPrestados">0</div>
-                <div class="estadistica-texto">Prestados</div>
+            <div
+                id="librosPrestados"
+                class="numero"
+            >
+                0
             </div>
 
         </div>
@@ -785,11 +625,13 @@
 
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">📦</div>
+            <h3>Dado de baja</h3>
 
-            <div>
-                <div class="estadistica-numero" id="totalBaja">0</div>
-                <div class="estadistica-texto">Dados de baja</div>
+            <div
+                id="librosBaja"
+                class="numero"
+            >
+                0
             </div>
 
         </div>
@@ -797,20 +639,15 @@
     </section>
 
 
-    <!-- =================================================
-         REGISTRAR LIBRO
-    ================================================== -->
+    <!-- REGISTRAR LIBRO -->
 
     <section class="seccion">
 
-        <h3 class="seccion-titulo">
-            Registrar libro
-        </h3>
+        <h3>Registrar libro</h3>
 
+        <div class="formulario">
 
-        <div class="formulario-libro">
-
-            <div class="campo campo-codigo">
+            <div class="campo">
 
                 <label for="codigoLibro">
                     Código del libro
@@ -819,16 +656,13 @@
                 <input
                     type="text"
                     id="codigoLibro"
-                    inputmode="numeric"
-                    maxlength="8"
-                    placeholder="Ej. 167162"
-                    autocomplete="off"
+                    placeholder="Ejemplo: 00000001"
                 >
 
             </div>
 
 
-            <div class="campo campo-nombre">
+            <div class="campo">
 
                 <label for="nombreLibro">
                     Nombre del libro
@@ -838,13 +672,12 @@
                     type="text"
                     id="nombreLibro"
                     placeholder="Nombre del libro"
-                    autocomplete="off"
                 >
 
             </div>
 
 
-            <div class="campo campo-completo">
+            <div class="campo">
 
                 <label for="autorLibro">
                     Autor
@@ -853,14 +686,13 @@
                 <input
                     type="text"
                     id="autorLibro"
-                    placeholder="Autor del libro"
-                    autocomplete="off"
+                    placeholder="Autor"
                 >
 
             </div>
 
 
-            <div class="campo campo-completo">
+            <div class="campo">
 
                 <label for="generoLibro">
                     Género
@@ -869,14 +701,13 @@
                 <input
                     type="text"
                     id="generoLibro"
-                    placeholder="Ej. Literatura infantil"
-                    autocomplete="off"
+                    placeholder="Género"
                 >
 
             </div>
 
 
-            <div class="campo campo-completo">
+            <div class="campo">
 
                 <label for="editorialLibro">
                     Editorial
@@ -886,31 +717,29 @@
                     type="text"
                     id="editorialLibro"
                     placeholder="Editorial"
-                    autocomplete="off"
                 >
 
             </div>
 
 
-            <div class="campo campo-completo">
+            <div class="campo">
 
                 <label for="anioLibro">
                     Año
                 </label>
 
                 <input
-                    type="text"
+                    type="number"
                     id="anioLibro"
-                    inputmode="numeric"
-                    maxlength="4"
-                    placeholder="Ej. 2024"
-                    autocomplete="off"
+                    placeholder="Año"
+                    min="1000"
+                    max="9999"
                 >
 
             </div>
 
 
-            <div class="campo campo-biblioteca">
+            <div class="campo">
 
                 <label for="bibliotecaLibro">
                     Biblioteca
@@ -918,136 +747,103 @@
 
                 <select id="bibliotecaLibro">
 
-                    <option value="">Seleccione...</option>
-                    <option value="F">F</option>
-                    <option value="M">M</option>
-                    <option value="N">N</option>
-                    <option value="R">R</option>
-                    <option value="Z">Z</option>
+                    <option value="">
+                        Seleccionar
+                    </option>
+
+                    <option value="F">
+                        F - Antigua
+                    </option>
+
+                    <option value="M">
+                        M - San Miguel Milpas Altas
+                    </option>
+
+                    <option value="R">
+                        R - San Rafael el Arado
+                    </option>
+
+                    <option value="N">
+                        N - Nueva Esperanza
+                    </option>
+
+                    <option value="Z">
+                        Z - Zapote
+                    </option>
 
                 </select>
-
-            </div>
-
-
-            <div class="acciones-formulario">
-
-                <button
-                    type="button"
-                    class="btn-principal"
-                    id="btnRegistrar"
-                >
-                    + Registrar libro
-                </button>
 
             </div>
 
         </div>
 
 
-        <div id="mensajeRegistro" class="mensaje"></div>
+        <div class="botones">
+
+            <button
+                id="btnRegistrarLibro"
+                class="btn-principal"
+            >
+                Registrar libro
+            </button>
+
+            <button
+                id="btnLimpiarFormulario"
+                class="btn-gris"
+                type="button"
+            >
+                Limpiar
+            </button>
+
+        </div>
 
     </section>
 
 
-    <!-- =================================================
-         BUSCAR LIBROS
-    ================================================== -->
+    <!-- BUSCAR -->
 
     <section class="seccion">
 
-        <h3 class="seccion-titulo">
-            Buscar libros
-        </h3>
-
+        <h3>Buscar libros</h3>
 
         <div class="busqueda">
 
-            <div class="campo">
-
-                <label for="busqueda">
-                    Código, nombre, autor, género o editorial
-                </label>
-
-                <input
-                    type="text"
-                    id="busqueda"
-                    placeholder="Escribe un código, nombre, autor..."
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <div class="campo">
-
-                <label for="filtroEstado">
-                    Estado
-                </label>
-
-                <select id="filtroEstado">
-
-                    <option value="Todos">Todos</option>
-                    <option value="Disponible">Disponible</option>
-                    <option value="Prestado">Prestado</option>
-                    <option value="Baja">Baja</option>
-
-                </select>
-
-            </div>
-
-
-            <div class="campo">
-
-                <label for="filtroBiblioteca">
-                    Biblioteca
-                </label>
-
-                <select id="filtroBiblioteca">
-
-                    <option value="Todas">Todas</option>
-                    <option value="F">F</option>
-                    <option value="M">M</option>
-                    <option value="N">N</option>
-                    <option value="R">R</option>
-                    <option value="Z">Z</option>
-
-                </select>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="btn-principal"
-                id="btnBuscar"
+            <input
+                type="text"
+                id="buscarLibro"
+                placeholder="Buscar por código, nombre, autor, género, editorial..."
             >
-                🔎 Buscar
-            </button>
+
+            <select id="filtroEstado">
+
+                <option value="">
+                    Todos los estados
+                </option>
+
+                <option value="Disponible">
+                    Disponible
+                </option>
+
+                <option value="Prestado">
+                    Prestado
+                </option>
+
+                <option value="Baja">
+                    Baja
+                </option>
+
+            </select>
 
         </div>
 
     </section>
 
 
-    <!-- =================================================
-         LIBROS REGISTRADOS
-    ================================================== -->
+    <!-- LIBROS REGISTRADOS -->
 
     <section class="seccion">
 
-        <div class="barra-resultados">
-
-            <h3 class="seccion-titulo" style="margin:0;">
-                Libros registrados
-            </h3>
-
-            <div class="resultado-texto" id="resultadoTexto">
-                Cargando libros...
-            </div>
-
-        </div>
-
+        <h3>Libros registrados</h3>
 
         <div class="tabla-contenedor">
 
@@ -1056,68 +852,57 @@
                 <thead>
 
                     <tr>
+
                         <th>Código</th>
+
                         <th>Nombre del libro</th>
+
                         <th>Autor</th>
+
                         <th>Género</th>
+
                         <th>Editorial</th>
+
                         <th>Año</th>
+
                         <th>Biblioteca</th>
+
                         <th>Estado</th>
+
                         <th>Acciones</th>
+
                     </tr>
 
                 </thead>
 
-                <tbody id="tablaLibros"></tbody>
+                <tbody id="tablaLibros">
+
+                </tbody>
 
             </table>
 
         </div>
 
 
-        <div
-            id="sinResultados"
-            class="sin-resultados"
-            style="display:none;"
-        >
-
-            <strong>
-                No se encontraron libros
-            </strong>
-
-            <span>
-                Prueba con otro código, nombre, autor, estado o biblioteca.
-            </span>
-
-        </div>
-
-
-        <div
-            id="paginacionLibros"
-            class="paginacion"
-            style="display:none;"
-        >
+        <div class="paginacion">
 
             <button
+                id="btnPaginaAnterior"
                 type="button"
-                class="btn-paginacion"
-                id="btnAnteriorLibros"
             >
                 ← Anterior
             </button>
 
             <span
+                id="paginaInfo"
                 class="pagina-info"
-                id="paginaInfoLibros"
             >
                 Página 1 de 1
             </span>
 
             <button
+                id="btnPaginaSiguiente"
                 type="button"
-                class="btn-paginacion"
-                id="btnSiguienteLibros"
             >
                 Siguiente →
             </button>
@@ -1127,16 +912,11 @@
     </section>
 
 
-    <!-- =================================================
-         HISTORIAL DE BAJAS
-    ================================================== -->
+    <!-- HISTORIAL DE BAJAS -->
 
-    <section class="seccion seccion-bajas">
+    <section class="seccion historial">
 
-        <h3 class="seccion-titulo">
-            Historial de libros dados de baja
-        </h3>
-
+        <h3>Historial de bajas</h3>
 
         <div class="tabla-contenedor">
 
@@ -1145,47 +925,51 @@
                 <thead>
 
                     <tr>
+
                         <th>Código</th>
+
                         <th>Nombre del libro</th>
+
+                        <th>Autor</th>
+
                         <th>Biblioteca</th>
+
                         <th>Fecha de baja</th>
+
                         <th>Acciones</th>
+
                     </tr>
 
                 </thead>
 
-                <tbody id="tablaBajas"></tbody>
+                <tbody id="tablaBajas">
+
+                </tbody>
 
             </table>
 
         </div>
 
 
-        <div
-            id="paginacionBajas"
-            class="paginacion"
-            style="display:none;"
-        >
+        <div class="paginacion">
 
             <button
+                id="btnBajasAnterior"
                 type="button"
-                class="btn-paginacion"
-                id="btnAnteriorBajas"
             >
                 ← Anterior
             </button>
 
             <span
+                id="bajasPaginaInfo"
                 class="pagina-info"
-                id="paginaInfoBajas"
             >
                 Página 1 de 1
             </span>
 
             <button
+                id="btnBajasSiguiente"
                 type="button"
-                class="btn-paginacion"
-                id="btnSiguienteBajas"
             >
                 Siguiente →
             </button>
@@ -1195,131 +979,122 @@
     </section>
 
 
-    <!-- =================================================
-         IMPORTAR EXCEL
-         SOLO ADMINISTRADOR
-    ================================================== -->
+    <!-- IMPORTACIÓN EXCEL SOLO ADMINISTRADOR -->
 
     <section
-        class="seccion seccion-importacion solo-administrador"
+        class="seccion solo-administrador"
         id="seccionImportarExcel"
     >
 
-        <h3 class="seccion-titulo">
-            Importar libros desde Excel
-        </h3>
+        <h3>Importar libros desde Excel</h3>
+
+        <p class="seccion-descripcion">
+
+            Utiliza esta opción para agregar nuevos libros desde el archivo
+            MasterBiblioteca. Los libros que ya existen en la biblioteca
+            no serán modificados.
+
+        </p>
 
 
         <div class="importacion">
 
-            <input
-                type="file"
-                id="archivoExcel"
-                accept=".xlsx,.xls"
-            >
+            <div class="campo">
 
-            <button
-                type="button"
-                class="btn-importar"
-                id="btnImportar"
-            >
-                📥 Importar Excel
-            </button>
+                <label for="archivoExcel">
+                    Seleccionar archivo Excel
+                </label>
+
+                <input
+                    type="file"
+                    id="archivoExcel"
+                    accept=".xlsx,.xls"
+                >
+
+                <div
+                    id="nombreArchivo"
+                    class="archivo-nombre"
+                >
+                    Ningún archivo seleccionado.
+                </div>
+
+            </div>
+
+
+            <div class="botones">
+
+                <button
+                    id="btnImportarExcel"
+                    class="btn-verde"
+                    type="button"
+                >
+                    Cargar Excel
+                </button>
+
+
+                <button
+                    id="btnDescargarMaster"
+                    class="btn-azul"
+                    type="button"
+                >
+                    Descargar MasterBiblioteca
+                </button>
+
+            </div>
+
+
+            <div class="nota-importacion">
+
+                <strong>Importante:</strong>
+
+                Al importar un Excel, el sistema compara el código de cada
+                libro con los registros actuales de la biblioteca.
+                Los códigos existentes se conservan sin cambios.
+                Únicamente se agregan libros que todavía no existen.
+
+            </div>
 
         </div>
-
-
-        <div class="ayuda">
-
-            El archivo debe contener la hoja
-            <strong>BD Libros</strong> y las siguientes columnas:
-
-            <strong>codigoLibro</strong>,
-            <strong>nombreLibro</strong>,
-            <strong>autor</strong>,
-            <strong>genero</strong>,
-            <strong>editorial</strong>,
-            <strong>año</strong>,
-            <strong>Biblioteca</strong> y
-            <strong>estado</strong>.
-
-            <br>
-
-            Los códigos pueden tener de
-            <strong>1 a 8 dígitos</strong> y se mostrarán
-            con 8 posiciones agregando ceros a la izquierda.
-
-            <br>
-
-            El código máximo permitido es
-            <strong>88888888</strong>.
-
-            <br>
-
-            Biblioteca debe ser:
-            <strong>F, M, N, R o Z</strong>.
-
-            <br>
-
-            La importación solamente agrega libros nuevos.
-            No elimina ni reemplaza los libros existentes.
-
-        </div>
-
-
-        <div
-            id="mensajeImportacion"
-            class="mensaje"
-        ></div>
 
     </section>
 
 
-    <!-- =================================================
-         ADMINISTRACIÓN DE DATOS
-         SOLO ADMINISTRADOR
-    ================================================== -->
+    <!-- ADMINISTRACIÓN DE DATOS SOLO ADMINISTRADOR -->
 
     <section
-        class="seccion seccion-administracion solo-administrador"
+        class="seccion solo-administrador"
         id="seccionAdministracionDatos"
     >
 
-        <h3 class="seccion-titulo">
-            Administración de datos
-        </h3>
+        <h3>Administración de datos</h3>
+
+        <div class="administracion">
+
+            <p>
+
+                Esta opción elimina permanentemente todos los registros de
+                libros de la biblioteca. Esta acción no debe utilizarse como
+                parte del proceso normal de actualización del MasterBiblioteca.
+
+            </p>
 
 
-        <p
-            style="
-                margin-top:0;
-                color:#607d8b;
-                font-size:13px;
-                line-height:1.5;
-            "
-        >
-            Esta sección contiene acciones administrativas
-            que pueden afectar permanentemente la información
-            almacenada en la base de datos.
-        </p>
+            <button
+                id="btnBorrarBaseDatos"
+                class="btn-rojo"
+                type="button"
+            >
+                Borrar base de datos de libros
+            </button>
 
-
-        <button
-            type="button"
-            class="btn-eliminar"
-            id="btnBorrarBase"
-        >
-            🗑 Borrar base de datos de libros
-        </button>
+        </div>
 
     </section>
 
 </main>
 
 
-<!-- =====================================================
-     MODAL EDITAR LIBRO
-===================================================== -->
+<!-- MODAL EDITAR -->
 
 <div
     id="modalEditar"
@@ -1328,24 +1103,10 @@
 
     <div class="modal-contenido">
 
-        <div class="modal-cabecera">
-
-            <h3>
-                Editar información del libro
-            </h3>
-
-            <button
-                type="button"
-                class="modal-cerrar"
-                id="btnCerrarModal"
-            >
-                ×
-            </button>
-
-        </div>
+        <h3>Editar libro</h3>
 
 
-        <div class="modal-formulario">
+        <div class="formulario">
 
             <div class="campo">
 
@@ -1356,9 +1117,6 @@
                 <input
                     type="text"
                     id="editarCodigo"
-                    maxlength="8"
-                    inputmode="numeric"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1373,7 +1131,6 @@
                 <input
                     type="text"
                     id="editarNombre"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1388,7 +1145,6 @@
                 <input
                     type="text"
                     id="editarAutor"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1403,7 +1159,6 @@
                 <input
                     type="text"
                     id="editarGenero"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1418,7 +1173,6 @@
                 <input
                     type="text"
                     id="editarEditorial"
-                    autocomplete="off"
                 >
 
             </div>
@@ -1431,17 +1185,14 @@
                 </label>
 
                 <input
-                    type="text"
+                    type="number"
                     id="editarAnio"
-                    maxlength="4"
-                    inputmode="numeric"
-                    autocomplete="off"
                 >
 
             </div>
 
 
-            <div class="campo campo-completo">
+            <div class="campo">
 
                 <label for="editarBiblioteca">
                     Biblioteca
@@ -1449,12 +1200,25 @@
 
                 <select id="editarBiblioteca">
 
-                    <option value="">Seleccione...</option>
-                    <option value="F">F</option>
-                    <option value="M">M</option>
-                    <option value="N">N</option>
-                    <option value="R">R</option>
-                    <option value="Z">Z</option>
+                    <option value="F">
+                        F - Antigua
+                    </option>
+
+                    <option value="M">
+                        M - San Miguel Milpas Altas
+                    </option>
+
+                    <option value="R">
+                        R - San Rafael el Arado
+                    </option>
+
+                    <option value="N">
+                        N - Nueva Esperanza
+                    </option>
+
+                    <option value="Z">
+                        Z - Zapote
+                    </option>
 
                 </select>
 
@@ -1463,26 +1227,20 @@
         </div>
 
 
-        <div
-            id="mensajeEdicion"
-            class="mensaje"
-        ></div>
-
-
-        <div class="modal-acciones">
+        <div class="modal-botones">
 
             <button
+                id="btnCancelarEditar"
+                class="btn-gris"
                 type="button"
-                class="btn-secundario"
-                id="btnCancelarEdicion"
             >
                 Cancelar
             </button>
 
             <button
+                id="btnGuardarEditar"
+                class="btn-verde"
                 type="button"
-                class="btn-principal"
-                id="btnGuardarEdicion"
             >
                 Guardar cambios
             </button>
@@ -1494,35 +1252,20 @@
 </div>
 
 
-<footer>
-    Sistema de control de préstamos de la Biblioteca
-</footer>
-
-
 <script>
 
-    /* =====================================================
-       VARIABLES
-    ===================================================== */
-
-    let libros = [];
+    let todosLosLibros = [];
 
     let prestamosActivos = [];
 
-    const LIBROS_POR_PAGINA = 25;
+    let paginaActual = 1;
 
-    let resultadosLibrosActuales = [];
+    let paginaBajasActual = 1;
 
-    let paginaLibros = 1;
-
-    let paginaBajas = 1;
+    const registrosPorPagina = 10;
 
     let libroEditandoId = null;
 
-
-    /* =====================================================
-       ELEMENTOS
-    ===================================================== */
 
     const codigoLibro =
         document.getElementById("codigoLibro");
@@ -1545,26 +1288,11 @@
     const bibliotecaLibro =
         document.getElementById("bibliotecaLibro");
 
-    const btnRegistrar =
-        document.getElementById("btnRegistrar");
-
-    const archivoExcel =
-        document.getElementById("archivoExcel");
-
-    const btnImportar =
-        document.getElementById("btnImportar");
-
-    const busqueda =
-        document.getElementById("busqueda");
+    const buscarLibro =
+        document.getElementById("buscarLibro");
 
     const filtroEstado =
         document.getElementById("filtroEstado");
-
-    const filtroBiblioteca =
-        document.getElementById("filtroBiblioteca");
-
-    const btnBuscar =
-        document.getElementById("btnBuscar");
 
     const tablaLibros =
         document.getElementById("tablaLibros");
@@ -1572,81 +1300,6 @@
     const tablaBajas =
         document.getElementById("tablaBajas");
 
-    const sinResultados =
-        document.getElementById("sinResultados");
-
-    const resultadoTexto =
-        document.getElementById("resultadoTexto");
-
-    const paginacionLibros =
-        document.getElementById("paginacionLibros");
-
-    const btnAnteriorLibros =
-        document.getElementById("btnAnteriorLibros");
-
-    const btnSiguienteLibros =
-        document.getElementById("btnSiguienteLibros");
-
-    const paginaInfoLibros =
-        document.getElementById("paginaInfoLibros");
-
-    const paginacionBajas =
-        document.getElementById("paginacionBajas");
-
-    const btnAnteriorBajas =
-        document.getElementById("btnAnteriorBajas");
-
-    const btnSiguienteBajas =
-        document.getElementById("btnSiguienteBajas");
-
-    const paginaInfoBajas =
-        document.getElementById("paginaInfoBajas");
-
-
-    /* =====================================================
-       ELEMENTOS DEL MODAL
-    ===================================================== */
-
-    const modalEditar =
-        document.getElementById("modalEditar");
-
-    const editarCodigo =
-        document.getElementById("editarCodigo");
-
-    const editarNombre =
-        document.getElementById("editarNombre");
-
-    const editarAutor =
-        document.getElementById("editarAutor");
-
-    const editarGenero =
-        document.getElementById("editarGenero");
-
-    const editarEditorial =
-        document.getElementById("editarEditorial");
-
-    const editarAnio =
-        document.getElementById("editarAnio");
-
-    const editarBiblioteca =
-        document.getElementById("editarBiblioteca");
-
-    const btnCerrarModal =
-        document.getElementById("btnCerrarModal");
-
-    const btnCancelarEdicion =
-        document.getElementById("btnCancelarEdicion");
-
-    const btnGuardarEdicion =
-        document.getElementById("btnGuardarEdicion");
-
-    const mensajeEdicion =
-        document.getElementById("mensajeEdicion");
-
-
-    /* =====================================================
-       NORMALIZAR TEXTO
-    ===================================================== */
 
     function normalizarTexto(texto) {
 
@@ -1659,194 +1312,105 @@
     }
 
 
-    /* =====================================================
-       NORMALIZAR CÓDIGO
-    ===================================================== */
-
     function normalizarCodigo(codigo) {
 
         return String(codigo ?? "")
             .trim()
-            .replace(/\D/g, "");
+            .replace(/\s+/g, "");
 
     }
 
 
     function codigoParaComparar(codigo) {
 
-        const valor =
+        const codigoNormalizado =
             normalizarCodigo(codigo);
 
-        return valor
-            .replace(/^0+(?=\d)/, "");
+        if (!codigoNormalizado) {
+            return "";
+        }
+
+        const soloNumeros =
+            codigoNormalizado.replace(/^0+/, "");
+
+        return soloNumeros || "0";
 
     }
 
 
     function formatearCodigo(codigo) {
 
-        const valor =
-            normalizarCodigo(codigo);
+        const comparacion =
+            codigoParaComparar(codigo);
 
-        if (!valor) {
+        if (!comparacion) {
             return "";
         }
 
-        return valor.padStart(8, "0");
+        return comparacion.padStart(8, "0");
 
     }
 
-
-    /* =====================================================
-       VALIDAR CÓDIGO
-    ===================================================== */
 
     function validarCodigo(codigo) {
 
-        const valor =
+        const codigoNormalizado =
             normalizarCodigo(codigo);
 
-        if (!valor) {
-
-            return {
-                valido: false,
-                mensaje: "Ingresa el código del libro."
-            };
-
-        }
-
-
-        if (
-            valor.length > 8
-        ) {
-
-            return {
-                valido: false,
-                mensaje: "El código puede tener máximo 8 dígitos."
-            };
-
-        }
-
-
-        const numero =
-            Number(valor);
-
-
-        if (
-            !Number.isSafeInteger(numero) ||
-            numero < 1 ||
-            numero > 88888888
-        ) {
-
-            return {
-                valido: false,
-                mensaje: "El código debe estar entre 1 y 88888888."
-            };
-
-        }
-
-
-        return {
-            valido: true,
-            codigo: formatearCodigo(valor)
-        };
-
-    }
-
-
-    /* =====================================================
-       VALIDAR BIBLIOTECA
-    ===================================================== */
-
-    function validarBiblioteca(valor) {
-
-        const biblioteca =
-            String(valor ?? "")
-                .trim()
-                .toUpperCase();
-
-
-        if (
-            !["F", "M", "N", "R", "Z"]
-                .includes(biblioteca)
-        ) {
-
+        if (!codigoNormalizado) {
             return false;
-
         }
 
-
-        return true;
+        return /^\d+$/.test(codigoNormalizado);
 
     }
 
 
-    /* =====================================================
-       FORMATEAR FECHA
-    ===================================================== */
+    function validarBiblioteca(biblioteca) {
+
+        return [
+            "F",
+            "M",
+            "R",
+            "N",
+            "Z"
+        ].includes(
+            String(biblioteca || "")
+                .trim()
+                .toUpperCase()
+        );
+
+    }
+
 
     function formatearFecha(fecha) {
 
         if (!fecha) {
-            return "—";
+            return "";
         }
 
-        const valor =
-            String(fecha).trim();
+        const fechaObj =
+            new Date(fecha);
 
-        const coincidencia =
-            valor.match(
-                /^(\d{4})-(\d{2})-(\d{2})/
-            );
-
-
-        if (coincidencia) {
-
-            return `${coincidencia[3]}/${coincidencia[2]}/${coincidencia[1]}`;
-
+        if (Number.isNaN(fechaObj.getTime())) {
+            return "";
         }
 
-
-        const fechaObjeto =
-            new Date(valor);
-
-
-        if (
-            !isNaN(
-                fechaObjeto.getTime()
-            )
-        ) {
-
-            const dia =
-                String(
-                    fechaObjeto.getDate()
-                ).padStart(2, "0");
-
-            const mes =
-                String(
-                    fechaObjeto.getMonth() + 1
-                ).padStart(2, "0");
-
-            const año =
-                fechaObjeto.getFullYear();
-
-            return `${dia}/${mes}/${año}`;
-
-        }
-
-
-        return "—";
+        return fechaObj.toLocaleDateString(
+            "es-GT",
+            {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            }
+        );
 
     }
 
 
-    /* =====================================================
-       ESCAPAR HTML
-    ===================================================== */
+    function escapeHtml(texto) {
 
-    function escapeHtml(valor) {
-
-        return String(valor ?? "")
+        return String(texto ?? "")
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
@@ -1856,202 +1420,135 @@
     }
 
 
-    /* =====================================================
-       CONVERTIR REGISTRO
-    ===================================================== */
-
-    function convertirLibro(registro) {
+    function convertirLibro(libro) {
 
         return {
 
-            id:
-                registro.id,
+            id: libro.id,
 
-            codigo:
+            codigoLibro:
                 formatearCodigo(
-                    registro.codigoLibro
+                    libro.codigoLibro
                 ),
 
-            nombre:
-                String(
-                    registro.nombreLibro ?? ""
-                ),
+            nombreLibro:
+                libro.nombreLibro || "",
 
             autor:
-                String(
-                    registro.autor ?? ""
-                ),
+                libro.autor || "",
 
             genero:
-                String(
-                    registro.genero ?? ""
-                ),
+                libro.genero || "",
 
             editorial:
-                String(
-                    registro.editorial ?? ""
-                ),
+                libro.editorial || "",
 
-            anio:
-                String(
-                    registro.año ?? ""
-                ),
+            año:
+                libro.año || "",
 
-            biblioteca:
+            Biblioteca:
                 String(
-                    registro.Biblioteca ?? ""
-                )
-                .trim()
-                .toUpperCase(),
+                    libro.Biblioteca || ""
+                ).toUpperCase(),
 
             estado:
-                registro.estado ||
-                "Disponible",
+                libro.estado || "Disponible",
 
             fechaRegistro:
-                registro.fechaRegistro ||
-                null,
+                libro.fechaRegistro || null,
 
             fechaBaja:
-                registro.fechaBaja ||
-                null,
+                libro.fechaBaja || null,
 
             fechaReactivacion:
-                registro.fechaReactivacion ||
-                null
+                libro.fechaReactivacion || null
 
         };
 
     }
 
 
-    /* =====================================================
-       CARGAR PRÉSTAMOS ACTIVOS
-    ===================================================== */
-
     async function cargarPrestamosActivos() {
 
-        const {
-            data,
-            error
-        } = await supabaseClient
+        try {
 
-            .from("prestamos")
+            const resultado =
+                await supabaseClient
+                    .from("prestamos")
+                    .select(
+                        "id, codigoLibro, estado, fechaDevolucion"
+                    );
 
-            .select(
-                "id, codigoLibro, estado"
-            )
+            if (resultado.error) {
 
-            .eq(
-                "estado",
-                "Prestado"
+                console.error(
+                    "Error cargando préstamos:",
+                    resultado.error
+                );
+
+                prestamosActivos = [];
+
+                return;
+
+            }
+
+            prestamosActivos =
+                resultado.data || [];
+
+        } catch (error) {
+
+            console.error(
+                "Error cargando préstamos activos:",
+                error
             );
 
+            prestamosActivos = [];
 
-        if (error) {
-            throw error;
         }
-
-
-        prestamosActivos =
-            data || [];
 
     }
 
 
-    /* =====================================================
-       CARGAR LIBROS
-    ===================================================== */
-
     async function cargarLibros() {
-
-        resultadoTexto.textContent =
-            "Cargando libros...";
-
 
         try {
 
-            const todosLosLibros = [];
-
-            const cantidadPorPagina =
-                1000;
-
-            let desde = 0;
+            await cargarPrestamosActivos();
 
 
-            while (true) {
-
-                const hasta =
-                    desde +
-                    cantidadPorPagina -
-                    1;
-
-
-                const {
-                    data,
-                    error
-                } = await supabaseClient
-
+            const resultado =
+                await supabaseClient
                     .from("libros")
-
                     .select("*")
-
                     .order(
                         "id",
                         {
                             ascending: true
                         }
-                    )
-
-                    .range(
-                        desde,
-                        hasta
                     );
 
 
-                if (error) {
-                    throw error;
-                }
+            if (resultado.error) {
 
-
-                if (
-                    !data ||
-                    data.length === 0
-                ) {
-
-                    break;
-
-                }
-
-
-                todosLosLibros.push(
-                    ...data.map(
-                        convertirLibro
-                    )
+                console.error(
+                    "Error cargando libros:",
+                    resultado.error
                 );
 
+                mostrarMensaje(
+                    "No fue posible cargar los libros.",
+                    "error"
+                );
 
-                if (
-                    data.length <
-                    cantidadPorPagina
-                ) {
-
-                    break;
-
-                }
-
-
-                desde +=
-                    cantidadPorPagina;
+                return;
 
             }
 
 
-            libros =
-                todosLosLibros;
+            todosLosLibros =
+                (resultado.data || [])
+                    .map(convertirLibro);
 
-
-            await cargarPrestamosActivos();
 
             await sincronizarEstados();
 
@@ -2061,24 +1558,15 @@
 
             mostrarBajas();
 
-
         } catch (error) {
 
-            console.error(error);
-
-            resultadoTexto.textContent =
-                "Error al cargar los libros.";
-
+            console.error(
+                "Error general cargando libros:",
+                error
+            );
 
             mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                "No fue posible cargar los libros desde Supabase: " +
-                error.message,
-
+                "Ocurrió un error al cargar los libros.",
                 "error"
             );
 
@@ -2087,132 +1575,135 @@
     }
 
 
-    /* =====================================================
-       OBTENER ESTADO REAL
-    ===================================================== */
-
     function obtenerEstadoLibro(libro) {
 
+        const estadoActual =
+            normalizarTexto(
+                libro.estado
+            );
+
+
         if (
-            libro.estado === "Baja"
+            estadoActual === "baja" ||
+            estadoActual === "inactivo"
         ) {
 
-            return "Baja";
+            return libro.estado;
 
         }
 
 
         const codigo =
             codigoParaComparar(
-                libro.codigo
+                libro.codigoLibro
             );
 
 
-        const tienePrestamoActivo =
+        const prestamoActivo =
             prestamosActivos.some(
                 prestamo => {
 
-                    return (
+                    const codigoPrestamo =
                         codigoParaComparar(
                             prestamo.codigoLibro
-                        ) === codigo
+                        );
+
+                    if (
+                        codigoPrestamo !==
+                        codigo
+                    ) {
+                        return false;
+                    }
+
+
+                    const estadoPrestamo =
+                        normalizarTexto(
+                            prestamo.estado
+                        );
+
+
+                    return (
+                        estadoPrestamo ===
+                            "activo" ||
+                        estadoPrestamo ===
+                            "prestado"
                     );
 
                 }
             );
 
 
-        if (
-            tienePrestamoActivo
-        ) {
-
-            return "Prestado";
-
-        }
-
-
-        return "Disponible";
+        return prestamoActivo
+            ? "Prestado"
+            : "Disponible";
 
     }
 
-
-    /* =====================================================
-       SINCRONIZAR ESTADOS
-    ===================================================== */
 
     async function sincronizarEstados() {
 
         const cambios = [];
 
 
-        libros.forEach(
-            libro => {
+        todosLosLibros =
+            todosLosLibros.map(
+                libro => {
 
-                if (
-                    libro.estado ===
-                    "Baja"
-                ) {
-
-                    return;
-
-                }
+                    const nuevoEstado =
+                        obtenerEstadoLibro(
+                            libro
+                        );
 
 
-                const estadoReal =
-                    obtenerEstadoLibro(
-                        libro
-                    );
+                    if (
+                        libro.estado !==
+                        nuevoEstado
+                    ) {
+
+                        cambios.push({
+
+                            id: libro.id,
+
+                            estado:
+                                nuevoEstado
+
+                        });
+
+                    }
 
 
-                if (
-                    libro.estado !==
-                    estadoReal
-                ) {
+                    return {
 
-                    cambios.push({
-
-                        id:
-                            libro.id,
+                        ...libro,
 
                         estado:
-                            estadoReal
+                            nuevoEstado
 
-                    });
-
-
-                    libro.estado =
-                        estadoReal;
+                    };
 
                 }
-
-            }
-        );
+            );
 
 
         for (
-            const cambio of cambios
+            const cambio
+            of cambios
         ) {
 
-            const {
-                error
-            } = await supabaseClient
+            try {
 
-                .from("libros")
+                await supabaseClient
+                    .from("libros")
+                    .update({
+                        estado:
+                            cambio.estado
+                    })
+                    .eq(
+                        "id",
+                        cambio.id
+                    );
 
-                .update({
-
-                    estado:
-                        cambio.estado
-
-                })
-
-                .eq(
-                    "id",
-                    cambio.id
-                );
-
-
-            if (error) {
+            } catch (error) {
 
                 console.error(
                     "Error sincronizando estado:",
@@ -2226,138 +1717,109 @@
     }
 
 
-    /* =====================================================
-       ESTADÍSTICAS
-    ===================================================== */
-
     function actualizarEstadisticas() {
 
         const total =
-            libros.filter(
-                libro =>
-                    libro.estado !==
-                    "Baja"
-            ).length;
+            todosLosLibros.length;
 
 
         const disponibles =
-            libros.filter(
+            todosLosLibros.filter(
                 libro =>
-                    libro.estado ===
-                    "Disponible"
+                    normalizarTexto(
+                        libro.estado
+                    ) ===
+                    "disponible"
             ).length;
 
 
         const prestados =
-            libros.filter(
+            todosLosLibros.filter(
                 libro =>
-                    libro.estado ===
-                    "Prestado"
+                    normalizarTexto(
+                        libro.estado
+                    ) ===
+                    "prestado"
             ).length;
 
 
         const bajas =
-            libros.filter(
+            todosLosLibros.filter(
                 libro =>
-                    libro.estado ===
-                    "Baja"
+                    normalizarTexto(
+                        libro.estado
+                    ) ===
+                    "baja"
             ).length;
 
 
         document.getElementById(
             "totalLibros"
-        ).textContent =
-            total;
+        ).textContent = total;
 
 
         document.getElementById(
-            "totalDisponibles"
-        ).textContent =
-            disponibles;
+            "librosDisponibles"
+        ).textContent = disponibles;
 
 
         document.getElementById(
-            "totalPrestados"
-        ).textContent =
-            prestados;
+            "librosPrestados"
+        ).textContent = prestados;
 
 
         document.getElementById(
-            "totalBaja"
-        ).textContent =
-            bajas;
+            "librosBaja"
+        ).textContent = bajas;
 
     }
 
 
-    /* =====================================================
-       MENSAJES
-    ===================================================== */
-
     function mostrarMensaje(
-        elemento,
         texto,
-        tipo
+        tipo = "info"
     ) {
 
-        elemento.textContent =
-            texto;
-
-
-        elemento.className =
-            "mensaje " +
-            (
-                tipo === "error"
-                    ? "mensaje-error"
-                    : "mensaje-exito"
+        const mensaje =
+            document.getElementById(
+                "mensaje"
             );
 
 
-        elemento.style.display =
+        mensaje.textContent = texto;
+
+        mensaje.className =
+            "mensaje " + tipo;
+
+        mensaje.style.display =
             "block";
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
 
 
         setTimeout(
             () => {
 
-                elemento.style.display =
+                mensaje.style.display =
                     "none";
 
             },
-            6000
+            5000
         );
 
     }
 
 
-    /* =====================================================
-       REGISTRAR LIBRO
-    ===================================================== */
-
     async function registrarLibro() {
 
-        const resultadoCodigo =
-            validarCodigo(
-                codigoLibro.value
-            );
-
-
         if (
-            !resultadoCodigo.valido
+            !window.esAdministrador() &&
+            !window.esUsuario()
         ) {
-
-            mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                resultadoCodigo.mensaje,
-
-                "error"
-            );
-
-            codigoLibro.focus();
 
             return;
 
@@ -2365,47 +1827,49 @@
 
 
         const codigo =
-            resultadoCodigo.codigo;
-
+            formatearCodigo(
+                codigoLibro.value
+            );
 
         const nombre =
             nombreLibro.value.trim();
 
-
         const autor =
             autorLibro.value.trim();
-
 
         const genero =
             generoLibro.value.trim();
 
-
         const editorial =
             editorialLibro.value.trim();
-
 
         const anio =
             anioLibro.value.trim();
 
-
         const biblioteca =
-            bibliotecaLibro.value.trim().toUpperCase();
+            bibliotecaLibro.value
+                .trim()
+                .toUpperCase();
+
+
+        if (!validarCodigo(codigo)) {
+
+            mostrarMensaje(
+                "Ingrese un código de libro válido.",
+                "error"
+            );
+
+            return;
+
+        }
 
 
         if (!nombre) {
 
             mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                "Ingresa el nombre del libro.",
-
+                "Ingrese el nombre del libro.",
                 "error"
             );
-
-            nombreLibro.focus();
 
             return;
 
@@ -2415,66 +1879,36 @@
         if (!validarBiblioteca(biblioteca)) {
 
             mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                "Selecciona una biblioteca válida: F, M, N, R o Z.",
-
+                "Seleccione una biblioteca válida.",
                 "error"
             );
-
-            bibliotecaLibro.focus();
 
             return;
 
         }
 
 
-        if (
-            anio &&
-            !/^\d{4}$/.test(anio)
-        ) {
-
-            mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                "El año debe contener cuatro dígitos.",
-
-                "error"
-            );
-
-            anioLibro.focus();
-
-            return;
-
-        }
-
-
-        const codigoNormalizado =
+        const codigoComparar =
             codigoParaComparar(
                 codigo
             );
 
 
         const existe =
-            libros.some(
+            todosLosLibros.some(
                 libro =>
                     codigoParaComparar(
-                        libro.codigo
+                        libro.codigoLibro
                     ) ===
-                    codigoNormalizado
+                    codigoComparar
             );
 
 
         if (existe) {
 
-            alert(
-                "Ya existe un libro registrado con ese código."
+            mostrarMensaje(
+                "Ya existe un libro registrado con ese código.",
+                "error"
             );
 
             return;
@@ -2482,127 +1916,91 @@
         }
 
 
-        btnRegistrar.disabled =
-            true;
-
-        btnRegistrar.textContent =
-            "Guardando...";
-
-
         try {
 
-            const {
-                data,
-                error
-            } = await supabaseClient
+            const resultado =
+                await supabaseClient
+                    .from("libros")
+                    .insert({
 
-                .from("libros")
+                        codigoLibro:
+                            codigo,
 
-                .insert({
+                        nombreLibro:
+                            nombre,
 
-                    codigoLibro:
-                        codigo,
+                        autor:
+                            autor,
 
-                    nombreLibro:
-                        nombre,
+                        genero:
+                            genero,
 
-                    autor:
-                        autor,
+                        editorial:
+                            editorial,
 
-                    genero:
-                        genero,
+                        año:
+                            anio
+                                ? Number(anio)
+                                : null,
 
-                    editorial:
-                        editorial,
+                        Biblioteca:
+                            biblioteca,
 
-                    año:
-                        anio || null,
+                        estado:
+                            "Disponible",
 
-                    Biblioteca:
-                        biblioteca,
+                        fechaRegistro:
+                            new Date()
+                                .toISOString()
 
-                    estado:
-                        "Disponible",
-
-                    fechaRegistro:
-                        new Date().toISOString()
-
-                })
-
-                .select()
-
-                .single();
+                    })
+                    .select()
+                    .single();
 
 
-            if (error) {
-                throw error;
+            if (resultado.error) {
+
+                console.error(
+                    "Error registrando libro:",
+                    resultado.error
+                );
+
+                mostrarMensaje(
+                    "No fue posible registrar el libro.",
+                    "error"
+                );
+
+                return;
+
             }
 
 
-            libros.push(
-                convertirLibro(
-                    data
-                )
+            mostrarMensaje(
+                "Libro registrado correctamente.",
+                "exito"
             );
 
 
             limpiarFormularioRegistro();
 
-
-            mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                "Libro registrado correctamente.",
-
-                "exito"
-            );
-
-
-            actualizarEstadisticas();
-
-            buscarLibros();
-
-            mostrarBajas();
-
-            codigoLibro.focus();
-
+            await cargarLibros();
 
         } catch (error) {
 
-            console.error(error);
-
-
-            mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                "No fue posible registrar el libro: " +
-                error.message,
-
-                "error"
+            console.error(
+                "Error registrando libro:",
+                error
             );
 
-        } finally {
-
-            btnRegistrar.disabled =
-                false;
-
-            btnRegistrar.textContent =
-                "+ Registrar libro";
+            mostrarMensaje(
+                "Ocurrió un error al registrar el libro.",
+                "error"
+            );
 
         }
 
     }
 
-
-    /* =====================================================
-       LIMPIAR FORMULARIO
-    ===================================================== */
 
     function limpiarFormularioRegistro() {
 
@@ -2623,166 +2021,174 @@
     }
 
 
-    /* =====================================================
-       BUSCAR LIBROS
-    ===================================================== */
-
     function buscarLibros() {
-
-        paginaLibros = 1;
 
         const texto =
             normalizarTexto(
-                busqueda.value
+                buscarLibro.value
             );
 
 
-        const estadoSeleccionado =
-            filtroEstado.value;
-
-
-        const bibliotecaSeleccionada =
-            filtroBiblioteca.value;
+        const estado =
+            normalizarTexto(
+                filtroEstado.value
+            );
 
 
         const resultados =
-            libros.filter(
+            todosLosLibros.filter(
                 libro => {
 
-                    const estado =
-                        obtenerEstadoLibro(
-                            libro
+                    const contenido = [
+
+                        libro.codigoLibro,
+
+                        libro.nombreLibro,
+
+                        libro.autor,
+
+                        libro.genero,
+
+                        libro.editorial,
+
+                        libro.año,
+
+                        libro.Biblioteca,
+
+                        libro.estado
+
+                    ]
+                        .map(normalizarTexto)
+                        .join(" ");
+
+
+                    const coincideTexto =
+                        !texto ||
+                        contenido.includes(
+                            texto
                         );
 
 
-                    if (texto) {
-
-                        const camposBusqueda = [
-
-                            libro.codigo,
-
-                            libro.nombre,
-
-                            libro.autor,
-
-                            libro.genero,
-
-                            libro.editorial,
-
-                            libro.anio,
-
-                            libro.biblioteca
-
-                        ];
+                    const coincideEstado =
+                        !estado ||
+                        normalizarTexto(
+                            libro.estado
+                        ) ===
+                        estado;
 
 
-                        const coincide =
-                            camposBusqueda.some(
-                                campo =>
-                                    normalizarTexto(
-                                        campo
-                                    ).includes(
-                                        texto
-                                    )
-                            );
-
-
-                        if (!coincide) {
-                            return false;
-                        }
-
-                    }
-
-
-                    if (
-                        estadoSeleccionado !==
-                        "Todos" &&
-                        estado !==
-                        estadoSeleccionado
-                    ) {
-
-                        return false;
-                    }
-
-
-                    if (
-                        bibliotecaSeleccionada !==
-                        "Todas" &&
-                        libro.biblioteca !==
-                        bibliotecaSeleccionada
-                    ) {
-
-                        return false;
-                    }
-
-
-                    return true;
+                    return (
+                        coincideTexto &&
+                        coincideEstado
+                    );
 
                 }
             );
 
 
-        resultadosLibrosActuales =
-            resultados;
+        paginaActual = 1;
 
-
-        mostrarLibros();
+        mostrarLibros(
+            resultados
+        );
 
     }
 
 
-    /* =====================================================
-       MOSTRAR LIBROS
-    ===================================================== */
+    function obtenerClaseEstado(estado) {
 
-    function mostrarLibros() {
-
-        tablaLibros.innerHTML =
-            "";
-
-
-        const totalResultados =
-            resultadosLibrosActuales.length;
-
-
-        if (
-            totalResultados === 0
-        ) {
-
-            sinResultados.style.display =
-                "block";
-
-
-            resultadoTexto.textContent =
-                "No se encontraron libros.";
-
-
-            paginacionLibros.style.display =
-                "none";
-
-
-            return;
-
-        }
-
-
-        sinResultados.style.display =
-            "none";
-
-
-        const totalPaginas =
-            Math.ceil(
-                totalResultados /
-                LIBROS_POR_PAGINA
+        const estadoNormalizado =
+            normalizarTexto(
+                estado
             );
 
 
         if (
-            paginaLibros >
+            estadoNormalizado ===
+            "disponible"
+        ) {
+
+            return "estado estado-disponible";
+
+        }
+
+
+        if (
+            estadoNormalizado ===
+            "prestado"
+        ) {
+
+            return "estado estado-prestado";
+
+        }
+
+
+        if (
+            estadoNormalizado ===
+            "baja"
+        ) {
+
+            return "estado estado-baja";
+
+        }
+
+
+        return "estado estado-inactivo";
+
+    }
+
+
+    function obtenerNombreBiblioteca(
+        codigo
+    ) {
+
+        const bibliotecas = {
+
+            F: "F - Antigua",
+
+            M: "M - San Miguel Milpas Altas",
+
+            R: "R - San Rafael el Arado",
+
+            N: "N - Nueva Esperanza",
+
+            Z: "Z - Zapote"
+
+        };
+
+
+        return (
+            bibliotecas[
+                String(codigo || "")
+                    .toUpperCase()
+            ] ||
+            codigo ||
+            ""
+        );
+
+    }
+
+
+    function mostrarLibros(
+        libros
+    ) {
+
+        const totalPaginas =
+            Math.max(
+                1,
+                Math.ceil(
+                    libros.length /
+                    registrosPorPagina
+                )
+            );
+
+
+        if (
+            paginaActual >
             totalPaginas
         ) {
 
-            paginaLibros =
+            paginaActual =
                 totalPaginas;
 
         }
@@ -2790,332 +2196,452 @@
 
         const inicio =
             (
-                paginaLibros -
+                paginaActual -
                 1
             ) *
-            LIBROS_POR_PAGINA;
+            registrosPorPagina;
 
 
         const fin =
             inicio +
-            LIBROS_POR_PAGINA;
+            registrosPorPagina;
 
 
-        const resultadosPagina =
-            resultadosLibrosActuales.slice(
+        const pagina =
+            libros.slice(
                 inicio,
                 fin
             );
 
 
-        resultadoTexto.textContent =
-            `Mostrando ${totalResultados} libro${totalResultados === 1 ? "" : "s"}.`;
+        if (!pagina.length) {
 
+            tablaLibros.innerHTML = `
 
-        resultadosPagina.forEach(
-            libro => {
+                <tr>
 
-                const estado =
-                    obtenerEstadoLibro(
-                        libro
-                    );
-
-
-                let claseEstado =
-                    "";
-
-
-                if (
-                    estado ===
-                    "Disponible"
-                ) {
-
-                    claseEstado =
-                        "estado-disponible";
-
-                } else if (
-                    estado ===
-                    "Prestado"
-                ) {
-
-                    claseEstado =
-                        "estado-prestado";
-
-                } else {
-
-                    claseEstado =
-                        "estado-baja";
-
-                }
-
-
-                const fila =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                let acciones =
-                    `
-
-                        <button
-                            type="button"
-                            class="btn-editar btn-pequeno"
-                            onclick="editarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Editar
-                        </button>
-
-                    `;
-
-
-                if (
-                    estado ===
-                    "Disponible"
-                ) {
-
-                    acciones += `
-
-                        <button
-                            type="button"
-                            class="btn-baja btn-pequeno"
-                            onclick="darDeBaja('${escapeHtml(String(libro.id))}')"
-                        >
-                            Dar de baja
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn-eliminar btn-pequeno"
-                            onclick="eliminarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Eliminar
-                        </button>
-
-                    `;
-
-                } else if (
-                    estado ===
-                    "Prestado"
-                ) {
-
-                    acciones += `
-
-                        <span style="color:#78909c;">
-                            En préstamo
-                        </span>
-
-                    `;
-
-                } else {
-
-                    acciones += `
-
-                        <button
-                            type="button"
-                            class="btn-editar btn-pequeno"
-                            onclick="editarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Editar
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn-reactivar btn-pequeno"
-                            onclick="reactivarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Reactivar
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn-eliminar btn-pequeno"
-                            onclick="eliminarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Eliminar
-                        </button>
-
-                    `;
-
-                }
-
-
-                fila.innerHTML = `
-
-                    <td>
-                        ${escapeHtml(
-                            libro.codigo
-                        )}
+                    <td
+                        colspan="9"
+                        class="sin-registros"
+                    >
+                        No se encontraron libros.
                     </td>
 
-                    <td class="texto-izquierda nombre-libro">
-                        ${escapeHtml(
-                            libro.nombre
-                        )}
-                    </td>
+                </tr>
 
-                    <td class="texto-izquierda autor-libro">
-                        ${escapeHtml(
-                            libro.autor ||
-                            "—"
-                        )}
-                    </td>
+            `;
 
-                    <td class="texto-izquierda genero-libro">
-                        ${escapeHtml(
-                            libro.genero ||
-                            "—"
-                        )}
-                    </td>
+        } else {
 
-                    <td class="texto-izquierda editorial-libro">
-                        ${escapeHtml(
-                            libro.editorial ||
-                            "—"
-                        )}
-                    </td>
+            tablaLibros.innerHTML =
+                pagina
+                    .map(
+                        libro =>
+                            construirFilaLibro(
+                                libro
+                            )
+                    )
+                    .join("");
 
-                    <td>
-                        ${escapeHtml(
-                            libro.anio ||
-                            "—"
-                        )}
-                    </td>
-
-                    <td class="biblioteca">
-                        ${escapeHtml(
-                            libro.biblioteca ||
-                            "—"
-                        )}
-                    </td>
-
-                    <td>
-
-                        <span
-                            class="estado ${claseEstado}"
-                        >
-                            ${estado}
-                        </span>
-
-                    </td>
-
-                    <td>
-                        ${acciones}
-                    </td>
-
-                `;
+        }
 
 
-                tablaLibros.appendChild(
-                    fila
-                );
-
-            }
-        );
+        document.getElementById(
+            "paginaInfo"
+        ).textContent =
+            `Página ${paginaActual} de ${totalPaginas}`;
 
 
-        actualizarPaginacionLibros(
-            totalPaginas
-        );
+        document.getElementById(
+            "btnPaginaAnterior"
+        ).disabled =
+            paginaActual <= 1;
+
+
+        document.getElementById(
+            "btnPaginaSiguiente"
+        ).disabled =
+            paginaActual >= totalPaginas;
 
     }
 
 
-    /* =====================================================
-       PAGINACIÓN LIBROS
-    ===================================================== */
-
-    function actualizarPaginacionLibros(
-        totalPaginas
+    function construirFilaLibro(
+        libro
     ) {
 
+        const esAdministrador =
+            window.esAdministrador();
+
+
+        let acciones = "";
+
+
+        if (esAdministrador) {
+
+            const estado =
+                normalizarTexto(
+                    libro.estado
+                );
+
+
+            acciones += `
+
+                <button
+                    class="btn-azul"
+                    onclick="abrirEditar(${Number(libro.id)})"
+                >
+                    Editar
+                </button>
+
+            `;
+
+
+            if (
+                estado ===
+                "baja"
+            ) {
+
+                acciones += `
+
+                    <button
+                        class="btn-verde"
+                        onclick="reactivarLibro(${Number(libro.id)})"
+                    >
+                        Reactivar
+                    </button>
+
+                `;
+
+            } else {
+
+                acciones += `
+
+                    <button
+                        class="btn-naranja"
+                        onclick="darDeBaja(${Number(libro.id)})"
+                    >
+                        Dar de baja
+                    </button>
+
+                `;
+
+            }
+
+
+            acciones += `
+
+                <button
+                    class="btn-rojo"
+                    onclick="eliminarLibro(${Number(libro.id)})"
+                >
+                    Eliminar
+                </button>
+
+            `;
+
+        } else {
+
+            acciones =
+                `<span style="color:#777;">Consulta</span>`;
+
+        }
+
+
+        return `
+
+            <tr>
+
+                <td>
+                    ${escapeHtml(
+                        libro.codigoLibro
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        libro.nombreLibro
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        libro.autor
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        libro.genero
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        libro.editorial
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        libro.año
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        obtenerNombreBiblioteca(
+                            libro.Biblioteca
+                        )
+                    )}
+                </td>
+
+                <td>
+
+                    <span
+                        class="${obtenerClaseEstado(
+                            libro.estado
+                        )}"
+                    >
+                        ${escapeHtml(
+                            libro.estado
+                        )}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="acciones">
+
+                        ${acciones}
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+
+    function cambiarPagina(
+        direccion
+    ) {
+
+        paginaActual +=
+            direccion;
+
+
         if (
-            totalPaginas <= 1
+            paginaActual <
+            1
         ) {
 
-            paginacionLibros.style.display =
-                "none";
+            paginaActual = 1;
+
+        }
+
+
+        buscarLibros();
+
+    }
+
+
+    function mostrarBajas() {
+
+        const bajas =
+            todosLosLibros.filter(
+                libro =>
+                    normalizarTexto(
+                        libro.estado
+                    ) ===
+                    "baja"
+            );
+
+
+        const totalPaginas =
+            Math.max(
+                1,
+                Math.ceil(
+                    bajas.length /
+                    registrosPorPagina
+                )
+            );
+
+
+        if (
+            paginaBajasActual >
+            totalPaginas
+        ) {
+
+            paginaBajasActual =
+                totalPaginas;
+
+        }
+
+
+        const inicio =
+            (
+                paginaBajasActual -
+                1
+            ) *
+            registrosPorPagina;
+
+
+        const fin =
+            inicio +
+            registrosPorPagina;
+
+
+        const pagina =
+            bajas.slice(
+                inicio,
+                fin
+            );
+
+
+        if (!pagina.length) {
+
+            tablaBajas.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="sin-registros"
+                    >
+                        No hay libros dados de baja.
+                    </td>
+
+                </tr>
+
+            `;
+
+        } else {
+
+            tablaBajas.innerHTML =
+                pagina
+                    .map(
+                        libro =>
+                            `
+
+                            <tr>
+
+                                <td>
+                                    ${escapeHtml(
+                                        libro.codigoLibro
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(
+                                        libro.nombreLibro
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(
+                                        libro.autor
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(
+                                        obtenerNombreBiblioteca(
+                                            libro.Biblioteca
+                                        )
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(
+                                        formatearFecha(
+                                            libro.fechaBaja
+                                        )
+                                    )}
+                                </td>
+
+                                <td>
+
+                                    ${
+                                        window.esAdministrador()
+                                            ? `
+
+                                            <div class="acciones">
+
+                                                <button
+                                                    class="btn-verde"
+                                                    onclick="reactivarLibro(${Number(libro.id)})"
+                                                >
+                                                    Reactivar
+                                                </button>
+
+                                                <button
+                                                    class="btn-rojo"
+                                                    onclick="eliminarLibro(${Number(libro.id)})"
+                                                >
+                                                    Eliminar
+                                                </button>
+
+                                            </div>
+
+                                            `
+                                            :
+                                            `<span style="color:#777;">Consulta</span>`
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                            `
+                    )
+                    .join("");
+
+        }
+
+
+        document.getElementById(
+            "bajasPaginaInfo"
+        ).textContent =
+            `Página ${paginaBajasActual} de ${totalPaginas}`;
+
+
+        document.getElementById(
+            "btnBajasAnterior"
+        ).disabled =
+            paginaBajasActual <= 1;
+
+
+        document.getElementById(
+            "btnBajasSiguiente"
+        ).disabled =
+            paginaBajasActual >= totalPaginas;
+
+    }
+
+
+    function abrirEditar(id) {
+
+        if (!window.esAdministrador()) {
 
             return;
 
         }
 
 
-        paginacionLibros.style.display =
-            "flex";
-
-
-        paginaInfoLibros.textContent =
-            `Página ${paginaLibros} de ${totalPaginas}`;
-
-
-        btnAnteriorLibros.disabled =
-            paginaLibros <= 1;
-
-
-        btnSiguienteLibros.disabled =
-            paginaLibros >= totalPaginas;
-
-    }
-
-
-    function paginaAnteriorLibros() {
-
-        if (
-            paginaLibros > 1
-        ) {
-
-            paginaLibros--;
-
-            mostrarLibros();
-
-        }
-
-    }
-
-
-    function paginaSiguienteLibros() {
-
-        const totalPaginas =
-            Math.ceil(
-                resultadosLibrosActuales.length /
-                LIBROS_POR_PAGINA
-            );
-
-
-        if (
-            paginaLibros <
-            totalPaginas
-        ) {
-
-            paginaLibros++;
-
-            mostrarLibros();
-
-        }
-
-    }
-
-
-    /* =====================================================
-       EDITAR LIBRO
-    ===================================================== */
-
-    function editarLibro(id) {
-
         const libro =
-            libros.find(
+            todosLosLibros.find(
                 item =>
-                    String(item.id) ===
-                    String(id)
+                    Number(item.id) ===
+                    Number(id)
             );
 
 
         if (!libro) {
-
-            alert(
-                "No se encontró el libro."
-            );
 
             return;
 
@@ -3126,161 +2652,151 @@
             libro.id;
 
 
-        editarCodigo.value =
-            libro.codigo || "";
+        document.getElementById(
+            "editarCodigo"
+        ).value =
+            libro.codigoLibro;
 
 
-        editarNombre.value =
-            libro.nombre || "";
+        document.getElementById(
+            "editarNombre"
+        ).value =
+            libro.nombreLibro;
 
 
-        editarAutor.value =
-            libro.autor || "";
+        document.getElementById(
+            "editarAutor"
+        ).value =
+            libro.autor;
 
 
-        editarGenero.value =
-            libro.genero || "";
+        document.getElementById(
+            "editarGenero"
+        ).value =
+            libro.genero;
 
 
-        editarEditorial.value =
-            libro.editorial || "";
+        document.getElementById(
+            "editarEditorial"
+        ).value =
+            libro.editorial;
 
 
-        editarAnio.value =
-            libro.anio || "";
+        document.getElementById(
+            "editarAnio"
+        ).value =
+            libro.año || "";
 
 
-        editarBiblioteca.value =
-            libro.biblioteca || "";
+        document.getElementById(
+            "editarBiblioteca"
+        ).value =
+            libro.Biblioteca;
 
 
-        mensajeEdicion.style.display =
-            "none";
-
-
-        modalEditar.style.display =
+        document.getElementById(
+            "modalEditar"
+        ).style.display =
             "flex";
-
-
-        editarNombre.focus();
 
     }
 
 
-    /* =====================================================
-       CERRAR MODAL
-    ===================================================== */
-
-    function cerrarModalEditar() {
-
-        modalEditar.style.display =
-            "none";
-
+    function cerrarEditar() {
 
         libroEditandoId =
             null;
 
+        document.getElementById(
+            "modalEditar"
+        ).style.display =
+            "none";
+
     }
 
 
-    /* =====================================================
-       GUARDAR EDICIÓN
-    ===================================================== */
+    async function guardarEditar() {
 
-    async function guardarEdicion() {
+        if (!window.esAdministrador()) {
 
-        if (
-            libroEditandoId === null
-        ) {
+            cerrarEditar();
 
             return;
 
         }
 
 
-        const libro =
-            libros.find(
-                item =>
-                    String(item.id) ===
-                    String(libroEditandoId)
-            );
-
-
-        if (!libro) {
-
-            alert(
-                "No se encontró el libro."
-            );
-
-            cerrarModalEditar();
+        if (!libroEditandoId) {
 
             return;
 
         }
-
-
-        const resultadoCodigo =
-            validarCodigo(
-                editarCodigo.value
-            );
-
-
-        if (
-            !resultadoCodigo.valido
-        ) {
-
-            mostrarMensaje(
-                mensajeEdicion,
-                resultadoCodigo.mensaje,
-                "error"
-            );
-
-            editarCodigo.focus();
-
-            return;
-
-        }
-
-
-        const codigo =
-            resultadoCodigo.codigo;
 
 
         const nombre =
-            editarNombre.value.trim();
+            document.getElementById(
+                "editarNombre"
+            ).value.trim();
+
+
+        const codigo =
+            formatearCodigo(
+                document.getElementById(
+                    "editarCodigo"
+                ).value
+            );
 
 
         const autor =
-            editarAutor.value.trim();
+            document.getElementById(
+                "editarAutor"
+            ).value.trim();
 
 
         const genero =
-            editarGenero.value.trim();
+            document.getElementById(
+                "editarGenero"
+            ).value.trim();
 
 
         const editorial =
-            editarEditorial.value.trim();
+            document.getElementById(
+                "editarEditorial"
+            ).value.trim();
 
 
         const anio =
-            editarAnio.value.trim();
+            document.getElementById(
+                "editarAnio"
+            ).value.trim();
 
 
         const biblioteca =
-            editarBiblioteca.value
+            document.getElementById(
+                "editarBiblioteca"
+            ).value
                 .trim()
                 .toUpperCase();
+
+
+        if (!validarCodigo(codigo)) {
+
+            mostrarMensaje(
+                "Ingrese un código válido.",
+                "error"
+            );
+
+            return;
+
+        }
 
 
         if (!nombre) {
 
             mostrarMensaje(
-                mensajeEdicion,
-                "Ingresa el nombre del libro.",
+                "Ingrese el nombre del libro.",
                 "error"
             );
-
-            editarNombre.focus();
 
             return;
 
@@ -3290,871 +2806,677 @@
         if (!validarBiblioteca(biblioteca)) {
 
             mostrarMensaje(
-                mensajeEdicion,
-                "Selecciona una biblioteca válida: F, M, N, R o Z.",
+                "Seleccione una biblioteca válida.",
                 "error"
             );
-
-            editarBiblioteca.focus();
 
             return;
 
         }
 
 
-        if (
-            anio &&
-            !/^\d{4}$/.test(anio)
-        ) {
+        const duplicado =
+            todosLosLibros.some(
+                libro =>
+
+                    Number(libro.id) !==
+                        Number(libroEditandoId) &&
+
+                    codigoParaComparar(
+                        libro.codigoLibro
+                    ) ===
+                    codigoParaComparar(
+                        codigo
+                    )
+            );
+
+
+        if (duplicado) {
 
             mostrarMensaje(
-                mensajeEdicion,
-                "El año debe contener cuatro dígitos.",
+                "Otro libro ya utiliza ese código.",
                 "error"
             );
 
-            editarAnio.focus();
-
             return;
 
         }
-
-
-        const codigoNormalizado =
-            codigoParaComparar(
-                codigo
-            );
-
-
-        const codigoDuplicado =
-            libros.some(
-                otroLibro => {
-
-                    if (
-                        String(
-                            otroLibro.id
-                        ) ===
-                        String(
-                            libro.id
-                        )
-                    ) {
-
-                        return false;
-
-                    }
-
-
-                    return (
-                        codigoParaComparar(
-                            otroLibro.codigo
-                        ) ===
-                        codigoNormalizado
-                    );
-
-                }
-            );
-
-
-        if (
-            codigoDuplicado
-        ) {
-
-            alert(
-                "Ya existe otro libro registrado con ese código."
-            );
-
-            return;
-
-        }
-
-
-        btnGuardarEdicion.disabled =
-            true;
-
-        btnGuardarEdicion.textContent =
-            "Guardando...";
 
 
         try {
 
-            const {
-                data,
-                error
-            } = await supabaseClient
+            const resultado =
+                await supabaseClient
+                    .from("libros")
+                    .update({
 
-                .from("libros")
+                        codigoLibro:
+                            codigo,
 
-                .update({
+                        nombreLibro:
+                            nombre,
 
-                    codigoLibro:
-                        codigo,
+                        autor:
+                            autor,
 
-                    nombreLibro:
-                        nombre,
+                        genero:
+                            genero,
 
-                    autor:
-                        autor,
+                        editorial:
+                            editorial,
 
-                    genero:
-                        genero,
+                        año:
+                            anio
+                                ? Number(anio)
+                                : null,
 
-                    editorial:
-                        editorial,
+                        Biblioteca:
+                            biblioteca
 
-                    año:
-                        anio || null,
-
-                    Biblioteca:
-                        biblioteca
-
-                })
-
-                .eq(
-                    "id",
-                    libro.id
-                )
-
-                .select()
-                .single();
+                    })
+                    .eq(
+                        "id",
+                        libroEditandoId
+                    );
 
 
-            if (error) {
-                throw error;
-            }
+            if (resultado.error) {
 
-
-            const libroActualizado =
-                convertirLibro(
-                    data
+                console.error(
+                    "Error actualizando libro:",
+                    resultado.error
                 );
 
-
-            const indice =
-                libros.findIndex(
-                    item =>
-                        String(item.id) ===
-                        String(libro.id)
+                mostrarMensaje(
+                    "No fue posible actualizar el libro.",
+                    "error"
                 );
 
-
-            if (
-                indice !== -1
-            ) {
-
-                libros[indice] =
-                    libroActualizado;
+                return;
 
             }
 
 
-            cerrarModalEditar();
-
-
-            actualizarEstadisticas();
-
-            buscarLibros();
-
-            mostrarBajas();
-
+            cerrarEditar();
 
             mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeRegistro"
-                ),
-
-                "Información del libro actualizada correctamente.",
-
+                "Libro actualizado correctamente.",
                 "exito"
             );
 
 
+            await cargarLibros();
+
         } catch (error) {
 
-            console.error(error);
-
+            console.error(
+                "Error actualizando libro:",
+                error
+            );
 
             mostrarMensaje(
-                mensajeEdicion,
-                "No fue posible actualizar el libro: " +
-                error.message,
+                "Ocurrió un error al actualizar el libro.",
                 "error"
             );
 
-        } finally {
-
-            btnGuardarEdicion.disabled =
-                false;
-
-            btnGuardarEdicion.textContent =
-                "Guardar cambios";
-
         }
 
     }
 
-
-    /* =====================================================
-       DAR DE BAJA
-    ===================================================== */
 
     async function darDeBaja(id) {
 
+        if (!window.esAdministrador()) {
+
+            return;
+
+        }
+
+
         const libro =
-            libros.find(
-                libro =>
-                    String(
-                        libro.id
-                    ) ===
-                    String(id)
+            todosLosLibros.find(
+                item =>
+                    Number(item.id) ===
+                    Number(id)
             );
 
 
         if (!libro) {
 
-            alert(
-                "No se encontró el libro."
-            );
-
             return;
 
         }
 
 
-        if (
-            obtenerEstadoLibro(
-                libro
-            ) ===
-            "Prestado"
-        ) {
-
-            alert(
-                "No se puede dar de baja un libro que está prestado."
-            );
-
-            return;
-
-        }
-
-
-        const confirmar =
-            confirm(
-
-                "CONFIRMAR BAJA\n\n" +
-
-                `Código: ${libro.codigo}\n` +
-
-                `Libro: ${libro.nombre}\n` +
-
-                `Biblioteca: ${libro.biblioteca || "No definida"}\n\n` +
-
-                "¿Está seguro de que desea dar de baja este libro?"
-
+        const confirmado =
+            window.confirm(
+                `¿Desea dar de baja el libro "${libro.nombreLibro}"?`
             );
 
 
-        if (!confirmar) {
+        if (!confirmado) {
+
             return;
+
         }
 
 
         try {
 
-            const fechaBaja =
-                new Date().toISOString();
-
-
-            const {
-                error
-            } = await supabaseClient
-
-                .from("libros")
-
-                .update({
-
-                    estado:
-                        "Baja",
-
-                    fechaBaja:
-                        fechaBaja
-
-                })
-
-                .eq(
-                    "id",
-                    libro.id
-                );
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            libro.estado =
-                "Baja";
-
-
-            libro.fechaBaja =
-                fechaBaja;
-
-
-            actualizarEstadisticas();
-
-            buscarLibros();
-
-            mostrarBajas();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            alert(
-
-                "No fue posible dar de baja el libro.\n\n" +
-                error.message
-
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       REACTIVAR
-    ===================================================== */
-
-    async function reactivarLibro(id) {
-
-        const libro =
-            libros.find(
-                libro =>
-                    String(
-                        libro.id
-                    ) ===
-                    String(id)
-            );
-
-
-        if (!libro) {
-
-            alert(
-                "No se encontró el libro."
-            );
-
-            return;
-
-        }
-
-
-        const confirmar =
-            confirm(
-
-                "¿Deseas reactivar este libro?\n\n" +
-
-                `Código: ${libro.codigo}\n` +
-
-                `Libro: ${libro.nombre}\n` +
-
-                `Biblioteca: ${libro.biblioteca || "No definida"}`
-
-            );
-
-
-        if (!confirmar) {
-            return;
-        }
-
-
-        try {
-
-            const fechaReactivacion =
-                new Date().toISOString();
-
-
-            const {
-                error
-            } = await supabaseClient
-
-                .from("libros")
-
-                .update({
-
-                    estado:
-                        "Disponible",
-
-                    fechaReactivacion:
-                        fechaReactivacion
-
-                })
-
-                .eq(
-                    "id",
-                    libro.id
-                );
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            libro.estado =
-                "Disponible";
-
-
-            libro.fechaReactivacion =
-                fechaReactivacion;
-
-
-            actualizarEstadisticas();
-
-            buscarLibros();
-
-            mostrarBajas();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            alert(
-
-                "No fue posible reactivar el libro.\n\n" +
-                error.message
-
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       ELIMINAR LIBRO
-    ===================================================== */
-
-    async function eliminarLibro(id) {
-
-        const libro =
-            libros.find(
-                libro =>
-                    String(
-                        libro.id
-                    ) ===
-                    String(id)
-            );
-
-
-        if (!libro) {
-
-            alert(
-                "No se encontró el libro."
-            );
-
-            return;
-
-        }
-
-
-        const estado =
-            obtenerEstadoLibro(
-                libro
-            );
-
-
-        if (
-            estado ===
-            "Prestado"
-        ) {
-
-            alert(
-                "No se puede eliminar un libro que está prestado."
-            );
-
-            return;
-
-        }
-
-
-        const confirmar =
-            confirm(
-
-                "CONFIRMAR ELIMINACIÓN\n\n" +
-
-                `Código: ${libro.codigo}\n` +
-
-                `Libro: ${libro.nombre}\n` +
-
-                `Biblioteca: ${libro.biblioteca || "No definida"}\n\n` +
-
-                "Esta acción eliminará completamente el registro del libro.\n\n" +
-
-                "¿Está seguro de que desea eliminarlo?"
-
-            );
-
-
-        if (!confirmar) {
-            return;
-        }
-
-
-        try {
-
-            const {
-                error
-            } = await supabaseClient
-
-                .from("libros")
-
-                .delete()
-
-                .eq(
-                    "id",
-                    libro.id
-                );
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            libros =
-                libros.filter(
-                    item =>
-                        item.id !==
-                        libro.id
-                );
-
-
-            actualizarEstadisticas();
-
-            buscarLibros();
-
-            mostrarBajas();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            alert(
-
-                "No fue posible eliminar el libro.\n\n" +
-                error.message
-
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       MOSTRAR BAJAS
-    ===================================================== */
-
-    function mostrarBajas() {
-
-        tablaBajas.innerHTML =
-            "";
-
-
-        const bajas =
-            libros.filter(
-                libro =>
-                    libro.estado ===
-                    "Baja"
-            );
-
-
-        if (
-            bajas.length === 0
-        ) {
-
-            tablaBajas.innerHTML = `
-
-                <tr>
-
-                    <td
-                        colspan="5"
-                        style="
-                            padding:25px;
-                            color:#78909c;
-                        "
-                    >
-                        No hay libros dados de baja.
-                    </td>
-
-                </tr>
-
-            `;
-
-
-            paginacionBajas.style.display =
-                "none";
-
-
-            return;
-
-        }
-
-
-        const totalPaginas =
-            Math.ceil(
-                bajas.length /
-                LIBROS_POR_PAGINA
-            );
-
-
-        if (
-            paginaBajas >
-            totalPaginas
-        ) {
-
-            paginaBajas =
-                totalPaginas;
-
-        }
-
-
-        const inicio =
-            (
-                paginaBajas -
-                1
-            ) *
-            LIBROS_POR_PAGINA;
-
-
-        const fin =
-            inicio +
-            LIBROS_POR_PAGINA;
-
-
-        const bajasPagina =
-            bajas.slice(
-                inicio,
-                fin
-            );
-
-
-        bajasPagina.forEach(
-            libro => {
-
-                const fila =
-                    document.createElement(
-                        "tr"
+            const resultado =
+                await supabaseClient
+                    .from("libros")
+                    .update({
+
+                        estado:
+                            "Baja",
+
+                        fechaBaja:
+                            new Date()
+                                .toISOString()
+
+                    })
+                    .eq(
+                        "id",
+                        id
                     );
 
 
-                fila.innerHTML = `
+            if (resultado.error) {
 
-                    <td>
-                        ${escapeHtml(
-                            libro.codigo
-                        )}
-                    </td>
-
-                    <td class="texto-izquierda nombre-libro">
-                        ${escapeHtml(
-                            libro.nombre
-                        )}
-                    </td>
-
-                    <td class="biblioteca">
-                        ${escapeHtml(
-                            libro.biblioteca ||
-                            "—"
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            formatearFecha(
-                                libro.fechaBaja
-                            )
-                        )}
-                    </td>
-
-                    <td>
-
-                        <button
-                            type="button"
-                            class="btn-editar btn-pequeno"
-                            onclick="editarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Editar
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn-reactivar btn-pequeno"
-                            onclick="reactivarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Reactivar
-                        </button>
-
-                        <button
-                            type="button"
-                            class="btn-eliminar btn-pequeno"
-                            onclick="eliminarLibro('${escapeHtml(String(libro.id))}')"
-                        >
-                            Eliminar
-                        </button>
-
-                    </td>
-
-                `;
-
-
-                tablaBajas.appendChild(
-                    fila
+                console.error(
+                    "Error dando de baja:",
+                    resultado.error
                 );
 
+                mostrarMensaje(
+                    "No fue posible dar de baja el libro.",
+                    "error"
+                );
+
+                return;
+
             }
-        );
 
 
-        actualizarPaginacionBajas(
-            totalPaginas
-        );
+            mostrarMensaje(
+                "Libro dado de baja correctamente.",
+                "exito"
+            );
+
+
+            await cargarLibros();
+
+        } catch (error) {
+
+            console.error(
+                "Error dando de baja:",
+                error
+            );
+
+            mostrarMensaje(
+                "Ocurrió un error al dar de baja el libro.",
+                "error"
+            );
+
+        }
 
     }
 
 
-    /* =====================================================
-       PAGINACIÓN BAJAS
-    ===================================================== */
+    async function reactivarLibro(id) {
 
-    function actualizarPaginacionBajas(
-        totalPaginas
-    ) {
-
-        if (
-            totalPaginas <= 1
-        ) {
-
-            paginacionBajas.style.display =
-                "none";
+        if (!window.esAdministrador()) {
 
             return;
 
         }
 
 
-        paginacionBajas.style.display =
-            "flex";
-
-
-        paginaInfoBajas.textContent =
-            `Página ${paginaBajas} de ${totalPaginas}`;
-
-
-        btnAnteriorBajas.disabled =
-            paginaBajas <= 1;
-
-
-        btnSiguienteBajas.disabled =
-            paginaBajas >= totalPaginas;
-
-    }
-
-
-    function paginaAnteriorBajas() {
-
-        if (
-            paginaBajas > 1
-        ) {
-
-            paginaBajas--;
-
-            mostrarBajas();
-
-        }
-
-    }
-
-
-    function paginaSiguienteBajas() {
-
-        const bajas =
-            libros.filter(
-                libro =>
-                    libro.estado ===
-                    "Baja"
+        const libro =
+            todosLosLibros.find(
+                item =>
+                    Number(item.id) ===
+                    Number(id)
             );
 
 
-        const totalPaginas =
-            Math.ceil(
-                bajas.length /
-                LIBROS_POR_PAGINA
+        if (!libro) {
+
+            return;
+
+        }
+
+
+        const confirmado =
+            window.confirm(
+                `¿Desea reactivar el libro "${libro.nombreLibro}"?`
             );
 
 
-        if (
-            paginaBajas <
-            totalPaginas
-        ) {
+        if (!confirmado) {
 
-            paginaBajas++;
+            return;
 
-            mostrarBajas();
+        }
+
+
+        try {
+
+            const resultado =
+                await supabaseClient
+                    .from("libros")
+                    .update({
+
+                        estado:
+                            "Disponible",
+
+                        fechaReactivacion:
+                            new Date()
+                                .toISOString(),
+
+                        fechaBaja:
+                            null
+
+                    })
+                    .eq(
+                        "id",
+                        id
+                    );
+
+
+            if (resultado.error) {
+
+                console.error(
+                    "Error reactivando:",
+                    resultado.error
+                );
+
+                mostrarMensaje(
+                    "No fue posible reactivar el libro.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            mostrarMensaje(
+                "Libro reactivado correctamente.",
+                "exito"
+            );
+
+
+            await cargarLibros();
+
+        } catch (error) {
+
+            console.error(
+                "Error reactivando libro:",
+                error
+            );
+
+            mostrarMensaje(
+                "Ocurrió un error al reactivar el libro.",
+                "error"
+            );
 
         }
 
     }
 
 
-    /* =====================================================
-       OBTENER VALOR DE EXCEL
-    ===================================================== */
+    async function eliminarLibro(id) {
 
-    function obtenerTextoExcel(valor) {
+        if (!window.esAdministrador()) {
 
-        if (
-            valor === null ||
-            valor === undefined
-        ) {
-
-            return "";
+            return;
 
         }
 
 
-        return String(valor)
-            .trim();
+        const libro =
+            todosLosLibros.find(
+                item =>
+                    Number(item.id) ===
+                    Number(id)
+            );
+
+
+        if (!libro) {
+
+            return;
+
+        }
+
+
+        const confirmado =
+            window.confirm(
+                `¿Está seguro de eliminar permanentemente el libro "${libro.nombreLibro}"? Esta acción no se puede deshacer.`
+            );
+
+
+        if (!confirmado) {
+
+            return;
+
+        }
+
+
+        try {
+
+            const prestamosLibro =
+                await supabaseClient
+                    .from("prestamos")
+                    .select(
+                        "id"
+                    )
+                    .eq(
+                        "codigoLibro",
+                        libro.codigoLibro
+                    )
+                    .limit(1);
+
+
+            if (
+                prestamosLibro.error
+            ) {
+
+                console.error(
+                    "Error comprobando historial:",
+                    prestamosLibro.error
+                );
+
+                mostrarMensaje(
+                    "No fue posible comprobar el historial del libro.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                prestamosLibro.data &&
+                prestamosLibro.data.length > 0
+            ) {
+
+                mostrarMensaje(
+                    "Este libro tiene historial de préstamos y no puede eliminarse. Puede darse de baja.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const resultado =
+                await supabaseClient
+                    .from("libros")
+                    .delete()
+                    .eq(
+                        "id",
+                        id
+                    );
+
+
+            if (resultado.error) {
+
+                console.error(
+                    "Error eliminando libro:",
+                    resultado.error
+                );
+
+                mostrarMensaje(
+                    "No fue posible eliminar el libro.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            mostrarMensaje(
+                "Libro eliminado correctamente.",
+                "exito"
+            );
+
+
+            await cargarLibros();
+
+        } catch (error) {
+
+            console.error(
+                "Error eliminando libro:",
+                error
+            );
+
+            mostrarMensaje(
+                "Ocurrió un error al eliminar el libro.",
+                "error"
+            );
+
+        }
 
     }
 
 
-    /* =====================================================
-       IMPORTAR EXCEL
-    ===================================================== */
+    function obtenerValorExcel(
+        fila,
+        nombres
+    ) {
+
+        const claves =
+            Object.keys(
+                fila || {}
+            );
+
+
+        for (
+            const nombre
+            of nombres
+        ) {
+
+            const encontrado =
+                claves.find(
+                    clave =>
+                        normalizarTexto(
+                            clave
+                        ) ===
+                        normalizarTexto(
+                            nombre
+                        )
+                );
+
+
+            if (
+                encontrado !==
+                undefined
+            ) {
+
+                return fila[
+                    encontrado
+                ];
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    function convertirFilaExcel(
+        fila
+    ) {
+
+        const codigo =
+            obtenerValorExcel(
+                fila,
+                [
+                    "codigoLibro",
+                    "CodigoLibro",
+                    "Código",
+                    "Codigo",
+                    "codigo",
+                    "Código del libro",
+                    "Codigo del libro"
+                ]
+            );
+
+
+        const nombre =
+            obtenerValorExcel(
+                fila,
+                [
+                    "nombreLibro",
+                    "NombreLibro",
+                    "Nombre del libro",
+                    "nombre"
+                ]
+            );
+
+
+        const autor =
+            obtenerValorExcel(
+                fila,
+                [
+                    "autor",
+                    "Autor"
+                ]
+            );
+
+
+        const genero =
+            obtenerValorExcel(
+                fila,
+                [
+                    "genero",
+                    "género",
+                    "Genero",
+                    "Género"
+                ]
+            );
+
+
+        const editorial =
+            obtenerValorExcel(
+                fila,
+                [
+                    "editorial",
+                    "Editorial"
+                ]
+            );
+
+
+        const anio =
+            obtenerValorExcel(
+                fila,
+                [
+                    "año",
+                    "Año",
+                    "anio",
+                    "Anio"
+                ]
+            );
+
+
+        const biblioteca =
+            obtenerValorExcel(
+                fila,
+                [
+                    "Biblioteca",
+                    "biblioteca"
+                ]
+            );
+
+
+        const estado =
+            obtenerValorExcel(
+                fila,
+                [
+                    "estado",
+                    "Estado"
+                ]
+            );
+
+
+        return {
+
+            codigoLibro:
+                formatearCodigo(
+                    codigo
+                ),
+
+            nombreLibro:
+                String(
+                    nombre ?? ""
+                ).trim(),
+
+            autor:
+                String(
+                    autor ?? ""
+                ).trim(),
+
+            genero:
+                String(
+                    genero ?? ""
+                ).trim(),
+
+            editorial:
+                String(
+                    editorial ?? ""
+                ).trim(),
+
+            año:
+                anio !== "" &&
+                anio !== null &&
+                anio !== undefined
+                    ? Number(anio)
+                    : null,
+
+            Biblioteca:
+                String(
+                    biblioteca ?? ""
+                )
+                    .trim()
+                    .toUpperCase(),
+
+            estado:
+                String(
+                    estado ?? ""
+                ).trim()
+
+        };
+
+    }
+
 
     async function importarExcel() {
 
+        if (!window.esAdministrador()) {
+
+            return;
+
+        }
+
+
         const archivo =
-            archivoExcel.files[0];
+            document.getElementById(
+                "archivoExcel"
+            ).files[0];
 
 
         if (!archivo) {
 
             mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeImportacion"
-                ),
-
-                "Selecciona primero un archivo Excel.",
-
+                "Seleccione primero un archivo Excel.",
                 "error"
             );
 
@@ -4163,14 +3485,13 @@
         }
 
 
-        btnImportar.disabled =
-            true;
-
-        btnImportar.textContent =
-            "Importando...";
-
-
         try {
+
+            mostrarMensaje(
+                "Leyendo el archivo Excel...",
+                "info"
+            );
+
 
             const datos =
                 await archivo.arrayBuffer();
@@ -4185,60 +3506,26 @@
                 );
 
 
-            const nombreHoja =
-                libroExcel.SheetNames.find(
-                    nombre =>
-                        normalizarTexto(
-                            nombre
-                        ) ===
-                        normalizarTexto(
-                            "BD Libros"
-                        )
-                );
-
-
-            if (!nombreHoja) {
-
-                alert(
-
-                    "No se encontró la hoja 'BD Libros'.\n\n" +
-
-                    "Hojas encontradas:\n" +
-
-                    libroExcel.SheetNames.join(
-                        "\n"
-                    )
-
-                );
-
-                return;
-
-            }
-
-
-            const hoja =
+            const primeraHoja =
                 libroExcel.Sheets[
-                    nombreHoja
+                    libroExcel.SheetNames[0]
                 ];
 
 
             const filas =
                 XLSX.utils.sheet_to_json(
-                    hoja,
+                    primeraHoja,
                     {
-                        header: 1,
                         defval: ""
                     }
                 );
 
 
-            if (
-                !filas ||
-                filas.length === 0
-            ) {
+            if (!filas.length) {
 
-                alert(
-                    "La hoja BD Libros está vacía."
+                mostrarMensaje(
+                    "El archivo Excel no contiene registros.",
+                    "error"
                 );
 
                 return;
@@ -4246,459 +3533,139 @@
             }
 
 
-            const encabezados =
-                filas[0].map(
-                    valor =>
-                        String(
-                            valor
-                        ).trim()
-                );
-
-
-            function encontrarColumna(
-                encabezadoBuscado
-            ) {
-
-                const buscado =
-                    normalizarTexto(
-                        encabezadoBuscado
-                    );
-
-
-                return encabezados.findIndex(
-                    encabezado =>
-                        normalizarTexto(
-                            encabezado
-                        ) ===
-                        buscado
-                );
-
-            }
-
-
-            const indiceCodigo =
-                encontrarColumna(
-                    "codigoLibro"
-                );
-
-
-            const indiceNombre =
-                encontrarColumna(
-                    "nombreLibro"
-                );
-
-
-            const indiceAutor =
-                encontrarColumna(
-                    "autor"
-                );
-
-
-            const indiceGenero =
-                encontrarColumna(
-                    "genero"
-                );
-
-
-            const indiceEditorial =
-                encontrarColumna(
-                    "editorial"
-                );
-
-
-            const indiceAnio =
-                encontrarColumna(
-                    "año"
-                );
-
-
-            const indiceBiblioteca =
-                encontrarColumna(
-                    "Biblioteca"
-                );
-
-
-            const indiceEstado =
-                encontrarColumna(
-                    "estado"
-                );
-
-
-            const columnasFaltantes = [];
-
-
-            if (indiceCodigo === -1) {
-                columnasFaltantes.push(
-                    "codigoLibro"
-                );
-            }
-
-            if (indiceNombre === -1) {
-                columnasFaltantes.push(
-                    "nombreLibro"
-                );
-            }
-
-            if (indiceAutor === -1) {
-                columnasFaltantes.push(
-                    "autor"
-                );
-            }
-
-            if (indiceGenero === -1) {
-                columnasFaltantes.push(
-                    "genero"
-                );
-            }
-
-            if (indiceEditorial === -1) {
-                columnasFaltantes.push(
-                    "editorial"
-                );
-            }
-
-            if (indiceAnio === -1) {
-                columnasFaltantes.push(
-                    "año"
-                );
-            }
-
-            if (indiceBiblioteca === -1) {
-                columnasFaltantes.push(
-                    "Biblioteca"
-                );
-            }
-
-            if (indiceEstado === -1) {
-                columnasFaltantes.push(
-                    "estado"
-                );
-            }
-
-
-            if (
-                columnasFaltantes.length > 0
-            ) {
-
-                alert(
-
-                    "El Excel no tiene todos los encabezados requeridos.\n\n" +
-
-                    "Faltan:\n" +
-
-                    columnasFaltantes.join(
-                        "\n"
-                    ) +
-
-                    "\n\nLos encabezados deben ser:\n\n" +
-
-                    "codigoLibro | nombreLibro | autor | genero | editorial | año | Biblioteca | estado"
-
-                );
-
-                return;
-
-            }
-
-
-            const mapaLibros =
-                new Map();
-
-
-            let registrosLeidos =
-                0;
-
-
-            let registrosInvalidos =
-                0;
-
-
-            for (
-                let i = 1;
-                i < filas.length;
-                i++
-            ) {
-
-                const fila =
-                    filas[i];
-
-
-                const celdaCodigo =
-                    fila[indiceCodigo];
-
-
-                if (
-                    celdaCodigo === "" ||
-                    celdaCodigo === null ||
-                    celdaCodigo === undefined
-                ) {
-
-                    continue;
-
-                }
-
-
-                registrosLeidos++;
-
-
-                const codigoTexto =
-                    obtenerTextoExcel(
-                        celdaCodigo
-                    );
-
-
-                const resultadoCodigo =
-                    validarCodigo(
-                        codigoTexto
-                    );
-
-
-                if (
-                    !resultadoCodigo.valido
-                ) {
-
-                    registrosInvalidos++;
-
-                    continue;
-
-                }
-
-
-                const codigo =
-                    resultadoCodigo.codigo;
-
-
-                const nombre =
-                    obtenerTextoExcel(
-                        fila[indiceNombre]
-                    );
-
-
-                const autor =
-                    obtenerTextoExcel(
-                        fila[indiceAutor]
-                    );
-
-
-                const genero =
-                    obtenerTextoExcel(
-                        fila[indiceGenero]
-                    );
-
-
-                const editorial =
-                    obtenerTextoExcel(
-                        fila[indiceEditorial]
-                    );
-
-
-                const anio =
-                    obtenerTextoExcel(
-                        fila[indiceAnio]
-                    );
-
-
-                const biblioteca =
-                    obtenerTextoExcel(
-                        fila[indiceBiblioteca]
+            const codigosExistentes =
+                new Set(
+                    todosLosLibros.map(
+                        libro =>
+                            codigoParaComparar(
+                                libro.codigoLibro
+                            )
                     )
-                    .toUpperCase();
-
-
-                const estadoExcel =
-                    obtenerTextoExcel(
-                        fila[indiceEstado]
-                    );
-
-
-                if (
-                    !validarBiblioteca(
-                        biblioteca
-                    )
-                ) {
-
-                    registrosInvalidos++;
-
-                    continue;
-
-                }
-
-
-                if (
-                    anio &&
-                    !/^\d{4}$/.test(anio)
-                ) {
-
-                    registrosInvalidos++;
-
-                    continue;
-
-                }
-
-
-                let estado =
-                    estadoExcel ||
-                    "Disponible";
-
-
-                const estadosPermitidos = [
-
-                    "Disponible",
-                    "Prestado",
-                    "Baja"
-
-                ];
-
-
-                if (
-                    !estadosPermitidos.includes(
-                        estado
-                    )
-                ) {
-
-                    estado =
-                        "Disponible";
-
-                }
-
-
-                const clave =
-                    codigoParaComparar(
-                        codigo
-                    );
-
-
-                mapaLibros.set(
-                    clave,
-                    {
-
-                        codigo:
-                            codigo,
-
-                        nombre:
-                            nombre,
-
-                        autor:
-                            autor,
-
-                        genero:
-                            genero,
-
-                        editorial:
-                            editorial,
-
-                        anio:
-                            anio,
-
-                        biblioteca:
-                            biblioteca,
-
-                        estado:
-                            estado
-
-                    }
                 );
 
-            }
 
-
-            const librosExcel =
-                Array.from(
-                    mapaLibros.values()
-                );
+            const codigosProcesados =
+                new Set();
 
 
             const nuevos = [];
 
+            let existentes = 0;
 
-            let existentes =
-                0;
+            let repetidosExcel = 0;
 
-
-            librosExcel.forEach(
-                libroExcel => {
-
-                    const codigoNormalizado =
-                        codigoParaComparar(
-                            libroExcel.codigo
-                        );
+            let invalidos = 0;
 
 
-                    const existe =
-                        libros.some(
-                            libro =>
-                                codigoParaComparar(
-                                    libro.codigo
-                                ) ===
-                                codigoNormalizado
-                        );
+            for (
+                const fila
+                of filas
+            ) {
 
-
-                    if (
-                        existe
-                    ) {
-
-                        existentes++;
-
-                        return;
-
-                    }
-
-
-                    nuevos.push(
-                        libroExcel
+                const libro =
+                    convertirFilaExcel(
+                        fila
                     );
 
+
+                const codigoComparar =
+                    codigoParaComparar(
+                        libro.codigoLibro
+                    );
+
+
+                if (
+                    !codigoComparar ||
+                    !validarCodigo(
+                        libro.codigoLibro
+                    ) ||
+                    !libro.nombreLibro ||
+                    !validarBiblioteca(
+                        libro.Biblioteca
+                    )
+                ) {
+
+                    invalidos++;
+
+                    continue;
+
                 }
-            );
 
 
-            const confirmar =
-                confirm(
+                if (
+                    codigosExistentes.has(
+                        codigoComparar
+                    )
+                ) {
 
-                    "Se encontró la siguiente información:\n\n" +
+                    existentes++;
 
-                    `Registros leídos: ${registrosLeidos}\n` +
+                    continue;
 
-                    `Libros únicos en Excel: ${librosExcel.length}\n` +
+                }
 
-                    `Libros nuevos: ${nuevos.length}\n` +
 
-                    `Ya existentes: ${existentes}\n` +
+                if (
+                    codigosProcesados.has(
+                        codigoComparar
+                    )
+                ) {
 
-                    `Registros inválidos: ${registrosInvalidos}\n\n` +
+                    repetidosExcel++;
 
-                    "La importación solamente agregará los libros nuevos.\n" +
+                    continue;
 
-                    "Los libros existentes no serán reemplazados.\n\n" +
+                }
 
-                    "¿Deseas continuar?"
 
+                codigosProcesados.add(
+                    codigoComparar
                 );
 
 
-            if (
-                !confirmar
-            ) {
+                nuevos.push({
 
-                return;
+                    codigoLibro:
+                        libro.codigoLibro,
+
+                    nombreLibro:
+                        libro.nombreLibro,
+
+                    autor:
+                        libro.autor,
+
+                    genero:
+                        libro.genero,
+
+                    editorial:
+                        libro.editorial,
+
+                    año:
+                        libro.año,
+
+                    Biblioteca:
+                        libro.Biblioteca,
+
+                    estado:
+                        "Disponible",
+
+                    fechaRegistro:
+                        new Date()
+                            .toISOString()
+
+                });
 
             }
 
 
-            if (
-                nuevos.length === 0
-            ) {
+            if (!nuevos.length) {
 
                 mostrarMensaje(
 
-                    document.getElementById(
-                        "mensajeImportacion"
-                    ),
+                    `Importación completada. No se agregaron libros nuevos. Libros existentes conservados: ${existentes}. Registros inválidos: ${invalidos}.`,
 
-                    "No hay libros nuevos para importar.",
+                    "info"
 
-                    "exito"
                 );
 
                 return;
@@ -4706,19 +3673,106 @@
             }
 
 
-            const fechaActual =
-                new Date().toISOString();
+            const resultado =
+                await supabaseClient
+                    .from("libros")
+                    .insert(
+                        nuevos
+                    );
 
 
-            const registrosParaSupabase =
-                nuevos.map(
+            if (resultado.error) {
+
+                console.error(
+                    "Error importando libros:",
+                    resultado.error
+                );
+
+                mostrarMensaje(
+                    "No fue posible importar los libros. Revise la consola para más detalles.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            mostrarMensaje(
+
+                `Importación completada. Nuevos libros agregados: ${nuevos.length}. Libros existentes conservados: ${existentes}. Registros repetidos dentro del Excel: ${repetidosExcel}. Registros inválidos: ${invalidos}.`,
+
+                "exito"
+
+            );
+
+
+            document.getElementById(
+                "archivoExcel"
+            ).value = "";
+
+
+            document.getElementById(
+                "nombreArchivo"
+            ).textContent =
+                "Ningún archivo seleccionado.";
+
+
+            await cargarLibros();
+
+        } catch (error) {
+
+            console.error(
+                "Error procesando Excel:",
+                error
+            );
+
+            mostrarMensaje(
+                "Ocurrió un error al procesar el archivo Excel.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    async function descargarMasterBiblioteca() {
+
+        if (!window.esAdministrador()) {
+
+            return;
+
+        }
+
+
+        try {
+
+            if (
+                !todosLosLibros.length
+            ) {
+
+                mostrarMensaje(
+                    "No existen libros para generar el MasterBiblioteca.",
+                    "info"
+                );
+
+                return;
+
+            }
+
+
+            const datos =
+                todosLosLibros.map(
                     libro => ({
 
                         codigoLibro:
-                            libro.codigo,
+                            formatearCodigo(
+                                libro.codigoLibro
+                            ),
 
                         nombreLibro:
-                            libro.nombre,
+                            libro.nombreLibro,
 
                         autor:
                             libro.autor,
@@ -4730,158 +3784,146 @@
                             libro.editorial,
 
                         año:
-                            libro.anio ||
-                            null,
+                            libro.año,
 
                         Biblioteca:
-                            libro.biblioteca,
+                            libro.Biblioteca,
 
                         estado:
-                            libro.estado,
-
-                        fechaRegistro:
-                            fechaActual
+                            libro.estado
 
                     })
                 );
 
 
-            const bloque =
-                500;
+            const hoja =
+                XLSX.utils.json_to_sheet(
+                    datos
+                );
 
 
-            let insertados =
-                0;
+            hoja["!cols"] = [
 
+                {
+                    wch: 16
+                },
 
-            for (
-                let i = 0;
-                i <
-                registrosParaSupabase.length;
-                i += bloque
-            ) {
+                {
+                    wch: 40
+                },
 
-                const parte =
-                    registrosParaSupabase.slice(
-                        i,
-                        i + bloque
-                    );
+                {
+                    wch: 30
+                },
 
+                {
+                    wch: 22
+                },
 
-                const {
-                    data,
-                    error
-                } = await supabaseClient
+                {
+                    wch: 25
+                },
 
-                    .from("libros")
+                {
+                    wch: 10
+                },
 
-                    .insert(
-                        parte
-                    )
+                {
+                    wch: 15
+                },
 
-                    .select();
-
-
-                if (
-                    error
-                ) {
-
-                    throw error;
-
+                {
+                    wch: 16
                 }
 
-
-                if (
-                    data
-                ) {
-
-                    libros.push(
-                        ...data.map(
-                            convertirLibro
-                        )
-                    );
+            ];
 
 
-                    insertados +=
-                        data.length;
-
-                }
-
-            }
+            const libroExcel =
+                XLSX.utils.book_new();
 
 
-            archivoExcel.value =
-                "";
+            XLSX.utils.book_append_sheet(
+                libroExcel,
+                hoja,
+                "BD Libros"
+            );
+
+
+            const fecha =
+                new Date();
+
+
+            const año =
+                fecha.getFullYear();
+
+
+            const mes =
+                String(
+                    fecha.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const dia =
+                String(
+                    fecha.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const nombreArchivo =
+                `MasterBiblioteca_${año}-${mes}-${dia}.xlsx`;
+
+
+            XLSX.writeFile(
+                libroExcel,
+                nombreArchivo
+            );
 
 
             mostrarMensaje(
-
-                document.getElementById(
-                    "mensajeImportacion"
-                ),
-
-                `Importación completada. ${insertados} libro${insertados === 1 ? "" : "s"} nuevo${insertados === 1 ? "" : "s"} agregado${insertados === 1 ? "" : "s"}.`,
-
+                "MasterBiblioteca descargado correctamente.",
                 "exito"
             );
 
-
-            actualizarEstadisticas();
-
-            buscarLibros();
-
-            mostrarBajas();
-
-
         } catch (error) {
 
-            console.error(error);
-
-
-            alert(
-
-                "Ocurrió un error al importar el archivo Excel.\n\n" +
-                error.message
-
+            console.error(
+                "Error generando MasterBiblioteca:",
+                error
             );
 
-        } finally {
-
-            btnImportar.disabled =
-                false;
-
-            btnImportar.textContent =
-                "📥 Importar Excel";
+            mostrarMensaje(
+                "No fue posible generar el MasterBiblioteca.",
+                "error"
+            );
 
         }
 
     }
 
 
-    /* =====================================================
-       BORRAR BASE DE DATOS
-    ===================================================== */
-
     async function borrarBaseDatos() {
 
-        const primeraConfirmacion =
-            confirm(
+        if (!window.esAdministrador()) {
 
-                "⚠️ ADVERTENCIA\n\n" +
+            return;
 
-                "Esta acción eliminará todos los libros " +
-                "guardados en Supabase.\n\n" +
+        }
 
-                "Los préstamos históricos no se eliminarán.\n\n" +
 
-                "¿Deseas continuar?"
-
+        const confirmado =
+            window.confirm(
+                "¿Está seguro de borrar todos los libros de la base de datos? Esta acción eliminará permanentemente los registros y no puede deshacerse."
             );
 
 
-        if (
-            !primeraConfirmacion
-        ) {
+        if (!confirmado) {
 
             return;
 
@@ -4889,23 +3931,12 @@
 
 
         const segundaConfirmacion =
-            confirm(
-
-                "CONFIRMACIÓN FINAL\n\n" +
-
-                "Se eliminará completamente la base de datos " +
-                "de libros en Supabase.\n\n" +
-
-                "Esta acción no se puede deshacer.\n\n" +
-
-                "¿REALMENTE DESEAS BORRARLA?"
-
+            window.confirm(
+                "Confirme nuevamente que desea eliminar todos los libros."
             );
 
 
-        if (
-            !segundaConfirmacion
-        ) {
+        if (!segundaConfirmacion) {
 
             return;
 
@@ -4914,62 +3945,52 @@
 
         try {
 
-            const {
-                error
-            } = await supabaseClient
+            const resultado =
+                await supabaseClient
+                    .from("libros")
+                    .delete()
+                    .not(
+                        "id",
+                        "is",
+                        null
+                    );
 
-                .from("libros")
 
-                .delete()
+            if (resultado.error) {
 
-                .neq(
-                    "id",
-                    0
+                console.error(
+                    "Error borrando base:",
+                    resultado.error
                 );
 
+                mostrarMensaje(
+                    "No fue posible borrar la base de datos de libros.",
+                    "error"
+                );
 
-            if (
-                error
-            ) {
-
-                throw error;
+                return;
 
             }
 
 
-            libros = [];
-
-            prestamosActivos = [];
-
-            resultadosLibrosActuales = [];
-
-            paginaLibros = 1;
-
-            paginaBajas = 1;
-
-
-            actualizarEstadisticas();
-
-            buscarLibros();
-
-            mostrarBajas();
-
-
-            alert(
-                "La base de datos de libros fue eliminada."
+            mostrarMensaje(
+                "La base de datos de libros fue eliminada correctamente.",
+                "exito"
             );
 
 
+            await cargarLibros();
+
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Error borrando base:",
+                error
+            );
 
-
-            alert(
-
-                "No fue posible borrar la base de datos.\n\n" +
-                error.message
-
+            mostrarMensaje(
+                "Ocurrió un error al borrar la base de datos.",
+                "error"
             );
 
         }
@@ -4977,386 +3998,176 @@
     }
 
 
-    /* =====================================================
-       CÓDIGO - REGISTRO MANUAL
-    ===================================================== */
+    document
+        .getElementById(
+            "archivoExcel"
+        )
+        .addEventListener(
+            "change",
+            function () {
 
-    codigoLibro.addEventListener(
-        "input",
-        function() {
-
-            this.value =
-                this.value
-                    .replace(
-                        /\D/g,
-                        ""
-                    )
-                    .slice(
-                        0,
-                        8
-                    );
-
-        }
-    );
+                const archivo =
+                    this.files[0];
 
 
-    anioLibro.addEventListener(
-        "input",
-        function() {
-
-            this.value =
-                this.value
-                    .replace(
-                        /\D/g,
-                        ""
-                    )
-                    .slice(
-                        0,
-                        4
-                    );
-
-        }
-    );
-
-
-    /* =====================================================
-       CÓDIGO - EDICIÓN
-    ===================================================== */
-
-    editarCodigo.addEventListener(
-        "input",
-        function() {
-
-            this.value =
-                this.value
-                    .replace(
-                        /\D/g,
-                        ""
-                    )
-                    .slice(
-                        0,
-                        8
-                    );
-
-        }
-    );
-
-
-    editarAnio.addEventListener(
-        "input",
-        function() {
-
-            this.value =
-                this.value
-                    .replace(
-                        /\D/g,
-                        ""
-                    )
-                    .slice(
-                        0,
-                        4
-                    );
-
-        }
-    );
-
-
-    /* =====================================================
-       BOTONES
-    ===================================================== */
-
-    btnRegistrar.addEventListener(
-        "click",
-        registrarLibro
-    );
-
-
-    btnImportar.addEventListener(
-        "click",
-        importarExcel
-    );
-
-
-    btnBuscar.addEventListener(
-        "click",
-        buscarLibros
-    );
-
-
-    btnGuardarEdicion.addEventListener(
-        "click",
-        guardarEdicion
-    );
-
-
-    btnCerrarModal.addEventListener(
-        "click",
-        cerrarModalEditar
-    );
-
-
-    btnCancelarEdicion.addEventListener(
-        "click",
-        cerrarModalEditar
-    );
-
-
-    /* =====================================================
-       CERRAR MODAL AL PRESIONAR FUERA
-    ===================================================== */
-
-    modalEditar.addEventListener(
-        "click",
-        function(event) {
-
-            if (
-                event.target ===
-                modalEditar
-            ) {
-
-                cerrarModalEditar();
+                document.getElementById(
+                    "nombreArchivo"
+                ).textContent =
+                    archivo
+                        ? archivo.name
+                        : "Ningún archivo seleccionado.";
 
             }
+        );
 
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - CÓDIGO
-    ===================================================== */
-
-    codigoLibro.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                nombreLibro.focus();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - NOMBRE
-    ===================================================== */
-
-    nombreLibro.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                autorLibro.focus();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - AUTOR
-    ===================================================== */
-
-    autorLibro.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                generoLibro.focus();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - GÉNERO
-    ===================================================== */
-
-    generoLibro.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                editorialLibro.focus();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - EDITORIAL
-    ===================================================== */
-
-    editorialLibro.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                anioLibro.focus();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - AÑO
-    ===================================================== */
-
-    anioLibro.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                bibliotecaLibro.focus();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - BIBLIOTECA
-    ===================================================== */
-
-    bibliotecaLibro.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                registrarLibro();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ENTER - BÚSQUEDA
-    ===================================================== */
-
-    busqueda.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-                buscarLibros();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       FILTROS
-    ===================================================== */
-
-    filtroEstado.addEventListener(
-        "change",
-        buscarLibros
-    );
-
-
-    filtroBiblioteca.addEventListener(
-        "change",
-        buscarLibros
-    );
-
-
-    /* =====================================================
-       PAGINACIÓN
-    ===================================================== */
-
-    btnAnteriorLibros.addEventListener(
-        "click",
-        paginaAnteriorLibros
-    );
-
-
-    btnSiguienteLibros.addEventListener(
-        "click",
-        paginaSiguienteLibros
-    );
-
-
-    btnAnteriorBajas.addEventListener(
-        "click",
-        paginaAnteriorBajas
-    );
-
-
-    btnSiguienteBajas.addEventListener(
-        "click",
-        paginaSiguienteBajas
-    );
-
-
-    /* =====================================================
-       BORRAR BASE
-    ===================================================== */
 
     document
         .getElementById(
-            "btnBorrarBase"
+            "btnRegistrarLibro"
+        )
+        .addEventListener(
+            "click",
+            registrarLibro
+        );
+
+
+    document
+        .getElementById(
+            "btnLimpiarFormulario"
+        )
+        .addEventListener(
+            "click",
+            limpiarFormularioRegistro
+        );
+
+
+    buscarLibro
+        .addEventListener(
+            "input",
+            buscarLibros
+        );
+
+
+    filtroEstado
+        .addEventListener(
+            "change",
+            buscarLibros
+        );
+
+
+    document
+        .getElementById(
+            "btnPaginaAnterior"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                cambiarPagina(-1);
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "btnPaginaSiguiente"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                cambiarPagina(1);
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "btnBajasAnterior"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                paginaBajasActual--;
+
+                if (
+                    paginaBajasActual <
+                    1
+                ) {
+
+                    paginaBajasActual =
+                        1;
+
+                }
+
+                mostrarBajas();
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "btnBajasSiguiente"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                paginaBajasActual++;
+
+                mostrarBajas();
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "btnCancelarEditar"
+        )
+        .addEventListener(
+            "click",
+            cerrarEditar
+        );
+
+
+    document
+        .getElementById(
+            "btnGuardarEditar"
+        )
+        .addEventListener(
+            "click",
+            guardarEditar
+        );
+
+
+    document
+        .getElementById(
+            "btnImportarExcel"
+        )
+        .addEventListener(
+            "click",
+            importarExcel
+        );
+
+
+    document
+        .getElementById(
+            "btnDescargarMaster"
+        )
+        .addEventListener(
+            "click",
+            descargarMasterBiblioteca
+        );
+
+
+    document
+        .getElementById(
+            "btnBorrarBaseDatos"
         )
         .addEventListener(
             "click",
@@ -5364,9 +4175,44 @@
         );
 
 
-    /* =====================================================
-       INICIO
-    ===================================================== */
+    document
+        .getElementById(
+            "modalEditar"
+        )
+        .addEventListener(
+            "click",
+            function (evento) {
+
+                if (
+                    evento.target ===
+                    this
+                ) {
+
+                    cerrarEditar();
+
+                }
+
+            }
+        );
+
+
+    codigoLibro
+        .addEventListener(
+            "keydown",
+            function (evento) {
+
+                if (
+                    evento.key ===
+                    "Enter"
+                ) {
+
+                    registrarLibro();
+
+                }
+
+            }
+        );
+
 
     (async function iniciarLibros() {
 
@@ -5387,9 +4233,10 @@
             }
 
 
-            /* =============================================
-               MOSTRAR SECCIONES DE ADMINISTRADOR
-            ============================================= */
+            /*
+             * Las secciones administrativas permanecen
+             * ocultas para usuarios normales.
+             */
 
             if (
                 window.esAdministrador()
@@ -5429,11 +4276,33 @@
             }
 
 
-            document.documentElement.style.visibility =
-                "visible";
+            /*
+             * El módulo puede ser utilizado tanto
+             * por Administrador como por Usuario.
+             */
+
+            if (
+                !window.esAdministrador() &&
+                !window.esUsuario()
+            ) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+
+            }
 
 
             await cargarLibros();
+
+
+            document
+                .documentElement
+                .style
+                .visibility =
+                "visible";
 
 
         } catch (error) {
@@ -5444,8 +4313,9 @@
             );
 
 
-            document.documentElement.style.visibility =
-                "visible";
+            window.location.replace(
+                "index.html"
+            );
 
         }
 
@@ -5454,4 +4324,5 @@
 </script>
 
 </body>
+
 </html>
