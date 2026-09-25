@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devoluciones - Biblioteca</title>
+    <title>Devoluciones - Biblioteca NE</title>
 
     <style>
         html {
@@ -305,10 +305,6 @@
             font-size: 11px;
         }
 
-        /* ==============================
-           MODAL DE DETALLE
-        ============================== */
-
         .modal-detalle {
             position: fixed;
             inset: 0;
@@ -561,7 +557,7 @@
         <div class="encabezado-icono">📚</div>
         <div>
             <div class="encabezado-titulo">Biblioteca</div>
-            <div class="encabezado-subtitulo">Sistema de control de préstamos</div>
+            <div class="encabezado-subtitulo">Escuela Nueva Esperanza</div>
         </div>
     </div>
 </header>
@@ -574,7 +570,7 @@
         <button
             type="button"
             class="boton-volver"
-            onclick="window.location.href='index.html'">
+            onclick="window.location.href='index_NE.html'">
             ← Volver al inicio
         </button>
     </div>
@@ -690,11 +686,6 @@
 <footer>
     Sistema de Biblioteca
 </footer>
-
-
-<!-- ==============================
-     MODAL DE DETALLE
-============================== -->
 
 <div
     id="modalDetalle"
@@ -870,7 +861,7 @@
             <div
                 id="advertenciaExtraviado"
                 class="advertencia">
-                ⚠️ Si selecciona <strong>Extraviado</strong>, el libro quedará registrado como dado de baja.
+                ⚠️ Si escribe <strong>EXTRAVIADO</strong>, el libro quedará registrado como dado de baja.
             </div>
 
             <div
@@ -911,12 +902,13 @@
 
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="auth.js"></script>
 
 <script>
+
+    const SITIO_BIBLIOTECA = "NE";
 
     let prestamos = [];
     let prestamosFiltrados = [];
@@ -1010,6 +1002,7 @@
         const { data, error } = await supabaseClient
             .from("prestamos")
             .select("*")
+            .eq("Sitio", SITIO_BIBLIOTECA)
             .eq("estado", "Prestado")
             .order("fechaPrestamo", {
                 ascending: false
@@ -1203,9 +1196,10 @@
 
                 boton.addEventListener("click", () => {
 
-                    const id = boton.dataset.id;
+                    seleccionarPrestamo(
+                        boton.dataset.id
+                    );
 
-                    seleccionarPrestamo(id);
                 });
 
             });
@@ -1215,9 +1209,10 @@
 
                 boton.addEventListener("click", () => {
 
-                    const id = boton.dataset.id;
+                    seleccionarPrestamoEliminar(
+                        boton.dataset.id
+                    );
 
-                    seleccionarPrestamoEliminar(id);
                 });
 
             });
@@ -1227,7 +1222,8 @@
     function obtenerPrestamoPorId(id) {
 
         return prestamos.find(
-            prestamo => String(prestamo.id) === String(id)
+            prestamo =>
+                String(prestamo.id) === String(id)
         );
     }
 
@@ -1303,35 +1299,54 @@
         const btnEliminar =
             document.getElementById("btnConfirmarEliminar");
 
+
         if (modo === "eliminar") {
 
             titulo.textContent =
                 "Eliminar préstamo";
 
-            btnDevolver.style.display = "none";
-            btnEliminar.style.display = "inline-block";
+            btnDevolver.style.display =
+                "none";
 
-            contenedorComentario.style.display = "none";
-            advertencia.classList.remove("mostrar");
+            btnEliminar.style.display =
+                "inline-block";
 
-            confirmacionEliminar.classList.add("mostrar");
+            contenedorComentario.style.display =
+                "none";
+
+            advertencia.classList.remove(
+                "mostrar"
+            );
+
+            confirmacionEliminar.classList.add(
+                "mostrar"
+            );
 
         } else {
 
             titulo.textContent =
                 "Registrar devolución";
 
-            btnDevolver.style.display = "inline-block";
-            btnEliminar.style.display = "none";
+            btnDevolver.style.display =
+                "inline-block";
 
-            contenedorComentario.style.display = "block";
-            confirmacionEliminar.classList.remove("mostrar");
+            btnEliminar.style.display =
+                "none";
+
+            contenedorComentario.style.display =
+                "block";
+
+            confirmacionEliminar.classList.remove(
+                "mostrar"
+            );
         }
 
 
         if (colaborador) {
 
-            tipo.textContent = "Colaborador";
+            tipo.textContent =
+                "Colaborador";
+
             tipo.className =
                 "badge badge-colaborador";
 
@@ -1358,7 +1373,9 @@
 
         } else {
 
-            tipo.textContent = "Afiliado";
+            tipo.textContent =
+                "Afiliado";
+
             tipo.className =
                 "badge badge-afiliado";
 
@@ -1392,22 +1409,33 @@
             prestamo.nombreLibro || "—";
 
         detalleCodigo.textContent =
-            formatearCodigo(prestamo.codigoLibro);
+            formatearCodigo(
+                prestamo.codigoLibro
+            );
 
         detalleFechaPrestamo.textContent =
-            formatearFecha(prestamo.fechaPrestamo);
+            formatearFecha(
+                prestamo.fechaPrestamo
+            );
 
         detalleFechaLimite.textContent =
-            formatearFecha(prestamo.fechaDevolucion);
+            formatearFecha(
+                prestamo.fechaDevolucion
+            );
 
         comentario.value =
             prestamo.comentarios || "";
 
-        advertencia.classList.remove("mostrar");
+        advertencia.classList.remove(
+            "mostrar"
+        );
 
-        modal.classList.add("mostrar");
+        modal.classList.add(
+            "mostrar"
+        );
 
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow =
+            "hidden";
     }
 
 
@@ -1447,11 +1475,15 @@
 
         document.getElementById(
             "modalDetalle"
-        ).classList.remove("mostrar");
+        ).classList.remove(
+            "mostrar"
+        );
 
-        document.body.style.overflow = "";
+        document.body.style.overflow =
+            "";
 
-        prestamoSeleccionado = null;
+        prestamoSeleccionado =
+            null;
     }
 
 
@@ -1472,15 +1504,20 @@
         const fechaActual =
             new Date().toISOString();
 
+
         const { error } =
             await supabaseClient
                 .from("prestamos")
                 .update({
                     estado: "Devuelto",
-                    fechaDevolucionReal: fechaActual,
-                    comentarios: comentario || null
+                    fechaDevolucionReal:
+                        fechaActual,
+                    comentarios:
+                        comentario || null
                 })
-                .eq("id", prestamo.id);
+                .eq("id", prestamo.id)
+                .eq("Sitio", SITIO_BIBLIOTECA);
+
 
         if (error) {
 
@@ -1500,6 +1537,7 @@
                 prestamo.codigoLibro
             );
 
+
         if (codigoLibro) {
 
             const {
@@ -1507,7 +1545,9 @@
                 error: errorLibro
             } = await supabaseClient
                 .from("libros")
-                .select("*");
+                .select("*")
+                .eq("Sitio", SITIO_BIBLIOTECA);
+
 
             if (errorLibro) {
 
@@ -1528,21 +1568,29 @@
                             ) === codigoLibro
                     );
 
+
                 if (libro) {
 
                     const estadoLibro =
-                        normalizar(comentario) === "EXTRAVIADO"
+                        normalizar(
+                            comentario
+                        ) === "EXTRAVIADO"
                             ? "Baja"
                             : "Disponible";
 
+
                     const {
-                        error: errorActualizarLibro
+                        error:
+                        errorActualizarLibro
                     } = await supabaseClient
                         .from("libros")
                         .update({
-                            estado: estadoLibro
+                            estado:
+                                estadoLibro
                         })
-                        .eq("id", libro.id);
+                        .eq("id", libro.id)
+                        .eq("Sitio", SITIO_BIBLIOTECA);
+
 
                     if (errorActualizarLibro) {
 
@@ -1594,7 +1642,9 @@
                 error: errorLibro
             } = await supabaseClient
                 .from("libros")
-                .select("*");
+                .select("*")
+                .eq("Sitio", SITIO_BIBLIOTECA);
+
 
             if (errorLibro) {
 
@@ -1608,6 +1658,7 @@
                 return;
             }
 
+
             const libro =
                 (librosEncontrados || []).find(
                     item =>
@@ -1616,16 +1667,21 @@
                         ) === codigoLibro
                 );
 
+
             if (libro) {
 
                 const {
-                    error: errorActualizarLibro
+                    error:
+                    errorActualizarLibro
                 } = await supabaseClient
                     .from("libros")
                     .update({
-                        estado: "Disponible"
+                        estado:
+                            "Disponible"
                     })
-                    .eq("id", libro.id);
+                    .eq("id", libro.id)
+                    .eq("Sitio", SITIO_BIBLIOTECA);
+
 
                 if (errorActualizarLibro) {
 
@@ -1649,7 +1705,9 @@
         } = await supabaseClient
             .from("prestamos")
             .delete()
-            .eq("id", prestamo.id);
+            .eq("id", prestamo.id)
+            .eq("Sitio", SITIO_BIBLIOTECA);
+
 
         if (errorEliminar) {
 
@@ -1684,6 +1742,7 @@
                 ).value
             );
 
+
         if (!texto) {
 
             prestamosFiltrados =
@@ -1692,33 +1751,36 @@
         } else {
 
             prestamosFiltrados =
-                prestamos.filter(prestamo => {
+                prestamos.filter(
+                    prestamo => {
 
-                    const colaborador =
-                        esColaborador(prestamo);
+                        const textoBusqueda = [
 
-                    const textoBusqueda = [
-                        prestamo.FamiliaId,
-                        prestamo.PersonaId,
-                        prestamo.Nombres,
-                        prestamo.Apellidos,
-                        prestamo.CodigoColaborador,
-                        prestamo.NombreColaborador,
-                        prestamo.AreaColaborador,
-                        prestamo.nombreLibro,
-                        prestamo.codigoLibro,
-                        prestamo.tipoPrestamo
-                    ]
-                        .map(valor =>
-                            normalizar(valor)
-                        )
-                        .join(" ");
+                            prestamo.FamiliaId,
+                            prestamo.PersonaId,
+                            prestamo.Nombres,
+                            prestamo.Apellidos,
+                            prestamo.CodigoColaborador,
+                            prestamo.NombreColaborador,
+                            prestamo.AreaColaborador,
+                            prestamo.nombreLibro,
+                            prestamo.codigoLibro,
+                            prestamo.tipoPrestamo
 
-                    return textoBusqueda.includes(
-                        texto
-                    );
-                });
+                        ]
+                            .map(valor =>
+                                normalizar(valor)
+                            )
+                            .join(" ");
+
+
+                        return textoBusqueda.includes(
+                            texto
+                        );
+                    }
+                );
         }
+
 
         paginaActual = 1;
 
@@ -1734,29 +1796,37 @@
         const hoy =
             new Date();
 
+
         const vencidos =
-            prestamos.filter(prestamo => {
+            prestamos.filter(
+                prestamo => {
 
-                if (!prestamo.fechaDevolucion) {
-                    return false;
+                    if (
+                        !prestamo.fechaDevolucion
+                    ) {
+                        return false;
+                    }
+
+                    const fechaLimite =
+                        new Date(
+                            prestamo.fechaDevolucion
+                        );
+
+                    return fechaLimite < hoy;
                 }
-
-                const fechaLimite =
-                    new Date(
-                        prestamo.fechaDevolucion
-                    );
-
-                return fechaLimite < hoy;
-            }).length;
+            ).length;
 
 
         document.getElementById(
             "totalPrestamos"
-        ).textContent = total;
+        ).textContent =
+            total;
+
 
         document.getElementById(
             "totalVencidos"
-        ).textContent = vencidos;
+        ).textContent =
+            vencidos;
 
 
         cargarLibrosDisponibles();
@@ -1774,7 +1844,9 @@
                 count: "exact",
                 head: true
             })
+            .eq("Sitio", SITIO_BIBLIOTECA)
             .eq("estado", "Disponible");
+
 
         if (error) {
 
@@ -1782,36 +1854,47 @@
 
             document.getElementById(
                 "totalDisponibles"
-            ).textContent = "—";
+            ).textContent =
+                "—";
 
             return;
         }
 
+
         document.getElementById(
             "totalDisponibles"
-        ).textContent = count || 0;
+        ).textContent =
+            count || 0;
     }
 
 
-    function mostrarMensaje(texto, tipo) {
+    function mostrarMensaje(
+        texto,
+        tipo
+    ) {
 
         const mensaje =
             document.getElementById(
                 "mensaje"
             );
 
-        mensaje.textContent = texto;
+        mensaje.textContent =
+            texto;
 
         mensaje.className =
             `mensaje ${tipo} mostrar`;
 
-        setTimeout(() => {
 
-            mensaje.classList.remove(
-                "mostrar"
-            );
+        setTimeout(
+            () => {
 
-        }, 4000);
+                mensaje.classList.remove(
+                    "mostrar"
+                );
+
+            },
+            4000
+        );
     }
 
 
@@ -1829,7 +1912,10 @@
         "keydown",
         function(event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
+
                 aplicarBusqueda();
             }
 
@@ -1845,12 +1931,14 @@
 
             document.getElementById(
                 "buscar"
-            ).value = "";
+            ).value =
+                "";
 
             prestamosFiltrados =
                 [...prestamos];
 
-            paginaActual = 1;
+            paginaActual =
+                1;
 
             mostrarPrestamos();
         }
@@ -1863,7 +1951,9 @@
         "click",
         function() {
 
-            if (paginaActual > 1) {
+            if (
+                paginaActual > 1
+            ) {
 
                 paginaActual--;
 
@@ -1885,7 +1975,11 @@
                     registrosPorPagina
                 );
 
-            if (paginaActual < totalPaginas) {
+
+            if (
+                paginaActual <
+                totalPaginas
+            ) {
 
                 paginaActual++;
 
@@ -1934,9 +2028,9 @@
         function(event) {
 
             if (
-                event.target ===
-                this
+                event.target === this
             ) {
+
                 cerrarDetalle();
             }
 
@@ -1973,15 +2067,19 @@
         function() {
 
             const valor =
-                normalizar(this.value);
+                normalizar(
+                    this.value
+                );
 
             const advertencia =
                 document.getElementById(
                     "advertenciaExtraviado"
                 );
 
+
             if (
-                valor === "EXTRAVIADO"
+                valor ===
+                "EXTRAVIADO"
             ) {
 
                 advertencia.classList.add(
