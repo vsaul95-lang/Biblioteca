@@ -102,7 +102,7 @@
 
         .reportes-contenedor {
 
-            max-width: 1280px;
+            max-width: 1200px;
 
             margin: 0 auto;
 
@@ -111,11 +111,9 @@
         }
 
 
-        /* ================================
-           ENCABEZADO
-        ================================= */
+        /* ENCABEZADO */
 
-        .encabezado {
+        .encabezado .encabezado-contenido {
 
             display: flex;
 
@@ -123,16 +121,55 @@
 
             justify-content: space-between;
 
+            width: 100%;
+
+            box-sizing: border-box;
+
         }
 
 
-        .encabezado .volver {
+        .volver-header {
 
-            margin-left: auto;
+            display: inline-flex;
 
-            margin-bottom: 0;
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 8px 14px;
+
+            border-radius: 6px;
+
+            background: rgba(255, 255, 255, 0.18);
+
+            border: 1px solid rgba(255, 255, 255, 0.55);
+
+            color: #ffffff !important;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
 
             white-space: nowrap;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+
+        }
+
+
+        .volver-header:hover {
+
+            background: rgba(255, 255, 255, 0.28);
+
+            border-color: #ffffff;
+
+            color: #ffffff !important;
+
+            text-decoration: none;
 
         }
 
@@ -140,8 +177,6 @@
         .reporte-encabezado {
 
             margin-bottom: 16px;
-
-            position: relative;
 
         }
 
@@ -168,32 +203,6 @@
         }
 
 
-        .volver {
-
-            display: inline-block;
-
-            color: #546e7a;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-        }
-
-
-        .volver:hover {
-
-            text-decoration: underline;
-
-            color: #263238;
-
-        }
-
-
-        /* ================================
-           ESTADÍSTICAS
-        ================================= */
-
         .estadisticas-reportes {
 
             display: grid;
@@ -203,7 +212,7 @@
 
             gap: 10px;
 
-            margin-bottom: 16px;
+            margin-bottom: 14px;
 
         }
 
@@ -216,7 +225,7 @@
 
             border-radius: 9px;
 
-            padding: 12px 8px;
+            padding: 11px 8px;
 
             text-align: center;
 
@@ -261,43 +270,16 @@
         }
 
 
-        /* ================================
-           GRÁFICAS
-        ================================= */
+        /* SECCIÓN DE GRÁFICAS */
 
-        .graficos-grid {
+        .graficos-seccion {
 
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 14px;
-
-            margin-bottom: 16px;
+            margin-bottom: 14px;
 
         }
 
 
-        .grafico-card {
-
-            background: white;
-
-            border: 1px solid #e0e0e0;
-
-            border-radius: 9px;
-
-            padding: 14px;
-
-            box-shadow:
-                0 2px 5px rgba(0,0,0,0.04);
-
-            min-width: 0;
-
-        }
-
-
-        .grafico-titulo-fila {
+        .graficos-encabezado {
 
             display: flex;
 
@@ -305,31 +287,55 @@
 
             align-items: center;
 
-            gap: 8px;
+            gap: 15px;
 
             margin-bottom: 10px;
 
         }
 
 
-        .grafico-titulo-fila h2 {
+        .graficos-encabezado h2 {
 
             margin: 0;
 
-            font-size: 15px;
+            font-size: 17px;
 
             color: #37474f;
 
         }
 
 
-        .grafico-card h2 {
+        .graficos-encabezado p {
 
-            margin: 0 0 10px;
+            margin: 3px 0 0;
 
-            font-size: 15px;
+            color: #78909c;
 
-            color: #37474f;
+            font-size: 11px;
+
+        }
+
+
+        .filtro-graficas {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .filtro-graficas label {
+
+            font-size: 11px;
+
+            color: #607d8b;
+
+            font-weight: 600;
 
         }
 
@@ -363,36 +369,143 @@
         }
 
 
+        .graficos-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .grafico-card {
+
+            background: white;
+
+            border: 1px solid #e0e0e0;
+
+            border-radius: 9px;
+
+            padding: 14px;
+
+            box-shadow:
+                0 2px 5px rgba(0,0,0,0.04);
+
+            min-width: 0;
+
+        }
+
+
+        .grafico-titulo-fila {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .grafico-card h2 {
+
+            margin: 0 0 8px;
+
+            font-size: 15px;
+
+            color: #37474f;
+
+        }
+
+
         .grafico-contenedor {
 
             position: relative;
 
-            height: 240px;
+            height: 245px;
 
         }
 
 
-        /* La tercera gráfica ahora ocupa
-           la misma fila */
+        /* GRÁFICA CIRCULAR */
 
-        .grafico-actividad {
+        .grafico-libros .grafico-contenedor {
 
-            grid-column: auto;
-
-        }
-
-
-        .grafico-actividad
-        .grafico-contenedor {
-
-            height: 240px;
+            height: 245px;
 
         }
 
 
-        /* ================================
-           RESULTADOS
-        ================================= */
+        .grafico-libros .leyenda-circular {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 22px;
+
+            margin-top: -2px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .leyenda-circular-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-size: 11px;
+
+            color: #455a64;
+
+            font-weight: 600;
+
+        }
+
+
+        .leyenda-circular-punto {
+
+            width: 10px;
+
+            height: 10px;
+
+            border-radius: 50%;
+
+            display: inline-block;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .leyenda-circular-numero {
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #263238;
+
+            margin-left: 2px;
+
+        }
+
+
+        /* RESULTADOS */
 
         .resultados-seccion {
 
@@ -402,7 +515,7 @@
 
             border-radius: 9px;
 
-            padding: 15px;
+            padding: 14px;
 
             box-shadow:
                 0 2px 5px rgba(0,0,0,0.04);
@@ -412,7 +525,7 @@
 
         .resultados-encabezado {
 
-            margin-bottom: 11px;
+            margin-bottom: 10px;
 
         }
 
@@ -438,10 +551,6 @@
 
         }
 
-
-        /* ================================
-           FILTROS
-        ================================= */
 
         .filtros {
 
@@ -556,9 +665,9 @@
 
             display: flex;
 
-            gap: 7px;
+            gap: 6px;
 
-            margin-top: 8px;
+            margin-top: 7px;
 
         }
 
@@ -569,7 +678,7 @@
 
             border-radius: 5px;
 
-            padding: 8px 12px;
+            padding: 7px 11px;
 
             cursor: pointer;
 
@@ -577,7 +686,13 @@
 
             font-weight: 600;
 
-            min-width: 115px;
+        }
+
+
+        .btn-buscar,
+        .btn-limpiar {
+
+            min-width: 145px;
 
         }
 
@@ -620,21 +735,17 @@
 
             color: white;
 
-            min-width: 160px;
+            min-width: 155px;
 
         }
 
 
         .btn-excel:hover {
 
-            background: #256b29;
+            background: #1b5e20;
 
         }
 
-
-        /* ================================
-           RESUMEN
-        ================================= */
 
         .resultado-resumen {
 
@@ -676,10 +787,6 @@
 
         }
 
-
-        /* ================================
-           TABLA
-        ================================= */
 
         .tabla-contenedor {
 
@@ -818,11 +925,9 @@
         }
 
 
-        /* ================================
-           PAGINACIÓN
-        ================================= */
+        /* PAGINACIÓN */
 
-        .paginacion-reportes {
+        .paginacion-resultados {
 
             display: flex;
 
@@ -830,50 +935,42 @@
 
             align-items: center;
 
-            gap: 8px;
+            gap: 10px;
 
             margin-top: 12px;
-
-            padding-top: 10px;
-
-            border-top: 1px solid #eceff1;
 
         }
 
 
-        .btn-paginacion {
+        .btn-pagina {
 
             border: 1px solid #cfd8dc;
 
-            background: white;
+            border-radius: 5px;
+
+            background: #eceff1;
 
             color: #455a64;
 
-            border-radius: 5px;
-
             padding: 7px 13px;
 
-            font-size: 12px;
+            font-size: 11px;
 
             font-weight: 600;
 
             cursor: pointer;
 
-            min-width: 90px;
+        }
+
+
+        .btn-pagina:hover:not(:disabled) {
+
+            background: #cfd8dc;
 
         }
 
 
-        .btn-paginacion:hover:not(:disabled) {
-
-            background: #eceff1;
-
-            border-color: #b0bec5;
-
-        }
-
-
-        .btn-paginacion:disabled {
+        .btn-pagina:disabled {
 
             opacity: 0.45;
 
@@ -884,44 +981,13 @@
 
         .pagina-info {
 
-            font-size: 11px;
-
             color: #607d8b;
 
-            min-width: 110px;
+            font-size: 11px;
+
+            min-width: 105px;
 
             text-align: center;
-
-        }
-
-
-        /* ================================
-           RESPONSIVE
-        ================================= */
-
-        @media (max-width: 1100px) {
-
-            .graficos-grid {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-            }
-
-
-            .grafico-actividad {
-
-                grid-column: 1 / 3;
-
-            }
-
-
-            .grafico-actividad
-            .grafico-contenedor {
-
-                height: 230px;
-
-            }
 
         }
 
@@ -929,6 +995,14 @@
         @media (max-width: 950px) {
 
             .estadisticas-reportes {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+
+            .graficos-grid {
 
                 grid-template-columns:
                     repeat(3, 1fr);
@@ -946,6 +1020,43 @@
         }
 
 
+        @media (max-width: 800px) {
+
+            .graficos-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .graficos-encabezado {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+            .filtro-graficas {
+
+                width: 100%;
+
+                justify-content: space-between;
+
+            }
+
+
+            .selector-grafica {
+
+                flex: 1;
+
+            }
+
+        }
+
+
         @media (max-width: 700px) {
 
             .reportes-contenedor {
@@ -956,40 +1067,26 @@
             }
 
 
+            .encabezado .encabezado-contenido {
+
+                gap: 10px;
+
+            }
+
+
+            .volver-header {
+
+                padding: 7px 10px;
+
+                font-size: 11px;
+
+            }
+
+
             .estadisticas-reportes {
 
                 grid-template-columns:
                     repeat(2, 1fr);
-
-            }
-
-
-            .graficos-grid {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-
-            .grafico-actividad {
-
-                grid-column: auto;
-
-            }
-
-
-            .grafico-contenedor {
-
-                height: 230px;
-
-            }
-
-
-            .grafico-actividad
-            .grafico-contenedor {
-
-                height: 230px;
 
             }
 
@@ -1016,30 +1113,40 @@
             }
 
 
-            .grafico-titulo-fila {
+            .btn-buscar,
+            .btn-limpiar,
+            .btn-excel {
 
-                align-items: flex-start;
-
-            }
-
-
-            .selector-grafica {
-
-                flex-shrink: 0;
+                min-width: 0;
 
             }
 
 
-            .encabezado .volver {
+            .grafico-contenedor {
 
-                font-size: 12px;
+                height: 235px;
 
             }
 
 
-            .paginacion-reportes {
+            .grafico-libros .grafico-contenedor {
 
-                flex-wrap: wrap;
+                height: 235px;
+
+            }
+
+
+            .paginacion-resultados {
+
+                gap: 6px;
+
+            }
+
+
+            .btn-pagina {
+
+                padding:
+                    7px 10px;
 
             }
 
@@ -1077,15 +1184,15 @@
 
             </div>
 
+
+            <a
+                href="index.html"
+                class="volver-header"
+            >
+                Volver al inicio
+            </a>
+
         </div>
-
-
-        <a
-            href="index.html"
-            class="volver"
-        >
-            Volver al inicio
-        </a>
 
     </header>
 
@@ -1212,36 +1319,34 @@
         </section>
 
 
-        <!-- FILTRO ÚNICO PARA LAS TRES GRÁFICAS -->
+        <section class="graficos-seccion">
 
-        <section class="grafico-card" style="margin-bottom: 14px;">
 
-            <div
-                class="grafico-titulo-fila"
-                style="margin-bottom: 0;"
-            >
+            <div class="graficos-encabezado">
 
                 <div>
 
-                    <h2 style="margin: 0;">
-                        Actividad gráfica de la biblioteca
+                    <h2>
+                        Análisis gráfico
                     </h2>
+
+                    <p>
+                        Las tres gráficas se actualizan según el sitio seleccionado.
+                    </p>
 
                 </div>
 
 
-                <div
-                    class="campo"
-                    style="min-width: 150px;"
-                >
+                <div class="filtro-graficas">
 
                     <label for="filtroSitioGraficas">
-                        Sitio
+                        Filtrar por sitio
                     </label>
 
                     <select
                         id="filtroSitioGraficas"
                         class="selector-grafica"
+                        title="Filtrar las tres gráficas por sitio"
                     >
 
                         <option value="Todos">
@@ -1274,69 +1379,114 @@
 
             </div>
 
-        </section>
+
+            <div class="graficos-grid">
 
 
-        <section class="graficos-grid">
+                <div class="grafico-card">
 
+                    <h2>
+                        📈 Préstamos por mes
+                    </h2>
 
-            <div class="grafico-card">
+                    <div class="grafico-contenedor">
 
-                <h2>
-                    📈 Préstamos por mes
-                </h2>
+                        <canvas
+                            id="graficaMeses"
+                        ></canvas>
 
-                <div class="grafico-contenedor">
-
-                    <canvas
-                        id="graficaMeses"
-                    ></canvas>
-
-                </div>
-
-            </div>
-
-
-            <div class="grafico-card">
-
-                <h2>
-                    Estado actual de los libros
-                </h2>
-
-                <div class="grafico-contenedor">
-
-                    <canvas
-                        id="graficaLibros"
-                    ></canvas>
+                    </div>
 
                 </div>
 
-            </div>
+
+                <div class="grafico-card grafico-libros">
+
+                    <h2>
+                        Estado actual de los libros
+                    </h2>
+
+                    <div class="grafico-contenedor">
+
+                        <canvas
+                            id="graficaLibros"
+                        ></canvas>
+
+                    </div>
+
+                    <div class="leyenda-circular">
+
+                        <div class="leyenda-circular-item">
+
+                            <span
+                                class="leyenda-circular-punto"
+                                id="puntoDisponibles"
+                            ></span>
+
+                            <span>
+                                Disponibles
+                            </span>
+
+                            <span
+                                class="leyenda-circular-numero"
+                                id="numeroDisponiblesGrafica"
+                            >
+                                0
+                            </span>
+
+                        </div>
 
 
-            <div class="grafico-card grafico-actividad">
+                        <div class="leyenda-circular-item">
 
-                <h2>
-                    📊 Actividad de la biblioteca
-                </h2>
+                            <span
+                                class="leyenda-circular-punto"
+                                id="puntoPrestados"
+                            ></span>
 
-                <div class="grafico-contenedor">
+                            <span>
+                                Prestados
+                            </span>
 
-                    <canvas
-                        id="graficaActividad"
-                    ></canvas>
+                            <span
+                                class="leyenda-circular-numero"
+                                id="numeroPrestadosGrafica"
+                            >
+                                0
+                            </span>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-            </div>
 
+                <div class="grafico-card">
+
+                    <h2>
+                        📊 Actividad de la biblioteca
+                    </h2>
+
+                    <div class="grafico-contenedor">
+
+                        <canvas
+                            id="graficaActividad"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+            </div>
 
         </section>
 
 
         <section
             class="resultados-seccion"
-            id="seccionResultadosPrestamos"
+            id="resultadosSeccion"
         >
 
 
@@ -1586,36 +1736,9 @@
 
 
             <div
-                class="paginacion-reportes"
-                id="paginacionReportes"
-            >
-
-                <button
-                    type="button"
-                    class="btn-paginacion"
-                    id="btnAnterior"
-                >
-                    Anterior
-                </button>
-
-
-                <div
-                    class="pagina-info"
-                    id="paginaInfo"
-                >
-                    Página 1 de 1
-                </div>
-
-
-                <button
-                    type="button"
-                    class="btn-paginacion"
-                    id="btnSiguiente"
-                >
-                    Siguiente
-                </button>
-
-            </div>
+                class="paginacion-resultados"
+                id="paginacionResultados"
+            ></div>
 
 
         </section>
@@ -1624,6 +1747,18 @@
 
 
     <script>
+
+        if (
+            typeof Chart !== "undefined" &&
+            typeof ChartDataLabels !== "undefined"
+        ) {
+
+            Chart.register(
+                ChartDataLabels
+            );
+
+        }
+
 
         let libros = [];
 
@@ -1639,170 +1774,10 @@
 
         let reportesIniciados = false;
 
+        const RESULTADOS_POR_PAGINA = 25;
 
-        /* ==========================================
-           PAGINACIÓN
-        ========================================== */
+        let paginaResultados = 1;
 
-        const REGISTROS_POR_PAGINA = 25;
-
-        let paginaActual = 1;
-
-
-        function obtenerTotalPaginas() {
-
-            return Math.max(
-
-                1,
-
-                Math.ceil(
-
-                    prestamosFiltrados.length /
-                    REGISTROS_POR_PAGINA
-
-                )
-
-            );
-
-        }
-
-
-        function irAlInicioResultados() {
-
-            const seccion =
-                document.getElementById(
-                    "seccionResultadosPrestamos"
-                );
-
-
-            if (!seccion) {
-
-                return;
-
-            }
-
-
-            const posicion =
-                seccion.getBoundingClientRect().top +
-                window.pageYOffset -
-                15;
-
-
-            window.scrollTo({
-
-                top:
-                    posicion,
-
-                behavior:
-                    "smooth"
-
-            });
-
-        }
-
-
-        function actualizarPaginacion() {
-
-            const totalPaginas =
-                obtenerTotalPaginas();
-
-
-            if (
-                paginaActual >
-                totalPaginas
-            ) {
-
-                paginaActual =
-                    totalPaginas;
-
-            }
-
-
-            if (
-                paginaActual <
-                1
-            ) {
-
-                paginaActual =
-                    1;
-
-            }
-
-
-            const btnAnterior =
-                document.getElementById(
-                    "btnAnterior"
-                );
-
-
-            const btnSiguiente =
-                document.getElementById(
-                    "btnSiguiente"
-                );
-
-
-            const paginaInfo =
-                document.getElementById(
-                    "paginaInfo"
-                );
-
-
-            btnAnterior.disabled =
-                paginaActual === 1;
-
-
-            btnSiguiente.disabled =
-                paginaActual ===
-                totalPaginas;
-
-
-            paginaInfo.textContent =
-
-                `Página ${paginaActual} de ${totalPaginas}`;
-
-        }
-
-
-        function cambiarPagina(direccion) {
-
-            const totalPaginas =
-                obtenerTotalPaginas();
-
-
-            const nuevaPagina =
-                paginaActual +
-                direccion;
-
-
-            if (
-
-                nuevaPagina < 1 ||
-
-                nuevaPagina >
-                totalPaginas
-
-            ) {
-
-                return;
-
-            }
-
-
-            paginaActual =
-                nuevaPagina;
-
-
-            actualizarResultados();
-
-
-            irAlInicioResultados();
-
-        }
-
-
-        /* ==========================================
-           FUNCIONES GENERALES
-        ========================================== */
 
         function normalizarTexto(valor) {
 
@@ -2082,17 +2057,11 @@
 
 
             return (
-
                 tipo === "colaborador" ||
-
                 Boolean(
-
                     prestamo.CodigoColaborador ||
-
                     prestamo.codigoColaborador
-
                 )
-
             );
 
         }
@@ -2110,13 +2079,9 @@
         function obtenerCodigoColaborador(prestamo) {
 
             return (
-
                 prestamo.CodigoColaborador ||
-
                 prestamo.codigoColaborador ||
-
                 "—"
-
             );
 
         }
@@ -2125,13 +2090,9 @@
         function obtenerNombreColaborador(prestamo) {
 
             return (
-
                 prestamo.NombreColaborador ||
-
                 prestamo.nombreColaborador ||
-
                 "Sin nombre"
-
             );
 
         }
@@ -2140,13 +2101,9 @@
         function obtenerAreaColaborador(prestamo) {
 
             return (
-
                 prestamo.AreaColaborador ||
-
                 prestamo.areaColaborador ||
-
                 "—"
-
             );
 
         }
@@ -2283,7 +2240,6 @@
                 libros.find(
 
                     libro =>
-
                         normalizarCodigo(
                             libro.codigoLibro
                         ) ===
@@ -2295,16 +2251,13 @@
             return {
 
                 codigo:
-
                     codigo ||
 
                     libroEncontrado?.codigoLibro ||
 
                     "—",
 
-
                 nombre:
-
                     prestamo.nombreLibro ||
 
                     prestamo.NombreLibro ||
@@ -2313,37 +2266,27 @@
 
                     "Sin nombre",
 
-
                 autor:
-
                     libroEncontrado?.autor ||
 
                     "",
 
-
                 genero:
-
                     libroEncontrado?.genero ||
 
                     "",
 
-
                 editorial:
-
                     libroEncontrado?.editorial ||
 
                     "",
 
-
                 anio:
-
                     libroEncontrado?.["año"] ||
 
                     "",
 
-
                 biblioteca:
-
                     libroEncontrado?.Biblioteca ||
 
                     ""
@@ -2352,10 +2295,6 @@
 
         }
 
-
-        /* ==========================================
-           CARGA DE DATOS
-        ========================================== */
 
         async function cargarLibros() {
 
@@ -2555,17 +2494,12 @@
         }
 
 
-        /* ==========================================
-           ESTADÍSTICAS
-        ========================================== */
-
         function actualizarEstadisticas() {
 
             const librosActivos =
                 libros.filter(
 
                     libro =>
-
                         normalizarTexto(
                             libro.estado
                         ) !==
@@ -2578,7 +2512,6 @@
                 prestamos.filter(
 
                     prestamo =>
-
                         normalizarTexto(
                             prestamo.estado
                         ) ===
@@ -2591,7 +2524,6 @@
                 prestamos.filter(
 
                     prestamo =>
-
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -2606,7 +2538,6 @@
                     prestamosActivos.map(
 
                         prestamo =>
-
                             normalizarCodigo(
                                 prestamo.codigoLibro
                             )
@@ -2620,7 +2551,6 @@
                 librosActivos.filter(
 
                     libro =>
-
                         !codigosPrestados.has(
 
                             normalizarCodigo(
@@ -2662,22 +2592,131 @@
                 prestamos.length;
 
 
-            actualizarGraficasPorSitio();
+            actualizarGraficosFiltrados();
 
         }
 
 
-        /* ==========================================
-           GRÁFICA LIBROS
-        ========================================== */
-
         function actualizarGraficaLibros(
 
-            disponibles,
-
-            prestados
+            datosPrestamosSitio
 
         ) {
+
+            const selector =
+                document.getElementById(
+                    "filtroSitioGraficas"
+                );
+
+
+            const sitioSeleccionado =
+                selector
+                    ? selector.value
+                    : "Todos";
+
+
+            const librosActivos =
+                libros.filter(
+
+                    libro => {
+
+                        const activo =
+                            normalizarTexto(
+                                libro.estado
+                            ) !==
+                            "baja";
+
+
+                        if (!activo) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            sitioSeleccionado ===
+                            "Todos"
+                        ) {
+
+                            return true;
+
+                        }
+
+
+                        return (
+
+                            normalizarTexto(
+                                libro.Biblioteca
+                            ) ===
+                            normalizarTexto(
+                                sitioSeleccionado
+                            )
+
+                        );
+
+                    }
+
+                );
+
+
+            const prestamosActivos =
+                datosPrestamosSitio.filter(
+
+                    prestamo =>
+                        normalizarTexto(
+                            prestamo.estado
+                        ) ===
+                        "prestado"
+
+                );
+
+
+            const codigosPrestados =
+                new Set(
+
+                    prestamosActivos.map(
+
+                        prestamo =>
+                            normalizarCodigo(
+                                prestamo.codigoLibro
+                            )
+
+                    )
+
+                );
+
+
+            const disponibles =
+                librosActivos.filter(
+
+                    libro =>
+                        !codigosPrestados.has(
+
+                            normalizarCodigo(
+                                libro.codigoLibro
+                            )
+
+                        )
+
+                );
+
+
+            const prestados =
+                prestamosActivos.length;
+
+
+            document.getElementById(
+                "numeroDisponiblesGrafica"
+            ).textContent =
+                disponibles.length;
+
+
+            document.getElementById(
+                "numeroPrestadosGrafica"
+            ).textContent =
+                prestados;
+
 
             const canvas =
                 document.getElementById(
@@ -2720,7 +2759,7 @@
 
                                     data: [
 
-                                        disponibles,
+                                        disponibles.length,
 
                                         prestados
 
@@ -2748,29 +2787,29 @@
                                 "58%",
 
 
+                            layout: {
+
+                                padding: {
+
+                                    top: 4,
+
+                                    bottom: 4,
+
+                                    left: 4,
+
+                                    right: 4
+
+                                }
+
+                            },
+
+
                             plugins: {
 
                                 legend: {
 
-                                    position:
-                                        "bottom",
-
-                                    labels: {
-
-                                        padding:
-                                            12,
-
-                                        boxWidth:
-                                            12,
-
-                                        font: {
-
-                                            size:
-                                                10
-
-                                        }
-
-                                    }
+                                    display:
+                                        false
 
                                 },
 
@@ -2784,27 +2823,27 @@
                                         "white",
 
                                     backgroundColor:
-                                        "rgba(38, 50, 56, 0.78)",
+                                        "rgba(38, 50, 56, 0.82)",
 
                                     borderRadius:
-                                        5,
+                                        6,
 
                                     padding: {
 
-                                        top: 4,
+                                        top: 5,
 
-                                        bottom: 4,
+                                        bottom: 5,
 
-                                        left: 6,
+                                        left: 8,
 
-                                        right: 6
+                                        right: 8
 
                                     },
 
                                     font: {
 
                                         size:
-                                            12,
+                                            13,
 
                                         weight:
                                             "bold"
@@ -2833,7 +2872,7 @@
                                             ) {
 
                                                 const total =
-                                                    disponibles +
+                                                    disponibles.length +
                                                     prestados;
 
 
@@ -2847,7 +2886,6 @@
                                                         ?
 
                                                         (
-
                                                             valor /
                                                             total *
                                                             100
@@ -2884,11 +2922,11 @@
         }
 
 
-        /* ==========================================
-           GRÁFICA PRÉSTAMOS POR MES
-        ========================================== */
+        function actualizarGraficaMeses(
 
-        function actualizarGraficaMeses(datos) {
+            datos
+
+        ) {
 
             const ahora =
                 new Date();
@@ -3151,17 +3189,16 @@
         }
 
 
-        /* ==========================================
-           GRÁFICA ACTIVIDAD
-        ========================================== */
+        function actualizarGraficaActividad(
 
-        function actualizarGraficaActividad(datos) {
+            datos
+
+        ) {
 
             const prestados =
                 datos.filter(
 
                     prestamo =>
-
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -3174,7 +3211,6 @@
                 datos.filter(
 
                     prestamo =>
-
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -3187,7 +3223,6 @@
                 datos.filter(
 
                     prestamo =>
-
                         obtenerEstado(
                             prestamo
                         ) ===
@@ -3373,165 +3408,6 @@
         }
 
 
-        /* ==========================================
-           GRÁFICAS CONTROLADAS POR UN SOLO SITIO
-        ========================================== */
-
-        function actualizarGraficasPorSitio() {
-
-            const selector =
-                document.getElementById(
-                    "filtroSitioGraficas"
-                );
-
-
-            const sitioSeleccionado =
-                selector
-                    ? selector.value
-                    : "Todos";
-
-
-            let datos =
-                prestamos;
-
-
-            if (
-                sitioSeleccionado !==
-                "Todos"
-            ) {
-
-                datos =
-                    prestamos.filter(
-
-                        prestamo =>
-
-                            obtenerCodigoSitio(
-
-                                obtenerSitioPrestamo(
-                                    prestamo
-                                )
-
-                            ) ===
-                            sitioSeleccionado
-
-                    );
-
-            }
-
-
-            actualizarGraficaMeses(
-                datos
-            );
-
-
-            const librosActivos =
-                libros.filter(
-
-                    libro =>
-
-                        normalizarTexto(
-                            libro.estado
-                        ) !==
-                        "baja"
-
-                );
-
-
-            let librosFiltrados =
-                librosActivos;
-
-
-            if (
-                sitioSeleccionado !==
-                "Todos"
-            ) {
-
-                librosFiltrados =
-                    librosActivos.filter(
-
-                        libro =>
-
-                            String(
-
-                                libro.Biblioteca ||
-
-                                ""
-
-                            )
-                                .trim()
-                                .toUpperCase() ===
-                            sitioSeleccionado
-
-                    );
-
-            }
-
-
-            const prestamosActivos =
-                datos.filter(
-
-                    prestamo =>
-
-                        obtenerEstado(
-                            prestamo
-                        ) ===
-                        "Prestado"
-
-                );
-
-
-            const codigosPrestados =
-                new Set(
-
-                    prestamosActivos.map(
-
-                        prestamo =>
-
-                            normalizarCodigo(
-                                prestamo.codigoLibro
-                            )
-
-                    )
-
-                );
-
-
-            const disponibles =
-                librosFiltrados.filter(
-
-                    libro =>
-
-                        !codigosPrestados.has(
-
-                            normalizarCodigo(
-                                libro.codigoLibro
-                            )
-
-                        )
-
-                );
-
-
-            actualizarGraficaLibros(
-
-                disponibles.length,
-
-                prestamosActivos.length
-
-            );
-
-
-            actualizarGraficaActividad(
-                datos
-            );
-
-        }
-
-
-        /* ==========================================
-           SITIOS DEL FILTRO DE RESULTADOS
-        ========================================== */
-
         function cargarSitios() {
 
             const select =
@@ -3548,7 +3424,6 @@
                         prestamos.map(
 
                             prestamo =>
-
                                 obtenerSitioPrestamo(
                                     prestamo
                                 )
@@ -3614,10 +3489,6 @@
 
         }
 
-
-        /* ==========================================
-           FILTROS DE RESULTADOS
-        ========================================== */
 
         function aplicarFiltros() {
 
@@ -4059,20 +3930,15 @@
             );
 
 
-            paginaActual =
-                1;
+            paginaResultados = 1;
 
 
             actualizarResultados();
 
-            actualizarGraficasPorSitio();
+            actualizarGraficosFiltrados();
 
         }
 
-
-        /* ==========================================
-           RESULTADOS PAGINADOS
-        ========================================== */
 
         function actualizarResultados() {
 
@@ -4088,7 +3954,15 @@
                 );
 
 
+            const paginacion =
+                document.getElementById(
+                    "paginacionResultados"
+                );
+
+
             tabla.innerHTML = "";
+
+            paginacion.innerHTML = "";
 
 
             cantidad.textContent =
@@ -4102,9 +3976,6 @@
                         : "resultados"
 
                 }`;
-
-
-            actualizarPaginacion();
 
 
             if (
@@ -4134,28 +4005,43 @@
             }
 
 
+            const totalPaginas =
+                Math.ceil(
+
+                    prestamosFiltrados.length /
+                    RESULTADOS_POR_PAGINA
+
+                );
+
+
+            if (
+                paginaResultados >
+                totalPaginas
+            ) {
+
+                paginaResultados =
+                    totalPaginas;
+
+            }
+
+
             const inicio =
                 (
-
-                    paginaActual -
+                    paginaResultados -
                     1
-
                 ) *
-                REGISTROS_POR_PAGINA;
+                RESULTADOS_POR_PAGINA;
 
 
             const fin =
                 inicio +
-                REGISTROS_POR_PAGINA;
+                RESULTADOS_POR_PAGINA;
 
 
             const registrosPagina =
                 prestamosFiltrados.slice(
-
                     inicio,
-
                     fin
-
                 );
 
 
@@ -4420,14 +4306,245 @@
             );
 
 
+            renderizarPaginacion(
+                totalPaginas,
+                inicio,
+                registrosPagina.length
+            );
+
+
             actualizarFiltrosActivos();
 
         }
 
 
-        /* ==========================================
-           FILTROS ACTIVOS
-        ========================================== */
+        function renderizarPaginacion(
+
+            totalPaginas,
+
+            inicio,
+
+            cantidadPagina
+
+        ) {
+
+            const paginacion =
+                document.getElementById(
+                    "paginacionResultados"
+                );
+
+
+            if (
+                totalPaginas <= 1
+            ) {
+
+                return;
+
+            }
+
+
+            const fin =
+                inicio +
+                cantidadPagina;
+
+
+            paginacion.innerHTML = `
+
+                <button
+                    type="button"
+                    class="btn-pagina"
+                    id="btnAnterior"
+                    ${paginaResultados <= 1 ? "disabled" : ""}
+                >
+                    Anterior
+                </button>
+
+
+                <span class="pagina-info">
+
+                    ${inicio + 1}-${fin}
+                    de
+                    ${prestamosFiltrados.length}
+
+                    · Página
+                    ${paginaResultados}
+                    de
+                    ${totalPaginas}
+
+                </span>
+
+
+                <button
+                    type="button"
+                    class="btn-pagina"
+                    id="btnSiguiente"
+                    ${paginaResultados >= totalPaginas ? "disabled" : ""}
+                >
+                    Siguiente
+                </button>
+
+            `;
+
+
+            document.getElementById(
+                "btnAnterior"
+            ).addEventListener(
+
+                "click",
+
+                function() {
+
+                    cambiarPaginaResultados(
+                        paginaResultados - 1
+                    );
+
+                }
+
+            );
+
+
+            document.getElementById(
+                "btnSiguiente"
+            ).addEventListener(
+
+                "click",
+
+                function() {
+
+                    cambiarPaginaResultados(
+                        paginaResultados + 1
+                    );
+
+                }
+
+            );
+
+        }
+
+
+        function cambiarPaginaResultados(
+
+            nuevaPagina
+
+        ) {
+
+            const totalPaginas =
+                Math.ceil(
+
+                    prestamosFiltrados.length /
+                    RESULTADOS_POR_PAGINA
+
+                );
+
+
+            if (
+
+                nuevaPagina < 1 ||
+
+                nuevaPagina >
+                totalPaginas
+
+            ) {
+
+                return;
+
+            }
+
+
+            paginaResultados =
+                nuevaPagina;
+
+
+            actualizarResultados();
+
+
+            const seccion =
+                document.getElementById(
+                    "resultadosSeccion"
+                );
+
+
+            if (seccion) {
+
+                const posicion =
+                    seccion.getBoundingClientRect().top +
+                    window.pageYOffset -
+                    15;
+
+
+                window.scrollTo({
+
+                    top:
+                        posicion,
+
+                    behavior:
+                        "smooth"
+
+                });
+
+            }
+
+        }
+
+
+        function actualizarGraficosFiltrados() {
+
+            const selector =
+                document.getElementById(
+                    "filtroSitioGraficas"
+                );
+
+
+            const sitioSeleccionado =
+                selector
+                    ? selector.value
+                    : "Todos";
+
+
+            let datos =
+                prestamos;
+
+
+            if (
+                sitioSeleccionado !==
+                "Todos"
+            ) {
+
+                datos =
+                    prestamos.filter(
+
+                        prestamo =>
+
+                            obtenerCodigoSitio(
+
+                                obtenerSitioPrestamo(
+                                    prestamo
+                                )
+
+                            ) ===
+                            sitioSeleccionado
+
+                    );
+
+            }
+
+
+            actualizarGraficaMeses(
+                datos
+            );
+
+
+            actualizarGraficaLibros(
+                datos
+            );
+
+
+            actualizarGraficaActividad(
+                datos
+            );
+
+        }
+
 
         function actualizarFiltrosActivos() {
 
@@ -4552,10 +4669,6 @@
 
         }
 
-
-        /* ==========================================
-           EXPORTAR REPORTE
-        ========================================== */
 
         function exportarExcel() {
 
@@ -4795,10 +4908,6 @@
         }
 
 
-        /* ==========================================
-           LIMPIAR FILTROS
-        ========================================== */
-
         function limpiarFiltros() {
 
             document.getElementById(
@@ -4839,10 +4948,6 @@
         }
 
 
-        /* ==========================================
-           EVENTOS
-        ========================================== */
-
         document.getElementById(
             "btnBuscar"
         ).addEventListener(
@@ -4872,36 +4977,6 @@
             "click",
 
             exportarExcel
-
-        );
-
-
-        document.getElementById(
-            "btnAnterior"
-        ).addEventListener(
-
-            "click",
-
-            function() {
-
-                cambiarPagina(-1);
-
-            }
-
-        );
-
-
-        document.getElementById(
-            "btnSiguiente"
-        ).addEventListener(
-
-            "click",
-
-            function() {
-
-                cambiarPagina(1);
-
-            }
 
         );
 
@@ -4983,8 +5058,6 @@
         );
 
 
-        /* Filtro único para las tres gráficas */
-
         document.getElementById(
             "filtroSitioGraficas"
         ).addEventListener(
@@ -4993,16 +5066,12 @@
 
             function() {
 
-                actualizarGraficasPorSitio();
+                actualizarGraficosFiltrados();
 
             }
 
         );
 
-
-        /* ==========================================
-           INICIO
-        ========================================== */
 
         async function iniciarReportes() {
 
