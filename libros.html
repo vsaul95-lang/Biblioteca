@@ -447,6 +447,14 @@
             border-top: 4px solid #90a4ae;
         }
 
+        .seccion-importacion {
+            border-top: 4px solid #607d8b;
+        }
+
+        .seccion-administracion {
+            border-top: 4px solid #842029;
+        }
+
         .paginacion {
             display: flex;
             justify-content: center;
@@ -541,22 +549,6 @@
             margin-top: 18px;
             padding-top: 14px;
             border-top: 1px solid #eceff1;
-        }
-
-        .confirmacion-info {
-            background: #f7f9fa;
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        footer {
-            text-align: center;
-            color: #90a4ae;
-            font-size: 11px;
-            padding: 15px 10px 25px;
         }
 
         @media (max-width: 1050px) {
@@ -805,6 +797,10 @@
     </section>
 
 
+    <!-- =================================================
+         REGISTRAR LIBRO
+    ================================================== -->
+
     <section class="seccion">
 
         <h3 class="seccion-titulo">
@@ -954,77 +950,9 @@
     </section>
 
 
-    <section
-        class="seccion solo-administrador"
-        id="seccionImportarExcel"
-    >
-
-        <h3 class="seccion-titulo">
-            Importar libros desde Excel
-        </h3>
-
-
-        <div class="importacion">
-
-            <input
-                type="file"
-                id="archivoExcel"
-                accept=".xlsx,.xls"
-            >
-
-            <button
-                type="button"
-                class="btn-importar"
-                id="btnImportar"
-            >
-                📥 Importar Excel
-            </button>
-
-        </div>
-
-
-        <div class="ayuda">
-
-            El archivo debe contener la hoja
-            <strong>BD Libros</strong> y las siguientes columnas:
-
-            <strong>codigoLibro</strong>,
-            <strong>nombreLibro</strong>,
-            <strong>autor</strong>,
-            <strong>genero</strong>,
-            <strong>editorial</strong>,
-            <strong>año</strong>,
-            <strong>Biblioteca</strong> y
-            <strong>estado</strong>.
-
-            <br>
-
-            Los códigos pueden tener de
-            <strong>1 a 8 dígitos</strong> y se mostrarán
-            con 8 posiciones agregando ceros a la izquierda.
-
-            <br>
-
-            El código máximo permitido es
-            <strong>88888888</strong>.
-
-            <br>
-
-            Biblioteca debe ser:
-            <strong>F, M, N, R o Z</strong>.
-
-            <br>
-
-            La importación solamente agrega libros nuevos.
-            No elimina ni reemplaza los libros existentes.
-
-        </div>
-
-
-        <div id="mensajeImportacion" class="mensaje"></div>
-
-    </section>
-
+    <!-- =================================================
+         BUSCAR LIBROS
+    ================================================== -->
 
     <section class="seccion">
 
@@ -1101,6 +1029,10 @@
 
     </section>
 
+
+    <!-- =================================================
+         LIBROS REGISTRADOS
+    ================================================== -->
 
     <section class="seccion">
 
@@ -1195,6 +1127,10 @@
     </section>
 
 
+    <!-- =================================================
+         HISTORIAL DE BAJAS
+    ================================================== -->
+
     <section class="seccion seccion-bajas">
 
         <h3 class="seccion-titulo">
@@ -1259,8 +1195,93 @@
     </section>
 
 
+    <!-- =================================================
+         IMPORTAR EXCEL
+         SOLO ADMINISTRADOR
+    ================================================== -->
+
     <section
-        class="seccion solo-administrador"
+        class="seccion seccion-importacion solo-administrador"
+        id="seccionImportarExcel"
+    >
+
+        <h3 class="seccion-titulo">
+            Importar libros desde Excel
+        </h3>
+
+
+        <div class="importacion">
+
+            <input
+                type="file"
+                id="archivoExcel"
+                accept=".xlsx,.xls"
+            >
+
+            <button
+                type="button"
+                class="btn-importar"
+                id="btnImportar"
+            >
+                📥 Importar Excel
+            </button>
+
+        </div>
+
+
+        <div class="ayuda">
+
+            El archivo debe contener la hoja
+            <strong>BD Libros</strong> y las siguientes columnas:
+
+            <strong>codigoLibro</strong>,
+            <strong>nombreLibro</strong>,
+            <strong>autor</strong>,
+            <strong>genero</strong>,
+            <strong>editorial</strong>,
+            <strong>año</strong>,
+            <strong>Biblioteca</strong> y
+            <strong>estado</strong>.
+
+            <br>
+
+            Los códigos pueden tener de
+            <strong>1 a 8 dígitos</strong> y se mostrarán
+            con 8 posiciones agregando ceros a la izquierda.
+
+            <br>
+
+            El código máximo permitido es
+            <strong>88888888</strong>.
+
+            <br>
+
+            Biblioteca debe ser:
+            <strong>F, M, N, R o Z</strong>.
+
+            <br>
+
+            La importación solamente agrega libros nuevos.
+            No elimina ni reemplaza los libros existentes.
+
+        </div>
+
+
+        <div
+            id="mensajeImportacion"
+            class="mensaje"
+        ></div>
+
+    </section>
+
+
+    <!-- =================================================
+         ADMINISTRACIÓN DE DATOS
+         SOLO ADMINISTRADOR
+    ================================================== -->
+
+    <section
+        class="seccion seccion-administracion solo-administrador"
         id="seccionAdministracionDatos"
     >
 
@@ -1274,10 +1295,12 @@
                 margin-top:0;
                 color:#607d8b;
                 font-size:13px;
+                line-height:1.5;
             "
         >
-            Esta opción elimina completamente la base de datos
-            de libros almacenada en Supabase.
+            Esta sección contiene acciones administrativas
+            que pueden afectar permanentemente la información
+            almacenada en la base de datos.
         </p>
 
 
@@ -2887,6 +2910,14 @@
                 } else {
 
                     acciones += `
+
+                        <button
+                            type="button"
+                            class="btn-editar btn-pequeno"
+                            onclick="editarLibro('${escapeHtml(String(libro.id))}')"
+                        >
+                            Editar
+                        </button>
 
                         <button
                             type="button"
@@ -5344,6 +5375,7 @@
             const autorizado =
                 await window.protegerPagina();
 
+
             if (!autorizado) {
 
                 console.error(
@@ -5351,19 +5383,23 @@
                 );
 
                 return;
+
             }
 
 
             /* =============================================
-               PERMISOS SEGÚN EL ROL
+               MOSTRAR SECCIONES DE ADMINISTRADOR
             ============================================= */
 
-            if (window.esAdministrador()) {
+            if (
+                window.esAdministrador()
+            ) {
 
                 const seccionImportarExcel =
                     document.getElementById(
                         "seccionImportarExcel"
                     );
+
 
                 const seccionAdministracionDatos =
                     document.getElementById(
@@ -5371,7 +5407,9 @@
                     );
 
 
-                if (seccionImportarExcel) {
+                if (
+                    seccionImportarExcel
+                ) {
 
                     seccionImportarExcel.style.display =
                         "block";
@@ -5379,7 +5417,9 @@
                 }
 
 
-                if (seccionAdministracionDatos) {
+                if (
+                    seccionAdministracionDatos
+                ) {
 
                     seccionAdministracionDatos.style.display =
                         "block";
@@ -5402,6 +5442,7 @@
                 "Error al iniciar el módulo de libros:",
                 error
             );
+
 
             document.documentElement.style.visibility =
                 "visible";
