@@ -962,7 +962,7 @@
                     type="button"
                     class="boton boton-principal"
                     id="botonActualizar"
-                    onclick="cargarTodo()">
+                    onclick="actualizarInformacion()">
                     Actualizar información
                 </button>
 
@@ -1518,7 +1518,7 @@
                     <span
                         id="rolActual"
                         class="dato-valor">
-                        Pendiente
+                        Comprobando...
                     </span>
                 </div>
 
@@ -1624,8 +1624,12 @@
     };
 
 
+    let usuarioSesionActual = null;
+    let perfilUsuarioActual = null;
+
+
     /* ==========================================================
-       AUTENTICACION
+       AUTENTICACION Y ROL
     ========================================================== */
 
     window.administracionAutorizado = false;
@@ -1649,26 +1653,179 @@
             }
 
 
-            window.administracionAutorizado = true;
-
-
-            const usuario = session.user;
+            usuarioSesionActual =
+                session.user;
 
 
             const elementoUsuario =
-                document.getElementById("usuarioActual");
+                document.getElementById(
+                    "usuarioActual"
+                );
 
 
             if (elementoUsuario) {
 
                 elementoUsuario.textContent =
-                    usuario.email || "Usuario autenticado";
+                    usuarioSesionActual.email ||
+                    "Usuario autenticado";
 
             }
 
 
-            document.getElementById("rolActual").textContent =
-                "Pendiente de configuración";
+            /*
+             * Buscamos el perfil correspondiente
+             * en nuestra tabla public.usuarios.
+             */
+
+            const {
+                data: perfil,
+                error: errorPerfil
+            } = await supabaseClient
+                .from("usuarios")
+                .select(`
+                    id,
+                    correo,
+                    nombre,
+                    rol,
+                    estado,
+                    fechaRegistro
+                `)
+                .eq(
+                    "id",
+                    usuarioSesionActual.id
+                )
+                .maybeSingle();
+
+
+            if (errorPerfil) {
+
+                throw errorPerfil;
+
+            }
+
+
+            if (!perfil) {
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+
+                mostrarModal(
+                    "Acceso no configurado",
+                    "La cuenta ha iniciado sesión, pero todavía no tiene un registro de usuario en el sistema de biblioteca."
+                );
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "index.html";
+
+                }, 2500);
+
+
+                return;
+
+            }
+
+
+            perfilUsuarioActual =
+                perfil;
+
+
+            const rol =
+                normalizar(
+                    perfil.rol
+                );
+
+
+            const estado =
+                normalizar(
+                    perfil.estado
+                );
+
+
+            /*
+             * Esta pantalla de Administración
+             * solamente puede ser utilizada
+             * por administradores activos.
+             */
+
+            if (
+                rol !== "ADMINISTRADOR" ||
+                estado !== "ACTIVO"
+            ) {
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+
+                if (
+                    rol !== "ADMINISTRADOR"
+                ) {
+
+                    mostrarModal(
+                        "Acceso restringido",
+                        "Tu cuenta no tiene permisos de administrador para acceder a esta sección."
+                    );
+
+                } else {
+
+                    mostrarModal(
+                        "Usuario inactivo",
+                        "Tu cuenta está marcada como inactiva y no puede acceder a esta sección."
+                    );
+
+                }
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "index.html";
+
+                }, 2500);
+
+
+                return;
+
+            }
+
+
+            /*
+             * El usuario tiene permisos de administrador.
+             */
+
+            window.administracionAutorizado =
+                true;
+
+
+            const elementoRol =
+                document.getElementById(
+                    "rolActual"
+                );
+
+
+            if (elementoRol) {
+
+                elementoRol.textContent =
+                    "Administrador";
+
+            }
+
+
+            const estadoPreparacion =
+                document.querySelector(
+                    ".estado-preparacion"
+                );
+
+
+            if (estadoPreparacion) {
+
+                estadoPreparacion.innerHTML =
+                    "<strong>Estado:</strong> Administración de usuarios preparada. El usuario actual tiene permisos de administrador.";
+
+            }
 
 
             document.documentElement.style.visibility =
@@ -1677,10 +1834,11 @@
 
             await cargarTodo();
 
+
         } catch (error) {
 
             console.error(
-                "Error de autenticación:",
+                "Error de autenticación o permisos:",
                 error
             );
 
@@ -1691,15 +1849,16 @@
 
             mostrarModal(
                 "Error",
-                "No fue posible comprobar la sesión. Será necesario volver a iniciar sesión."
+                "No fue posible comprobar los permisos de la cuenta. Será necesario volver a iniciar sesión."
             );
 
 
             setTimeout(function() {
 
-                window.location.href = "index.html";
+                window.location.href =
+                    "index.html";
 
-            }, 2000);
+            }, 2500);
 
         }
 
@@ -1803,16 +1962,26 @@
     function mostrarModal(titulo, mensaje) {
 
         const tituloElemento =
-            document.getElementById("modalTitulo");
+            document.getElementById(
+                "modalTitulo"
+            );
 
         const mensajeElemento =
-            document.getElementById("modalMensajeTexto");
+            document.getElementById(
+                "modalMensajeTexto"
+            );
 
         const modal =
-            document.getElementById("modalMensaje");
+            document.getElementById(
+                "modalMensaje"
+            );
 
 
-        if (!tituloElemento || !mensajeElemento || !modal) {
+        if (
+            !tituloElemento ||
+            !mensajeElemento ||
+            !modal
+        ) {
 
             console.error(
                 "No se encontró la estructura del modal."
@@ -1831,7 +2000,9 @@
             mensaje;
 
 
-        modal.classList.add("mostrar");
+        modal.classList.add(
+            "mostrar"
+        );
 
     }
 
@@ -1839,12 +2010,16 @@
     function cerrarModal() {
 
         const modal =
-            document.getElementById("modalMensaje");
+            document.getElementById(
+                "modalMensaje"
+            );
 
 
         if (modal) {
 
-            modal.classList.remove("mostrar");
+            modal.classList.remove(
+                "mostrar"
+            );
 
         }
 
@@ -1864,17 +2039,32 @@
 
 
     /* ==========================================================
+       ACTUALIZAR INFORMACION
+    ========================================================== */
+
+    async function actualizarInformacion() {
+
+        await cargarTodo(true);
+
+    }
+
+
+    /* ==========================================================
        CARGAR TODO
     ========================================================== */
 
-    async function cargarTodo() {
+    async function cargarTodo(mostrarMensaje = false) {
 
         if (!window.administracionAutorizado) {
 
-            mostrarModal(
-                "Sesión",
-                "La sesión todavía no está disponible. Espere un momento e inténtelo nuevamente."
-            );
+            if (mostrarMensaje) {
+
+                mostrarModal(
+                    "Sesión",
+                    "La sesión todavía no está disponible. Espere un momento e inténtelo nuevamente."
+                );
+
+            }
 
             return;
 
@@ -1882,7 +2072,9 @@
 
 
         const boton =
-            document.getElementById("botonActualizar");
+            document.getElementById(
+                "botonActualizar"
+            );
 
 
         if (boton) {
@@ -1909,22 +2101,19 @@
 
             actualizarDiagnosticoBase();
 
-            actualizarEstadoConexion(true);
-
-
-            /*
-             * La revisión de integridad no se ejecuta
-             * automáticamente aquí.
-             *
-             * De esta manera el botón "Actualizar información"
-             * solamente actualiza los datos y no mezcla ambas acciones.
-             */
-
-
-            mostrarModal(
-                "Información actualizada",
-                "La información del sistema se actualizó correctamente."
+            actualizarEstadoConexion(
+                true
             );
+
+
+            if (mostrarMensaje) {
+
+                mostrarModal(
+                    "Información actualizada",
+                    "La información del sistema se actualizó correctamente."
+                );
+
+            }
 
 
         } catch (error) {
@@ -1935,13 +2124,19 @@
             );
 
 
-            actualizarEstadoConexion(false);
-
-
-            mostrarModal(
-                "Error",
-                "No fue posible actualizar toda la información del sistema. Revise la consola del navegador para obtener más detalles."
+            actualizarEstadoConexion(
+                false
             );
+
+
+            if (mostrarMensaje) {
+
+                mostrarModal(
+                    "Error",
+                    "No fue posible actualizar toda la información del sistema. Revise la consola del navegador para obtener más detalles."
+                );
+
+            }
 
         } finally {
 
@@ -2001,17 +2196,25 @@
             }
 
 
-            if (!data || data.length === 0) {
+            if (
+                !data ||
+                data.length === 0
+            ) {
 
                 break;
 
             }
 
 
-            registros.push(...data);
+            registros.push(
+                ...data
+            );
 
 
-            if (data.length < cantidad) {
+            if (
+                data.length <
+                cantidad
+            ) {
 
                 break;
 
@@ -2073,17 +2276,25 @@
             }
 
 
-            if (!data || data.length === 0) {
+            if (
+                !data ||
+                data.length === 0
+            ) {
 
                 break;
 
             }
 
 
-            registros.push(...data);
+            registros.push(
+                ...data
+            );
 
 
-            if (data.length < cantidad) {
+            if (
+                data.length <
+                cantidad
+            ) {
 
                 break;
 
@@ -2143,17 +2354,25 @@
             }
 
 
-            if (!data || data.length === 0) {
+            if (
+                !data ||
+                data.length === 0
+            ) {
 
                 break;
 
             }
 
 
-            registros.push(...data);
+            registros.push(
+                ...data
+            );
 
 
-            if (data.length < cantidad) {
+            if (
+                data.length <
+                cantidad
+            ) {
 
                 break;
 
@@ -2205,17 +2424,25 @@
             }
 
 
-            if (!data || data.length === 0) {
+            if (
+                !data ||
+                data.length === 0
+            ) {
 
                 break;
 
             }
 
 
-            registros.push(...data);
+            registros.push(
+                ...data
+            );
 
 
-            if (data.length < cantidad) {
+            if (
+                data.length <
+                cantidad
+            ) {
 
                 break;
 
@@ -2253,63 +2480,75 @@
 
 
         const librosDisponibles =
-            libros.filter(libro => {
+            libros.filter(
+                libro => {
 
-                return normalizar(
-                    libro.estado
-                ) === "DISPONIBLE";
+                    return normalizar(
+                        libro.estado
+                    ) === "DISPONIBLE";
 
-            }).length;
+                }
+            ).length;
 
 
         const librosPrestados =
-            libros.filter(libro => {
+            libros.filter(
+                libro => {
 
-                return normalizar(
-                    libro.estado
-                ) !== "DISPONIBLE";
+                    return normalizar(
+                        libro.estado
+                    ) !== "DISPONIBLE";
 
-            }).length;
+                }
+            ).length;
 
 
         const afiliadosActivos =
-            afiliados.filter(afiliado => {
+            afiliados.filter(
+                afiliado => {
 
-                return esEstadoActivo(
-                    afiliado.estado
-                );
+                    return esEstadoActivo(
+                        afiliado.estado
+                    );
 
-            }).length;
+                }
+            ).length;
 
 
         const afiliadosInactivos =
-            afiliados.filter(afiliado => {
+            afiliados.filter(
+                afiliado => {
 
-                return esEstadoInactivo(
-                    afiliado.estado
-                );
+                    return esEstadoInactivo(
+                        afiliado.estado
+                    );
 
-            }).length;
+                }
+            ).length;
 
 
         const colaboradoresActivos =
-            colaboradores.filter(colaborador => {
+            colaboradores.filter(
+                colaborador => {
 
-                return esEstadoActivo(
-                    colaborador.estado
-                );
+                    return esEstadoActivo(
+                        colaborador.estado
+                    );
 
-            }).length;
+                }
+            ).length;
 
 
         const colaboradoresInactivos =
-            colaboradores.filter(colaborador => {
+            colaboradores.filter(
+                colaborador => {
 
-                return esEstadoInactivo(
-                    colaborador.estado
-                );
+                    return esEstadoInactivo(
+                        colaborador.estado
+                    );
 
-            }).length;
+                }
+            ).length;
 
 
         let prestamosAfiliados = 0;
@@ -2317,44 +2556,46 @@
         let prestamosColaboradores = 0;
 
 
-        prestamos.forEach(prestamo => {
+        prestamos.forEach(
+            prestamo => {
 
-            const tipo =
-                normalizar(
+                const tipo =
+                    normalizar(
+                        obtenerValor(
+                            prestamo,
+                            [
+                                "tipoPrestamo",
+                                "TipoPrestamo"
+                            ]
+                        )
+                    );
+
+
+                const codigoColaborador =
                     obtenerValor(
                         prestamo,
                         [
-                            "tipoPrestamo",
-                            "TipoPrestamo"
+                            "CodigoColaborador",
+                            "codigoColaborador"
                         ]
-                    )
-                );
+                    );
 
 
-            const codigoColaborador =
-                obtenerValor(
-                    prestamo,
-                    [
-                        "CodigoColaborador",
-                        "codigoColaborador"
-                    ]
-                );
+                if (
+                    tipo === "COLABORADOR" ||
+                    codigoColaborador
+                ) {
 
+                    prestamosColaboradores++;
 
-            if (
-                tipo === "COLABORADOR" ||
-                codigoColaborador
-            ) {
+                } else {
 
-                prestamosColaboradores++;
+                    prestamosAfiliados++;
 
-            } else {
-
-                prestamosAfiliados++;
+                }
 
             }
-
-        });
+        );
 
 
         const totalRegistros =
@@ -2367,79 +2608,105 @@
         document.getElementById(
             "totalLibros"
         ).textContent =
-            libros.length.toLocaleString("es-GT");
+            libros.length.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "totalAfiliados"
         ).textContent =
-            afiliados.length.toLocaleString("es-GT");
+            afiliados.length.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "totalColaboradores"
         ).textContent =
-            colaboradores.length.toLocaleString("es-GT");
+            colaboradores.length.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "totalPrestamos"
         ).textContent =
-            prestamos.length.toLocaleString("es-GT");
+            prestamos.length.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "totalRegistros"
         ).textContent =
-            totalRegistros.toLocaleString("es-GT");
+            totalRegistros.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "librosDisponibles"
         ).textContent =
-            librosDisponibles.toLocaleString("es-GT");
+            librosDisponibles.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "librosPrestados"
         ).textContent =
-            librosPrestados.toLocaleString("es-GT");
+            librosPrestados.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "afiliadosActivos"
         ).textContent =
-            afiliadosActivos.toLocaleString("es-GT");
+            afiliadosActivos.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "afiliadosInactivos"
         ).textContent =
-            afiliadosInactivos.toLocaleString("es-GT");
+            afiliadosInactivos.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "colaboradoresActivos"
         ).textContent =
-            colaboradoresActivos.toLocaleString("es-GT");
+            colaboradoresActivos.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "colaboradoresInactivos"
         ).textContent =
-            colaboradoresInactivos.toLocaleString("es-GT");
+            colaboradoresInactivos.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "prestamosAfiliados"
         ).textContent =
-            prestamosAfiliados.toLocaleString("es-GT");
+            prestamosAfiliados.toLocaleString(
+                "es-GT"
+            );
 
 
         document.getElementById(
             "prestamosColaboradores"
         ).textContent =
-            prestamosColaboradores.toLocaleString("es-GT");
+            prestamosColaboradores.toLocaleString(
+                "es-GT"
+            );
 
     }
 
@@ -2448,7 +2715,9 @@
        ESTADO DE CONEXION
     ========================================================== */
 
-    function actualizarEstadoConexion(conectado) {
+    function actualizarEstadoConexion(
+        conectado
+    ) {
 
         const elemento =
             document.getElementById(
@@ -2495,28 +2764,32 @@
         actualizarFilaDiagnostico(
             "afiliados",
             true,
-            datosAdministracion.afiliados.length
+            datosAdministracion
+                .afiliados.length
         );
 
 
         actualizarFilaDiagnostico(
             "libros",
             true,
-            datosAdministracion.libros.length
+            datosAdministracion
+                .libros.length
         );
 
 
         actualizarFilaDiagnostico(
             "colaboradores",
             true,
-            datosAdministracion.colaboradores.length
+            datosAdministracion
+                .colaboradores.length
         );
 
 
         actualizarFilaDiagnostico(
             "prestamos",
             true,
-            datosAdministracion.prestamos.length
+            datosAdministracion
+                .prestamos.length
         );
 
     }
@@ -2534,62 +2807,70 @@
             );
 
 
-        filas.forEach(fila => {
+        filas.forEach(
+            fila => {
 
-            const nombre =
-                fila.children[0]
-                    ?.textContent
-                    .trim();
+                const nombre =
+                    fila.children[0]
+                        ?.textContent
+                        .trim();
 
 
-            if (nombre !== nombreTabla) {
+                if (
+                    nombre !==
+                    nombreTabla
+                ) {
 
-                return;
+                    return;
+
+                }
+
+
+                fila.children[2]
+                    .textContent =
+                    disponible
+                        ? cantidad.toLocaleString(
+                            "es-GT"
+                        )
+                        : "—";
+
+
+                const estado =
+                    fila.children[3]
+                        .querySelector(
+                            ".estado-tabla"
+                        );
+
+
+                if (!estado) {
+
+                    return;
+
+                }
+
+
+                if (disponible) {
+
+                    estado.textContent =
+                        "Disponible";
+
+
+                    estado.className =
+                        "estado-tabla estado-disponible";
+
+                } else {
+
+                    estado.textContent =
+                        "No disponible";
+
+
+                    estado.className =
+                        "estado-tabla estado-problema";
+
+                }
 
             }
-
-
-            fila.children[2].textContent =
-                disponible
-                    ? cantidad.toLocaleString("es-GT")
-                    : "—";
-
-
-            const estado =
-                fila.children[3]
-                    .querySelector(
-                        ".estado-tabla"
-                    );
-
-
-            if (!estado) {
-
-                return;
-
-            }
-
-
-            if (disponible) {
-
-                estado.textContent =
-                    "Disponible";
-
-
-                estado.className =
-                    "estado-tabla estado-disponible";
-
-            } else {
-
-                estado.textContent =
-                    "No disponible";
-
-
-                estado.className =
-                    "estado-tabla estado-problema";
-
-            }
-
-        });
+        );
 
     }
 
@@ -2633,54 +2914,73 @@
             const resultados = {};
 
 
-            for (const tabla of tablas) {
+            for (
+                const tabla of tablas
+            ) {
 
                 const {
                     count,
                     error
                 } = await supabaseClient
                     .from(tabla)
-                    .select("id", {
-                        count: "exact",
-                        head: true
-                    });
+                    .select(
+                        "id",
+                        {
+                            count: "exact",
+                            head: true
+                        }
+                    );
 
 
                 resultados[tabla] = {
 
-                    disponible: !error,
+                    disponible:
+                        !error,
 
                     cantidad:
                         error
                             ? 0
-                            : (count || 0)
+                            : (
+                                count ||
+                                0
+                            )
 
                 };
 
             }
 
 
-            tablas.forEach(tabla => {
+            tablas.forEach(
+                tabla => {
 
-                actualizarFilaDiagnostico(
-                    tabla,
-                    resultados[tabla].disponible,
-                    resultados[tabla].cantidad
-                );
+                    actualizarFilaDiagnostico(
+                        tabla,
+                        resultados[tabla]
+                            .disponible,
+                        resultados[tabla]
+                            .cantidad
+                    );
 
-            });
+                }
+            );
 
 
             const errores =
                 tablas.filter(
                     tabla =>
-                        !resultados[tabla].disponible
+                        !resultados[
+                            tabla
+                        ].disponible
                 );
 
 
-            if (errores.length === 0) {
+            if (
+                errores.length === 0
+            ) {
 
-                actualizarEstadoConexion(true);
+                actualizarEstadoConexion(
+                    true
+                );
 
 
                 mostrarModal(
@@ -2690,7 +2990,9 @@
 
             } else {
 
-                actualizarEstadoConexion(false);
+                actualizarEstadoConexion(
+                    false
+                );
 
 
                 mostrarModal(
@@ -2709,7 +3011,9 @@
             );
 
 
-            actualizarEstadoConexion(false);
+            actualizarEstadoConexion(
+                false
+            );
 
 
             mostrarModal(
@@ -2740,7 +3044,9 @@
     ) {
 
         const elemento =
-            document.getElementById(id);
+            document.getElementById(
+                id
+            );
 
 
         if (!elemento) {
@@ -2750,7 +3056,9 @@
         }
 
 
-        if (cantidad === 0) {
+        if (
+            cantidad === 0
+        ) {
 
             elemento.textContent =
                 "Correcto";
@@ -2762,7 +3070,9 @@
         } else {
 
             elemento.textContent =
-                cantidad.toLocaleString("es-GT") +
+                cantidad.toLocaleString(
+                    "es-GT"
+                ) +
                 " encontrados";
 
 
@@ -2774,10 +3084,14 @@
     }
 
 
-    function establecerResultadoError(id) {
+    function establecerResultadoError(
+        id
+    ) {
 
         const elemento =
-            document.getElementById(id);
+            document.getElementById(
+                id
+            );
 
 
         if (!elemento) {
@@ -2797,10 +3111,14 @@
     }
 
 
-    function establecerResultadoRevisando(id) {
+    function establecerResultadoRevisando(
+        id
+    ) {
 
         const elemento =
-            document.getElementById(id);
+            document.getElementById(
+                id
+            );
 
 
         if (!elemento) {
@@ -2847,14 +3165,23 @@
 
 
         const elementos = [
+
             "integridadAfiliadosEstado",
+
             "integridadAfiliadosSitio",
+
             "integridadLibrosSitio",
+
             "integridadLibrosCodigo",
+
             "integridadColaboradoresEstado",
+
             "integridadColaboradoresCodigo",
+
             "integridadLibrosEstado",
+
             "integridadPrestamosLibro"
+
         ];
 
 
@@ -2865,19 +3192,20 @@
 
         try {
 
-            /*
-             * Si todavía no hay información cargada,
-             * la cargamos directamente.
-             */
-
             const necesitaCarga =
-                datosAdministracion.afiliados.length === 0 &&
-                datosAdministracion.libros.length === 0 &&
-                datosAdministracion.colaboradores.length === 0 &&
-                datosAdministracion.prestamos.length === 0;
+                datosAdministracion
+                    .afiliados.length === 0 &&
+                datosAdministracion
+                    .libros.length === 0 &&
+                datosAdministracion
+                    .colaboradores.length === 0 &&
+                datosAdministracion
+                    .prestamos.length === 0;
 
 
-            if (necesitaCarga) {
+            if (
+                necesitaCarga
+            ) {
 
                 await cargarTodoSinIntegridad();
 
@@ -2885,19 +3213,23 @@
 
 
             const afiliados =
-                datosAdministracion.afiliados;
+                datosAdministracion
+                    .afiliados;
 
 
             const libros =
-                datosAdministracion.libros;
+                datosAdministracion
+                    .libros;
 
 
             const colaboradores =
-                datosAdministracion.colaboradores;
+                datosAdministracion
+                    .colaboradores;
 
 
             const prestamos =
-                datosAdministracion.prestamos;
+                datosAdministracion
+                    .prestamos;
 
 
             /* ==========================
@@ -2905,18 +3237,20 @@
             ========================== */
 
             const afiliadosSinEstado =
-                afiliados.filter(afiliado => {
+                afiliados.filter(
+                    afiliado => {
 
-                    return (
-                        !esEstadoActivo(
-                            afiliado.estado
-                        ) &&
-                        !esEstadoInactivo(
-                            afiliado.estado
-                        )
-                    );
+                        return (
+                            !esEstadoActivo(
+                                afiliado.estado
+                            ) &&
+                            !esEstadoInactivo(
+                                afiliado.estado
+                            )
+                        );
 
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -2930,13 +3264,15 @@
             ========================== */
 
             const afiliadosSinSitio =
-                afiliados.filter(afiliado => {
+                afiliados.filter(
+                    afiliado => {
 
-                    return !obtenerSitioValido(
-                        afiliado.Sitio
-                    );
+                        return !obtenerSitioValido(
+                            afiliado.Sitio
+                        );
 
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -2950,13 +3286,15 @@
             ========================== */
 
             const librosSinSitio =
-                libros.filter(libro => {
+                libros.filter(
+                    libro => {
 
-                    return !obtenerSitioValido(
-                        libro.Biblioteca
-                    );
+                        return !obtenerSitioValido(
+                            libro.Biblioteca
+                        );
 
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -2970,13 +3308,16 @@
             ========================== */
 
             const librosSinCodigo =
-                libros.filter(libro => {
+                libros.filter(
+                    libro => {
 
-                    return !String(
-                        libro.codigoLibro ?? ""
-                    ).trim();
+                        return !String(
+                            libro.codigoLibro ??
+                            ""
+                        ).trim();
 
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -2990,18 +3331,20 @@
             ========================== */
 
             const colaboradoresSinEstado =
-                colaboradores.filter(colaborador => {
+                colaboradores.filter(
+                    colaborador => {
 
-                    return (
-                        !esEstadoActivo(
-                            colaborador.estado
-                        ) &&
-                        !esEstadoInactivo(
-                            colaborador.estado
-                        )
-                    );
+                        return (
+                            !esEstadoActivo(
+                                colaborador.estado
+                            ) &&
+                            !esEstadoInactivo(
+                                colaborador.estado
+                            )
+                        );
 
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -3015,13 +3358,16 @@
             ========================== */
 
             const colaboradoresSinCodigo =
-                colaboradores.filter(colaborador => {
+                colaboradores.filter(
+                    colaborador => {
 
-                    return !String(
-                        colaborador.CodigoColaborador ?? ""
-                    ).trim();
+                        return !String(
+                            colaborador.CodigoColaborador ??
+                            ""
+                        ).trim();
 
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -3043,22 +3389,25 @@
 
 
             const librosEstadoInvalido =
-                libros.filter(libro => {
+                libros.filter(
+                    libro => {
 
-                    const estado =
-                        normalizar(
-                            libro.estado
+                        const estado =
+                            normalizar(
+                                libro.estado
+                            );
+
+
+                        return (
+                            !estado ||
+                            !estadosLibroValidos
+                                .includes(
+                                    estado
+                                )
                         );
 
-
-                    return (
-                        !estado ||
-                        !estadosLibroValidos.includes(
-                            estado
-                        )
-                    );
-
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -3072,40 +3421,44 @@
             ========================== */
 
             const prestamosSinLibro =
-                prestamos.filter(prestamo => {
+                prestamos.filter(
+                    prestamo => {
 
-                    const codigoLibro =
-                        obtenerValor(
-                            prestamo,
-                            [
-                                "codigoLibro",
-                                "CodigoLibro",
-                                "codigo",
-                                "Codigo"
-                            ]
+                        const codigoLibro =
+                            obtenerValor(
+                                prestamo,
+                                [
+                                    "codigoLibro",
+                                    "CodigoLibro",
+                                    "codigo",
+                                    "Codigo"
+                                ]
+                            );
+
+
+                        const nombreLibro =
+                            obtenerValor(
+                                prestamo,
+                                [
+                                    "nombreLibro",
+                                    "NombreLibro"
+                                ]
+                            );
+
+
+                        return (
+                            !String(
+                                codigoLibro ??
+                                ""
+                            ).trim() &&
+                            !String(
+                                nombreLibro ??
+                                ""
+                            ).trim()
                         );
 
-
-                    const nombreLibro =
-                        obtenerValor(
-                            prestamo,
-                            [
-                                "nombreLibro",
-                                "NombreLibro"
-                            ]
-                        );
-
-
-                    return (
-                        !String(
-                            codigoLibro ?? ""
-                        ).trim() &&
-                        !String(
-                            nombreLibro ?? ""
-                        ).trim()
-                    );
-
-                }).length;
+                    }
+                ).length;
 
 
             establecerResultado(
@@ -3129,7 +3482,9 @@
                 prestamosSinLibro;
 
 
-            if (problemas === 0) {
+            if (
+                problemas === 0
+            ) {
 
                 mostrarModal(
                     "Todo correcto",
@@ -3141,7 +3496,9 @@
                 mostrarModal(
                     "Revisión completada",
                     "La revisión terminó correctamente, pero se encontraron " +
-                    problemas.toLocaleString("es-GT") +
+                    problemas.toLocaleString(
+                        "es-GT"
+                    ) +
                     " registros o situaciones que requieren revisión."
                 );
 
@@ -3181,16 +3538,20 @@
 
     /* ==========================================================
        CARGA AUXILIAR
-       No ejecuta revisarIntegridad().
     ========================================================== */
 
     async function cargarTodoSinIntegridad() {
 
         await Promise.all([
+
             cargarAfiliados(),
+
             cargarLibros(),
+
             cargarColaboradores(),
+
             cargarPrestamos()
+
         ]);
 
 
@@ -3198,7 +3559,9 @@
 
         actualizarDiagnosticoBase();
 
-        actualizarEstadoConexion(true);
+        actualizarEstadoConexion(
+            true
+        );
 
     }
 
@@ -3213,7 +3576,10 @@
 
             const {
                 error
-            } = await supabaseClient.auth.signOut();
+            } =
+                await supabaseClient
+                    .auth
+                    .signOut();
 
 
             if (error) {
@@ -3250,12 +3616,16 @@
     ========================================================== */
 
     document
-        .getElementById("modalMensaje")
+        .getElementById(
+            "modalMensaje"
+        )
         .addEventListener(
             "click",
             function(event) {
 
-                if (event.target === this) {
+                if (
+                    event.target === this
+                ) {
 
                     cerrarModal();
 
