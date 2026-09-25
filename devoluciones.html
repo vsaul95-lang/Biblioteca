@@ -1271,7 +1271,94 @@
         }
 
 
-        prestamos = data || [];
+        /*
+         * ==========================================================
+         * CONEXIÓN PRÉSTAMOS → LIBROS → BIBLIOTECA
+         *
+         * La biblioteca NO se toma de Sitio ni de FamiliaId.
+         *
+         * Relación:
+         * prestamos.codigoLibro
+         *        ↓
+         * libros.codigoLibro
+         *        ↓
+         * libros.Biblioteca
+         * ==========================================================
+         */
+
+        const {
+            data: libros,
+            error: errorLibros
+        } = await supabaseClient
+            .from("libros")
+            .select("codigoLibro, Biblioteca");
+
+
+        if (errorLibros) {
+
+            console.error(errorLibros);
+
+            mostrarMensaje(
+                "Los préstamos se cargaron, pero no fue posible obtener la biblioteca de los libros.",
+                "error"
+            );
+
+            prestamos = (data || []).map(
+                prestamo => ({
+                    ...prestamo,
+                    Biblioteca: ""
+                })
+            );
+
+        } else {
+
+            const mapaBibliotecas = {};
+
+
+            (libros || []).forEach(
+                libro => {
+
+                    const codigo =
+                        normalizarCodigo(
+                            libro.codigoLibro
+                        );
+
+
+                    if (codigo) {
+
+                        mapaBibliotecas[codigo] =
+                            libro.Biblioteca || "";
+
+                    }
+
+                }
+            );
+
+
+            prestamos =
+                (data || []).map(
+                    prestamo => {
+
+                        const codigoPrestamo =
+                            normalizarCodigo(
+                                prestamo.codigoLibro
+                            );
+
+
+                        return {
+                            ...prestamo,
+
+                            Biblioteca:
+                                mapaBibliotecas[
+                                    codigoPrestamo
+                                ] || ""
+                        };
+
+                    }
+                );
+
+        }
+
 
         prestamosFiltrados =
             [...prestamos];
@@ -2745,3 +2832,4 @@
 
 </body>
 </html>
+```
