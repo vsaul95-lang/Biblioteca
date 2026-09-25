@@ -907,7 +907,6 @@
 
     <section class="estadisticas">
 
-
         <div class="tarjeta-estadistica">
 
             <div class="estadistica-icono">
@@ -1001,7 +1000,9 @@
 
             </div>
 
-        </div></section>
+        </div>
+
+    </section>
 
 
     <!-- =====================================================
@@ -1148,6 +1149,10 @@
 
                     <option value="Z">
                         Z
+                    </option>
+
+                    <option value="NE">
+                        NE
                     </option>
 
                 </select>
@@ -1304,6 +1309,10 @@
                         Z
                     </option>
 
+                    <option value="NE">
+                        NE
+                    </option>
+
                 </select>
 
             </div>
@@ -1325,7 +1334,7 @@
 
     <!-- =====================================================
          LIBROS REGISTRADOS
-====================================================== -->
+    ====================================================== -->
 
     <section
         class="seccion"
@@ -1619,7 +1628,7 @@
             <br>
 
             Biblioteca debe ser:
-            <strong>F, M, N, R o Z</strong>.
+            <strong>F, M, N, R, Z o NE</strong>.
 
             <br>
 
@@ -1647,7 +1656,6 @@
     <!-- =====================================================
          ADMINISTRACIÓN DE DATOS
          SOLO ADMINISTRADOR
-         ESTA ES LA ÚLTIMA SECCIÓN
     ====================================================== -->
 
     <section
@@ -1852,6 +1860,10 @@
                         Z
                     </option>
 
+                    <option value="NE">
+                        NE
+                    </option>
+
                 </select>
 
             </div>
@@ -2044,7 +2056,8 @@
 
     const btnSiguienteLibros =
         document.getElementById(
-            "btnSiguienteLibros");
+            "btnSiguienteLibros"
+        );
 
     const paginaInfoLibros =
         document.getElementById(
@@ -2362,12 +2375,22 @@
                 .toUpperCase();
 
 
+        /*
+         * BIBLIOTECAS VÁLIDAS
+         *
+         * F, M, N, R, Z y NE
+         *
+         * NE es una BIBLIOTECA.
+         * NO es un Sitio.
+         */
+
         const permitidas = [
             "F",
             "M",
             "N",
             "R",
-            "Z"
+            "Z",
+            "NE"
         ];
 
 
@@ -3046,7 +3069,9 @@
                     biblioteca,
 
                 estado:
-                    "Disponible"};
+                    "Disponible"
+
+            };
 
 
             const {
@@ -4230,7 +4255,10 @@
 
             return;
 
-        }const nombre =
+        }
+
+
+        const nombre =
             editarNombre.value.trim();
 
 
@@ -5228,7 +5256,10 @@
                         errores.length
                     } filas con errores y no fueron agregadas.`;
 
-            }mostrarMensaje(
+            }
+
+
+            mostrarMensaje(
                 mensajeImportacion,
                 mensaje,
                 "exito"
