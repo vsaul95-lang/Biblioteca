@@ -498,7 +498,10 @@
              ADMINISTRACION
         ====================================== -->
 
-        <section class="seccion">
+        <section
+            class="seccion"
+            id="seccionAdministracion"
+        >
 
             <h2 class="seccion-titulo">
                 Administración
@@ -508,9 +511,12 @@
             <div class="administracion">
 
 
+                <!-- LIBROS -->
+
                 <a
                     href="libros.html"
                     class="opcion"
+                    data-rol="USUARIO ADMINISTRADOR"
                 >
 
                     <div class="opcion-icono">
@@ -537,9 +543,12 @@
 
 
 
+                <!-- FAMILIAS -->
+
                 <a
                     href="familias.html"
                     class="opcion"
+                    data-rol="ADMINISTRADOR"
                 >
 
                     <div class="opcion-icono">
@@ -566,13 +575,12 @@
 
 
 
-                <!-- =====================================
-                     COLABORADORES
-                ====================================== -->
+                <!-- COLABORADORES -->
 
                 <a
                     href="colaboradores.html"
                     class="opcion"
+                    data-rol="ADMINISTRADOR"
                 >
 
                     <div class="opcion-icono">
@@ -599,9 +607,12 @@
 
 
 
+                <!-- REPORTES -->
+
                 <a
                     href="reportes.html"
                     class="opcion"
+                    data-rol="ADMINISTRADOR"
                 >
 
                     <div class="opcion-icono">
@@ -628,9 +639,12 @@
 
 
 
+                <!-- RESPALDO -->
+
                 <a
                     href="respaldo.html"
                     class="opcion"
+                    data-rol="ADMINISTRADOR"
                 >
 
                     <div class="opcion-icono">
@@ -657,13 +671,12 @@
 
 
 
-                <!-- =====================================
-                     ADMINISTRACION DEL SISTEMA
-                ====================================== -->
+                <!-- ADMINISTRACION DEL SISTEMA -->
 
                 <a
                     href="administracion.html"
                     class="opcion"
+                    data-rol="ADMINISTRADOR"
                 >
 
                     <div class="opcion-icono">
@@ -773,23 +786,231 @@
 
 
     // =========================================
+    // APLICAR PERMISOS AL MENU
+    // =========================================
+
+    function aplicarPermisosMenu(rol) {
+
+        const rolNormalizado =
+            String(rol || "")
+                .trim()
+                .toUpperCase();
+
+
+        const opciones =
+            document.querySelectorAll(
+                "[data-rol]"
+            );
+
+
+        opciones.forEach(
+            function(opcion) {
+
+                const rolesPermitidos =
+                    opcion
+                        .getAttribute(
+                            "data-rol"
+                        )
+                        .split(" ")
+                        .map(
+                            function(item) {
+                                return item
+                                    .trim()
+                                    .toUpperCase();
+                            }
+                        );
+
+
+                if (
+                    rolesPermitidos.includes(
+                        rolNormalizado
+                    )
+                ) {
+
+                    opcion.style.display = "";
+
+                } else {
+
+                    opcion.style.display = "none";
+
+                }
+
+            }
+        );
+
+
+        // -----------------------------------------
+        // OCULTAR LA SECCIÓN SI NO TIENE OPCIONES
+        // -----------------------------------------
+
+        const seccionAdministracion =
+            document.getElementById(
+                "seccionAdministracion"
+            );
+
+
+        if (seccionAdministracion) {
+
+            const opcionesVisibles =
+                seccionAdministracion
+                    .querySelectorAll(
+                        ".opcion:not([style*='display: none'])"
+                    );
+
+
+            if (
+                opcionesVisibles.length === 0
+            ) {
+
+                seccionAdministracion.style.display =
+                    "none";
+
+            } else {
+
+                seccionAdministracion.style.display =
+                    "";
+
+            }
+
+        }
+
+    }
+
+
+    // =========================================
+    // OBTENER PERFIL DEL USUARIO
+    // =========================================
+
+    async function obtenerPerfilUsuario(
+        usuarioId
+    ) {
+
+        const {
+            data: perfil,
+            error
+        } = await supabaseClient
+
+            .from("usuarios")
+
+            .select(`
+                id,
+                correo,
+                nombre,
+                rol,
+                estado,
+                fechaRegistro
+            `)
+
+            .eq(
+                "id",
+                usuarioId
+            )
+
+            .maybeSingle();
+
+
+        if (error) {
+
+            console.error(
+                "Error al consultar el perfil:",
+                error
+            );
+
+            return null;
+        }
+
+
+        return perfil;
+
+    }
+
+
+    // =========================================
     // MOSTRAR BIBLIOTECA
     // =========================================
 
-    function mostrarBiblioteca() {
+    async function mostrarBiblioteca(
+        usuario
+    ) {
 
-        pantallaAcceso.style.display = "none";
+        const perfil =
+            await obtenerPerfilUsuario(
+                usuario.id
+            );
 
-        contenidoBiblioteca.style.display = "block";
 
-        // Cargar la aplicación solamente
-        // después de iniciar sesión.
+        if (!perfil) {
+
+            await supabaseClient.auth.signOut();
+
+            mostrarError(
+                "La cuenta no está configurada en el sistema."
+            );
+
+            return;
+
+        }
+
+
+        const estado =
+            String(
+                perfil.estado || ""
+            )
+                .trim()
+                .toUpperCase();
+
+
+        if (
+            estado !== "ACTIVO"
+        ) {
+
+            await supabaseClient.auth.signOut();
+
+            mostrarError(
+                "La cuenta está inactiva y no puede utilizar el sistema."
+            );
+
+            return;
+
+        }
+
+
+        // -----------------------------------------
+        // APLICAR PERMISOS
+        // -----------------------------------------
+
+        aplicarPermisosMenu(
+            perfil.rol
+        );
+
+
+        // -----------------------------------------
+        // MOSTRAR CONTENIDO
+        // -----------------------------------------
+
+        pantallaAcceso.style.display =
+            "none";
+
+        contenidoBiblioteca.style.display =
+            "block";
+
+
+        // -----------------------------------------
+        // CARGAR APLICACIÓN
+        // -----------------------------------------
+
         const scriptApp =
-            document.createElement("script");
+            document.createElement(
+                "script"
+            );
 
-        scriptApp.src = "app.js";
+        scriptApp.src =
+            "app.js";
 
-        document.body.appendChild(scriptApp);
+        document.body.appendChild(
+            scriptApp
+        );
+
     }
 
 
@@ -797,11 +1018,16 @@
     // MOSTRAR ERROR
     // =========================================
 
-    function mostrarError(mensaje) {
+    function mostrarError(
+        mensaje
+    ) {
 
-        mensajeAcceso.textContent = mensaje;
+        mensajeAcceso.textContent =
+            mensaje;
 
-        mensajeAcceso.style.display = "block";
+        mensajeAcceso.style.display =
+            "block";
+
     }
 
 
@@ -814,7 +1040,8 @@
         const {
             data: { session },
             error
-        } = await supabaseClient.auth.getSession();
+        } =
+            await supabaseClient.auth.getSession();
 
 
         if (error) {
@@ -834,7 +1061,9 @@
 
         if (session) {
 
-            mostrarBiblioteca();
+            await mostrarBiblioteca(
+                session.user
+            );
 
         }
 
@@ -847,13 +1076,18 @@
 
     formularioAcceso.addEventListener(
         "submit",
-        async function (evento) {
+        async function(evento) {
 
             evento.preventDefault();
 
-            mensajeAcceso.style.display = "none";
 
-            botonIngresar.disabled = true;
+            mensajeAcceso.style.display =
+                "none";
+
+
+            botonIngresar.disabled =
+                true;
+
 
             botonIngresar.textContent =
                 "Ingresando...";
@@ -862,13 +1096,17 @@
             const {
                 data,
                 error
-            } = await supabaseClient.auth.signInWithPassword({
+            } =
+                await supabaseClient.auth
+                    .signInWithPassword({
 
-                email: correo.value.trim(),
+                        email:
+                            correo.value.trim(),
 
-                password: contrasena.value
+                        password:
+                            contrasena.value
 
-            });
+                    });
 
 
             if (error) {
@@ -878,14 +1116,19 @@
                     error
                 );
 
+
                 mostrarError(
                     "El correo o la contraseña no son correctos."
                 );
 
-                botonIngresar.disabled = false;
+
+                botonIngresar.disabled =
+                    false;
+
 
                 botonIngresar.textContent =
                     "Ingresar";
+
 
                 return;
             }
@@ -893,7 +1136,9 @@
 
             if (data.session) {
 
-                mostrarBiblioteca();
+                await mostrarBiblioteca(
+                    data.session.user
+                );
 
             }
 
@@ -907,9 +1152,11 @@
 
     botonCerrarSesion.addEventListener(
         "click",
-        async function () {
+        async function() {
 
-            botonCerrarSesion.disabled = true;
+            botonCerrarSesion.disabled =
+                true;
+
 
             botonCerrarSesion.textContent =
                 "Cerrando sesión...";
@@ -917,7 +1164,9 @@
 
             const {
                 error
-            } = await supabaseClient.auth.signOut();
+            } =
+                await supabaseClient.auth
+                    .signOut();
 
 
             if (error) {
@@ -927,14 +1176,19 @@
                     error
                 );
 
-                botonCerrarSesion.disabled = false;
+
+                botonCerrarSesion.disabled =
+                    false;
+
 
                 botonCerrarSesion.textContent =
                     "Cerrar sesión";
 
+
                 alert(
                     "No se pudo cerrar la sesión. Intenta nuevamente."
                 );
+
 
                 return;
             }
