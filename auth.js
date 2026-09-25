@@ -1,4 +1,3 @@
-```javascript
 // ==========================================
 // AUTH.JS
 // PROTECCION DE ACCESO Y ROLES
