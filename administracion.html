@@ -722,7 +722,6 @@
             <div class="grid-informacion">
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Sistema
                     </span>
@@ -730,12 +729,10 @@
                     <span class="dato-valor">
                         Biblioteca
                     </span>
-
                 </div>
 
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Versión
                     </span>
@@ -743,12 +740,10 @@
                     <span class="dato-valor">
                         1.0
                     </span>
-
                 </div>
 
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Base de datos
                     </span>
@@ -756,12 +751,10 @@
                     <span class="dato-valor">
                         Supabase
                     </span>
-
                 </div>
 
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Conexión
                     </span>
@@ -771,7 +764,6 @@
                         class="estado-conexion estado-pendiente">
                         Comprobando...
                     </span>
-
                 </div>
 
             </div>
@@ -801,7 +793,6 @@
             <div class="grid-estadisticas">
 
                 <div class="tarjeta-estadistica">
-
                     <div
                         class="numero"
                         id="totalLibros">
@@ -811,12 +802,10 @@
                     <div class="texto">
                         Libros
                     </div>
-
                 </div>
 
 
                 <div class="tarjeta-estadistica">
-
                     <div
                         class="numero"
                         id="totalAfiliados">
@@ -826,12 +815,10 @@
                     <div class="texto">
                         Afiliados
                     </div>
-
                 </div>
 
 
                 <div class="tarjeta-estadistica">
-
                     <div
                         class="numero"
                         id="totalColaboradores">
@@ -841,12 +828,10 @@
                     <div class="texto">
                         Colaboradores
                     </div>
-
                 </div>
 
 
                 <div class="tarjeta-estadistica">
-
                     <div
                         class="numero"
                         id="totalPrestamos">
@@ -856,12 +841,10 @@
                     <div class="texto">
                         Préstamos
                     </div>
-
                 </div>
 
 
                 <div class="tarjeta-estadistica total">
-
                     <div
                         class="numero"
                         id="totalRegistros">
@@ -871,7 +854,6 @@
                     <div class="texto">
                         Registros totales
                     </div>
-
                 </div>
 
             </div>
@@ -885,7 +867,6 @@
             <div class="grid-estadisticas-secundarias">
 
                 <div class="estadistica-secundaria">
-
                     <strong id="librosDisponibles">
                         0
                     </strong>
@@ -893,12 +874,10 @@
                     <span>
                         Libros disponibles
                     </span>
-
                 </div>
 
 
                 <div class="estadistica-secundaria">
-
                     <strong id="librosPrestados">
                         0
                     </strong>
@@ -906,12 +885,10 @@
                     <span>
                         Libros prestados
                     </span>
-
                 </div>
 
 
                 <div class="estadistica-secundaria">
-
                     <strong id="afiliadosActivos">
                         0
                     </strong>
@@ -919,12 +896,10 @@
                     <span>
                         Afiliados activos
                     </span>
-
                 </div>
 
 
                 <div class="estadistica-secundaria">
-
                     <strong id="afiliadosInactivos">
                         0
                     </strong>
@@ -932,12 +907,10 @@
                     <span>
                         Afiliados inactivos
                     </span>
-
                 </div>
 
 
                 <div class="estadistica-secundaria">
-
                     <strong id="colaboradoresActivos">
                         0
                     </strong>
@@ -945,12 +918,10 @@
                     <span>
                         Colaboradores activos
                     </span>
-
                 </div>
 
 
                 <div class="estadistica-secundaria">
-
                     <strong id="colaboradoresInactivos">
                         0
                     </strong>
@@ -958,12 +929,10 @@
                     <span>
                         Colaboradores inactivos
                     </span>
-
                 </div>
 
 
                 <div class="estadistica-secundaria">
-
                     <strong id="prestamosAfiliados">
                         0
                     </strong>
@@ -971,12 +940,10 @@
                     <span>
                         Préstamos de afiliados
                     </span>
-
                 </div>
 
 
                 <div class="estadistica-secundaria">
-
                     <strong id="prestamosColaboradores">
                         0
                     </strong>
@@ -984,7 +951,6 @@
                     <span>
                         Préstamos de colaboradores
                     </span>
-
                 </div>
 
             </div>
@@ -995,6 +961,7 @@
                 <button
                     type="button"
                     class="boton boton-principal"
+                    id="botonActualizar"
                     onclick="cargarTodo()">
                     Actualizar información
                 </button>
@@ -1029,129 +996,62 @@
                 <table>
 
                     <thead>
-
                         <tr>
-
-                            <th>
-                                Tabla
-                            </th>
-
-                            <th>
-                                Función
-                            </th>
-
-                            <th>
-                                Registros
-                            </th>
-
-                            <th>
-                                Estado
-                            </th>
-
+                            <th>Tabla</th>
+                            <th>Función</th>
+                            <th>Registros</th>
+                            <th>Estado</th>
                         </tr>
-
                     </thead>
 
 
                     <tbody id="tablaDiagnostico">
 
                         <tr>
-
+                            <td>afiliados</td>
+                            <td>Familias y afiliados</td>
+                            <td>—</td>
                             <td>
-                                afiliados
-                            </td>
-
-                            <td>
-                                Familias y afiliados
-                            </td>
-
-                            <td>
-                                —
-                            </td>
-
-                            <td>
-
                                 <span class="estado-tabla estado-revision">
                                     Pendiente
                                 </span>
-
                             </td>
-
                         </tr>
 
 
                         <tr>
-
+                            <td>libros</td>
+                            <td>Catálogo de libros</td>
+                            <td>—</td>
                             <td>
-                                libros
-                            </td>
-
-                            <td>
-                                Catálogo de libros
-                            </td>
-
-                            <td>
-                                —
-                            </td>
-
-                            <td>
-
                                 <span class="estado-tabla estado-revision">
                                     Pendiente
                                 </span>
-
                             </td>
-
                         </tr>
 
 
                         <tr>
-
+                            <td>colaboradores</td>
+                            <td>Personal colaborador</td>
+                            <td>—</td>
                             <td>
-                                colaboradores
-                            </td>
-
-                            <td>
-                                Personal colaborador
-                            </td>
-
-                            <td>
-                                —
-                            </td>
-
-                            <td>
-
                                 <span class="estado-tabla estado-revision">
                                     Pendiente
                                 </span>
-
                             </td>
-
                         </tr>
 
 
                         <tr>
-
+                            <td>prestamos</td>
+                            <td>Préstamos y devoluciones</td>
+                            <td>—</td>
                             <td>
-                                prestamos
-                            </td>
-
-                            <td>
-                                Préstamos y devoluciones
-                            </td>
-
-                            <td>
-                                —
-                            </td>
-
-                            <td>
-
                                 <span class="estado-tabla estado-revision">
                                     Pendiente
                                 </span>
-
                             </td>
-
                         </tr>
 
                     </tbody>
@@ -1201,7 +1101,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Afiliados sin estado
                         </strong>
@@ -1209,7 +1108,6 @@
                         <span>
                             Registros que no tienen definido Activo o Inactivo.
                         </span>
-
                     </div>
 
                     <div
@@ -1224,7 +1122,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Afiliados sin sitio
                         </strong>
@@ -1232,7 +1129,6 @@
                         <span>
                             Registros que no tienen definido F, M, N, R o Z.
                         </span>
-
                     </div>
 
                     <div
@@ -1247,7 +1143,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Libros sin sitio
                         </strong>
@@ -1255,7 +1150,6 @@
                         <span>
                             Libros cuyo campo Biblioteca está vacío o no corresponde a un sitio válido.
                         </span>
-
                     </div>
 
                     <div
@@ -1270,7 +1164,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Libros sin código
                         </strong>
@@ -1278,7 +1171,6 @@
                         <span>
                             Libros que no tienen código de identificación.
                         </span>
-
                     </div>
 
                     <div
@@ -1293,7 +1185,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Colaboradores sin estado
                         </strong>
@@ -1301,7 +1192,6 @@
                         <span>
                             Registros que no tienen definido Activo o Inactivo.
                         </span>
-
                     </div>
 
                     <div
@@ -1316,7 +1206,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Colaboradores sin código
                         </strong>
@@ -1324,7 +1213,6 @@
                         <span>
                             Registros que no tienen código de colaborador.
                         </span>
-
                     </div>
 
                     <div
@@ -1339,7 +1227,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Libros con estado inválido
                         </strong>
@@ -1347,7 +1234,6 @@
                         <span>
                             Registros cuyo estado no corresponde a un estado conocido.
                         </span>
-
                     </div>
 
                     <div
@@ -1362,7 +1248,6 @@
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-
                         <strong>
                             Préstamos sin libro
                         </strong>
@@ -1370,7 +1255,6 @@
                         <span>
                             Préstamos que no tienen código o referencia de libro.
                         </span>
-
                     </div>
 
                     <div
@@ -1423,7 +1307,6 @@
             <div class="grid-sitios">
 
                 <div class="sitio">
-
                     <div class="sitio-codigo">
                         F
                     </div>
@@ -1435,12 +1318,10 @@
                     <span>
                         Familias F
                     </span>
-
                 </div>
 
 
                 <div class="sitio">
-
                     <div class="sitio-codigo">
                         M
                     </div>
@@ -1452,12 +1333,10 @@
                     <span>
                         Familias M
                     </span>
-
                 </div>
 
 
                 <div class="sitio">
-
                     <div class="sitio-codigo">
                         R
                     </div>
@@ -1469,12 +1348,10 @@
                     <span>
                         Familias R
                     </span>
-
                 </div>
 
 
                 <div class="sitio">
-
                     <div class="sitio-codigo">
                         N
                     </div>
@@ -1486,12 +1363,10 @@
                     <span>
                         Familias N
                     </span>
-
                 </div>
 
 
                 <div class="sitio">
-
                     <div class="sitio-codigo">
                         Z
                     </div>
@@ -1503,7 +1378,6 @@
                     <span>
                         Familias Z
                     </span>
-
                 </div>
 
             </div>
@@ -1545,27 +1419,11 @@
                     </p>
 
                     <ul>
-
-                        <li>
-                            Registrar libros
-                        </li>
-
-                        <li>
-                            Registrar préstamos
-                        </li>
-
-                        <li>
-                            Registrar devoluciones
-                        </li>
-
-                        <li>
-                            Buscar información
-                        </li>
-
-                        <li>
-                            Consultar información necesaria para su trabajo
-                        </li>
-
+                        <li>Registrar libros</li>
+                        <li>Registrar préstamos</li>
+                        <li>Registrar devoluciones</li>
+                        <li>Buscar información</li>
+                        <li>Consultar información necesaria para su trabajo</li>
                     </ul>
 
                 </div>
@@ -1583,35 +1441,13 @@
                     </p>
 
                     <ul>
-
-                        <li>
-                            Acceso a todos los módulos
-                        </li>
-
-                        <li>
-                            Importar información desde Excel
-                        </li>
-
-                        <li>
-                            Administrar familias y afiliados
-                        </li>
-
-                        <li>
-                            Administrar libros y colaboradores
-                        </li>
-
-                        <li>
-                            Consultar y descargar reportes
-                        </li>
-
-                        <li>
-                            Realizar respaldos y restauraciones
-                        </li>
-
-                        <li>
-                            Administrar usuarios y permisos
-                        </li>
-
+                        <li>Acceso a todos los módulos</li>
+                        <li>Importar información desde Excel</li>
+                        <li>Administrar familias y afiliados</li>
+                        <li>Administrar libros y colaboradores</li>
+                        <li>Consultar y descargar reportes</li>
+                        <li>Realizar respaldos y restauraciones</li>
+                        <li>Administrar usuarios y permisos</li>
                     </ul>
 
                 </div>
@@ -1651,7 +1487,6 @@
             <div class="grid-informacion">
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Usuario
                     </span>
@@ -1661,12 +1496,10 @@
                         class="dato-valor">
                         Comprobando...
                     </span>
-
                 </div>
 
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Estado
                     </span>
@@ -1674,12 +1507,10 @@
                     <span class="dato-valor">
                         Sesión activa
                     </span>
-
                 </div>
 
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Acceso
                     </span>
@@ -1689,12 +1520,10 @@
                         class="dato-valor">
                         Pendiente
                     </span>
-
                 </div>
 
 
                 <div class="dato">
-
                     <span class="dato-label">
                         Base de datos
                     </span>
@@ -1702,7 +1531,6 @@
                     <span class="dato-valor">
                         Conectada
                     </span>
-
                 </div>
 
             </div>
@@ -1849,7 +1677,6 @@
 
             await cargarTodo();
 
-
         } catch (error) {
 
             console.error(
@@ -1858,7 +1685,21 @@
             );
 
 
-            window.location.href = "index.html";
+            document.documentElement.style.visibility =
+                "visible";
+
+
+            mostrarModal(
+                "Error",
+                "No fue posible comprobar la sesión. Será necesario volver a iniciar sesión."
+            );
+
+
+            setTimeout(function() {
+
+                window.location.href = "index.html";
+
+            }, 2000);
 
         }
 
@@ -1961,28 +1802,51 @@
 
     function mostrarModal(titulo, mensaje) {
 
-        document.getElementById(
-            "modalTitulo"
-        ).textContent = titulo;
+        const tituloElemento =
+            document.getElementById("modalTitulo");
+
+        const mensajeElemento =
+            document.getElementById("modalMensajeTexto");
+
+        const modal =
+            document.getElementById("modalMensaje");
 
 
-        document.getElementById(
-            "modalMensajeTexto"
-        ).textContent = mensaje;
+        if (!tituloElemento || !mensajeElemento || !modal) {
+
+            console.error(
+                "No se encontró la estructura del modal."
+            );
+
+            return;
+
+        }
 
 
-        document.getElementById(
-            "modalMensaje"
-        ).classList.add("mostrar");
+        tituloElemento.textContent =
+            titulo;
+
+
+        mensajeElemento.textContent =
+            mensaje;
+
+
+        modal.classList.add("mostrar");
 
     }
 
 
     function cerrarModal() {
 
-        document.getElementById(
-            "modalMensaje"
-        ).classList.remove("mostrar");
+        const modal =
+            document.getElementById("modalMensaje");
+
+
+        if (modal) {
+
+            modal.classList.remove("mostrar");
+
+        }
 
     }
 
@@ -2007,7 +1871,26 @@
 
         if (!window.administracionAutorizado) {
 
+            mostrarModal(
+                "Sesión",
+                "La sesión todavía no está disponible. Espere un momento e inténtelo nuevamente."
+            );
+
             return;
+
+        }
+
+
+        const boton =
+            document.getElementById("botonActualizar");
+
+
+        if (boton) {
+
+            boton.disabled = true;
+
+            boton.textContent =
+                "Actualizando...";
 
         }
 
@@ -2026,9 +1909,22 @@
 
             actualizarDiagnosticoBase();
 
-            revisarIntegridad();
-
             actualizarEstadoConexion(true);
+
+
+            /*
+             * La revisión de integridad no se ejecuta
+             * automáticamente aquí.
+             *
+             * De esta manera el botón "Actualizar información"
+             * solamente actualiza los datos y no mezcla ambas acciones.
+             */
+
+
+            mostrarModal(
+                "Información actualizada",
+                "La información del sistema se actualizó correctamente."
+            );
 
 
         } catch (error) {
@@ -2044,8 +1940,19 @@
 
             mostrarModal(
                 "Error",
-                "No fue posible cargar toda la información del sistema."
+                "No fue posible actualizar toda la información del sistema. Revise la consola del navegador para obtener más detalles."
             );
+
+        } finally {
+
+            if (boton) {
+
+                boton.disabled = false;
+
+                boton.textContent =
+                    "Actualizar información";
+
+            }
 
         }
 
@@ -2231,16 +2138,7 @@
 
             if (error) {
 
-                console.warn(
-                    "No fue posible cargar colaboradores:",
-                    error
-                );
-
-
-                datosAdministracion.colaboradores =
-                    [];
-
-                return;
+                throw error;
 
             }
 
@@ -2558,6 +2456,13 @@
             );
 
 
+        if (!elemento) {
+
+            return;
+
+        }
+
+
         if (conectado) {
 
             elemento.textContent =
@@ -2690,6 +2595,18 @@
 
 
     async function ejecutarDiagnostico() {
+
+        if (!window.administracionAutorizado) {
+
+            mostrarModal(
+                "Sesión",
+                "La sesión todavía no está disponible."
+            );
+
+            return;
+
+        }
+
 
         const boton =
             document.getElementById(
@@ -2905,6 +2822,18 @@
 
     async function revisarIntegridad() {
 
+        if (!window.administracionAutorizado) {
+
+            mostrarModal(
+                "Sesión",
+                "La sesión todavía no está disponible."
+            );
+
+            return;
+
+        }
+
+
         const boton =
             document.getElementById(
                 "botonIntegridad"
@@ -2938,7 +2867,7 @@
 
             /*
              * Si todavía no hay información cargada,
-             * volvemos a cargarla antes de revisar.
+             * la cargamos directamente.
              */
 
             const necesitaCarga =
@@ -3185,6 +3114,40 @@
             );
 
 
+            /* ==========================
+               RESULTADO GENERAL
+            ========================== */
+
+            const problemas =
+                afiliadosSinEstado +
+                afiliadosSinSitio +
+                librosSinSitio +
+                librosSinCodigo +
+                colaboradoresSinEstado +
+                colaboradoresSinCodigo +
+                librosEstadoInvalido +
+                prestamosSinLibro;
+
+
+            if (problemas === 0) {
+
+                mostrarModal(
+                    "Todo correcto",
+                    "La revisión de integridad terminó correctamente. No se encontraron registros incompletos ni inconsistencias en las comprobaciones realizadas."
+                );
+
+            } else {
+
+                mostrarModal(
+                    "Revisión completada",
+                    "La revisión terminó correctamente, pero se encontraron " +
+                    problemas.toLocaleString("es-GT") +
+                    " registros o situaciones que requieren revisión."
+                );
+
+            }
+
+
         } catch (error) {
 
             console.error(
@@ -3218,8 +3181,7 @@
 
     /* ==========================================================
        CARGA AUXILIAR
-       Evita que revisarIntegridad() llame nuevamente
-       a revisarIntegridad() mediante cargarTodo().
+       No ejecuta revisarIntegridad().
     ========================================================== */
 
     async function cargarTodoSinIntegridad() {
