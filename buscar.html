@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -76,7 +77,7 @@
 
         .fila-filtros {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
             gap: 10px;
             align-items: end;
         }
@@ -225,7 +226,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 12px;
-            min-width: 950px;
+            min-width: 1030px;
         }
 
         thead {
@@ -292,6 +293,16 @@
             color: #935116;
         }
 
+        .sitio {
+            display: inline-block;
+            padding: 4px 7px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            background: #e8daef;
+            color: #6c3483;
+        }
+
         .sin-resultados {
             text-align: center;
             padding: 30px 10px;
@@ -301,14 +312,21 @@
 
         /* RESPONSIVO */
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
 
             .fila-filtros {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
 
             .estadisticas {
                 grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .fila-filtros {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
@@ -411,6 +429,15 @@
             </div>
 
             <div class="campo">
+                <label for="sitio">Sitio</label>
+                <input
+                    type="text"
+                    id="sitio"
+                    placeholder="NE"
+                >
+            </div>
+
+            <div class="campo">
                 <label for="estado">Estado</label>
                 <select id="estado">
                     <option value="Todos">Todos</option>
@@ -486,6 +513,7 @@
 
                     <tr>
                         <th>Tipo</th>
+                        <th>Sitio</th>
                         <th>Familia</th>
                         <th>Persona / Código</th>
                         <th>Nombre</th>
@@ -503,7 +531,7 @@
                 <tbody id="tablaResultados">
 
                     <tr>
-                        <td colspan="11" class="sin-resultados">
+                        <td colspan="12" class="sin-resultados">
                             Realiza una búsqueda para mostrar resultados.
                         </td>
                     </tr>
@@ -568,6 +596,19 @@ function obtenerAreaColaborador(prestamo) {
     return (
         prestamo.AreaColaborador ||
         prestamo.areaColaborador ||
+        "-"
+    );
+}
+
+/* =========================
+   OBTENER SITIO
+========================= */
+
+function obtenerSitio(prestamo) {
+
+    return (
+        prestamo.Sitio ||
+        prestamo.sitio ||
         "-"
     );
 }
@@ -704,6 +745,11 @@ function buscar() {
             document.getElementById("codigoLibro").value
         );
 
+    const sitio =
+        normalizar(
+            document.getElementById("sitio").value
+        );
+
     const estadoSeleccionado =
         document.getElementById("estado").value;
 
@@ -728,6 +774,9 @@ function buscar() {
             const areaColaborador =
                 obtenerAreaColaborador(prestamo);
 
+            const sitioPrestamo =
+                obtenerSitio(prestamo);
+
             /* =========================
                BÚSQUEDA GENERAL
             ========================= */
@@ -746,7 +795,9 @@ function buscar() {
 
                 codigoColaborador,
                 nombreColaborador,
-                areaColaborador
+                areaColaborador,
+
+                sitioPrestamo
 
             ]
             .map(normalizar)
@@ -812,6 +863,18 @@ function buscar() {
                 codigoLibro &&
                 !normalizar(prestamo.codigoLibro)
                     .includes(codigoLibro)
+            ) {
+                return false;
+            }
+
+            /* =========================
+               FILTRO SITIO
+            ========================= */
+
+            if (
+                sitio &&
+                !normalizar(sitioPrestamo)
+                    .includes(sitio)
             ) {
                 return false;
             }
@@ -930,7 +993,7 @@ function mostrarResultados(lista) {
 
         tbody.innerHTML = `
             <tr>
-                <td colspan="11" class="sin-resultados">
+                <td colspan="12" class="sin-resultados">
                     No se encontraron resultados.
                 </td>
             </tr>
@@ -1007,6 +1070,9 @@ function mostrarResultados(lista) {
             area = "-";
         }
 
+        const sitio =
+            obtenerSitio(prestamo);
+
         const fechaDevolucionReal =
             prestamo.fechaDevolucionReal
                 ? formatearFecha(
@@ -1022,6 +1088,12 @@ function mostrarResultados(lista) {
             <td>
                 <span class="tipo ${tipoClase}">
                     ${tipoTexto}
+                </span>
+            </td>
+
+            <td>
+                <span class="sitio">
+                    ${sitio}
                 </span>
             </td>
 
@@ -1091,6 +1163,8 @@ function limpiarFiltros() {
 
     document.getElementById("codigoLibro").value = "";
 
+    document.getElementById("sitio").value = "";
+
     document.getElementById("estado").value = "Todos";
 
     document.getElementById("fechaDesde").value = "";
@@ -1144,3 +1218,4 @@ document.addEventListener(
 
 </body>
 </html>
+```
