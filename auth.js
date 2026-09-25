@@ -1,4 +1,3 @@
-```javascript
 console.log("AUTH.JS CARGADO CORRECTAMENTE");
 
 window.protegerPagina = async function () {
