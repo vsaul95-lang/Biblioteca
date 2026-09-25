@@ -416,9 +416,58 @@
 
         .busqueda {
             display: grid;
-            grid-template-columns: minmax(180px, 2fr) minmax(125px, 1fr) minmax(125px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr) auto;
-            gap: 8px;
+            grid-template-columns: minmax(160px, 1.7fr) repeat(4, minmax(105px, 1fr)) auto;
+            gap: 7px;
             align-items: end;
+        }
+
+        .boton-limpiar-busqueda {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+
+        .btn-limpiar-busqueda {
+            background: #eceff1;
+            color: #37474f;
+            border: 1px solid #cfd8dc;
+            padding: 7px 12px;
+            font-size: 12px;
+        }
+
+        .btn-limpiar-busqueda:hover {
+            background: #cfd8dc;
+        }
+
+        .seccion-registro-libro {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-bottom: 16px;
+        }
+
+        .seccion-registro-libro .seccion-titulo {
+            margin-bottom: 11px;
+        }
+
+        .seccion-registro-libro .formulario-libro {
+            gap: 9px 12px;
+        }
+
+        .seccion-registro-libro .campo {
+            gap: 4px;
+        }
+
+        .seccion-registro-libro .campo input,
+        .seccion-registro-libro .campo select {
+            height: 36px;
+        }
+
+        .seccion-registro-libro .acciones-formulario {
+            margin-top: 1px;
+        }
+
+        .seccion-registro-libro .btn-principal {
+            padding: 8px 13px;
         }
 
         .busqueda .campo {
@@ -1008,7 +1057,7 @@
          REGISTRAR LIBRO
     ====================================================== -->
 
-    <section class="seccion">
+    <section class="seccion seccion-registro-libro">
 
         <h3 class="seccion-titulo">
             Registrar libro
@@ -1188,6 +1237,19 @@
         <h3 class="seccion-titulo">
             Buscar libros
         </h3>
+
+
+        <div class="boton-limpiar-busqueda">
+
+            <button
+                type="button"
+                class="btn-limpiar-busqueda"
+                id="btnLimpiarFiltros"
+            >
+                Limpiar filtros
+            </button>
+
+        </div>
 
 
         <div class="busqueda">
@@ -2007,6 +2069,12 @@
     const filtroBiblioteca =
         document.getElementById(
             "filtroBiblioteca"
+        );
+
+
+    const btnLimpiarFiltros =
+        document.getElementById(
+            "btnLimpiarFiltros"
         );
 
 
@@ -3296,6 +3364,35 @@
                 "Todos";
 
         }
+
+    }
+
+
+    /* =========================================================
+       LIMPIAR FILTROS
+    ========================================================== */
+
+    function limpiarFiltrosLibros() {
+
+        busqueda.value =
+            "";
+
+        filtroAutor.value =
+            "Todos";
+
+        filtroGenero.value =
+            "Todos";
+
+        filtroEstado.value =
+            "Todos";
+
+        filtroBiblioteca.value =
+            "Todas";
+
+        paginaLibros =
+            1;
+
+        buscarLibros();
 
     }
 
@@ -5450,6 +5547,12 @@
     ).addEventListener(
         "click",
         registrarLibro
+    );
+
+
+    btnLimpiarFiltros.addEventListener(
+        "click",
+        limpiarFiltrosLibros
     );
 
 
