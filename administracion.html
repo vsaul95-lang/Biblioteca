@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Administración - Biblioteca</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         html {
             visibility: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
@@ -21,11 +22,18 @@
             color: #263238;
         }
 
+        /* =========================
+           ENCABEZADO
+        ========================= */
+
         header {
             background: #263238;
             color: white;
             padding: 14px 20px;
             position: relative;
+            min-height: 62px;
+            display: flex;
+            align-items: center;
         }
 
         .encabezado-contenido {
@@ -34,16 +42,17 @@
             gap: 12px;
         }
 
-        .icono {
-            font-size: 28px;
+        .encabezado-icono {
+            font-size: 25px;
         }
 
-        .titulo-header {
-            font-size: 20px;
-            font-weight: bold;
+        .encabezado-texto strong {
+            display: block;
+            font-size: 18px;
         }
 
-        .subtitulo-header {
+        .encabezado-texto span {
+            display: block;
             font-size: 12px;
             color: #cfd8dc;
             margin-top: 2px;
@@ -68,97 +77,310 @@
             background: #6d7b7c;
         }
 
-        main {
-            max-width: 1200px;
-            margin: 25px auto;
-            padding: 0 20px 30px;
+        /* =========================
+           CONTENEDOR
+        ========================= */
+
+        .contenedor {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 25px 20px 40px;
         }
 
         .titulo-principal {
-            font-size: 24px;
-            margin: 0 0 5px;
+            margin: 0 0 6px;
+            font-size: 25px;
+            color: #263238;
         }
 
-        .descripcion-principal {
-            margin: 0 0 22px;
+        .subtitulo-principal {
+            margin: 0 0 25px;
             color: #607d8b;
             font-size: 14px;
         }
+
+        /* =========================
+           SECCIONES
+        ========================= */
 
         .seccion {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
         }
 
-        .titulo-seccion {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .descripcion-seccion {
-            color: #607d8b;
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
-
-        .tarjetas {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-        }
-
-        .tarjeta {
-            background: #fafafa;
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
-            padding: 16px;
-        }
-
-        .tarjeta-titulo {
-            font-size: 12px;
-            color: #607d8b;
-            margin-bottom: 7px;
-            font-weight: bold;
-        }
-
-        .tarjeta-valor {
-            font-size: 22px;
+        .seccion-titulo {
+            background: #eceff1;
+            border-bottom: 1px solid #dfe3e5;
+            padding: 12px 16px;
+            font-size: 16px;
             font-weight: bold;
             color: #263238;
         }
 
-        .tarjeta-detalle {
-            font-size: 12px;
-            color: #78909c;
-            margin-top: 5px;
+        .seccion-contenido {
+            padding: 18px;
+        }
+
+        .descripcion-seccion {
+            margin: 0 0 15px;
+            color: #607d8b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           INFORMACION SISTEMA
+        ========================= */
+
+        .grid-informacion {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .dato {
+            background: #f7f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 13px;
+        }
+
+        .dato-label {
+            display: block;
+            color: #607d8b;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .dato-valor {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #263238;
+            word-break: break-word;
         }
 
         .estado-conexion {
             display: inline-block;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .estado-ok {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .estado-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .estado-pendiente {
+            background: #eceff1;
+            color: #546e7a;
+        }
+
+        /* =========================
+           ESTADISTICAS
+        ========================= */
+
+        .grid-estadisticas {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .tarjeta-estadistica {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 15px 12px;
+            text-align: center;
+        }
+
+        .tarjeta-estadistica .numero {
+            font-size: 25px;
+            font-weight: bold;
+            color: #263238;
+            margin-bottom: 5px;
+        }
+
+        .tarjeta-estadistica .texto {
             font-size: 12px;
+            color: #607d8b;
+        }
+
+        .tarjeta-estadistica.total {
+            background: #263238;
+            border-color: #263238;
+        }
+
+        .tarjeta-estadistica.total .numero,
+        .tarjeta-estadistica.total .texto {
+            color: white;
+        }
+
+        .subtitulo-estadistica {
+            margin: 20px 0 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #37474f;
+        }
+
+        .grid-estadisticas-secundarias {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .estadistica-secundaria {
+            background: #f7f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .estadistica-secundaria strong {
+            display: block;
+            font-size: 20px;
+            color: #37474f;
+            margin-bottom: 4px;
+        }
+
+        .estadistica-secundaria span {
+            font-size: 11px;
+            color: #607d8b;
+        }
+
+        /* =========================
+           DIAGNOSTICO
+        ========================= */
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #eceff1;
+            color: #37474f;
+            font-size: 12px;
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid #dfe3e5;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eeeeee;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .estado-tabla {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .estado-disponible {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .estado-problema {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .estado-revision {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* =========================
+           INTEGRIDAD
+        ========================= */
+
+        .lista-integridad {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .item-integridad {
+            border: 1px solid #e0e0e0;
+            background: #f7f9fa;
+            border-radius: 7px;
+            padding: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .integridad-texto strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: #37474f;
+        }
+
+        .integridad-texto span {
+            display: block;
+            font-size: 11px;
+            color: #78909c;
+            line-height: 1.4;
+        }
+
+        .resultado-integridad {
+            min-width: 95px;
+            text-align: center;
+            padding: 5px 8px;
+            border-radius: 12px;
+            font-size: 10px;
             font-weight: bold;
             background: #eceff1;
             color: #546e7a;
         }
 
-        .estado-conexion.correcto {
+        .resultado-ok {
             background: #d4edda;
             color: #155724;
         }
 
-        .estado-conexion.error {
+        .resultado-aviso {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .resultado-error {
             background: #f8d7da;
             color: #721c24;
         }
 
-        .sitios {
+        /* =========================
+           SITIOS
+        ========================= */
+
+        .grid-sitios {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 12px;
@@ -166,85 +388,108 @@
 
         .sitio {
             border: 1px solid #e0e0e0;
+            background: #f7f9fa;
             border-radius: 7px;
-            padding: 15px;
-            background: #fafafa;
+            padding: 16px 12px;
+            text-align: center;
         }
 
         .sitio-codigo {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 6px;
-            color: #37474f;
-        }
-
-        .sitio-nombre {
-            font-size: 13px;
-            color: #455a64;
-        }
-
-        .tabla-diagnostico {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .tabla-diagnostico th,
-        .tabla-diagnostico td {
-            padding: 11px 12px;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: left;
-            font-size: 13px;
-        }
-
-        .tabla-diagnostico th {
-            background: #eceff1;
-            font-weight: bold;
-            color: #37474f;
-        }
-
-        .tabla-diagnostico tr:last-child td {
-            border-bottom: none;
-        }
-
-        .estado-tabla {
-            display: inline-block;
-            padding: 4px 9px;
-            border-radius: 5px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .estado-tabla.correcto {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .estado-tabla.error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .estado-tabla.procesando {
-            background: #eceff1;
-            color: #546e7a;
-        }
-
-        .botones {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #37474f;
+            color: white;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 9px;
+            font-size: 17px;
+            font-weight: bold;
         }
 
-        button {
-            font-family: inherit;
+        .sitio strong {
+            display: block;
+            font-size: 12px;
+            color: #37474f;
+            line-height: 1.3;
         }
+
+        .sitio span {
+            display: block;
+            font-size: 10px;
+            color: #78909c;
+            margin-top: 5px;
+        }
+
+        /* =========================
+           USUARIOS
+        ========================= */
+
+        .usuarios-preparacion {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .tarjeta-rol {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            background: #f7f9fa;
+            padding: 16px;
+        }
+
+        .tarjeta-rol h3 {
+            margin: 0 0 8px;
+            font-size: 15px;
+            color: #263238;
+        }
+
+        .tarjeta-rol p {
+            margin: 0 0 10px;
+            color: #607d8b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .tarjeta-rol ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #455a64;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .estado-preparacion {
+            margin-top: 15px;
+            padding: 12px;
+            background: #eceff1;
+            border-radius: 6px;
+            color: #546e7a;
+            font-size: 12px;
+        }
+
+        /* =========================
+           SESION
+        ========================= */
+
+        .sesion-acciones {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        /* =========================
+           BOTONES
+        ========================= */
 
         .boton {
             border: none;
             border-radius: 5px;
-            padding: 9px 14px;
+            padding: 8px 13px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
@@ -266,40 +511,31 @@
             background: #cfd8dc;
         }
 
-        .informacion {
-            background: #f7f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 14px;
-            font-size: 13px;
-            line-height: 1.6;
+        .boton-rojo {
+            background: #c0392b;
+            color: white;
         }
 
-        .informacion strong {
-            color: #37474f;
+        .boton-rojo:hover {
+            background: #a93226;
         }
 
-        .lista-caracteristicas {
-            margin: 0;
-            padding-left: 20px;
-            color: #455a64;
-            font-size: 13px;
-            line-height: 1.8;
+        .acciones-seccion {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 15px;
         }
 
-        footer {
-            text-align: center;
-            color: #78909c;
-            font-size: 11px;
-            padding: 10px 20px 25px;
-        }
+        /* =========================
+           MODAL
+        ========================= */
 
-        /* Modal de mensajes */
         .modal-fondo {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.45);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -312,14 +548,14 @@
 
         .modal {
             width: 100%;
-            max-width: 450px;
+            max-width: 480px;
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
-        .modal-header {
+        .modal-cabecera {
             background: #263238;
             color: white;
             padding: 13px 16px;
@@ -327,92 +563,94 @@
             font-weight: bold;
         }
 
-        .modal-contenido {
-            padding: 20px;
+        .modal-cuerpo {
+            padding: 18px;
             color: #455a64;
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.5;
         }
 
-        .modal-botones {
-            padding: 0 20px 18px;
+        .modal-pie {
+            padding: 10px 16px;
             display: flex;
             justify-content: flex-end;
             gap: 8px;
+            border-top: 1px solid #eeeeee;
         }
 
-        .modal-boton {
-            border: none;
-            border-radius: 5px;
-            padding: 8px 14px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
+        /* =========================
+           PIE
+        ========================= */
+
+        footer {
+            text-align: center;
+            color: #90a4ae;
+            font-size: 11px;
+            padding: 15px;
         }
 
-        .modal-boton-principal {
-            background: #37474f;
-            color: white;
-        }
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
-        .modal-boton-secundario {
-            background: #eceff1;
-            color: #37474f;
-        }
+        @media (max-width: 1000px) {
+            .grid-estadisticas {
+                grid-template-columns: repeat(3, 1fr);
+            }
 
-        @media (max-width: 900px) {
-            .tarjetas {
+            .grid-sitios {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .grid-informacion {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .sitios {
-                grid-template-columns: repeat(3, 1fr);
+            .grid-estadisticas-secundarias {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
+            .contenedor {
+                padding: 18px 10px 30px;
+            }
+
             header {
                 padding: 12px 10px;
             }
 
-            .titulo-header {
-                font-size: 17px;
-            }
-
-            .subtitulo-header {
-                font-size: 11px;
-            }
-
             .boton-volver {
                 right: 10px;
-                padding: 7px 10px;
             }
 
-            main {
-                margin-top: 18px;
-                padding: 0 10px 25px;
+            .encabezado-texto strong {
+                font-size: 15px;
+            }
+
+            .encabezado-texto span {
+                font-size: 10px;
+            }
+
+            .grid-estadisticas,
+            .grid-estadisticas-secundarias,
+            .grid-informacion,
+            .grid-sitios,
+            .lista-integridad,
+            .usuarios-preparacion {
+                grid-template-columns: 1fr;
             }
 
             .titulo-principal {
                 font-size: 21px;
             }
 
-            .tarjetas {
-                grid-template-columns: 1fr 1fr;
+            .item-integridad {
+                align-items: flex-start;
             }
 
-            .sitios {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .seccion {
-                padding: 15px;
-            }
-
-            .tabla-diagnostico {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
+            .resultado-integridad {
+                min-width: 80px;
             }
         }
     </style>
@@ -422,11 +660,11 @@
 
 <header>
     <div class="encabezado-contenido">
-        <div class="icono">⚙️</div>
+        <div class="encabezado-icono">⚙️</div>
 
-        <div>
-            <div class="titulo-header">Biblioteca</div>
-            <div class="subtitulo-header">Administración del sistema</div>
+        <div class="encabezado-texto">
+            <strong>Biblioteca</strong>
+            <span>Administración del sistema</span>
         </div>
     </div>
 
@@ -435,382 +673,589 @@
     </button>
 </header>
 
-<main>
+<main class="contenedor">
 
     <h1 class="titulo-principal">Administración</h1>
 
-    <p class="descripcion-principal">
-        Configuración general, estado del sistema y herramientas de diagnóstico.
+    <p class="subtitulo-principal">
+        Centro de control, diagnóstico y configuración del sistema de biblioteca.
     </p>
 
+    <!-- =========================
+         INFORMACION DEL SISTEMA
+    ========================== -->
 
-    <!-- INFORMACIÓN DEL SISTEMA -->
     <section class="seccion">
 
-        <div class="titulo-seccion">
+        <div class="seccion-titulo">
             Información del sistema
         </div>
 
-        <div class="descripcion-seccion">
-            Información general de la aplicación y de la conexión con la base de datos.
-        </div>
+        <div class="seccion-contenido">
 
-        <div class="tarjetas">
+            <div class="grid-informacion">
 
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    SISTEMA
+                <div class="dato">
+                    <span class="dato-label">Sistema</span>
+                    <span class="dato-valor">Biblioteca</span>
                 </div>
 
-                <div class="tarjeta-valor">
-                    Biblioteca
+                <div class="dato">
+                    <span class="dato-label">Versión</span>
+                    <span class="dato-valor">1.0</span>
                 </div>
 
-                <div class="tarjeta-detalle">
-                    Gestión de biblioteca
-                </div>
-            </div>
-
-
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    VERSIÓN
+                <div class="dato">
+                    <span class="dato-label">Base de datos</span>
+                    <span class="dato-valor">Supabase</span>
                 </div>
 
-                <div class="tarjeta-valor">
-                    1.0
+                <div class="dato">
+                    <span class="dato-label">Conexión</span>
+                    <span id="estadoConexion" class="estado-conexion estado-pendiente">
+                        Comprobando...
+                    </span>
                 </div>
 
-                <div class="tarjeta-detalle">
-                    Versión actual
-                </div>
-            </div>
-
-
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    BASE DE DATOS
-                </div>
-
-                <div class="tarjeta-valor">
-                    Supabase
-                </div>
-
-                <div class="tarjeta-detalle">
-                    Base de datos compartida
-                </div>
-            </div>
-
-
-            <div class="tarjeta">
-                <div class="tarjeta-titulo">
-                    CONEXIÓN
-                </div>
-
-                <div id="estadoConexion" class="estado-conexion">
-                    Verificando...
-                </div>
-
-                <div id="detalleConexion" class="tarjeta-detalle">
-                    Comprobando conexión
-                </div>
             </div>
 
         </div>
 
     </section>
 
+    <!-- =========================
+         ESTADISTICAS GENERALES
+    ========================== -->
 
-    <!-- SESIÓN -->
     <section class="seccion">
 
-        <div class="titulo-seccion">
-            Sesión actual
+        <div class="seccion-titulo">
+            Estadísticas generales
         </div>
 
-        <div class="descripcion-seccion">
-            Información de la cuenta que está utilizando el sistema.
-        </div>
+        <div class="seccion-contenido">
 
-        <div class="informacion">
+            <p class="descripcion-seccion">
+                Resumen general de la información registrada actualmente en el sistema.
+            </p>
 
-            <div>
-                <strong>Usuario:</strong>
-                <span id="usuarioActual">Verificando...</span>
+            <div class="grid-estadisticas">
+
+                <div class="tarjeta-estadistica">
+                    <div class="numero" id="totalLibros">0</div>
+                    <div class="texto">Libros</div>
+                </div>
+
+                <div class="tarjeta-estadistica">
+                    <div class="numero" id="totalAfiliados">0</div>
+                    <div class="texto">Afiliados</div>
+                </div>
+
+                <div class="tarjeta-estadistica">
+                    <div class="numero" id="totalColaboradores">0</div>
+                    <div class="texto">Colaboradores</div>
+                </div>
+
+                <div class="tarjeta-estadistica">
+                    <div class="numero" id="totalPrestamos">0</div>
+                    <div class="texto">Préstamos</div>
+                </div>
+
+                <div class="tarjeta-estadistica total">
+                    <div class="numero" id="totalRegistros">0</div>
+                    <div class="texto">Registros totales</div>
+                </div>
+
             </div>
 
-            <div>
-                <strong>Estado:</strong>
-                <span id="estadoSesion">Verificando...</span>
+            <div class="subtitulo-estadistica">
+                Estado actual
             </div>
 
-            <div>
-                <strong>Acceso:</strong>
-                <span id="tipoAcceso">Usuario autenticado</span>
+            <div class="grid-estadisticas-secundarias">
+
+                <div class="estadistica-secundaria">
+                    <strong id="librosDisponibles">0</strong>
+                    <span>Libros disponibles</span>
+                </div>
+
+                <div class="estadistica-secundaria">
+                    <strong id="librosPrestados">0</strong>
+                    <span>Libros prestados</span>
+                </div>
+
+                <div class="estadistica-secundaria">
+                    <strong id="afiliadosActivos">0</strong>
+                    <span>Afiliados activos</span>
+                </div>
+
+                <div class="estadistica-secundaria">
+                    <strong id="afiliadosInactivos">0</strong>
+                    <span>Afiliados inactivos</span>
+                </div>
+
+                <div class="estadistica-secundaria">
+                    <strong id="colaboradoresActivos">0</strong>
+                    <span>Colaboradores activos</span>
+                </div>
+
+                <div class="estadistica-secundaria">
+                    <strong id="colaboradoresInactivos">0</strong>
+                    <span>Colaboradores inactivos</span>
+                </div>
+
+                <div class="estadistica-secundaria">
+                    <strong id="prestamosAfiliados">0</strong>
+                    <span>Préstamos de afiliados</span>
+                </div>
+
+                <div class="estadistica-secundaria">
+                    <strong id="prestamosColaboradores">0</strong>
+                    <span>Préstamos de colaboradores</span>
+                </div>
+
             </div>
 
-        </div>
-
-        <br>
-
-        <div class="botones">
-
-            <button
-                class="boton boton-secundario"
-                onclick="cerrarSesion()">
-                Cerrar sesión
-            </button>
+            <div class="acciones-seccion">
+                <button class="boton boton-principal" onclick="cargarTodo()">
+                    Actualizar información
+                </button>
+            </div>
 
         </div>
 
     </section>
 
+    <!-- =========================
+         DIAGNOSTICO
+    ========================== -->
 
-    <!-- SITIOS -->
     <section class="seccion">
 
-        <div class="titulo-seccion">
-            Sitios de la Fundación
-        </div>
-
-        <div class="descripcion-seccion">
-            Códigos utilizados para identificar los diferentes sitios dentro del sistema.
-        </div>
-
-        <div class="sitios">
-
-            <div class="sitio">
-                <div class="sitio-codigo">F</div>
-                <div class="sitio-nombre">
-                    Antigua
-                </div>
-            </div>
-
-            <div class="sitio">
-                <div class="sitio-codigo">M</div>
-                <div class="sitio-nombre">
-                    San Miguel Milpas Altas
-                </div>
-            </div>
-
-            <div class="sitio">
-                <div class="sitio-codigo">R</div>
-                <div class="sitio-nombre">
-                    San Rafael el Arado
-                </div>
-            </div>
-
-            <div class="sitio">
-                <div class="sitio-codigo">N</div>
-                <div class="sitio-nombre">
-                    Nueva Esperanza
-                </div>
-            </div>
-
-            <div class="sitio">
-                <div class="sitio-codigo">Z</div>
-                <div class="sitio-nombre">
-                    Zapote
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- DIAGNÓSTICO -->
-    <section class="seccion">
-
-        <div class="titulo-seccion">
+        <div class="seccion-titulo">
             Diagnóstico del sistema
         </div>
 
-        <div class="descripcion-seccion">
-            Comprueba que las principales tablas de la base de datos estén disponibles.
-        </div>
+        <div class="seccion-contenido">
 
-        <table class="tabla-diagnostico">
+            <p class="descripcion-seccion">
+                Comprueba que las principales tablas de la base de datos estén disponibles
+                y puedan ser consultadas.
+            </p>
 
-            <thead>
-                <tr>
-                    <th>Componente</th>
-                    <th>Estado</th>
-                    <th>Registros</th>
-                    <th>Información</th>
-                </tr>
-            </thead>
+            <div class="tabla-contenedor">
 
-            <tbody>
+                <table>
 
-                <tr>
-                    <td>Afiliados</td>
+                    <thead>
+                        <tr>
+                            <th>Tabla</th>
+                            <th>Función</th>
+                            <th>Registros</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
 
-                    <td>
-                        <span
-                            id="estadoAfiliados"
-                            class="estado-tabla procesando">
-                            Verificando
-                        </span>
-                    </td>
+                    <tbody id="tablaDiagnostico">
 
-                    <td id="cantidadAfiliados">
-                        —
-                    </td>
+                        <tr>
+                            <td>afiliados</td>
+                            <td>Familias y afiliados</td>
+                            <td>—</td>
+                            <td>
+                                <span class="estado-tabla estado-revision">
+                                    Pendiente
+                                </span>
+                            </td>
+                        </tr>
 
-                    <td id="detalleAfiliados">
-                        Consultando tabla
-                    </td>
-                </tr>
+                        <tr>
+                            <td>libros</td>
+                            <td>Catálogo de libros</td>
+                            <td>—</td>
+                            <td>
+                                <span class="estado-tabla estado-revision">
+                                    Pendiente
+                                </span>
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <td>colaboradores</td>
+                            <td>Personal colaborador</td>
+                            <td>—</td>
+                            <td>
+                                <span class="estado-tabla estado-revision">
+                                    Pendiente
+                                </span>
+                            </td>
+                        </tr>
 
-                <tr>
-                    <td>Libros</td>
+                        <tr>
+                            <td>prestamos</td>
+                            <td>Préstamos y devoluciones</td>
+                            <td>—</td>
+                            <td>
+                                <span class="estado-tabla estado-revision">
+                                    Pendiente
+                                </span>
+                            </td>
+                        </tr>
 
-                    <td>
-                        <span
-                            id="estadoLibros"
-                            class="estado-tabla procesando">
-                            Verificando
-                        </span>
-                    </td>
+                    </tbody>
 
-                    <td id="cantidadLibros">
-                        —
-                    </td>
+                </table>
 
-                    <td id="detalleLibros">
-                        Consultando tabla
-                    </td>
-                </tr>
+            </div>
 
+            <div class="acciones-seccion">
 
-                <tr>
-                    <td>Colaboradores</td>
+                <button class="boton boton-principal" onclick="ejecutarDiagnostico()">
+                    Comprobar sistema
+                </button>
 
-                    <td>
-                        <span
-                            id="estadoColaboradores"
-                            class="estado-tabla procesando">
-                            Verificando
-                        </span>
-                    </td>
-
-                    <td id="cantidadColaboradores">
-                        —
-                    </td>
-
-                    <td id="detalleColaboradores">
-                        Consultando tabla
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td>Préstamos</td>
-
-                    <td>
-                        <span
-                            id="estadoPrestamos"
-                            class="estado-tabla procesando">
-                            Verificando
-                        </span>
-                    </td>
-
-                    <td id="cantidadPrestamos">
-                        —
-                    </td>
-
-                    <td id="detallePrestamos">
-                        Consultando tabla
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-        <br>
-
-        <div class="botones">
-
-            <button
-                class="boton boton-principal"
-                onclick="ejecutarDiagnostico()">
-                Ejecutar diagnóstico
-            </button>
+            </div>
 
         </div>
 
     </section>
 
+    <!-- =========================
+         INTEGRIDAD
+    ========================== -->
 
-    <!-- INFORMACIÓN TÉCNICA -->
     <section class="seccion">
 
-        <div class="titulo-seccion">
-            Información técnica
+        <div class="seccion-titulo">
+            Integridad de datos
         </div>
 
-        <div class="descripcion-seccion">
-            Características principales de la plataforma.
+        <div class="seccion-contenido">
+
+            <p class="descripcion-seccion">
+                Revisión básica de posibles registros incompletos o inconsistencias.
+                Esta sección no modifica ni elimina información.
+            </p>
+
+            <div class="lista-integridad">
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Afiliados sin estado</strong>
+                        <span>
+                            Registros que no tienen definido Activo o Inactivo.
+                        </span>
+                    </div>
+
+                    <div id="integridadAfiliadosEstado" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Afiliados sin sitio</strong>
+                        <span>
+                            Registros que no tienen definido F, M, N, R o Z.
+                        </span>
+                    </div>
+
+                    <div id="integridadAfiliadosSitio" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Libros sin sitio</strong>
+                        <span>
+                            Libros cuyo campo Biblioteca está vacío o no corresponde a un sitio válido.
+                        </span>
+                    </div>
+
+                    <div id="integridadLibrosSitio" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Libros sin código</strong>
+                        <span>
+                            Libros que no tienen código de identificación.
+                        </span>
+                    </div>
+
+                    <div id="integridadLibrosCodigo" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Colaboradores sin estado</strong>
+                        <span>
+                            Registros que no tienen definido Activo o Inactivo.
+                        </span>
+                    </div>
+
+                    <div id="integridadColaboradoresEstado" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Colaboradores sin código</strong>
+                        <span>
+                            Registros que no tienen código de colaborador.
+                        </span>
+                    </div>
+
+                    <div id="integridadColaboradoresCodigo" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Libros con estado inválido</strong>
+                        <span>
+                            Registros cuyo estado no corresponde a un estado conocido.
+                        </span>
+                    </div>
+
+                    <div id="integridadLibrosEstado" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+                <div class="item-integridad">
+
+                    <div class="integridad-texto">
+                        <strong>Préstamos sin libro</strong>
+                        <span>
+                            Préstamos que no tienen código o referencia de libro.
+                        </span>
+                    </div>
+
+                    <div id="integridadPrestamosLibro" class="resultado-integridad">
+                        Pendiente
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="acciones-seccion">
+
+                <button class="boton boton-principal" onclick="revisarIntegridad()">
+                    Revisar integridad
+                </button>
+
+            </div>
+
         </div>
-
-        <ul class="lista-caracteristicas">
-
-            <li>
-                Sistema web para la administración de la biblioteca.
-            </li>
-
-            <li>
-                Base de datos centralizada mediante Supabase.
-            </li>
-
-            <li>
-                Los datos pueden ser consultados por usuarios autenticados.
-            </li>
-
-            <li>
-                Los módulos de familias, libros, colaboradores y préstamos trabajan sobre la misma base de datos.
-            </li>
-
-            <li>
-                Los respaldos y las acciones de limpieza de información se encuentran en el módulo Respaldo.
-            </li>
-
-            <li>
-                Los códigos de sitio utilizados actualmente son F, M, N, R y Z.
-            </li>
-
-        </ul>
 
     </section>
 
+    <!-- =========================
+         SITIOS
+    ========================== -->
 
-    <!-- ACCIONES -->
     <section class="seccion">
 
-        <div class="titulo-seccion">
-            Acciones administrativas
+        <div class="seccion-titulo">
+            Sitios de la Fundación
         </div>
 
-        <div class="descripcion-seccion">
-            Acciones relacionadas con la sesión y revisión del sistema.
+        <div class="seccion-contenido">
+
+            <p class="descripcion-seccion">
+                Sitios actualmente utilizados por el sistema de biblioteca.
+                Los códigos se mantienen porque forman parte de los identificadores
+                de familias y personas.
+            </p>
+
+            <div class="grid-sitios">
+
+                <div class="sitio">
+                    <div class="sitio-codigo">F</div>
+                    <strong>Antigua</strong>
+                    <span>Familias F</span>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">M</div>
+                    <strong>San Miguel Milpas Altas</strong>
+                    <span>Familias M</span>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">R</div>
+                    <strong>San Rafael el Arado</strong>
+                    <span>Familias R</span>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">N</div>
+                    <strong>Nueva Esperanza</strong>
+                    <span>Familias N</span>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">Z</div>
+                    <strong>Zapote</strong>
+                    <span>Familias Z</span>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="botones">
+    </section>
 
-            <button
-                class="boton boton-principal"
-                onclick="ejecutarDiagnostico()">
-                Comprobar sistema
-            </button>
+    <!-- =========================
+         PREPARACION USUARIOS
+    ========================== -->
 
-            <button
-                class="boton boton-secundario"
-                onclick="volverAtras()">
-                Volver al inicio
-            </button>
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Usuarios y permisos
+        </div>
+
+        <div class="seccion-contenido">
+
+            <p class="descripcion-seccion">
+                Esta sección prepara la estructura de permisos que posteriormente
+                permitirá controlar qué funciones puede utilizar cada persona.
+            </p>
+
+            <div class="usuarios-preparacion">
+
+                <div class="tarjeta-rol">
+
+                    <h3>Usuario</h3>
+
+                    <p>
+                        Perfil pensado para las personas que realizarán las tareas
+                        cotidianas de la biblioteca.
+                    </p>
+
+                    <ul>
+                        <li>Registrar libros</li>
+                        <li>Registrar préstamos</li>
+                        <li>Registrar devoluciones</li>
+                        <li>Buscar información</li>
+                        <li>Consultar información necesaria para su trabajo</li>
+                    </ul>
+
+                </div>
+
+                <div class="tarjeta-rol">
+
+                    <h3>Administrador</h3>
+
+                    <p>
+                        Perfil con acceso completo para administrar la información
+                        y el funcionamiento del sistema.
+                    </p>
+
+                    <ul>
+                        <li>Acceso a todos los módulos</li>
+                        <li>Importar información desde Excel</li>
+                        <li>Administrar familias y afiliados</li>
+                        <li>Administrar libros y colaboradores</li>
+                        <li>Consultar y descargar reportes</li>
+                        <li>Realizar respaldos y restauraciones</li>
+                        <li>Administrar usuarios y permisos</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="estado-preparacion">
+                <strong>Estado:</strong>
+                La administración de usuarios todavía no está activada.
+                La estructura visual está preparada para conectarla posteriormente
+                con Supabase Auth y los roles del sistema.
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =========================
+         SESION
+    ========================== -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Sesión actual
+        </div>
+
+        <div class="seccion-contenido">
+
+            <div class="grid-informacion">
+
+                <div class="dato">
+                    <span class="dato-label">Usuario</span>
+                    <span id="usuarioActual" class="dato-valor">
+                        Comprobando...
+                    </span>
+                </div>
+
+                <div class="dato">
+                    <span class="dato-label">Estado</span>
+                    <span class="dato-valor">
+                        Sesión activa
+                    </span>
+                </div>
+
+                <div class="dato">
+                    <span class="dato-label">Acceso</span>
+                    <span id="rolActual" class="dato-valor">
+                        Pendiente
+                    </span>
+                </div>
+
+                <div class="dato">
+                    <span class="dato-label">Base de datos</span>
+                    <span class="dato-valor">
+                        Conectada
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="sesion-acciones">
+
+                <button class="boton boton-secundario" onclick="volverAtras()">
+                    Volver al inicio
+                </button>
+
+                <button class="boton boton-rojo" onclick="cerrarSesion()">
+                    Cerrar sesión
+                </button>
+
+            </div>
 
         </div>
 
@@ -818,29 +1263,31 @@
 
 </main>
 
-
 <footer>
     Sistema de Biblioteca
 </footer>
 
 
-<!-- MODAL -->
-<div id="modalFondo" class="modal-fondo">
+<!-- =========================
+     MODAL
+========================== -->
+
+<div id="modalMensaje" class="modal-fondo">
 
     <div class="modal">
 
-        <div class="modal-header" id="modalTitulo">
+        <div class="modal-cabecera" id="modalTitulo">
             Administración
         </div>
 
-        <div class="modal-contenido" id="modalMensaje">
-            Mensaje
+        <div class="modal-cuerpo" id="modalMensajeTexto">
+            Información
         </div>
 
-        <div class="modal-botones">
+        <div class="modal-pie">
 
             <button
-                class="modal-boton modal-boton-principal"
+                class="boton boton-principal"
                 onclick="cerrarModal()">
                 Aceptar
             </button>
@@ -852,7 +1299,6 @@
 </div>
 
 
-<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase.js"></script>
@@ -861,12 +1307,23 @@
 
 <script>
 
+    /* ==========================================================
+       VARIABLES
+    ========================================================== */
+
+    let datosAdministracion = {
+        afiliados: [],
+        libros: [],
+        colaboradores: [],
+        prestamos: []
+    };
+
+
+    /* ==========================================================
+       AUTENTICACION
+    ========================================================== */
+
     window.administracionAutorizado = false;
-
-
-    /* =========================================================
-       PROTECCIÓN DE LA PÁGINA
-    ========================================================= */
 
     window.administracionAuth = (async function protegerAdministracion() {
 
@@ -877,308 +1334,1124 @@
                 error
             } = await supabaseClient.auth.getSession();
 
-
             if (error || !session) {
 
                 window.location.href = "index.html";
+                return;
 
-                return false;
             }
-
 
             window.administracionAutorizado = true;
 
+            const usuario = session.user;
+
+            const elementoUsuario =
+                document.getElementById("usuarioActual");
+
+            if (elementoUsuario) {
+
+                elementoUsuario.textContent =
+                    usuario.email || "Usuario autenticado";
+
+            }
+
+            /*
+             * Por ahora todavía no tenemos una tabla de perfiles
+             * y roles conectada.
+             *
+             * Cuando construyamos el módulo de usuarios,
+             * este valor será obtenido desde la tabla correspondiente.
+             */
+
+            document.getElementById("rolActual").textContent =
+                "Pendiente de configuración";
+
             document.documentElement.style.visibility = "visible";
 
-
-            mostrarInformacionSesion(session);
-
-
-            return true;
+            await cargarTodo();
 
         } catch (error) {
 
-            console.error("Error verificando sesión:", error);
+            console.error("Error de autenticación:", error);
 
             window.location.href = "index.html";
 
-            return false;
         }
 
     })();
 
 
-    /* =========================================================
+    /* ==========================================================
+       UTILIDADES
+    ========================================================== */
+
+    function normalizar(valor) {
+
+        return String(valor ?? "")
+            .trim()
+            .toUpperCase();
+
+    }
+
+
+    function obtenerSitioValido(valor) {
+
+        const sitio = normalizar(valor);
+
+        if (["F", "M", "N", "R", "Z"].includes(sitio)) {
+
+            return sitio;
+
+        }
+
+        return "";
+
+    }
+
+
+    function esEstadoActivo(valor) {
+
+        const estado = normalizar(valor);
+
+        return (
+            estado === "ACTIVO" ||
+            estado === "ACTIVE"
+        );
+
+    }
+
+
+    function esEstadoInactivo(valor) {
+
+        const estado = normalizar(valor);
+
+        return (
+            estado === "INACTIVO" ||
+            estado === "INACTIVE"
+        );
+
+    }
+
+
+    function obtenerValor(objeto, nombres) {
+
+        for (const nombre of nombres) {
+
+            if (
+                objeto &&
+                objeto[nombre] !== undefined &&
+                objeto[nombre] !== null
+            ) {
+
+                return objeto[nombre];
+
+            }
+
+        }
+
+        return "";
+
+    }
+
+
+    /* ==========================================================
+       MODAL
+    ========================================================== */
+
+    function mostrarModal(titulo, mensaje) {
+
+        document.getElementById("modalTitulo").textContent = titulo;
+
+        document.getElementById("modalMensajeTexto").textContent = mensaje;
+
+        document.getElementById("modalMensaje").classList.add("mostrar");
+
+    }
+
+
+    function cerrarModal() {
+
+        document
+            .getElementById("modalMensaje")
+            .classList.remove("mostrar");
+
+    }
+
+
+    /* ==========================================================
        VOLVER
-    ========================================================= */
+    ========================================================== */
 
     function volverAtras() {
 
         window.location.href = "index.html";
+
     }
 
 
-    /* =========================================================
-       INFORMACIÓN DE SESIÓN
-    ========================================================= */
+    /* ==========================================================
+       CARGAR TODO
+    ========================================================== */
 
-    function mostrarInformacionSesion(session) {
+    async function cargarTodo() {
 
-        const usuario =
-            session?.user?.email ||
-            session?.user?.user_metadata?.name ||
-            "Usuario autenticado";
+        if (!window.administracionAutorizado) {
 
+            return;
 
-        document.getElementById("usuarioActual").textContent =
-            usuario;
-
-
-        document.getElementById("estadoSesion").textContent =
-            "Sesión activa";
-    }
-
-
-    /* =========================================================
-       VERIFICAR CONEXIÓN
-    ========================================================= */
-
-    async function verificarConexion() {
-
-        const estado =
-            document.getElementById("estadoConexion");
-
-        const detalle =
-            document.getElementById("detalleConexion");
-
-
-        estado.className =
-            "estado-conexion";
-
-
-        estado.textContent =
-            "Verificando...";
-
-
-        detalle.textContent =
-            "Comprobando conexión con Supabase";
-
+        }
 
         try {
 
-            const { error } =
-                await supabaseClient
-                    .from("afiliados")
-                    .select("id", { count: "exact", head: true });
+            await Promise.all([
+                cargarAfiliados(),
+                cargarLibros(),
+                cargarColaboradores(),
+                cargarPrestamos()
+            ]);
 
+            actualizarEstadisticas();
 
-            if (error) {
+            actualizarDiagnosticoBase();
 
-                throw error;
-            }
+            revisarIntegridad();
 
-
-            estado.className =
-                "estado-conexion correcto";
-
-            estado.textContent =
-                "Conectado";
-
-
-            detalle.textContent =
-                "Conexión disponible";
-
+            actualizarEstadoConexion(true);
 
         } catch (error) {
 
-            console.error(
-                "Error de conexión:",
-                error
+            console.error("Error cargando administración:", error);
+
+            actualizarEstadoConexion(false);
+
+            mostrarModal(
+                "Error",
+                "No fue posible cargar toda la información del sistema."
             );
 
-
-            estado.className =
-                "estado-conexion error";
-
-            estado.textContent =
-                "Error";
-
-
-            detalle.textContent =
-                "No fue posible consultar la base de datos";
         }
+
     }
 
 
-    /* =========================================================
-       DIAGNÓSTICO GENERAL
-    ========================================================= */
+    /* ==========================================================
+       CARGAR AFILIADOS
+    ========================================================== */
 
-    async function ejecutarDiagnostico() {
+    async function cargarAfiliados() {
 
-        await verificarConexion();
+        const registros = [];
 
+        let desde = 0;
 
-        await verificarTabla(
-            "afiliados",
-            "estadoAfiliados",
-            "cantidadAfiliados",
-            "detalleAfiliados"
-        );
+        const cantidad = 1000;
 
+        while (true) {
 
-        await verificarTabla(
-            "libros",
-            "estadoLibros",
-            "cantidadLibros",
-            "detalleLibros"
-        );
-
-
-        await verificarTabla(
-            "colaboradores",
-            "estadoColaboradores",
-            "cantidadColaboradores",
-            "detalleColaboradores"
-        );
-
-
-        await verificarTabla(
-            "prestamos",
-            "estadoPrestamos",
-            "cantidadPrestamos",
-            "detallePrestamos"
-        );
-
-
-        mostrarModal(
-            "Diagnóstico",
-            "La comprobación del sistema ha finalizado."
-        );
-    }
-
-
-    /* =========================================================
-       VERIFICAR TABLA
-    ========================================================= */
-
-    async function verificarTabla(
-        tabla,
-        idEstado,
-        idCantidad,
-        idDetalle
-    ) {
-
-        const estado =
-            document.getElementById(idEstado);
-
-        const cantidad =
-            document.getElementById(idCantidad);
-
-        const detalle =
-            document.getElementById(idDetalle);
-
-
-        estado.className =
-            "estado-tabla procesando";
-
-        estado.textContent =
-            "Verificando";
-
-
-        cantidad.textContent =
-            "—";
-
-
-        detalle.textContent =
-            "Consultando tabla";
-
-
-        try {
-
-            const {
-                count,
-                error
-            } =
-                await supabaseClient
-                    .from(tabla)
-                    .select("id", {
-                        count: "exact",
-                        head: true
-                    });
-
+            const { data, error } = await supabaseClient
+                .from("afiliados")
+                .select(`
+                    id,
+                    PersonaId,
+                    FamiliaId,
+                    Nombres,
+                    Apellidos,
+                    estado,
+                    Sitio
+                `)
+                .range(desde, desde + cantidad - 1);
 
             if (error) {
 
                 throw error;
+
             }
 
+            if (!data || data.length === 0) {
 
-            estado.className =
-                "estado-tabla correcto";
+                break;
 
-            estado.textContent =
-                "Disponible";
+            }
+
+            registros.push(...data);
+
+            if (data.length < cantidad) {
+
+                break;
+
+            }
+
+            desde += cantidad;
+
+        }
+
+        datosAdministracion.afiliados = registros;
+
+    }
 
 
-            cantidad.textContent =
-                Number(count || 0).toLocaleString(
-                    "es-GT"
+    /* ==========================================================
+       CARGAR LIBROS
+    ========================================================== */
+
+    async function cargarLibros() {
+
+        const registros = [];
+
+        let desde = 0;
+
+        const cantidad = 1000;
+
+        while (true) {
+
+            const { data, error } = await supabaseClient
+                .from("libros")
+                .select(`
+                    id,
+                    codigoLibro,
+                    nombreLibro,
+                    autor,
+                    genero,
+                    editorial,
+                    año,
+                    Biblioteca,
+                    estado
+                `)
+                .range(desde, desde + cantidad - 1);
+
+            if (error) {
+
+                throw error;
+
+            }
+
+            if (!data || data.length === 0) {
+
+                break;
+
+            }
+
+            registros.push(...data);
+
+            if (data.length < cantidad) {
+
+                break;
+
+            }
+
+            desde += cantidad;
+
+        }
+
+        datosAdministracion.libros = registros;
+
+    }
+
+
+    /* ==========================================================
+       CARGAR COLABORADORES
+    ========================================================== */
+
+    async function cargarColaboradores() {
+
+        const registros = [];
+
+        let desde = 0;
+
+        const cantidad = 1000;
+
+        while (true) {
+
+            const { data, error } = await supabaseClient
+                .from("colaboradores")
+                .select(`
+                    id,
+                    CodigoColaborador,
+                    Nombre,
+                    Area,
+                    Telefono,
+                    Correo,
+                    estado
+                `)
+                .range(desde, desde + cantidad - 1);
+
+            if (error) {
+
+                /*
+                 * Si la tabla todavía no estuviera disponible,
+                 * no detenemos toda la administración.
+                 */
+
+                console.warn(
+                    "No fue posible cargar colaboradores:",
+                    error
+                );
+
+                datosAdministracion.colaboradores = [];
+
+                return;
+
+            }
+
+            if (!data || data.length === 0) {
+
+                break;
+
+            }
+
+            registros.push(...data);
+
+            if (data.length < cantidad) {
+
+                break;
+
+            }
+
+            desde += cantidad;
+
+        }
+
+        datosAdministracion.colaboradores = registros;
+
+    }
+
+
+    /* ==========================================================
+       CARGAR PRESTAMOS
+    ========================================================== */
+
+    async function cargarPrestamos() {
+
+        const registros = [];
+
+        let desde = 0;
+
+        const cantidad = 1000;
+
+        while (true) {
+
+            const { data, error } = await supabaseClient
+                .from("prestamos")
+                .select("*")
+                .range(desde, desde + cantidad - 1);
+
+            if (error) {
+
+                throw error;
+
+            }
+
+            if (!data || data.length === 0) {
+
+                break;
+
+            }
+
+            registros.push(...data);
+
+            if (data.length < cantidad) {
+
+                break;
+
+            }
+
+            desde += cantidad;
+
+        }
+
+        datosAdministracion.prestamos = registros;
+
+    }
+
+
+    /* ==========================================================
+       ESTADISTICAS
+    ========================================================== */
+
+    function actualizarEstadisticas() {
+
+        const afiliados =
+            datosAdministracion.afiliados;
+
+        const libros =
+            datosAdministracion.libros;
+
+        const colaboradores =
+            datosAdministracion.colaboradores;
+
+        const prestamos =
+            datosAdministracion.prestamos;
+
+
+        const librosDisponibles =
+            libros.filter(libro => {
+
+                return normalizar(libro.estado) === "DISPONIBLE";
+
+            }).length;
+
+
+        const librosPrestados =
+            libros.filter(libro => {
+
+                return normalizar(libro.estado) !== "DISPONIBLE";
+
+            }).length;
+
+
+        const afiliadosActivos =
+            afiliados.filter(afiliado => {
+
+                return esEstadoActivo(afiliado.estado);
+
+            }).length;
+
+
+        const afiliadosInactivos =
+            afiliados.filter(afiliado => {
+
+                return esEstadoInactivo(afiliado.estado);
+
+            }).length;
+
+
+        const colaboradoresActivos =
+            colaboradores.filter(colaborador => {
+
+                return esEstadoActivo(colaborador.estado);
+
+            }).length;
+
+
+        const colaboradoresInactivos =
+            colaboradores.filter(colaborador => {
+
+                return esEstadoInactivo(colaborador.estado);
+
+            }).length;
+
+
+        let prestamosAfiliados = 0;
+
+        let prestamosColaboradores = 0;
+
+
+        prestamos.forEach(prestamo => {
+
+            const tipo =
+                normalizar(
+                    obtenerValor(
+                        prestamo,
+                        [
+                            "tipoPrestamo",
+                            "TipoPrestamo"
+                        ]
+                    )
+                );
+
+            const codigoColaborador =
+                obtenerValor(
+                    prestamo,
+                    [
+                        "CodigoColaborador",
+                        "codigoColaborador"
+                    ]
                 );
 
 
-            detalle.textContent =
-                "Tabla disponible";
+            if (
+                tipo === "COLABORADOR" ||
+                codigoColaborador
+            ) {
+
+                prestamosColaboradores++;
+
+            } else {
+
+                prestamosAfiliados++;
+
+            }
+
+        });
+
+
+        const totalRegistros =
+            libros.length +
+            afiliados.length +
+            colaboradores.length +
+            prestamos.length;
+
+
+        document.getElementById("totalLibros").textContent =
+            libros.length.toLocaleString("es-GT");
+
+        document.getElementById("totalAfiliados").textContent =
+            afiliados.length.toLocaleString("es-GT");
+
+        document.getElementById("totalColaboradores").textContent =
+            colaboradores.length.toLocaleString("es-GT");
+
+        document.getElementById("totalPrestamos").textContent =
+            prestamos.length.toLocaleString("es-GT");
+
+        document.getElementById("totalRegistros").textContent =
+            totalRegistros.toLocaleString("es-GT");
+
+
+        document.getElementById("librosDisponibles").textContent =
+            librosDisponibles.toLocaleString("es-GT");
+
+        document.getElementById("librosPrestados").textContent =
+            librosPrestados.toLocaleString("es-GT");
+
+        document.getElementById("afiliadosActivos").textContent =
+            afiliadosActivos.toLocaleString("es-GT");
+
+        document.getElementById("afiliadosInactivos").textContent =
+            afiliadosInactivos.toLocaleString("es-GT");
+
+        document.getElementById("colaboradoresActivos").textContent =
+            colaboradoresActivos.toLocaleString("es-GT");
+
+        document.getElementById("colaboradoresInactivos").textContent =
+            colaboradoresInactivos.toLocaleString("es-GT");
+
+        document.getElementById("prestamosAfiliados").textContent =
+            prestamosAfiliados.toLocaleString("es-GT");
+
+        document.getElementById("prestamosColaboradores").textContent =
+            prestamosColaboradores.toLocaleString("es-GT");
+
+    }
+
+
+    /* ==========================================================
+       ESTADO DE CONEXION
+    ========================================================== */
+
+    function actualizarEstadoConexion(conectado) {
+
+        const elemento =
+            document.getElementById("estadoConexion");
+
+        if (conectado) {
+
+            elemento.textContent = "Conectada";
+
+            elemento.className =
+                "estado-conexion estado-ok";
+
+        } else {
+
+            elemento.textContent = "Error";
+
+            elemento.className =
+                "estado-conexion estado-error";
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       DIAGNOSTICO
+    ========================================================== */
+
+    function actualizarDiagnosticoBase() {
+
+        actualizarFilaDiagnostico(
+            "afiliados",
+            true,
+            datosAdministracion.afiliados.length
+        );
+
+        actualizarFilaDiagnostico(
+            "libros",
+            true,
+            datosAdministracion.libros.length
+        );
+
+        actualizarFilaDiagnostico(
+            "colaboradores",
+            true,
+            datosAdministracion.colaboradores.length
+        );
+
+        actualizarFilaDiagnostico(
+            "prestamos",
+            true,
+            datosAdministracion.prestamos.length
+        );
+
+    }
+
+
+    function actualizarFilaDiagnostico(
+        nombreTabla,
+        disponible,
+        cantidad
+    ) {
+
+        const filas =
+            document.querySelectorAll(
+                "#tablaDiagnostico tr"
+            );
+
+
+        filas.forEach(fila => {
+
+            const nombre =
+                fila.children[0]
+                    ?.textContent
+                    .trim();
+
+
+            if (nombre !== nombreTabla) {
+
+                return;
+
+            }
+
+
+            fila.children[2].textContent =
+                disponible
+                    ? cantidad.toLocaleString("es-GT")
+                    : "—";
+
+
+            const estado =
+                fila.children[3]
+                    .querySelector(".estado-tabla");
+
+
+            if (disponible) {
+
+                estado.textContent = "Disponible";
+
+                estado.className =
+                    "estado-tabla estado-disponible";
+
+            } else {
+
+                estado.textContent = "No disponible";
+
+                estado.className =
+                    "estado-tabla estado-problema";
+
+            }
+
+        });
+
+    }
+
+
+    async function ejecutarDiagnostico() {
+
+        try {
+
+            const tablas = [
+                "afiliados",
+                "libros",
+                "colaboradores",
+                "prestamos"
+            ];
+
+
+            const resultados = {};
+
+
+            for (const tabla of tablas) {
+
+                const { count, error } =
+                    await supabaseClient
+                        .from(tabla)
+                        .select("id", {
+                            count: "exact",
+                            head: true
+                        });
+
+
+                resultados[tabla] = {
+                    disponible: !error,
+                    cantidad: error ? 0 : (count || 0)
+                };
+
+            }
+
+
+            tablas.forEach(tabla => {
+
+                actualizarFilaDiagnostico(
+                    tabla,
+                    resultados[tabla].disponible,
+                    resultados[tabla].cantidad
+                );
+
+            });
+
+
+            const errores =
+                tablas.filter(
+                    tabla =>
+                        !resultados[tabla].disponible
+                );
+
+
+            if (errores.length === 0) {
+
+                actualizarEstadoConexion(true);
+
+                mostrarModal(
+                    "Diagnóstico completado",
+                    "Las principales tablas del sistema están disponibles y pueden ser consultadas correctamente."
+                );
+
+            } else {
+
+                actualizarEstadoConexion(false);
+
+                mostrarModal(
+                    "Diagnóstico",
+                    "Se detectaron problemas al consultar una o más tablas del sistema."
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Error en diagnóstico:",
+                error
+            );
+
+            actualizarEstadoConexion(false);
+
+            mostrarModal(
+                "Error",
+                "No fue posible completar el diagnóstico del sistema."
+            );
+
+        }
+
+    }
+
+
+    /* ==========================================================
+       INTEGRIDAD DE DATOS
+    ========================================================== */
+
+    function establecerResultado(
+        id,
+        cantidad,
+        textoCorrecto = "Correcto"
+    ) {
+
+        const elemento =
+            document.getElementById(id);
+
+        if (!elemento) {
+
+            return;
+
+        }
+
+
+        if (cantidad === 0) {
+
+            elemento.textContent =
+                textoCorrecto;
+
+            elemento.className =
+                "resultado-integridad resultado-ok";
+
+        } else {
+
+            elemento.textContent =
+                cantidad.toLocaleString("es-GT") +
+                " encontrados";
+
+            elemento.className =
+                "resultado-integridad resultado-aviso";
+
+        }
+
+    }
+
+
+    function establecerErrorResultado(id) {
+
+        const elemento =
+            document.getElementById(id);
+
+        if (!elemento) {
+
+            return;
+
+        }
+
+        elemento.textContent = "Error";
+
+        elemento.className =
+            "resultado-integridad resultado-error";
+
+    }
+
+
+    function revisarIntegridad() {
+
+        try {
+
+            const afiliados =
+                datosAdministracion.afiliados;
+
+            const libros =
+                datosAdministracion.libros;
+
+            const colaboradores =
+                datosAdministracion.colaboradores;
+
+            const prestamos =
+                datosAdministracion.prestamos;
+
+
+            /* ==========================
+               AFILIADOS SIN ESTADO
+            ========================== */
+
+            const afiliadosSinEstado =
+                afiliados.filter(afiliado => {
+
+                    return !esEstadoActivo(afiliado.estado) &&
+                           !esEstadoInactivo(afiliado.estado);
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadAfiliadosEstado",
+                afiliadosSinEstado
+            );
+
+
+            /* ==========================
+               AFILIADOS SIN SITIO
+            ========================== */
+
+            const afiliadosSinSitio =
+                afiliados.filter(afiliado => {
+
+                    return !obtenerSitioValido(
+                        afiliado.Sitio
+                    );
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadAfiliadosSitio",
+                afiliadosSinSitio
+            );
+
+
+            /* ==========================
+               LIBROS SIN SITIO
+            ========================== */
+
+            const librosSinSitio =
+                libros.filter(libro => {
+
+                    return !obtenerSitioValido(
+                        libro.Biblioteca
+                    );
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadLibrosSitio",
+                librosSinSitio
+            );
+
+
+            /* ==========================
+               LIBROS SIN CODIGO
+            ========================== */
+
+            const librosSinCodigo =
+                libros.filter(libro => {
+
+                    return !String(
+                        libro.codigoLibro ?? ""
+                    ).trim();
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadLibrosCodigo",
+                librosSinCodigo
+            );
+
+
+            /* ==========================
+               COLABORADORES SIN ESTADO
+            ========================== */
+
+            const colaboradoresSinEstado =
+                colaboradores.filter(colaborador => {
+
+                    return !esEstadoActivo(colaborador.estado) &&
+                           !esEstadoInactivo(colaborador.estado);
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadColaboradoresEstado",
+                colaboradoresSinEstado
+            );
+
+
+            /* ==========================
+               COLABORADORES SIN CODIGO
+            ========================== */
+
+            const colaboradoresSinCodigo =
+                colaboradores.filter(colaborador => {
+
+                    return !String(
+                        colaborador.CodigoColaborador ?? ""
+                    ).trim();
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadColaboradoresCodigo",
+                colaboradoresSinCodigo
+            );
+
+
+            /* ==========================
+               LIBROS CON ESTADO INVALIDO
+            ========================== */
+
+            const estadosLibroValidos = [
+                "DISPONIBLE",
+                "PRESTADO",
+                "BAJA",
+                "INACTIVO"
+            ];
+
+
+            const librosEstadoInvalido =
+                libros.filter(libro => {
+
+                    const estado =
+                        normalizar(libro.estado);
+
+                    return (
+                        !estado ||
+                        !estadosLibroValidos.includes(estado)
+                    );
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadLibrosEstado",
+                librosEstadoInvalido
+            );
+
+
+            /* ==========================
+               PRESTAMOS SIN LIBRO
+            ========================== */
+
+            const prestamosSinLibro =
+                prestamos.filter(prestamo => {
+
+                    const codigoLibro =
+                        obtenerValor(
+                            prestamo,
+                            [
+                                "codigoLibro",
+                                "CodigoLibro",
+                                "codigo",
+                                "Codigo"
+                            ]
+                        );
+
+
+                    const nombreLibro =
+                        obtenerValor(
+                            prestamo,
+                            [
+                                "nombreLibro",
+                                "NombreLibro"
+                            ]
+                        );
+
+
+                    return (
+                        !String(codigoLibro ?? "").trim() &&
+                        !String(nombreLibro ?? "").trim()
+                    );
+
+                }).length;
+
+
+            establecerResultado(
+                "integridadPrestamosLibro",
+                prestamosSinLibro
+            );
 
 
         } catch (error) {
 
             console.error(
-                `Error en tabla ${tabla}:`,
+                "Error revisando integridad:",
                 error
             );
 
 
-            estado.className =
-                "estado-tabla error";
+            const elementos = [
+                "integridadAfiliadosEstado",
+                "integridadAfiliadosSitio",
+                "integridadLibrosSitio",
+                "integridadLibrosCodigo",
+                "integridadColaboradoresEstado",
+                "integridadColaboradoresCodigo",
+                "integridadLibrosEstado",
+                "integridadPrestamosLibro"
+            ];
 
-            estado.textContent =
-                "Error";
 
+            elementos.forEach(establecerErrorResultado);
 
-            cantidad.textContent =
-                "—";
-
-
-            detalle.textContent =
-                "No fue posible consultar la tabla";
         }
+
     }
 
 
-    /* =========================================================
-       CERRAR SESIÓN
-    ========================================================= */
+    /* ==========================================================
+       CERRAR SESION
+    ========================================================== */
 
     async function cerrarSesion() {
 
         try {
 
-            const {
-                error
-            } =
+            const { error } =
                 await supabaseClient.auth.signOut();
-
 
             if (error) {
 
                 throw error;
+
             }
 
-
-            window.location.href =
-                "index.html";
-
+            window.location.href = "index.html";
 
         } catch (error) {
 
@@ -1187,120 +2460,32 @@
                 error
             );
 
-
             mostrarModal(
-                "Administración",
+                "Error",
                 "No fue posible cerrar la sesión."
             );
-        }
-    }
-
-
-    /* =========================================================
-       MODAL
-    ========================================================= */
-
-    function mostrarModal(
-        titulo,
-        mensaje
-    ) {
-
-        document.getElementById(
-            "modalTitulo"
-        ).textContent = titulo;
-
-
-        document.getElementById(
-            "modalMensaje"
-        ).textContent = mensaje;
-
-
-        document.getElementById(
-            "modalFondo"
-        ).classList.add("mostrar");
-    }
-
-
-    function cerrarModal() {
-
-        document.getElementById(
-            "modalFondo"
-        ).classList.remove("mostrar");
-    }
-
-
-    /* =========================================================
-       CARGA INICIAL
-    ========================================================= */
-
-    window.addEventListener(
-        "load",
-        async function() {
-
-            if (
-                !window.administracionAutorizado
-            ) {
-
-                return;
-            }
-
-
-            await verificarConexion();
-
-
-            await verificarTabla(
-                "afiliados",
-                "estadoAfiliados",
-                "cantidadAfiliados",
-                "detalleAfiliados"
-            );
-
-
-            await verificarTabla(
-                "libros",
-                "estadoLibros",
-                "cantidadLibros",
-                "detalleLibros"
-            );
-
-
-            await verificarTabla(
-                "colaboradores",
-                "estadoColaboradores",
-                "cantidadColaboradores",
-                "detalleColaboradores"
-            );
-
-
-            await verificarTabla(
-                "prestamos",
-                "estadoPrestamos",
-                "cantidadPrestamos",
-                "detallePrestamos"
-            );
 
         }
-    );
+
+    }
 
 
-    /* =========================================================
+    /* ==========================================================
        CERRAR MODAL AL HACER CLIC FUERA
-    ========================================================= */
+    ========================================================== */
 
-    document.getElementById(
-        "modalFondo"
-    ).addEventListener(
-        "click",
-        function(event) {
+    document
+        .getElementById("modalMensaje")
+        .addEventListener("click", function(event) {
 
-            if (
-                event.target === this
-            ) {
+            if (event.target === this) {
 
                 cerrarModal();
+
             }
-        }
-    );
+
+        });
+
 
 </script>
 
