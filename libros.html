@@ -1646,16 +1646,6 @@
     }
 
 
-    /*
-        Convierte un código válido a 8 posiciones.
-
-        Ejemplos:
-        1       -> 00000001
-        25      -> 00000025
-        123456  -> 00123456
-        12345678 -> 12345678
-    */
-
     function formatearCodigo(codigo) {
 
         const valor =
@@ -5333,7 +5323,34 @@
        INICIO
     ===================================================== */
 
-    cargarLibros();
+    (async function iniciarLibros() {
+
+        try {
+
+            const autorizado =
+                await window.protegerPagina();
+
+            if (!autorizado) {
+
+                console.error(
+                    "No fue posible validar la sesión del usuario."
+                );
+
+                return;
+            }
+
+            cargarLibros();
+
+        } catch (error) {
+
+            console.error(
+                "Error al iniciar el módulo de libros:",
+                error
+            );
+
+        }
+
+    })();
 
 </script>
 
