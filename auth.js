@@ -87,14 +87,9 @@ window.protegerPagina = async function () {
         const resultadoPerfil =
             await supabaseClient
                 .from("usuarios")
-                .select(`
-                    id,
-                    correo,
-                    nombre,
-                    rol,
-                    estado,
-                    fechaRegistro
-                `)
+                .select(
+                    "id, correo, nombre, rol, estado, fechaRegistro"
+                )
                 .eq(
                     "id",
                     session.user.id
