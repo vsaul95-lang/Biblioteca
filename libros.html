@@ -16,6 +16,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            visibility: hidden;
+        }
+
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
@@ -145,6 +149,10 @@
         .seccion-titulo {
             margin: 0 0 14px;
             font-size: 18px;
+        }
+
+        .solo-administrador {
+            display: none;
         }
 
         .formulario {
@@ -946,7 +954,10 @@
     </section>
 
 
-    <section class="seccion">
+    <section
+        class="seccion solo-administrador"
+        id="seccionImportarExcel"
+    >
 
         <h3 class="seccion-titulo">
             Importar libros desde Excel
@@ -1248,7 +1259,10 @@
     </section>
 
 
-    <section class="seccion">
+    <section
+        class="seccion solo-administrador"
+        id="seccionAdministracionDatos"
+    >
 
         <h3 class="seccion-titulo">
             Administración de datos
@@ -5339,7 +5353,48 @@
                 return;
             }
 
-            cargarLibros();
+
+            /* =============================================
+               PERMISOS SEGÚN EL ROL
+            ============================================= */
+
+            if (window.esAdministrador()) {
+
+                const seccionImportarExcel =
+                    document.getElementById(
+                        "seccionImportarExcel"
+                    );
+
+                const seccionAdministracionDatos =
+                    document.getElementById(
+                        "seccionAdministracionDatos"
+                    );
+
+
+                if (seccionImportarExcel) {
+
+                    seccionImportarExcel.style.display =
+                        "block";
+
+                }
+
+
+                if (seccionAdministracionDatos) {
+
+                    seccionAdministracionDatos.style.display =
+                        "block";
+
+                }
+
+            }
+
+
+            document.documentElement.style.visibility =
+                "visible";
+
+
+            await cargarLibros();
+
 
         } catch (error) {
 
@@ -5347,6 +5402,9 @@
                 "Error al iniciar el módulo de libros:",
                 error
             );
+
+            document.documentElement.style.visibility =
+                "visible";
 
         }
 
