@@ -1,25 +1,210 @@
+// ==========================================
+// PROTECCIÓN DE ACCESO Y ROLES
+// ==========================================
+
+window.usuarioSesion = null;
+window.perfilUsuario = null;
+window.rolUsuario = null;
+window.estadoUsuario = null;
+
+
+// ==========================================
+// NORMALIZAR TEXTO
+// ==========================================
+
+function normalizarTexto(valor) {
+
+    return String(valor || "")
+        .trim()
+        .toUpperCase();
+
+}
+
+
+// ==========================================
+// COMPROBAR SESIÓN
+// ==========================================
+
 window.protegerPagina = async function () {
 
-    console.log("auth.js cargado correctamente");
+    try {
 
-    return true;
+        console.log(
+            "Comprobando sesión..."
+        );
+
+
+        const resultadoSesion =
+            await supabaseClient.auth.getSession();
+
+
+        if (resultadoSesion.error) {
+
+            console.error(
+                "Error de Supabase al comprobar sesión:",
+                resultadoSesion.error
+            );
+
+            return false;
+        }
+
+
+        const session =
+            resultadoSesion.data.session;
+
+
+        if (!session) {
+
+            console.error(
+                "No existe una sesión activa en esta página."
+            );
+
+            return false;
+        }
+
+
+        console.log(
+            "Sesión encontrada:",
+            session.user.email
+        );
+
+
+        window.usuarioSesion =
+            session.user;
+
+
+        // ==========================================
+        // BUSCAR USUARIO
+        // ==========================================
+
+        const resultadoPerfil =
+            await supabaseClient
+                .from("usuarios")
+                .select(
+                    "id, correo, nombre, rol, estado, fechaRegistro"
+                )
+                .eq(
+                    "id",
+                    session.user.id
+                )
+                .maybeSingle();
+
+
+        if (resultadoPerfil.error) {
+
+            console.error(
+                "Error al consultar usuarios:",
+                resultadoPerfil.error
+            );
+
+            return false;
+        }
+
+
+        const perfil =
+            resultadoPerfil.data;
+
+
+        if (!perfil) {
+
+            console.error(
+                "No se encontró el usuario en la tabla usuarios."
+            );
+
+            return false;
+        }
+
+
+        console.log(
+            "Perfil encontrado:",
+            perfil
+        );
+
+
+        window.perfilUsuario =
+            perfil;
+
+
+        window.rolUsuario =
+            normalizarTexto(
+                perfil.rol
+            );
+
+
+        window.estadoUsuario =
+            normalizarTexto(
+                perfil.estado
+            );
+
+
+        // ==========================================
+        // COMPROBAR ESTADO
+        // ==========================================
+
+        if (
+            window.estadoUsuario !==
+            "ACTIVO"
+        ) {
+
+            console.error(
+                "El usuario está inactivo."
+            );
+
+            return false;
+        }
+
+
+        console.log(
+            "Usuario autorizado:",
+            window.rolUsuario
+        );
+
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(
+            "Error inesperado al validar usuario:",
+            error
+        );
+
+        return false;
+    }
 
 };
+
+
+// ==========================================
+// FUNCIONES DE ROLES
+// ==========================================
 
 window.esAdministrador = function () {
 
-    return false;
+    return (
+        window.rolUsuario ===
+        "ADMINISTRADOR"
+    );
 
 };
+
 
 window.esUsuario = function () {
 
-    return true;
+    return (
+        window.rolUsuario ===
+        "USUARIO"
+    );
 
 };
 
+
 window.tieneRol = function (rol) {
 
-    return true;
+    return (
+        window.rolUsuario ===
+        normalizarTexto(rol)
+    );
 
 };
