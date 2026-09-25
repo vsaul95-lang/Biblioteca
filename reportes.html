@@ -2105,13 +2105,25 @@
         }
 
 
+        /*
+         * IMPORTANTE:
+         *
+         * Sitio y SitioPréstamo son campos diferentes.
+         *
+         * Para este módulo, cuando se necesita mostrar,
+         * filtrar o agrupar por "SitioPréstamo", se utiliza
+         * exclusivamente el campo SitioPrestamo de la tabla
+         * prestamos.
+         *
+         * NO se utiliza prestamo.Sitio como sustituto.
+         *
+         * Biblioteca es otro concepto diferente y se obtiene
+         * desde libros.Biblioteca.
+         */
+
         function obtenerSitioPrestamo(prestamo) {
 
             const sitio =
-
-                prestamo.Sitio ||
-
-                prestamo.sitio ||
 
                 prestamo.SitioPrestamo ||
 
@@ -2121,7 +2133,9 @@
 
 
             const valor =
-                String(sitio).trim().toUpperCase();
+                String(sitio)
+                    .trim()
+                    .toUpperCase();
 
 
             return valor || "Sin sitio registrado";
