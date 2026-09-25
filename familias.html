@@ -15,7 +15,7 @@
 
     <!-- =========================================
          OCULTAR LA PAGINA MIENTRAS SE VERIFICA
-         LA SESION
+         LA SESION Y EL ROL
     ========================================== -->
 
     <style>
@@ -40,11 +40,14 @@
          PROTECCION GENERAL
     ========================================== -->
 
-    <script src="auth.js"></script>
+    <script src="auth.js?v=1002"></script>
 
 
     <!-- =========================================
-         COMPROBACION DIRECTA DE SESION
+         PROTECCION ESPECIFICA DE FAMILIAS
+         
+         Esta pagina solamente puede ser utilizada
+         por usuarios con rol ADMINISTRADOR.
     ========================================== -->
 
     <script>
@@ -55,23 +58,11 @@
 
             try {
 
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.auth.getSession();
+                const autorizado =
+                    await window.protegerPagina();
 
 
-                /*
-                 * Si existe un error o no existe
-                 * una sesion valida, regresar al inicio.
-                 */
-
-                if (
-                    error ||
-                    !data ||
-                    !data.session
-                ) {
+                if (!autorizado) {
 
                     window.location.replace(
                         "index.html"
@@ -83,18 +74,50 @@
 
 
                 /*
-                 * Sesion valida.
+                 * Verificar especificamente
+                 * el rol de Administrador.
+                 */
+
+                if (
+                    !window.esAdministrador()
+                ) {
+
+                    console.warn(
+                        "Acceso denegado a Familias. Rol:",
+                        window.rolUsuario
+                    );
+
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return false;
+
+                }
+
+
+                /*
+                 * El usuario esta autenticado,
+                 * activo y tiene permisos de
+                 * Administrador.
                  */
 
                 window.familiasAutorizado = true;
 
 
                 /*
-                 * Mostramos la pagina.
+                 * Ahora si mostramos la pagina.
                  */
 
                 document.documentElement.style.visibility =
                     "visible";
+
+
+                console.log(
+                    "ACCESO AUTORIZADO A FAMILIAS:",
+                    window.rolUsuario
+                );
 
 
                 return true;
@@ -103,7 +126,7 @@
             } catch (error) {
 
                 console.error(
-                    "Error al comprobar la sesion:",
+                    "Error al comprobar los permisos de Familias:",
                     error
                 );
 
@@ -111,6 +134,7 @@
                 window.location.replace(
                     "index.html"
                 );
+
 
                 return false;
 
