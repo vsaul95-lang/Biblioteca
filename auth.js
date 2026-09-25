@@ -36,10 +36,23 @@ window.protegerPagina = async function () {
 
 
         // ------------------------------------------
-        // SIN SESIÓN
+        // SI NO HAY SESIÓN
         // ------------------------------------------
 
-        if (error || !session) {
+        if (error) {
+
+            console.error(
+                "Error al comprobar la sesión:",
+                error
+            );
+
+            window.location.replace("index.html");
+
+            return false;
+        }
+
+
+        if (!session) {
 
             window.location.replace("index.html");
 
@@ -48,14 +61,14 @@ window.protegerPagina = async function () {
 
 
         // ------------------------------------------
-        // GUARDAR USUARIO DE AUTHENTICATION
+        // GUARDAR USUARIO DE SESIÓN
         // ------------------------------------------
 
         window.usuarioSesion = session.user;
 
 
         // ------------------------------------------
-        // BUSCAR PERFIL EN usuarios
+        // CONSULTAR PERFIL
         // ------------------------------------------
 
         const {
@@ -82,30 +95,38 @@ window.protegerPagina = async function () {
             .maybeSingle();
 
 
+        // ------------------------------------------
+        // SI HUBO ERROR AL CONSULTAR PERFIL
+        // ------------------------------------------
+
         if (errorPerfil) {
 
             console.error(
-                "Error al consultar el perfil:",
+                "Error al consultar el perfil de usuario:",
                 errorPerfil
             );
 
-            window.location.replace("index.html");
+            /*
+             * IMPORTANTE:
+             * No cerramos la sesión aquí.
+             *
+             * La sesión de Supabase puede estar correcta
+             * aunque temporalmente falle la consulta.
+             */
 
             return false;
         }
 
 
         // ------------------------------------------
-        // CUENTA SIN PERFIL
+        // SI NO EXISTE PERFIL
         // ------------------------------------------
 
         if (!perfil) {
 
             console.error(
-                "La cuenta no tiene registro en usuarios."
+                "La cuenta no tiene registro en la tabla usuarios."
             );
-
-            window.location.replace("index.html");
 
             return false;
         }
@@ -117,15 +138,17 @@ window.protegerPagina = async function () {
 
         window.perfilUsuario = perfil;
 
+
         window.rolUsuario =
             normalizarTexto(perfil.rol);
+
 
         window.estadoUsuario =
             normalizarTexto(perfil.estado);
 
 
         // ------------------------------------------
-        // USUARIO INACTIVO
+        // COMPROBAR ESTADO
         // ------------------------------------------
 
         if (
@@ -134,7 +157,7 @@ window.protegerPagina = async function () {
         ) {
 
             console.error(
-                "El usuario está inactivo."
+                "El usuario está marcado como inactivo."
             );
 
             await supabaseClient.auth.signOut();
@@ -146,7 +169,7 @@ window.protegerPagina = async function () {
 
 
         // ------------------------------------------
-        // ACCESO CORRECTO
+        // TODO CORRECTO
         // ------------------------------------------
 
         return true;
@@ -159,7 +182,10 @@ window.protegerPagina = async function () {
             error
         );
 
-        window.location.replace("index.html");
+        /*
+         * No cerramos la sesión automáticamente
+         * por un error inesperado.
+         */
 
         return false;
     }
@@ -215,6 +241,24 @@ window.tieneRol = function (rol) {
 
 (async function iniciarProteccion() {
 
-    await window.protegerPagina();
+    const autorizado =
+        await window.protegerPagina();
+
+
+    /*
+     * Si hubo un error al consultar el perfil,
+     * no hacemos nada más.
+     *
+     * La página podrá mostrar el error en consola
+     * sin cerrar la sesión de Supabase.
+     */
+
+    if (!autorizado) {
+
+        console.warn(
+            "No fue posible completar la validación del perfil."
+        );
+
+    }
 
 })();
