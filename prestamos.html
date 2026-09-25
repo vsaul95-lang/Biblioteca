@@ -1,783 +1,916 @@
 <!DOCTYPE html>
-
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo préstamo - Biblioteca</title>
 
-```
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="auth.js"></script>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <title>Préstamos - Biblioteca</title>
 
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        color: #333;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
 
-    .encabezado {
-        background: #263238;
-        color: white;
-        padding: 18px 25px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+    <style>
 
-    .encabezado h1 {
-        margin: 0;
-        font-size: 22px;
-    }
-
-    .btn-volver {
-        background: #546e7a;
-        color: white;
-        text-decoration: none;
-        padding: 9px 14px;
-        border-radius: 6px;
-        font-size: 14px;
-    }
-
-    .contenedor {
-        max-width: 1100px;
-        margin: 20px auto;
-        padding: 0 15px;
-    }
-
-    .seccion {
-        background: white;
-        border-radius: 8px;
-        padding: 18px;
-        margin-bottom: 18px;
-        box-shadow: 0 2px 6px rgba(0,0,0,.08);
-    }
-
-    .seccion h2 {
-        margin: 0 0 15px;
-        font-size: 18px;
-    }
-
-    .fila-busqueda {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-
-    input {
-        flex: 1;
-        padding: 10px 12px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-
-    button {
-        border: none;
-        border-radius: 5px;
-        padding: 10px 15px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .btn-buscar {
-        background: #1976d2;
-        color: white;
-    }
-
-    .mensaje {
-        margin-top: 12px;
-        padding: 10px;
-        border-radius: 5px;
-        display: none;
-    }
-
-    .mensaje.exito {
-        display: block;
-        background: #e8f5e9;
-        color: #2e7d32;
-    }
-
-    .mensaje.error {
-        display: block;
-        background: #ffebee;
-        color: #c62828;
-    }
-
-    .tabla-contenedor {
-        overflow-x: auto;
-        margin-top: 15px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-    }
-
-    th {
-        background: #eceff1;
-        padding: 9px;
-        border-bottom: 1px solid #ccc;
-        text-align: center;
-    }
-
-    td {
-        padding: 9px;
-        border-bottom: 1px solid #eee;
-        text-align: center;
-    }
-
-    td.nombre {
-        text-align: left;
-    }
-
-    tr.seleccionada {
-        background: #e8f5e9;
-        border-left: 4px solid #2e7d32;
-    }
-
-    .btn-seleccionar {
-        background: #1976d2;
-        color: white;
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-
-    .btn-seleccionar.seleccionada {
-        background: #2e7d32;
-    }
-
-    /* =====================================================
-       TIPO DE SOLICITANTE
-    ===================================================== */
-
-    .tipo-solicitante {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-
-    .opcion-tipo {
-        flex: 1;
-        border: 1px solid #ccc;
-        background: #f7f9fa;
-        color: #37474f;
-        padding: 11px 15px;
-        border-radius: 6px;
-        cursor: pointer;
-        text-align: center;
-        font-weight: 600;
-    }
-
-    .opcion-tipo:hover {
-        background: #eceff1;
-    }
-
-    .opcion-tipo.activa {
-        background: #37474f;
-        color: white;
-        border-color: #37474f;
-    }
-
-    /* =====================================================
-       PASO 3 - RESUMEN
-    ===================================================== */
-
-    .resumen-prestamo {
-        display: none;
-    }
-
-    .bloque-resumen {
-        border: 1px solid #e0e0e0;
-        border-radius: 7px;
-        overflow: hidden;
-        margin-top: 15px;
-    }
-
-    .titulo-bloque {
-        background: #eceff1;
-        padding: 10px 13px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #37474f;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .contenido-resumen {
-        padding: 14px;
-    }
-
-    .datos-persona-libro {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-
-    .tarjeta-dato {
-        background: #f7f9fa;
-        border-radius: 6px;
-        padding: 12px;
-        border: 1px solid #e8ecee;
-    }
-
-    .tarjeta-dato h3 {
-        margin: 0 0 9px;
-        font-size: 14px;
-        color: #455a64;
-    }
-
-    .dato {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        padding: 5px 0;
-        border-bottom: 1px solid #e5e8ea;
-        font-size: 13px;
-    }
-
-    .dato:last-child {
-        border-bottom: none;
-    }
-
-    .dato span:first-child {
-        color: #607d8b;
-    }
-
-    .dato span:last-child {
-        font-weight: 600;
-        text-align: right;
-        color: #333;
-    }
-
-    /* =====================================================
-       FECHAS Y SITIO DE PRÉSTAMO
-    ===================================================== */
-
-    .fechas-prestamo {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 15px;
-    }
-
-    .campo-fecha {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .campo-fecha label {
-        font-size: 13px;
-        font-weight: bold;
-        color: #455a64;
-    }
-
-    .campo-fecha input,
-    .campo-fecha select {
-        width: 100%;
-        flex: none;
-        background: white;
-        padding: 10px 12px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-        color: #333;
-    }
-
-    .campo-fecha select {
-        cursor: pointer;
-    }
-
-    .ayuda-fecha {
-        font-size: 11px;
-        color: #78909c;
-        margin-top: 1px;
-        line-height: 1.3;
-    }
-
-    /* =====================================================
-       CONFIRMACIÓN
-    ===================================================== */
-
-    .confirmacion {
-        background: #fff8e1;
-        border: 1px solid #ffe082;
-        border-radius: 7px;
-        padding: 15px;
-        margin-top: 18px;
-        display: none;
-    }
-
-    .confirmacion-titulo {
-        font-size: 15px;
-        font-weight: bold;
-        color: #e65100;
-        margin-bottom: 5px;
-    }
-
-    .confirmacion-texto {
-        font-size: 13px;
-        color: #5d4037;
-        margin: 0;
-        line-height: 1.5;
-    }
-
-    .acciones-confirmacion {
-        margin-top: 13px;
-        display: flex;
-        justify-content: flex-end;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
-    .btn-confirmar {
-        background: #2e7d32;
-        color: white;
-    }
-
-    .btn-cancelar {
-        background: #757575;
-        color: white;
-    }
-
-    .libro-info {
-        margin-top: 12px;
-        padding: 12px;
-        background: #e3f2fd;
-        border-radius: 6px;
-        display: none;
-    }
-
-    .libro-info strong {
-        color: #1565c0;
-    }
-
-    @media (max-width: 850px) {
-
-        .fechas-prestamo {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-
-    @media (max-width: 700px) {
-
-        .fila-busqueda {
-            flex-direction: column;
-            align-items: stretch;
+        * {
+            box-sizing: border-box;
         }
 
-        .tipo-solicitante {
-            flex-direction: column;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
         }
 
         .encabezado {
+            background: #263238;
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .encabezado h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .btn-volver {
+            background: #546e7a;
+            color: white;
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .seccion {
+            background: white;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+        }
+
+        .seccion h2 {
+            margin: 0 0 15px;
+            font-size: 18px;
+        }
+
+        .fila-busqueda {
+            display: flex;
             gap: 10px;
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .btn-buscar {
+            background: #1976d2;
+            color: white;
+        }
+
+        .mensaje {
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .mensaje.exito {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .mensaje.error {
+            display: block;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: #eceff1;
+            padding: 9px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        td {
+            padding: 9px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        td.nombre {
+            text-align: left;
+        }
+
+        tr.seleccionada {
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .btn-seleccionar {
+            background: #1976d2;
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .btn-seleccionar.seleccionada {
+            background: #2e7d32;
+        }
+
+        .tipo-solicitante {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .opcion-tipo {
+            flex: 1;
+            border: 1px solid #ccc;
+            background: #f7f9fa;
+            color: #37474f;
+            padding: 11px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .opcion-tipo:hover {
+            background: #eceff1;
+        }
+
+        .opcion-tipo.activa {
+            background: #37474f;
+            color: white;
+            border-color: #37474f;
+        }
+
+        .resumen-prestamo {
+            display: none;
+        }
+
+        .bloque-resumen {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .titulo-bloque {
+            background: #eceff1;
+            padding: 10px 13px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #37474f;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .contenido-resumen {
+            padding: 14px;
         }
 
         .datos-persona-libro {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
-        .fechas-prestamo {
-            grid-template-columns: 1fr;
+        .tarjeta-dato {
+            background: #f7f9fa;
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid #e8ecee;
         }
 
-        .acciones-confirmacion {
-            flex-direction: column;
-        }
-
-        .acciones-confirmacion button {
-            width: 100%;
+        .tarjeta-dato h3 {
+            margin: 0 0 9px;
+            font-size: 14px;
+            color: #455a64;
         }
 
         .dato {
-            flex-direction: column;
-            gap: 2px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid #e5e8ea;
+            font-size: 13px;
+        }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+        .dato span:first-child {
+            color: #607d8b;
         }
 
         .dato span:last-child {
-            text-align: left;
+            font-weight: 600;
+            text-align: right;
+            color: #333;
         }
-    }
-</style>
-```
+
+        .fechas-prestamo {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .campo-fecha {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo-fecha label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #455a64;
+        }
+
+        .campo-fecha input,
+        .campo-fecha select {
+            width: 100%;
+            flex: none;
+            background: white;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .campo-fecha select {
+            cursor: pointer;
+        }
+
+        .ayuda-fecha {
+            font-size: 11px;
+            color: #78909c;
+            margin-top: 1px;
+            line-height: 1.3;
+        }
+
+        .confirmacion {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 7px;
+            padding: 15px;
+            margin-top: 18px;
+            display: none;
+        }
+
+        .confirmacion-titulo {
+            font-size: 15px;
+            font-weight: bold;
+            color: #e65100;
+            margin-bottom: 5px;
+        }
+
+        .confirmacion-texto {
+            font-size: 13px;
+            color: #5d4037;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .acciones-confirmacion {
+            margin-top: 13px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-confirmar {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn-cancelar {
+            background: #757575;
+            color: white;
+        }
+
+        .libro-info {
+            margin-top: 12px;
+            padding: 12px;
+            background: #e3f2fd;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .libro-info strong {
+            color: #1565c0;
+        }
+
+        @media (max-width: 850px) {
+
+            .fechas-prestamo {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .fila-busqueda {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tipo-solicitante {
+                flex-direction: column;
+            }
+
+            .encabezado {
+                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .datos-persona-libro {
+                grid-template-columns: 1fr;
+            }
+
+            .fechas-prestamo {
+                grid-template-columns: 1fr;
+            }
+
+            .acciones-confirmacion {
+                flex-direction: column;
+            }
+
+            .acciones-confirmacion button {
+                width: 100%;
+            }
+
+            .dato {
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .dato span:last-child {
+                text-align: left;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 <body>
 
 <header class="encabezado">
+
     <h1>📚 Nuevo préstamo</h1>
-    <a href="index.html" class="btn-volver">← Volver</a>
+
+    <a
+        href="index.html"
+        class="btn-volver"
+    >
+        ← Volver
+    </a>
+
 </header>
+
 
 <div class="contenedor">
 
-```
-<section class="seccion">
 
-    <h2>1. ¿Quién solicita el préstamo?</h2>
+    <!-- =====================================================
+         PASO 1
+    ====================================================== -->
 
-    <div class="tipo-solicitante">
+    <section class="seccion">
 
-        <button
-            type="button"
-            id="btnTipoAfiliado"
-            class="opcion-tipo activa"
-        >
-            👨‍👩‍👧 Afiliado
-        </button>
+        <h2>1. ¿Quién solicita el préstamo?</h2>
 
-        <button
-            type="button"
-            id="btnTipoColaborador"
-            class="opcion-tipo"
-        >
-            👤 Colaborador
-        </button>
-
-    </div>
-
-    <div id="seccionAfiliado">
-
-        <div class="fila-busqueda">
-
-            <input
-                type="text"
-                id="buscarFamilia"
-                placeholder="Ingrese número de familia..."
-            >
+        <div class="tipo-solicitante">
 
             <button
-                class="btn-buscar"
-                id="btnBuscarFamilia"
+                type="button"
+                id="btnTipoAfiliado"
+                class="opcion-tipo activa"
             >
-                Buscar
+                👨‍👩‍👧 Afiliado
+            </button>
+
+            <button
+                type="button"
+                id="btnTipoColaborador"
+                class="opcion-tipo"
+            >
+                👤 Colaborador
             </button>
 
         </div>
 
-        <div id="mensajeFamilia" class="mensaje"></div>
 
-        <div class="tabla-contenedor">
+        <!-- AFILIADO -->
 
-            <table id="tablaFamilia" style="display:none;">
+        <div id="seccionAfiliado">
 
-                <thead>
+            <div class="fila-busqueda">
 
-                    <tr>
-                        <th>PersonaId</th>
-                        <th>FamiliaId</th>
-                        <th>Nombre</th>
-                        <th>Estado</th>
-                        <th>Seleccionar</th>
-                    </tr>
+                <input
+                    type="text"
+                    id="buscarFamilia"
+                    placeholder="Ingrese número de familia..."
+                >
 
-                </thead>
+                <button
+                    class="btn-buscar"
+                    id="btnBuscarFamilia"
+                >
+                    Buscar
+                </button>
 
-                <tbody id="cuerpoFamilia"></tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-    <div id="seccionColaborador" style="display:none;">
-
-        <div class="fila-busqueda">
-
-            <input
-                type="text"
-                id="buscarColaborador"
-                placeholder="Ingrese código del colaborador..."
-                maxlength="30"
-                autocomplete="off"
-            >
-
-            <button
-                class="btn-buscar"
-                id="btnBuscarColaborador"
-            >
-                Buscar
-            </button>
-
-        </div>
-
-        <div id="mensajeColaborador" class="mensaje"></div>
-
-        <div class="tabla-contenedor">
-
-            <table id="tablaColaborador" style="display:none;">
-
-                <thead>
-
-                    <tr>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Área</th>
-                        <th>Estado</th>
-                        <th>Seleccionar</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="cuerpoColaborador"></tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section class="seccion">
-
-    <h2>2. Buscar libro</h2>
-
-    <div class="fila-busqueda">
-
-        <input
-            type="text"
-            id="buscarLibro"
-            placeholder="Ingrese código del libro..."
-            maxlength="8"
-            inputmode="numeric"
-        >
-
-        <button
-            class="btn-buscar"
-            id="btnBuscarLibro"
-        >
-            Buscar
-        </button>
-
-    </div>
-
-    <div id="mensajeLibro" class="mensaje"></div>
-
-    <div id="libroInfo" class="libro-info"></div>
-
-</section>
-
-<section class="seccion">
-
-    <h2>3. Confirmar préstamo</h2>
-
-    <div
-        id="resumenPrestamo"
-        class="resumen-prestamo"
-    >
-
-        <div class="bloque-resumen">
-
-            <div class="titulo-bloque">
-                Resumen del préstamo
             </div>
 
-            <div class="contenido-resumen">
 
-                <div class="datos-persona-libro">
+            <div
+                id="mensajeFamilia"
+                class="mensaje"
+            ></div>
 
-                    <div class="tarjeta-dato">
 
-                        <h3 id="tituloResumenPersona">
-                            👤 Afiliado
-                        </h3>
+            <div class="tabla-contenedor">
 
-                        <div class="dato">
-                            <span id="etiquetaIdentificador">
-                                Familia
-                            </span>
+                <table
+                    id="tablaFamilia"
+                    style="display:none;"
+                >
 
-                            <span id="resumenFamilia"></span>
-                        </div>
+                    <thead>
 
-                        <div class="dato">
-                            <span id="etiquetaPersonaId">
-                                PersonaId
-                            </span>
+                        <tr>
 
-                            <span id="resumenPersonaId"></span>
-                        </div>
+                            <th>PersonaId</th>
 
-                        <div class="dato">
-                            <span id="etiquetaNombre">
-                                Nombre
-                            </span>
+                            <th>FamiliaId</th>
 
-                            <span id="resumenNombre"></span>
-                        </div>
+                            <th>Nombre</th>
 
-                        <div
-                            class="dato"
-                            id="filaAreaResumen"
-                            style="display:none;"
-                        >
-                            <span>Área</span>
-                            <span id="resumenArea"></span>
-                        </div>
+                            <th>Estado</th>
 
-                        <div class="dato">
-                            <span>Sitio</span>
-                            <span id="resumenSitio"></span>
-                        </div>
+                            <th>Seleccionar</th>
 
-                    </div>
+                        </tr>
 
-                    <div class="tarjeta-dato">
+                    </thead>
 
-                        <h3>📚 Libro</h3>
+                    <tbody
+                        id="cuerpoFamilia"
+                    ></tbody>
 
-                        <div class="dato">
-                            <span>Código</span>
-                            <span id="resumenCodigoLibro"></span>
-                        </div>
-
-                        <div class="dato">
-                            <span>Nombre</span>
-                            <span id="resumenNombreLibro"></span>
-                        </div>
-
-                        <div class="dato">
-                            <span>Estado</span>
-                            <span>Disponible</span>
-                        </div>
-
-                    </div>
-
-                </div>
+                </table>
 
             </div>
 
         </div>
 
-        <div class="bloque-resumen">
 
-            <div class="titulo-bloque">
-                Fechas del préstamo
-            </div>
-
-            <div class="contenido-resumen">
-
-                <div class="fechas-prestamo">
-
-                    <div class="campo-fecha">
-
-                        <label for="fechaPrestamo">
-                            Fecha del préstamo
-                        </label>
-
-                        <input
-                            type="date"
-                            id="fechaPrestamo"
-                        >
-
-                        <span class="ayuda-fecha">
-                            Se coloca automáticamente la fecha actual, pero puede modificarse.
-                        </span>
-
-                    </div>
-
-                    <div class="campo-fecha">
-
-                        <label for="fechaDevolucion">
-                            Fecha de devolución prevista
-                        </label>
-
-                        <input
-                            type="date"
-                            id="fechaDevolucion"
-                        >
-
-                        <span class="ayuda-fecha">
-                            Puede elegir libremente cuándo debe regresar el libro.
-                        </span>
-
-                    </div>
-
-                    <div class="campo-fecha">
-
-                        <label for="sitioPrestamo">
-                            Sitio de préstamo
-                        </label>
-
-                        <select id="sitioPrestamo">
-
-                            <option value="F">F</option>
-                            <option value="M">M</option>
-                            <option value="R">R</option>
-                            <option value="N">N</option>
-                            <option value="Z">Z</option>
-
-                        </select>
-
-                        <span class="ayuda-fecha">
-                            Seleccione el sitio donde se realiza el préstamo.
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+        <!-- COLABORADOR -->
 
         <div
-            id="confirmacion"
-            class="confirmacion"
+            id="seccionColaborador"
+            style="display:none;"
         >
 
-            <div class="confirmacion-titulo">
-                ¿Desea registrar este préstamo?
+            <div class="fila-busqueda">
+
+                <input
+                    type="text"
+                    id="buscarColaborador"
+                    placeholder="Ingrese código del colaborador..."
+                    maxlength="30"
+                    autocomplete="off"
+                >
+
+                <button
+                    class="btn-buscar"
+                    id="btnBuscarColaborador"
+                >
+                    Buscar
+                </button>
+
             </div>
 
-            <p class="confirmacion-texto">
-                Revise que la persona, el libro, el sitio y las fechas sean correctos antes de continuar.
-            </p>
 
-            <div class="acciones-confirmacion">
+            <div
+                id="mensajeColaborador"
+                class="mensaje"
+            ></div>
 
-                <button
-                    class="btn-cancelar"
-                    id="btnCancelar"
+
+            <div class="tabla-contenedor">
+
+                <table
+                    id="tablaColaborador"
+                    style="display:none;"
                 >
-                    Cancelar
-                </button>
 
-                <button
-                    class="btn-confirmar"
-                    id="btnConfirmar"
-                >
-                    Sí, registrar préstamo
-                </button>
+                    <thead>
+
+                        <tr>
+
+                            <th>Código</th>
+
+                            <th>Nombre</th>
+
+                            <th>Área</th>
+
+                            <th>Estado</th>
+
+                            <th>Seleccionar</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody
+                        id="cuerpoColaborador"
+                    ></tbody>
+
+                </table>
 
             </div>
 
         </div>
 
-    </div>
+    </section>
 
-    <div
-        id="mensajeFinal"
-        class="mensaje"
-    ></div>
 
-</section>
-```
+    <!-- =====================================================
+         PASO 2
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <h2>2. Buscar libro</h2>
+
+        <div class="fila-busqueda">
+
+            <input
+                type="text"
+                id="buscarLibro"
+                placeholder="Ingrese código del libro..."
+                maxlength="8"
+                inputmode="numeric"
+            >
+
+            <button
+                class="btn-buscar"
+                id="btnBuscarLibro"
+            >
+                Buscar
+            </button>
+
+        </div>
+
+
+        <div
+            id="mensajeLibro"
+            class="mensaje"
+        ></div>
+
+
+        <div
+            id="libroInfo"
+            class="libro-info"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PASO 3
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <h2>3. Confirmar préstamo</h2>
+
+
+        <div
+            id="resumenPrestamo"
+            class="resumen-prestamo"
+        >
+
+
+            <div class="bloque-resumen">
+
+                <div class="titulo-bloque">
+                    Resumen del préstamo
+                </div>
+
+
+                <div class="contenido-resumen">
+
+                    <div class="datos-persona-libro">
+
+
+                        <!-- PERSONA -->
+
+                        <div class="tarjeta-dato">
+
+                            <h3 id="tituloResumenPersona">
+                                👤 Afiliado
+                            </h3>
+
+
+                            <div class="dato">
+
+                                <span id="etiquetaIdentificador">
+                                    Familia
+                                </span>
+
+                                <span id="resumenFamilia"></span>
+
+                            </div>
+
+
+                            <div class="dato">
+
+                                <span id="etiquetaPersonaId">
+                                    PersonaId
+                                </span>
+
+                                <span id="resumenPersonaId"></span>
+
+                            </div>
+
+
+                            <div class="dato">
+
+                                <span id="etiquetaNombre">
+                                    Nombre
+                                </span>
+
+                                <span id="resumenNombre"></span>
+
+                            </div>
+
+
+                            <div
+                                class="dato"
+                                id="filaAreaResumen"
+                                style="display:none;"
+                            >
+
+                                <span>Área</span>
+
+                                <span id="resumenArea"></span>
+
+                            </div>
+
+
+                            <div class="dato">
+
+                                <span>Sitio</span>
+
+                                <span id="resumenSitio"></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LIBRO -->
+
+                        <div class="tarjeta-dato">
+
+                            <h3>📚 Libro</h3>
+
+
+                            <div class="dato">
+
+                                <span>Código</span>
+
+                                <span id="resumenCodigoLibro"></span>
+
+                            </div>
+
+
+                            <div class="dato">
+
+                                <span>Nombre</span>
+
+                                <span id="resumenNombreLibro"></span>
+
+                            </div>
+
+
+                            <div class="dato">
+
+                                <span>Estado</span>
+
+                                <span>Disponible</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FECHAS -->
+
+            <div class="bloque-resumen">
+
+                <div class="titulo-bloque">
+                    Fechas del préstamo
+                </div>
+
+
+                <div class="contenido-resumen">
+
+                    <div class="fechas-prestamo">
+
+
+                        <div class="campo-fecha">
+
+                            <label for="fechaPrestamo">
+                                Fecha del préstamo
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fechaPrestamo"
+                            >
+
+                            <span class="ayuda-fecha">
+                                Se coloca automáticamente la fecha actual, pero puede modificarse.
+                            </span>
+
+                        </div>
+
+
+                        <div class="campo-fecha">
+
+                            <label for="fechaDevolucion">
+                                Fecha de devolución prevista
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fechaDevolucion"
+                            >
+
+                            <span class="ayuda-fecha">
+                                Puede elegir libremente cuándo debe regresar el libro.
+                            </span>
+
+                        </div>
+
+
+                        <div class="campo-fecha">
+
+                            <label for="sitioPrestamo">
+                                Sitio de préstamo
+                            </label>
+
+                            <select id="sitioPrestamo">
+
+                                <option value="F">
+                                    F
+                                </option>
+
+                                <option value="M">
+                                    M
+                                </option>
+
+                                <option value="R">
+                                    R
+                                </option>
+
+                                <option value="N">
+                                    N
+                                </option>
+
+                                <option value="Z">
+                                    Z
+                                </option>
+
+                            </select>
+
+                            <span class="ayuda-fecha">
+                                Seleccione el sitio donde se realiza el préstamo.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONFIRMACIÓN -->
+
+            <div
+                id="confirmacion"
+                class="confirmacion"
+            >
+
+                <div class="confirmacion-titulo">
+                    ¿Desea registrar este préstamo?
+                </div>
+
+                <p class="confirmacion-texto">
+                    Revise que la persona, el libro, el sitio y las fechas sean correctos antes de continuar.
+                </p>
+
+
+                <div class="acciones-confirmacion">
+
+                    <button
+                        class="btn-cancelar"
+                        id="btnCancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        class="btn-confirmar"
+                        id="btnConfirmar"
+                    >
+                        Sí, registrar préstamo
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="mensajeFinal"
+            class="mensaje"
+        ></div>
+
+    </section>
 
 </div>
+
 
 <script>
 
@@ -786,12 +919,126 @@
 ========================================================= */
 
 let personaSeleccionada = null;
+
 let colaboradorSeleccionado = null;
+
 let libroSeleccionado = null;
 
 let tipoSolicitante = "Afiliado";
 
 let fechaDevolucionModificada = false;
+
+
+/* =========================================================
+   AUTENTICACIÓN
+========================================================= */
+
+let autenticacionLista = false;
+
+async function iniciarAutenticacion() {
+
+    try {
+
+        if (
+            typeof window.protegerPagina !== "function"
+        ) {
+
+            console.error(
+                "No se encontró la función protegerPagina de auth.js."
+            );
+
+            mostrarMensaje(
+                mensajeFinal,
+                "No se pudo iniciar la autenticación del sistema.",
+                "error"
+            );
+
+            document
+                .getElementById("btnConfirmar")
+                .disabled = true;
+
+            return false;
+        }
+
+
+        const autorizado =
+            await window.protegerPagina();
+
+
+        if (!autorizado) {
+
+            console.error(
+                "El usuario no pudo ser autorizado."
+            );
+
+            mostrarMensaje(
+                mensajeFinal,
+                "No fue posible verificar el usuario de la sesión. Actualice la página e intente nuevamente.",
+                "error"
+            );
+
+            document
+                .getElementById("btnConfirmar")
+                .disabled = true;
+
+            return false;
+        }
+
+
+        if (
+            !window.perfilUsuario ||
+            !window.perfilUsuario.nombre
+        ) {
+
+            console.error(
+                "Perfil encontrado, pero no tiene nombre:",
+                window.perfilUsuario
+            );
+
+            mostrarMensaje(
+                mensajeFinal,
+                "No fue posible identificar al usuario que realiza el préstamo.",
+                "error"
+            );
+
+            document
+                .getElementById("btnConfirmar")
+                .disabled = true;
+
+            return false;
+        }
+
+
+        autenticacionLista = true;
+
+        console.log(
+            "Usuario listo para registrar préstamos:",
+            window.perfilUsuario.nombre
+        );
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "ERROR INICIANDO AUTENTICACIÓN:",
+            error
+        );
+
+        mostrarMensaje(
+            mensajeFinal,
+            "Ocurrió un problema al verificar el usuario.",
+            "error"
+        );
+
+        document
+            .getElementById("btnConfirmar")
+            .disabled = true;
+
+        return false;
+    }
+}
 
 
 /* =========================================================
@@ -863,7 +1110,7 @@ const btnTipoColaborador =
 
 
 /* =========================================================
-   ELEMENTOS DEL RESUMEN
+   ELEMENTOS RESUMEN
 ========================================================= */
 
 const tituloResumenPersona =
@@ -907,20 +1154,29 @@ const resumenNombreLibro =
    MENSAJES
 ========================================================= */
 
-function mostrarMensaje(elemento, texto, tipo) {
+function mostrarMensaje(
+    elemento,
+    texto,
+    tipo
+) {
 
-    elemento.textContent = texto;
+    elemento.textContent =
+        texto;
 
     elemento.className =
         "mensaje " + tipo;
 }
 
 
-function limpiarMensaje(elemento) {
+function limpiarMensaje(
+    elemento
+) {
 
-    elemento.textContent = "";
+    elemento.textContent =
+        "";
 
-    elemento.className = "mensaje";
+    elemento.className =
+        "mensaje";
 }
 
 
@@ -928,7 +1184,9 @@ function limpiarMensaje(elemento) {
    NORMALIZAR TEXTO
 ========================================================= */
 
-function normalizarTexto(valor) {
+function normalizarTexto(
+    valor
+) {
 
     return String(valor || "")
         .trim()
@@ -937,10 +1195,12 @@ function normalizarTexto(valor) {
 
 
 /* =========================================================
-   NORMALIZAR CÓDIGO DE LIBRO
+   NORMALIZAR CÓDIGO
 ========================================================= */
 
-function normalizarCodigo(codigo) {
+function normalizarCodigo(
+    codigo
+) {
 
     return String(codigo || "")
         .replace(/\D/g, "")
@@ -949,10 +1209,12 @@ function normalizarCodigo(codigo) {
 
 
 /* =========================================================
-   NORMALIZAR CÓDIGO DE COLABORADOR
+   NORMALIZAR CÓDIGO COLABORADOR
 ========================================================= */
 
-function normalizarCodigoColaborador(codigo) {
+function normalizarCodigoColaborador(
+    codigo
+) {
 
     let valor =
         String(codigo || "")
@@ -991,7 +1253,8 @@ function normalizarCodigoColaborador(codigo) {
 
 function obtenerFechaLocalInput() {
 
-    const hoy = new Date();
+    const hoy =
+        new Date();
 
     const año =
         hoy.getFullYear();
@@ -999,12 +1262,18 @@ function obtenerFechaLocalInput() {
     const mes =
         String(
             hoy.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     const dia =
         String(
             hoy.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     return `${año}-${mes}-${dia}`;
 }
@@ -1014,7 +1283,9 @@ function obtenerFechaLocalInput() {
    AGREGAR UN MES
 ========================================================= */
 
-function agregarUnMes(fechaTexto) {
+function agregarUnMes(
+    fechaTexto
+) {
 
     if (!fechaTexto) {
         return "";
@@ -1023,7 +1294,9 @@ function agregarUnMes(fechaTexto) {
     const partes =
         fechaTexto.split("-");
 
-    if (partes.length !== 3) {
+    if (
+        partes.length !== 3
+    ) {
         return "";
     }
 
@@ -1056,12 +1329,18 @@ function agregarUnMes(fechaTexto) {
     const nuevoMes =
         String(
             fecha.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     const nuevoDia =
         String(
             fecha.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     return `${nuevoAño}-${nuevoMes}-${nuevoDia}`;
 }
@@ -1071,7 +1350,9 @@ function agregarUnMes(fechaTexto) {
    FECHA LOCAL DESDE INPUT
 ========================================================= */
 
-function fechaLocalDesdeInput(fechaTexto) {
+function fechaLocalDesdeInput(
+    fechaTexto
+) {
 
     if (!fechaTexto) {
         return null;
@@ -1080,7 +1361,9 @@ function fechaLocalDesdeInput(fechaTexto) {
     const partes =
         fechaTexto.split("-");
 
-    if (partes.length !== 3) {
+    if (
+        partes.length !== 3
+    ) {
         return null;
     }
 
@@ -1108,7 +1391,9 @@ function fechaLocalDesdeInput(fechaTexto) {
    FECHA INPUT A ISO
 ========================================================= */
 
-function fechaInputAISO(fechaTexto) {
+function fechaInputAISO(
+    fechaTexto
+) {
 
     const fecha =
         fechaLocalDesdeInput(
@@ -1124,48 +1409,74 @@ function fechaInputAISO(fechaTexto) {
 
 
 /* =========================================================
-   OBTENER SITIO DE LA PERSONA
+   OBTENER SITIO PERSONA
 ========================================================= */
 
-function obtenerSitio(persona) {
+function obtenerSitio(
+    persona
+) {
 
-    if (persona && persona.Sitio) {
+    if (
+        persona &&
+        persona.Sitio
+    ) {
 
         const sitio =
-            String(persona.Sitio)
-                .trim()
-                .toUpperCase();
+            String(
+                persona.Sitio
+            )
+            .trim()
+            .toUpperCase();
 
         if (
-            ["F", "M", "R", "N", "Z"]
-                .includes(sitio)
+            [
+                "F",
+                "M",
+                "R",
+                "N",
+                "Z"
+            ].includes(sitio)
         ) {
+
             return sitio;
         }
     }
 
-    if (persona && persona.FamiliaId) {
+
+    if (
+        persona &&
+        persona.FamiliaId
+    ) {
 
         const sitio =
-            String(persona.FamiliaId)
-                .trim()
-                .charAt(0)
-                .toUpperCase();
+            String(
+                persona.FamiliaId
+            )
+            .trim()
+            .charAt(0)
+            .toUpperCase();
 
         if (
-            ["F", "M", "R", "N", "Z"]
-                .includes(sitio)
+            [
+                "F",
+                "M",
+                "R",
+                "N",
+                "Z"
+            ].includes(sitio)
         ) {
+
             return sitio;
         }
     }
+
 
     return null;
 }
 
 
 /* =========================================================
-   OBTENER SITIO DE PRÉSTAMO
+   OBTENER SITIO PRÉSTAMO
 ========================================================= */
 
 function obtenerSitioPrestamo() {
@@ -1178,9 +1489,15 @@ function obtenerSitioPrestamo() {
         .toUpperCase();
 
     if (
-        ["F", "M", "R", "N", "Z"]
-            .includes(sitio)
+        [
+            "F",
+            "M",
+            "R",
+            "N",
+            "Z"
+        ].includes(sitio)
     ) {
+
         return sitio;
     }
 
@@ -1189,20 +1506,7 @@ function obtenerSitioPrestamo() {
 
 
 /* =========================================================
-   OBTENER USUARIO ACTUAL
-=========================================================
-
-   auth.js deja disponible:
-
-   window.perfilUsuario
-
-   y dentro:
-
-   window.perfilUsuario.nombre
-
-   Este dato se guarda en PrestadoPor para que
-   el reporte conserve quién realizó realmente
-   el préstamo.
+   USUARIO ACTUAL
 ========================================================= */
 
 function obtenerUsuarioActual() {
@@ -1228,12 +1532,15 @@ function obtenerUsuarioActual() {
 
 function prepararFechas() {
 
-    if (!fechaPrestamoInput.value) {
+    if (
+        !fechaPrestamoInput.value
+    ) {
 
         fechaPrestamoInput.value =
             obtenerFechaLocalInput();
 
     }
+
 
     if (
         !fechaDevolucionModificada
@@ -1245,7 +1552,6 @@ function prepararFechas() {
             );
 
     }
-
 }
 
 
@@ -1261,6 +1567,7 @@ function validarFechas() {
     const fechaDevolucion =
         fechaDevolucionInput.value;
 
+
     if (!fechaPrestamo) {
 
         mostrarMensaje(
@@ -1273,6 +1580,7 @@ function validarFechas() {
 
         return false;
     }
+
 
     if (!fechaDevolucion) {
 
@@ -1287,6 +1595,7 @@ function validarFechas() {
         return false;
     }
 
+
     const fechaInicio =
         fechaLocalDesdeInput(
             fechaPrestamo
@@ -1296,6 +1605,7 @@ function validarFechas() {
         fechaLocalDesdeInput(
             fechaDevolucion
         );
+
 
     if (
         !fechaInicio ||
@@ -1310,6 +1620,7 @@ function validarFechas() {
 
         return false;
     }
+
 
     if (
         fechaFin < fechaInicio
@@ -1326,12 +1637,13 @@ function validarFechas() {
         return false;
     }
 
+
     return true;
 }
 
 
 /* =========================================================
-   VALIDAR SITIO DE PRÉSTAMO
+   VALIDAR SITIO
 ========================================================= */
 
 function validarSitioPrestamo() {
@@ -1357,10 +1669,12 @@ function validarSitioPrestamo() {
 
 
 /* =========================================================
-   CAMBIAR TIPO DE SOLICITANTE
+   CAMBIAR TIPO
 ========================================================= */
 
-function cambiarTipoSolicitante(tipo) {
+function cambiarTipoSolicitante(
+    tipo
+) {
 
     tipoSolicitante =
         tipo;
@@ -1397,7 +1711,10 @@ function cambiarTipoSolicitante(tipo) {
     buscarColaboradorInput.value =
         "";
 
-    if (tipo === "Afiliado") {
+
+    if (
+        tipo === "Afiliado"
+    ) {
 
         btnTipoAfiliado.classList.add(
             "activa"
@@ -1428,8 +1745,8 @@ function cambiarTipoSolicitante(tipo) {
 
         seccionColaborador.style.display =
             "block";
-
     }
+
 
     actualizarDetalle();
 }
@@ -1444,16 +1761,21 @@ async function buscarFamilia() {
     const familia =
         buscarFamiliaInput.value.trim();
 
-    limpiarMensaje(mensajeFamilia);
+    limpiarMensaje(
+        mensajeFamilia
+    );
 
-    cuerpoFamilia.innerHTML = "";
+    cuerpoFamilia.innerHTML =
+        "";
 
     tablaFamilia.style.display =
         "none";
 
-    personaSeleccionada = null;
+    personaSeleccionada =
+        null;
 
     actualizarDetalle();
+
 
     if (!familia) {
 
@@ -1466,6 +1788,7 @@ async function buscarFamilia() {
         return;
     }
 
+
     try {
 
         const {
@@ -1473,21 +1796,16 @@ async function buscarFamilia() {
             error
         } =
             await supabaseClient
-
                 .from("afiliados")
-
                 .select("*")
-
                 .eq(
                     "FamiliaId",
                     familia
                 )
-
                 .eq(
                     "estado",
                     "Activo"
                 )
-
                 .order(
                     "Apellidos",
                     {
@@ -1495,9 +1813,11 @@ async function buscarFamilia() {
                     }
                 );
 
+
         if (error) {
             throw error;
         }
+
 
         if (
             !data ||
@@ -1513,98 +1833,113 @@ async function buscarFamilia() {
             return;
         }
 
-        data.forEach(persona => {
 
-            const fila =
-                document.createElement("tr");
+        data.forEach(
+            persona => {
 
-            const tdPersona =
-                document.createElement("td");
+                const fila =
+                    document.createElement("tr");
 
-            tdPersona.textContent =
-                persona.PersonaId;
 
-            const tdFamilia =
-                document.createElement("td");
+                const tdPersona =
+                    document.createElement("td");
 
-            tdFamilia.textContent =
-                persona.FamiliaId;
+                tdPersona.textContent =
+                    persona.PersonaId;
 
-            const tdNombre =
-                document.createElement("td");
 
-            tdNombre.className =
-                "nombre";
+                const tdFamilia =
+                    document.createElement("td");
 
-            tdNombre.textContent =
-                `${persona.Nombres} ${persona.Apellidos}`;
+                tdFamilia.textContent =
+                    persona.FamiliaId;
 
-            const tdEstado =
-                document.createElement("td");
 
-            tdEstado.textContent =
-                persona.estado;
+                const tdNombre =
+                    document.createElement("td");
 
-            const tdAccion =
-                document.createElement("td");
+                tdNombre.className =
+                    "nombre";
 
-            const boton =
-                document.createElement("button");
+                tdNombre.textContent =
+                    `${persona.Nombres || ""} ${persona.Apellidos || ""}`;
 
-            boton.type =
-                "button";
 
-            boton.className =
-                "btn-seleccionar";
+                const tdEstado =
+                    document.createElement("td");
 
-            boton.textContent =
-                "Seleccionar";
+                tdEstado.textContent =
+                    persona.estado;
 
-            boton.addEventListener(
-                "click",
-                function() {
 
-                    seleccionarPersona(
-                        persona,
-                        fila,
-                        boton
-                    );
+                const tdAccion =
+                    document.createElement("td");
 
-                }
-            );
 
-            tdAccion.appendChild(
-                boton
-            );
+                const boton =
+                    document.createElement("button");
 
-            fila.appendChild(
-                tdPersona
-            );
+                boton.type =
+                    "button";
 
-            fila.appendChild(
-                tdFamilia
-            );
+                boton.className =
+                    "btn-seleccionar";
 
-            fila.appendChild(
-                tdNombre
-            );
+                boton.textContent =
+                    "Seleccionar";
 
-            fila.appendChild(
-                tdEstado
-            );
 
-            fila.appendChild(
-                tdAccion
-            );
+                boton.addEventListener(
+                    "click",
+                    function() {
 
-            cuerpoFamilia.appendChild(
-                fila
-            );
+                        seleccionarPersona(
+                            persona,
+                            fila,
+                            boton
+                        );
 
-        });
+                    }
+                );
+
+
+                tdAccion.appendChild(
+                    boton
+                );
+
+
+                fila.appendChild(
+                    tdPersona
+                );
+
+                fila.appendChild(
+                    tdFamilia
+                );
+
+                fila.appendChild(
+                    tdNombre
+                );
+
+                fila.appendChild(
+                    tdEstado
+                );
+
+                fila.appendChild(
+                    tdAccion
+                );
+
+
+                cuerpoFamilia.appendChild(
+                    fila
+                );
+
+            }
+        );
+
 
         tablaFamilia.style.display =
             "table";
+
 
     } catch (error) {
 
@@ -1633,28 +1968,33 @@ function seleccionarPersona(
         .querySelectorAll(
             "#cuerpoFamilia tr"
         )
-        .forEach(fila => {
+        .forEach(
+            fila => {
 
-            fila.classList.remove(
-                "seleccionada"
-            );
-
-            const boton =
-                fila.querySelector(
-                    ".btn-seleccionar"
-                );
-
-            if (boton) {
-
-                boton.classList.remove(
+                fila.classList.remove(
                     "seleccionada"
                 );
 
-                boton.textContent =
-                    "Seleccionar";
-            }
 
-        });
+                const boton =
+                    fila.querySelector(
+                        ".btn-seleccionar"
+                    );
+
+
+                if (boton) {
+
+                    boton.classList.remove(
+                        "seleccionada"
+                    );
+
+                    boton.textContent =
+                        "Seleccionar";
+                }
+
+            }
+        );
+
 
     filaSeleccionada.classList.add(
         "seleccionada"
@@ -1667,11 +2007,13 @@ function seleccionarPersona(
     botonSeleccionado.textContent =
         "✓ Seleccionada";
 
+
     personaSeleccionada =
         persona;
 
     colaboradorSeleccionado =
         null;
+
 
     actualizarDetalle();
 }
@@ -1701,6 +2043,7 @@ async function buscarColaborador() {
 
     actualizarDetalle();
 
+
     if (!codigoIngresado) {
 
         mostrarMensaje(
@@ -1712,10 +2055,12 @@ async function buscarColaborador() {
         return;
     }
 
+
     const codigoNormalizado =
         normalizarCodigoColaborador(
             codigoIngresado
         );
+
 
     if (!codigoNormalizado) {
 
@@ -1728,6 +2073,7 @@ async function buscarColaborador() {
         return;
     }
 
+
     try {
 
         const {
@@ -1735,31 +2081,32 @@ async function buscarColaborador() {
             error
         } =
             await supabaseClient
-
                 .from("colaboradores")
-
                 .select("*")
-
                 .eq(
                     "estado",
                     "Activo"
                 );
 
+
         if (error) {
             throw error;
         }
 
-        const colaboradoresEncontrados =
-            (data || []).filter(
-                colaborador =>
-                    normalizarCodigoColaborador(
-                        colaborador.CodigoColaborador
-                    ) ===
-                    codigoNormalizado
-            );
+
+        const encontrados =
+            (data || [])
+                .filter(
+                    colaborador =>
+                        normalizarCodigoColaborador(
+                            colaborador.CodigoColaborador
+                        ) ===
+                        codigoNormalizado
+                );
+
 
         if (
-            colaboradoresEncontrados.length === 0
+            encontrados.length === 0
         ) {
 
             mostrarMensaje(
@@ -1771,17 +2118,20 @@ async function buscarColaborador() {
             return;
         }
 
-        colaboradoresEncontrados.forEach(
+
+        encontrados.forEach(
             colaborador => {
 
                 const fila =
                     document.createElement("tr");
+
 
                 const tdCodigo =
                     document.createElement("td");
 
                 tdCodigo.textContent =
                     colaborador.CodigoColaborador;
+
 
                 const tdNombre =
                     document.createElement("td");
@@ -1792,11 +2142,13 @@ async function buscarColaborador() {
                 tdNombre.textContent =
                     colaborador.Nombre || "";
 
+
                 const tdArea =
                     document.createElement("td");
 
                 tdArea.textContent =
                     colaborador.Area || "";
+
 
                 const tdEstado =
                     document.createElement("td");
@@ -1804,8 +2156,10 @@ async function buscarColaborador() {
                 tdEstado.textContent =
                     colaborador.estado;
 
+
                 const tdAccion =
                     document.createElement("td");
+
 
                 const boton =
                     document.createElement("button");
@@ -1818,6 +2172,7 @@ async function buscarColaborador() {
 
                 boton.textContent =
                     "Seleccionar";
+
 
                 boton.addEventListener(
                     "click",
@@ -1832,9 +2187,11 @@ async function buscarColaborador() {
                     }
                 );
 
+
                 tdAccion.appendChild(
                     boton
                 );
+
 
                 fila.appendChild(
                     tdCodigo
@@ -1856,6 +2213,7 @@ async function buscarColaborador() {
                     tdAccion
                 );
 
+
                 cuerpoColaborador.appendChild(
                     fila
                 );
@@ -1863,8 +2221,10 @@ async function buscarColaborador() {
             }
         );
 
+
         tablaColaborador.style.display =
             "table";
+
 
     } catch (error) {
 
@@ -1893,28 +2253,33 @@ function seleccionarColaborador(
         .querySelectorAll(
             "#cuerpoColaborador tr"
         )
-        .forEach(fila => {
+        .forEach(
+            fila => {
 
-            fila.classList.remove(
-                "seleccionada"
-            );
-
-            const boton =
-                fila.querySelector(
-                    ".btn-seleccionar"
-                );
-
-            if (boton) {
-
-                boton.classList.remove(
+                fila.classList.remove(
                     "seleccionada"
                 );
 
-                boton.textContent =
-                    "Seleccionar";
-            }
 
-        });
+                const boton =
+                    fila.querySelector(
+                        ".btn-seleccionar"
+                    );
+
+
+                if (boton) {
+
+                    boton.classList.remove(
+                        "seleccionada"
+                    );
+
+                    boton.textContent =
+                        "Seleccionar";
+                }
+
+            }
+        );
+
 
     filaSeleccionada.classList.add(
         "seleccionada"
@@ -1927,11 +2292,13 @@ function seleccionarColaborador(
     botonSeleccionado.textContent =
         "✓ Seleccionado";
 
+
     colaboradorSeleccionado =
         colaborador;
 
     personaSeleccionada =
         null;
+
 
     actualizarDetalle();
 }
@@ -1946,7 +2313,9 @@ async function buscarLibro() {
     const codigoIngresado =
         buscarLibroInput.value.trim();
 
-    limpiarMensaje(mensajeLibro);
+    limpiarMensaje(
+        mensajeLibro
+    );
 
     libroInfo.style.display =
         "none";
@@ -1955,6 +2324,7 @@ async function buscarLibro() {
         null;
 
     actualizarDetalle();
+
 
     if (!codigoIngresado) {
 
@@ -1967,10 +2337,12 @@ async function buscarLibro() {
         return;
     }
 
+
     const codigoNormalizado =
         normalizarCodigo(
             codigoIngresado
         );
+
 
     try {
 
@@ -1979,22 +2351,25 @@ async function buscarLibro() {
             error
         } =
             await supabaseClient
-
                 .from("libros")
-
                 .select("*");
+
 
         if (error) {
             throw error;
         }
 
+
         const libro =
-            (data || []).find(
-                item =>
-                    normalizarCodigo(
-                        item.codigoLibro
-                    ) === codigoNormalizado
-            );
+            (data || [])
+                .find(
+                    item =>
+                        normalizarCodigo(
+                            item.codigoLibro
+                        ) ===
+                        codigoNormalizado
+                );
+
 
         if (!libro) {
 
@@ -2007,8 +2382,12 @@ async function buscarLibro() {
             return;
         }
 
+
         if (
-            libro.estado === "Baja"
+            normalizarTexto(
+                libro.estado
+            ) ===
+            "BAJA"
         ) {
 
             mostrarMensaje(
@@ -2020,24 +2399,24 @@ async function buscarLibro() {
             return;
         }
 
+
         const {
             data: prestamosActivos,
             error: errorPrestamos
         } =
             await supabaseClient
-
                 .from("prestamos")
-
                 .select("*")
-
                 .eq(
                     "estado",
                     "Prestado"
                 );
 
+
         if (errorPrestamos) {
             throw errorPrestamos;
         }
+
 
         const yaPrestado =
             (prestamosActivos || [])
@@ -2049,9 +2428,13 @@ async function buscarLibro() {
                         codigoNormalizado
                 );
 
+
         if (
             yaPrestado ||
-            libro.estado === "Prestado"
+            normalizarTexto(
+                libro.estado
+            ) ===
+            "PRESTADO"
         ) {
 
             mostrarMensaje(
@@ -2063,8 +2446,10 @@ async function buscarLibro() {
             return;
         }
 
+
         libroSeleccionado =
             libro;
+
 
         libroInfo.innerHTML = `
             <strong>Libro encontrado</strong><br>
@@ -2073,10 +2458,13 @@ async function buscarLibro() {
             Estado: Disponible
         `;
 
+
         libroInfo.style.display =
             "block";
 
+
         actualizarDetalle();
+
 
     } catch (error) {
 
@@ -2092,7 +2480,7 @@ async function buscarLibro() {
 
 
 /* =========================================================
-   ACTUALIZAR DETALLE
+   ACTUALIZAR RESUMEN
 ========================================================= */
 
 function actualizarDetalle() {
@@ -2101,6 +2489,7 @@ function actualizarDetalle() {
         tipoSolicitante === "Afiliado"
             ? !!personaSeleccionada
             : !!colaboradorSeleccionado;
+
 
     if (
         !haySolicitante ||
@@ -2116,7 +2505,9 @@ function actualizarDetalle() {
         return;
     }
 
+
     prepararFechas();
+
 
     if (
         tipoSolicitante === "Afiliado"
@@ -2134,14 +2525,18 @@ function actualizarDetalle() {
         etiquetaNombre.textContent =
             "Nombre";
 
+
         resumenFamilia.textContent =
             personaSeleccionada.FamiliaId || "";
+
 
         resumenPersonaId.textContent =
             personaSeleccionada.PersonaId || "";
 
+
         resumenNombre.textContent =
             `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
+
 
         resumenArea.textContent =
             "";
@@ -2149,10 +2544,13 @@ function actualizarDetalle() {
         filaAreaResumen.style.display =
             "none";
 
+
         resumenSitio.textContent =
             obtenerSitio(
                 personaSeleccionada
-            ) || "No definido";
+            ) ||
+            "No definido";
+
 
     } else {
 
@@ -2168,34 +2566,47 @@ function actualizarDetalle() {
         etiquetaNombre.textContent =
             "Nombre";
 
+
         resumenFamilia.textContent =
             colaboradorSeleccionado.CodigoColaborador || "";
+
 
         resumenPersonaId.textContent =
             "Colaborador";
 
+
         resumenNombre.textContent =
             colaboradorSeleccionado.Nombre || "";
 
+
         resumenArea.textContent =
-            colaboradorSeleccionado.Area || "No definida";
+            colaboradorSeleccionado.Area ||
+            "No definida";
+
 
         filaAreaResumen.style.display =
             "flex";
 
-        resumenSitio.textContent =
-            sitioPrestamoInput.value || "No definido";
 
+        resumenSitio.textContent =
+            sitioPrestamoInput.value ||
+            "No definido";
     }
 
+
     resumenCodigoLibro.textContent =
-        libroSeleccionado.codigoLibro || "";
+        libroSeleccionado.codigoLibro ||
+        "";
+
 
     resumenNombreLibro.textContent =
-        libroSeleccionado.nombreLibro || "";
+        libroSeleccionado.nombreLibro ||
+        "";
+
 
     resumenPrestamo.style.display =
         "block";
+
 
     confirmacion.style.display =
         "block";
@@ -2208,11 +2619,29 @@ function actualizarDetalle() {
 
 async function confirmarPrestamo() {
 
-    limpiarMensaje(mensajeFinal);
+    limpiarMensaje(
+        mensajeFinal
+    );
 
 
     /* =====================================================
-       VERIFICAR USUARIO QUE REALIZA LA OPERACIÓN
+       COMPROBAR AUTENTICACIÓN
+    ===================================================== */
+
+    if (!autenticacionLista) {
+
+        const autorizado =
+            await iniciarAutenticacion();
+
+        if (!autorizado) {
+
+            return;
+        }
+    }
+
+
+    /* =====================================================
+       OBTENER USUARIO ACTUAL
     ===================================================== */
 
     const usuarioActual =
@@ -2223,17 +2652,23 @@ async function confirmarPrestamo() {
 
         mostrarMensaje(
             mensajeFinal,
-            "No se pudo identificar al usuario que está realizando el préstamo. Cierre sesión, vuelva a ingresar e inténtelo nuevamente.",
+            "No fue posible identificar al usuario que realiza el préstamo. Actualice la página e intente nuevamente.",
             "error"
-        );
-
-        console.error(
-            "No existe window.perfilUsuario.nombre"
         );
 
         return;
     }
 
+
+    console.log(
+        "PRÉSTAMO REALIZADO POR:",
+        usuarioActual
+    );
+
+
+    /* =====================================================
+       VALIDACIONES
+    ===================================================== */
 
     const haySolicitante =
         tipoSolicitante === "Afiliado"
@@ -2274,16 +2709,17 @@ async function confirmarPrestamo() {
 
     try {
 
+        /* =================================================
+           VERIFICAR NUEVAMENTE QUE EL LIBRO NO ESTÉ PRESTADO
+        ================================================= */
+
         const {
             data: prestamosExistentes,
             error: errorConsulta
         } =
             await supabaseClient
-
                 .from("prestamos")
-
                 .select("*")
-
                 .eq(
                     "estado",
                     "Prestado"
@@ -2358,7 +2794,7 @@ async function confirmarPrestamo() {
 
 
         /* =================================================
-           PRÉSTAMO DE AFILIADO
+           AFILIADO
         ================================================= */
 
         if (
@@ -2443,8 +2879,9 @@ async function confirmarPrestamo() {
 
         } else {
 
+
             /* =================================================
-               PRÉSTAMO DE COLABORADOR
+               COLABORADOR
             ================================================= */
 
             nuevoPrestamo = {
@@ -2508,23 +2945,24 @@ async function confirmarPrestamo() {
 
 
         console.log(
-            "Registrando préstamo realizado por:",
-            usuarioActual
+            "DATOS DEL PRÉSTAMO:",
+            nuevoPrestamo
         );
 
+
+        /* =================================================
+           INSERTAR PRÉSTAMO
+        ================================================= */
 
         const {
             data: prestamoGuardado,
             error: errorInsertar
         } =
             await supabaseClient
-
                 .from("prestamos")
-
                 .insert(
                     nuevoPrestamo
                 )
-
                 .select()
                 .single();
 
@@ -2534,17 +2972,24 @@ async function confirmarPrestamo() {
         }
 
 
+        console.log(
+            "PRÉSTAMO GUARDADO:",
+            prestamoGuardado
+        );
+
+
+        /* =================================================
+           ACTUALIZAR ESTADO DEL LIBRO
+        ================================================= */
+
         const {
             error: errorLibro
         } =
             await supabaseClient
-
                 .from("libros")
-
                 .update({
                     estado: "Prestado"
                 })
-
                 .eq(
                     "id",
                     libroSeleccionado.id
@@ -2557,7 +3002,7 @@ async function confirmarPrestamo() {
 
 
         /* =================================================
-           PRÉSTAMO REGISTRADO CORRECTAMENTE
+           ÉXITO
         ================================================= */
 
         mostrarMensaje(
@@ -2567,7 +3012,9 @@ async function confirmarPrestamo() {
         );
 
 
-        /* LIMPIAR SELECCIONES */
+        /* =================================================
+           LIMPIAR
+        ================================================= */
 
         personaSeleccionada =
             null;
@@ -2581,8 +3028,6 @@ async function confirmarPrestamo() {
         fechaDevolucionModificada =
             false;
 
-
-        /* RESTABLECER TIPO */
 
         tipoSolicitante =
             "Afiliado";
@@ -2604,8 +3049,6 @@ async function confirmarPrestamo() {
             "none";
 
 
-        /* LIMPIAR BUSCAR FAMILIA */
-
         buscarFamiliaInput.value =
             "";
 
@@ -2615,12 +3058,11 @@ async function confirmarPrestamo() {
         tablaFamilia.style.display =
             "none";
 
+
         limpiarMensaje(
             mensajeFamilia
         );
 
-
-        /* LIMPIAR BUSCAR COLABORADOR */
 
         buscarColaboradorInput.value =
             "";
@@ -2631,12 +3073,11 @@ async function confirmarPrestamo() {
         tablaColaborador.style.display =
             "none";
 
+
         limpiarMensaje(
             mensajeColaborador
         );
 
-
-        /* LIMPIAR BUSCAR LIBRO */
 
         buscarLibroInput.value =
             "";
@@ -2648,8 +3089,6 @@ async function confirmarPrestamo() {
             "none";
 
 
-        /* OCULTAR RESUMEN */
-
         resumenPrestamo.style.display =
             "none";
 
@@ -2657,10 +3096,9 @@ async function confirmarPrestamo() {
             "none";
 
 
-        /* REINICIAR FECHAS */
-
         fechaPrestamoInput.value =
             obtenerFechaLocalInput();
+
 
         fechaDevolucionInput.value =
             agregarUnMes(
@@ -2668,15 +3106,16 @@ async function confirmarPrestamo() {
             );
 
 
-        /* REINICIAR SITIO */
-
         sitioPrestamoInput.value =
             "F";
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "ERROR AL REGISTRAR PRÉSTAMO:",
+            error
+        );
 
         mostrarMensaje(
             mensajeFinal,
@@ -2711,7 +3150,7 @@ function cancelarPrestamo() {
 
 
 /* =========================================================
-   CAMBIO DE FECHA DE PRÉSTAMO
+   CAMBIO FECHA PRÉSTAMO
 ========================================================= */
 
 fechaPrestamoInput.addEventListener(
@@ -2726,7 +3165,6 @@ fechaPrestamoInput.addEventListener(
                 agregarUnMes(
                     fechaPrestamoInput.value
                 );
-
         }
 
         actualizarDetalle();
@@ -2736,7 +3174,7 @@ fechaPrestamoInput.addEventListener(
 
 
 /* =========================================================
-   CAMBIO DE FECHA DE DEVOLUCIÓN
+   CAMBIO FECHA DEVOLUCIÓN
 ========================================================= */
 
 fechaDevolucionInput.addEventListener(
@@ -2753,7 +3191,7 @@ fechaDevolucionInput.addEventListener(
 
 
 /* =========================================================
-   CAMBIO DE SITIO
+   CAMBIO SITIO
 ========================================================= */
 
 sitioPrestamoInput.addEventListener(
@@ -2770,34 +3208,38 @@ sitioPrestamoInput.addEventListener(
    ESCAPAR HTML
 ========================================================= */
 
-function escapeHtml(valor) {
+function escapeHtml(
+    valor
+) {
 
-    return String(valor ?? "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    return String(
+        valor ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 }
 
 
 /* =========================================================
-   BOTONES TIPO SOLICITANTE
+   BOTONES TIPO
 ========================================================= */
 
 btnTipoAfiliado.addEventListener(
@@ -2825,7 +3267,7 @@ btnTipoColaborador.addEventListener(
 
 
 /* =========================================================
-   BOTONES PRINCIPALES
+   BOTONES BÚSQUEDA
 ========================================================= */
 
 document
@@ -2882,87 +3324,83 @@ document
    ENTER - FAMILIA
 ========================================================= */
 
-buscarFamiliaInput
-    .addEventListener(
-        "keydown",
-        function(event) {
+buscarFamiliaInput.addEventListener(
+    "keydown",
+    function(event) {
 
-            if (
-                event.key === "Enter"
-            ) {
+        if (
+            event.key === "Enter"
+        ) {
 
-                buscarFamilia();
-
-            }
+            buscarFamilia();
 
         }
-    );
+
+    }
+);
 
 
 /* =========================================================
    ENTER - COLABORADOR
 ========================================================= */
 
-buscarColaboradorInput
-    .addEventListener(
-        "keydown",
-        function(event) {
+buscarColaboradorInput.addEventListener(
+    "keydown",
+    function(event) {
 
-            if (
-                event.key === "Enter"
-            ) {
+        if (
+            event.key === "Enter"
+        ) {
 
-                buscarColaborador();
-
-            }
+            buscarColaborador();
 
         }
-    );
+
+    }
+);
 
 
 /* =========================================================
    ENTER - LIBRO
 ========================================================= */
 
-buscarLibroInput
-    .addEventListener(
-        "keydown",
-        function(event) {
+buscarLibroInput.addEventListener(
+    "keydown",
+    function(event) {
 
-            if (
-                event.key === "Enter"
-            ) {
+        if (
+            event.key === "Enter"
+        ) {
 
-                buscarLibro();
-
-            }
+            buscarLibro();
 
         }
-    );
+
+    }
+);
 
 
 /* =========================================================
-   SOLO NÚMEROS - CÓDIGO LIBRO
+   SOLO NÚMEROS PARA CÓDIGO DE LIBRO
 ========================================================= */
 
-buscarLibroInput
-    .addEventListener(
-        "input",
-        function() {
+buscarLibroInput.addEventListener(
+    "input",
+    function() {
 
-            this.value =
-                this.value
-                    .replace(
-                        /\D/g,
-                        ""
-                    )
-                    .slice(
-                        0,
-                        8
-                    );
+        this.value =
+            this.value
+                .replace(
+                    /\D/g,
+                    ""
+                )
+                .slice(
+                    0,
+                    8
+                );
 
-        }
-    );
+    }
+);
 
 
 /* =========================================================
@@ -2985,6 +3423,13 @@ fechaDevolucionInput.value =
 
 sitioPrestamoInput.value =
     "F";
+
+
+/* =========================================================
+   INICIAR AUTENTICACIÓN
+========================================================= */
+
+iniciarAutenticacion();
 
 </script>
 
