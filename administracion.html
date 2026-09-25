@@ -1,727 +1,940 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Administración - Biblioteca</title>
-
-<style>
-html{visibility:hidden}
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f3f4f6;
-    color:#1f2937;
-}
-
-header{
-    background:#374151;
-    color:white;
-    padding:18px 30px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:20px;
-}
-
-.encabezado-contenido{
-    display:flex;
-    align-items:center;
-    gap:14px;
-}
-
-.encabezado-icono{font-size:30px}
-
-.encabezado-texto{
-    display:flex;
-    flex-direction:column;
-    gap:3px;
-}
-
-.encabezado-texto strong{font-size:21px}
-.encabezado-texto span{
-    font-size:14px;
-    color:#d1d5db;
-}
-
-.boton-volver{
-    background:white;
-    color:#374151;
-    border:none;
-    border-radius:7px;
-    padding:10px 18px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.boton-volver:hover{background:#e5e7eb}
-
-.contenedor{
-    width:min(1180px,calc(100% - 40px));
-    margin:24px auto 45px;
-}
-
-.seccion{
-    background:white;
-    border-radius:10px;
-    margin-bottom:18px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-    overflow:hidden;
-}
-
-.seccion-titulo{
-    background:#f9fafb;
-    border-bottom:1px solid #e5e7eb;
-    padding:13px 18px;
-    font-size:17px;
-    font-weight:bold;
-    color:#374151;
-}
-
-.seccion-contenido{padding:17px 18px}
-
-.descripcion-seccion{
-    margin:0 0 14px;
-    color:#6b7280;
-    line-height:1.45;
-    font-size:14px;
-}
-
-/* INFORMACIÓN GENERAL */
-
-.grid-informacion{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-}
-
-.dato{
-    border:1px solid #e5e7eb;
-    border-radius:7px;
-    padding:11px 13px;
-    background:#fafafa;
-}
-
-.dato-label{
-    display:block;
-    font-size:12px;
-    color:#6b7280;
-    margin-bottom:4px;
-}
-
-.dato-valor{
-    display:block;
-    font-weight:bold;
-    color:#111827;
-    font-size:14px;
-}
-
-/* ESTADÍSTICAS */
-
-.estadisticas{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-}
-
-.tarjeta-estadistica{
-    border:1px solid #e5e7eb;
-    border-radius:7px;
-    padding:13px 10px;
-    text-align:center;
-    background:#fafafa;
-}
-
-.tarjeta-estadistica strong{
-    display:block;
-    font-size:24px;
-    color:#374151;
-    margin-bottom:4px;
-}
-
-.tarjeta-estadistica span{
-    font-size:13px;
-    color:#6b7280;
-}
-
-/* DIAGNÓSTICO E INTEGRIDAD */
-
-.estado-datos-grid{
-    display:grid;
-    grid-template-columns:1.15fr .85fr;
-    gap:18px;
-}
-
-.subbloque{
-    border:1px solid #e5e7eb;
-    border-radius:8px;
-    overflow:hidden;
-}
-
-.subbloque-titulo{
-    background:#f9fafb;
-    border-bottom:1px solid #e5e7eb;
-    padding:10px 13px;
-    font-size:14px;
-    font-weight:bold;
-    color:#374151;
-}
-
-.subbloque-contenido{padding:12px}
-
-.tabla-contenedor{
-    width:100%;
-    overflow-x:auto;
-    border:1px solid #e5e7eb;
-    border-radius:7px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:650px;
-}
-
-th{
-    background:#f3f4f6;
-    color:#374151;
-    font-size:12px;
-    text-align:left;
-    padding:9px 10px;
-    border-bottom:1px solid #d1d5db;
-    white-space:nowrap;
-}
-
-td{
-    padding:9px 10px;
-    border-bottom:1px solid #e5e7eb;
-    font-size:13px;
-    vertical-align:middle;
-}
-
-tr:last-child td{border-bottom:none}
-
-.diagnostico-ok{
-    color:#166534;
-    font-weight:bold;
-}
-
-.diagnostico-error{
-    color:#991b1b;
-    font-weight:bold;
-}
-
-.diagnostico-cargando{color:#6b7280}
-
-.integridad-lista{
-    display:grid;
-    gap:7px;
-}
-
-.integridad-item{
-    border:1px solid #e5e7eb;
-    border-radius:7px;
-    padding:10px 12px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-}
-
-.integridad-item strong{font-size:13px}
-
-.integridad-estado{
-    font-size:12px;
-    font-weight:bold;
-    white-space:nowrap;
-}
-
-.integridad-correcta{color:#166534}
-.integridad-observacion{color:#92400e}
-
-/* SITIOS */
-
-.sitios{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:10px;
-}
-
-.sitio{
-    border:1px solid #e5e7eb;
-    border-radius:7px;
-    padding:12px 8px;
-    text-align:center;
-    background:#fafafa;
-}
-
-.sitio-codigo{
-    font-size:22px;
-    font-weight:bold;
-    color:#374151;
-    margin-bottom:5px;
-}
-
-.sitio-nombre{
-    font-size:12px;
-    color:#6b7280;
-    line-height:1.35;
-}
-
-/* USUARIOS */
-
-.usuarios-preparacion{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-bottom:14px;
-}
-
-.tarjeta-rol{
-    border:1px solid #e5e7eb;
-    border-radius:7px;
-    padding:13px 15px;
-    background:#fafafa;
-}
-
-.tarjeta-rol h3{
-    margin:0 0 6px;
-    color:#374151;
-    font-size:16px;
-}
-
-.tarjeta-rol p{
-    margin:0 0 8px;
-    color:#6b7280;
-    line-height:1.4;
-    font-size:13px;
-}
-
-.tarjeta-rol ul{
-    margin:0;
-    padding-left:18px;
-    color:#4b5563;
-    line-height:1.5;
-    font-size:13px;
-}
-
-.usuarios-barra{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:12px;
-}
-
-.usuarios-resumen{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    flex:1;
-}
-
-.usuario-resumen{
-    border:1px solid #e5e7eb;
-    border-radius:7px;
-    padding:10px;
-    text-align:center;
-    background:#fafafa;
-}
-
-.usuario-resumen strong{
-    display:block;
-    font-size:21px;
-    color:#374151;
-    margin-bottom:3px;
-}
-
-.usuario-resumen span{
-    color:#6b7280;
-    font-size:12px;
-}
-
-.acciones-usuarios{flex-shrink:0}
-
-.usuarios-cargando,
-.usuarios-vacio{
-    text-align:center;
-    color:#6b7280;
-    padding:20px;
-}
-
-.estado-preparacion{
-    margin-top:12px;
-    padding:10px 12px;
-    border-radius:7px;
-    background:#f3f4f6;
-    color:#4b5563;
-    font-size:12px;
-    line-height:1.45;
-}
-
-/* BOTONES */
-
-.boton{
-    border:none;
-    border-radius:7px;
-    padding:9px 15px;
-    font-weight:bold;
-    cursor:pointer;
-    font-size:13px;
-}
-
-.boton-principal{
-    background:#374151;
-    color:white;
-}
-
-.boton-principal:hover{background:#1f2937}
-
-.boton-secundario{
-    background:#e5e7eb;
-    color:#374151;
-}
-
-.boton-secundario:hover{background:#d1d5db}
-
-.boton-rojo{
-    background:#b91c1c;
-    color:white;
-}
-
-.boton-rojo:hover{background:#991b1b}
-
-/* SESIÓN */
-
-.sesion-acciones{
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
-    margin-top:14px;
-}
-
-.pie{
-    text-align:center;
-    color:#6b7280;
-    font-size:13px;
-    padding:18px;
-}
-
-/* ESTADOS */
-
-.estado-activo{
-    display:inline-block;
-    padding:4px 8px;
-    border-radius:20px;
-    background:#dcfce7;
-    color:#166534;
-    font-size:11px;
-    font-weight:bold;
-}
-
-.estado-inactivo{
-    display:inline-block;
-    padding:4px 8px;
-    border-radius:20px;
-    background:#fee2e2;
-    color:#991b1b;
-    font-size:11px;
-    font-weight:bold;
-}
-
-.rol-administrador{
-    display:inline-block;
-    padding:4px 8px;
-    border-radius:20px;
-    background:#e0e7ff;
-    color:#3730a3;
-    font-size:11px;
-    font-weight:bold;
-}
-
-.rol-usuario{
-    display:inline-block;
-    padding:4px 8px;
-    border-radius:20px;
-    background:#e5e7eb;
-    color:#374151;
-    font-size:11px;
-    font-weight:bold;
-}
-
-/* MODALES */
-
-.modal-fondo{
-    display:none;
-    position:fixed;
-    z-index:1000;
-    inset:0;
-    background:rgba(0,0,0,.55);
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
-
-.modal-fondo.visible{display:flex}
-
-.modal{
-    background:white;
-    width:min(500px,100%);
-    border-radius:10px;
-    box-shadow:0 15px 40px rgba(0,0,0,.25);
-    overflow:hidden;
-}
-
-.modal-grande{width:min(560px,100%)}
-
-.modal-cabecera{
-    background:#374151;
-    color:white;
-    padding:16px 20px;
-    font-size:18px;
-    font-weight:bold;
-}
-
-.modal-cuerpo{
-    padding:22px 20px;
-    color:#374151;
-    line-height:1.5;
-}
-
-.modal-pie{
-    padding:14px 20px;
-    border-top:1px solid #e5e7eb;
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
-}
-
-.formulario{
-    display:grid;
-    gap:16px;
-}
-
-.campo{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.campo label{
-    font-size:14px;
-    font-weight:bold;
-    color:#374151;
-}
-
-.campo input,
-.campo select{
-    width:100%;
-    border:1px solid #d1d5db;
-    border-radius:7px;
-    padding:11px 12px;
-    font-size:14px;
-    color:#1f2937;
-    background:white;
-    outline:none;
-}
-
-.campo input:focus,
-.campo select:focus{
-    border-color:#6b7280;
-    box-shadow:0 0 0 2px rgba(107,114,128,.12);
-}
-
-.formulario-nota{
-    background:#f3f4f6;
-    border-radius:7px;
-    padding:12px;
-    color:#4b5563;
-    font-size:13px;
-    line-height:1.5;
-}
-
-.error-formulario{
-    display:none;
-    background:#fee2e2;
-    color:#991b1b;
-    border-radius:7px;
-    padding:11px 12px;
-    font-size:13px;
-}
-
-.error-formulario.visible{display:block}
-
-/* RESPONSIVE */
-
-@media(max-width:950px){
-    .estado-datos-grid{
-        grid-template-columns:1fr;
-    }
-
-    .grid-informacion,
-    .estadisticas{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .sitios{
-        grid-template-columns:repeat(3,1fr);
-    }
-}
-
-@media(max-width:700px){
-    header{padding:15px}
-
-    .contenedor{
-        width:min(100% - 20px,1180px);
-        margin-top:15px;
-    }
-
-    .grid-informacion,
-    .estadisticas,
-    .usuarios-preparacion,
-    .usuarios-resumen{
-        grid-template-columns:1fr;
-    }
-
-    .usuarios-barra{
-        flex-direction:column;
-        align-items:stretch;
-    }
-
-    .acciones-usuarios{
-        display:flex;
-        justify-content:flex-end;
-    }
-
-    .sitios{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .encabezado-icono{display:none}
-
-    .encabezado-texto strong{font-size:18px}
-    .encabezado-texto span{font-size:12px}
-
-    .boton-volver{
-        padding:9px 12px;
-    }
-
-    .sesion-acciones{
-        flex-direction:column;
-    }
-
-    .sesion-acciones .boton{
-        width:100%;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Biblioteca</title>
+
+    <style>
+        html {
+            visibility: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           ENCABEZADO
+        ===================================================== */
+
+        header {
+            background: #374151;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .encabezado-contenido {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .encabezado-icono {
+            font-size: 30px;
+        }
+
+        .encabezado-texto {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .encabezado-texto strong {
+            font-size: 21px;
+        }
+
+        .encabezado-texto span {
+            font-size: 14px;
+            color: #d1d5db;
+        }
+
+        .boton-volver {
+            background: white;
+            color: #374151;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .boton-volver:hover {
+            background: #e5e7eb;
+        }
+
+        /* =====================================================
+           CONTENEDOR PRINCIPAL
+        ===================================================== */
+
+        .contenedor {
+            width: min(1200px, calc(100% - 40px));
+            margin: 24px auto 45px;
+        }
+
+        .seccion {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .seccion-titulo {
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 13px 18px;
+            font-size: 17px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .seccion-contenido {
+            padding: 17px 18px;
+        }
+
+        .descripcion-seccion {
+            margin: 0 0 14px;
+            color: #6b7280;
+            line-height: 1.45;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           RESUMEN SUPERIOR
+        ===================================================== */
+
+        .resumen-superior {
+            display: grid;
+            grid-template-columns: 1fr 1.55fr;
+            gap: 18px;
+        }
+
+        .resumen-superior .seccion {
+            margin-bottom: 0;
+        }
+
+        .grid-informacion {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .dato {
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
+            padding: 11px 13px;
+            background: #fafafa;
+        }
+
+        .dato-label {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .dato-valor {
+            display: block;
+            font-weight: bold;
+            color: #111827;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .tarjeta-estadistica {
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
+            padding: 17px 8px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .tarjeta-estadistica strong {
+            display: block;
+            font-size: 25px;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .tarjeta-estadistica span {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* =====================================================
+           CONTROL DEL SISTEMA
+        ===================================================== */
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .subseccion {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .subseccion-titulo {
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 11px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .subseccion-contenido {
+            padding: 13px;
+        }
+
+        .tabla-contenedor {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 12px;
+            text-align: left;
+            padding: 9px 10px;
+            border-bottom: 1px solid #d1d5db;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 9px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .diagnostico-ok {
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .diagnostico-error {
+            color: #991b1b;
+            font-weight: bold;
+        }
+
+        .diagnostico-cargando {
+            color: #6b7280;
+        }
+
+        .integridad-lista {
+            display: grid;
+            gap: 7px;
+        }
+
+        .integridad-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
+            padding: 10px 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .integridad-item strong {
+            font-size: 12.5px;
+            line-height: 1.35;
+        }
+
+        .integridad-estado {
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+            text-align: right;
+        }
+
+        .integridad-correcta {
+            color: #166534;
+        }
+
+        .integridad-observacion {
+            color: #92400e;
+        }
+
+        /* =====================================================
+           SITIOS
+        ===================================================== */
+
+        .sitios {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .sitio {
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
+            padding: 13px 9px;
+            text-align: center;
+            background: #fafafa;
+            min-width: 0;
+        }
+
+        .sitio-codigo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .sitio-nombre {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.35;
+        }
+
+        /* =====================================================
+           USUARIOS Y PERMISOS
+        ===================================================== */
+
+        .usuarios-preparacion {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .tarjeta-rol {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 14px 15px;
+            background: #fafafa;
+        }
+
+        .tarjeta-rol h3 {
+            margin: 0 0 6px;
+            color: #374151;
+            font-size: 16px;
+        }
+
+        .tarjeta-rol p {
+            margin: 0 0 9px;
+            color: #6b7280;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        .tarjeta-rol ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #4b5563;
+            line-height: 1.5;
+            font-size: 13px;
+        }
+
+        .usuarios-barra {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 13px;
+        }
+
+        .usuarios-resumen {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .usuario-resumen {
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
+            padding: 11px 8px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .usuario-resumen strong {
+            display: block;
+            font-size: 21px;
+            color: #374151;
+            margin-bottom: 3px;
+        }
+
+        .usuario-resumen span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .acciones-usuarios {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .usuarios-cargando,
+        .usuarios-vacio {
+            text-align: center;
+            color: #6b7280;
+            padding: 20px;
+        }
+
+        .estado-preparacion {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 7px;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        /* =====================================================
+           BOTONES
+        ===================================================== */
+
+        .boton {
+            border: none;
+            border-radius: 7px;
+            padding: 9px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .boton-principal {
+            background: #374151;
+            color: white;
+        }
+
+        .boton-principal:hover {
+            background: #1f2937;
+        }
+
+        .boton-secundario {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .boton-secundario:hover {
+            background: #d1d5db;
+        }
+
+        .boton-rojo {
+            background: #b91c1c;
+            color: white;
+        }
+
+        .boton-rojo:hover {
+            background: #991b1b;
+        }
+
+        /* =====================================================
+           SESIÓN
+        ===================================================== */
+
+        .sesion-acciones {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        /* =====================================================
+           ESTADOS
+        ===================================================== */
+
+        .estado-activo {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .estado-inactivo {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .rol-administrador {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .rol-usuario {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #e5e7eb;
+            color: #374151;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           PIE
+        ===================================================== */
+
+        .pie {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            padding: 18px;
+        }
+
+        /* =====================================================
+           MODALES
+        ===================================================== */
+
+        .modal-fondo {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-fondo.visible {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            width: min(500px, 100%);
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .modal-grande {
+            width: min(560px, 100%);
+        }
+
+        .modal-cabecera {
+            background: #374151;
+            color: white;
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .modal-cuerpo {
+            padding: 22px 20px;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .modal-pie {
+            padding: 14px 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .formulario {
+            display: grid;
+            gap: 16px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            padding: 11px 12px;
+            font-size: 14px;
+            color: #1f2937;
+            background: white;
+            outline: none;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+            border-color: #6b7280;
+            box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.12);
+        }
+
+        .formulario-nota {
+            background: #f3f4f6;
+            border-radius: 7px;
+            padding: 12px;
+            color: #4b5563;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error-formulario {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 7px;
+            padding: 11px 12px;
+            font-size: 13px;
+        }
+
+        .error-formulario.visible {
+            display: block;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .resumen-superior {
+                grid-template-columns: 1fr;
+            }
+
+            .resumen-superior .seccion {
+                margin-bottom: 18px;
+            }
+
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sitios {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+                padding: 15px;
+            }
+
+            .contenedor {
+                width: min(100% - 20px, 1200px);
+                margin-top: 15px;
+            }
+
+            .grid-informacion {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .estadisticas {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .usuarios-preparacion {
+                grid-template-columns: 1fr;
+            }
+
+            .usuarios-barra {
+                grid-template-columns: 1fr;
+            }
+
+            .acciones-usuarios {
+                justify-content: flex-end;
+            }
+
+            .sitios {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .encabezado-icono {
+                display: none;
+            }
+
+            .encabezado-texto strong {
+                font-size: 18px;
+            }
+
+            .encabezado-texto span {
+                font-size: 12px;
+            }
+
+            .boton-volver {
+                padding: 9px 12px;
+            }
+
+            .sesion-acciones {
+                flex-direction: column;
+            }
+
+            .sesion-acciones .boton {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .grid-informacion,
+            .estadisticas,
+            .usuarios-resumen,
+            .sitios {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .seccion-contenido {
+                padding: 14px;
+            }
+
+            .seccion-titulo {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+
+            .sitio-nombre {
+                font-size: 11px;
+            }
+
+            .usuarios-resumen {
+                gap: 7px;
+            }
+
+            .usuario-resumen {
+                padding: 9px 5px;
+            }
+
+            .usuario-resumen strong {
+                font-size: 19px;
+            }
+
+            .usuario-resumen span {
+                font-size: 11px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
     <div class="encabezado-contenido">
+
         <div class="encabezado-icono">⚙️</div>
 
         <div class="encabezado-texto">
             <strong>Biblioteca</strong>
             <span>Administración del sistema</span>
         </div>
+
     </div>
 
-    <button type="button" class="boton-volver" onclick="volverAtras()">
+    <button
+        type="button"
+        class="boton-volver"
+        onclick="volverAtras()">
         Volver atrás
     </button>
 </header>
 
+
 <main class="contenedor">
 
-    <!-- INFORMACIÓN GENERAL + ESTADÍSTICAS -->
 
-    <section class="seccion">
-        <div class="seccion-titulo">Información general</div>
+    <!-- =====================================================
+         RESUMEN SUPERIOR
+    ====================================================== -->
 
-        <div class="seccion-contenido">
+    <div class="resumen-superior">
 
-            <div class="grid-informacion">
+        <section class="seccion">
 
-                <div class="dato">
-                    <span class="dato-label">Sistema</span>
-                    <span class="dato-valor">Biblioteca</span>
-                </div>
+            <div class="seccion-titulo">
+                Información del sistema
+            </div>
 
-                <div class="dato">
-                    <span class="dato-label">Base de datos</span>
-                    <span class="dato-valor">Supabase</span>
-                </div>
+            <div class="seccion-contenido">
 
-                <div class="dato">
-                    <span class="dato-label">Estado</span>
-                    <span class="dato-valor">Operativo</span>
-                </div>
+                <div class="grid-informacion">
 
-                <div class="dato">
-                    <span class="dato-label">Usuario actual</span>
-                    <span id="usuarioActual" class="dato-valor">
-                        Comprobando...
-                    </span>
+                    <div class="dato">
+                        <span class="dato-label">
+                            Sistema
+                        </span>
+
+                        <span class="dato-valor">
+                            Biblioteca
+                        </span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-label">
+                            Base de datos
+                        </span>
+
+                        <span class="dato-valor">
+                            Supabase
+                        </span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-label">
+                            Estado
+                        </span>
+
+                        <span class="dato-valor">
+                            Operativo
+                        </span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-label">
+                            Usuario actual
+                        </span>
+
+                        <span
+                            id="usuarioActual"
+                            class="dato-valor">
+                            Comprobando...
+                        </span>
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
-    </section>
+        </section>
 
-    <section class="seccion">
-        <div class="seccion-titulo">Resumen del sistema</div>
 
-        <div class="seccion-contenido">
+        <section class="seccion">
 
-            <div class="estadisticas">
+            <div class="seccion-titulo">
+                Estadísticas generales
+            </div>
 
-                <div class="tarjeta-estadistica">
-                    <strong id="estadisticaLibros">0</strong>
-                    <span>Libros</span>
-                </div>
+            <div class="seccion-contenido">
 
-                <div class="tarjeta-estadistica">
-                    <strong id="estadisticaAfiliados">0</strong>
-                    <span>Afiliados</span>
-                </div>
+                <div class="estadisticas">
 
-                <div class="tarjeta-estadistica">
-                    <strong id="estadisticaColaboradores">0</strong>
-                    <span>Colaboradores</span>
-                </div>
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaLibros">
+                            0
+                        </strong>
 
-                <div class="tarjeta-estadistica">
-                    <strong id="estadisticaPrestamos">0</strong>
-                    <span>Préstamos</span>
+                        <span>
+                            Libros
+                        </span>
+                    </div>
+
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaAfiliados">
+                            0
+                        </strong>
+
+                        <span>
+                            Afiliados
+                        </span>
+                    </div>
+
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaColaboradores">
+                            0
+                        </strong>
+
+                        <span>
+                            Colaboradores
+                        </span>
+                    </div>
+
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaPrestamos">
+                            0
+                        </strong>
+
+                        <span>
+                            Préstamos
+                        </span>
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
-    </section>
+        </section>
 
-    <!-- DIAGNÓSTICO + INTEGRIDAD -->
+    </div>
+
+
+    <!-- =====================================================
+         CONTROL DEL SISTEMA
+    ====================================================== -->
 
     <section class="seccion">
-        <div class="seccion-titulo">Estado y revisión del sistema</div>
+
+        <div class="seccion-titulo">
+            Control del sistema
+        </div>
 
         <div class="seccion-contenido">
 
-            <div class="estado-datos-grid">
+            <div class="control-grid">
 
-                <div class="subbloque">
 
-                    <div class="subbloque-titulo">
+                <!-- DIAGNÓSTICO -->
+
+                <div class="subseccion">
+
+                    <div class="subseccion-titulo">
                         Diagnóstico del sistema
                     </div>
 
-                    <div class="subbloque-contenido">
+                    <div class="subseccion-contenido">
 
                         <p class="descripcion-seccion">
                             Comprobación básica de las tablas principales utilizadas por el sistema.
@@ -732,49 +945,106 @@ tr:last-child td{border-bottom:none}
                             <table>
 
                                 <thead>
+
                                     <tr>
                                         <th>Elemento</th>
                                         <th>Estado</th>
                                         <th>Registros</th>
                                         <th>Observación</th>
                                     </tr>
+
                                 </thead>
 
                                 <tbody>
 
                                     <tr>
                                         <td>Afiliados</td>
-                                        <td id="diagnosticoAfiliadosEstado" class="diagnostico-cargando">Comprobando...</td>
-                                        <td id="diagnosticoAfiliadosCantidad">-</td>
-                                        <td id="diagnosticoAfiliadosMensaje">-</td>
+
+                                        <td
+                                            id="diagnosticoAfiliadosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoAfiliadosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoAfiliadosMensaje">
+                                            -
+                                        </td>
                                     </tr>
 
                                     <tr>
                                         <td>Libros</td>
-                                        <td id="diagnosticoLibrosEstado" class="diagnostico-cargando">Comprobando...</td>
-                                        <td id="diagnosticoLibrosCantidad">-</td>
-                                        <td id="diagnosticoLibrosMensaje">-</td>
+
+                                        <td
+                                            id="diagnosticoLibrosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoLibrosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoLibrosMensaje">
+                                            -
+                                        </td>
                                     </tr>
 
                                     <tr>
                                         <td>Colaboradores</td>
-                                        <td id="diagnosticoColaboradoresEstado" class="diagnostico-cargando">Comprobando...</td>
-                                        <td id="diagnosticoColaboradoresCantidad">-</td>
-                                        <td id="diagnosticoColaboradoresMensaje">-</td>
+
+                                        <td
+                                            id="diagnosticoColaboradoresEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoColaboradoresCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoColaboradoresMensaje">
+                                            -
+                                        </td>
                                     </tr>
 
                                     <tr>
                                         <td>Préstamos</td>
-                                        <td id="diagnosticoPrestamosEstado" class="diagnostico-cargando">Comprobando...</td>
-                                        <td id="diagnosticoPrestamosCantidad">-</td>
-                                        <td id="diagnosticoPrestamosMensaje">-</td>
+
+                                        <td
+                                            id="diagnosticoPrestamosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoPrestamosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoPrestamosMensaje">
+                                            -
+                                        </td>
                                     </tr>
 
                                     <tr>
                                         <td>Usuarios</td>
-                                        <td id="diagnosticoUsuariosEstado" class="diagnostico-cargando">Comprobando...</td>
-                                        <td id="diagnosticoUsuariosCantidad">-</td>
-                                        <td id="diagnosticoUsuariosMensaje">-</td>
+
+                                        <td
+                                            id="diagnosticoUsuariosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoUsuariosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoUsuariosMensaje">
+                                            -
+                                        </td>
                                     </tr>
 
                                 </tbody>
@@ -787,13 +1057,16 @@ tr:last-child td{border-bottom:none}
 
                 </div>
 
-                <div class="subbloque">
 
-                    <div class="subbloque-titulo">
+                <!-- INTEGRIDAD -->
+
+                <div class="subseccion">
+
+                    <div class="subseccion-titulo">
                         Integridad de datos
                     </div>
 
-                    <div class="subbloque-contenido">
+                    <div class="subseccion-contenido">
 
                         <p class="descripcion-seccion">
                             Revisiones básicas para detectar situaciones que podrían afectar el funcionamiento del sistema.
@@ -802,43 +1075,99 @@ tr:last-child td{border-bottom:none}
                         <div class="integridad-lista">
 
                             <div class="integridad-item">
-                                <strong>Libros con código repetido</strong>
-                                <span id="integridadCodigosLibros" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Libros con código repetido
+                                </strong>
+
+                                <span
+                                    id="integridadCodigosLibros"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                             <div class="integridad-item">
-                                <strong>Afiliados con PersonaId repetido</strong>
-                                <span id="integridadPersonaId" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Afiliados con PersonaId repetido
+                                </strong>
+
+                                <span
+                                    id="integridadPersonaId"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                             <div class="integridad-item">
-                                <strong>Familias sin identificador</strong>
-                                <span id="integridadFamiliaId" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Familias sin identificador
+                                </strong>
+
+                                <span
+                                    id="integridadFamiliaId"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                             <div class="integridad-item">
-                                <strong>Libros sin estado</strong>
-                                <span id="integridadLibrosEstado" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Libros sin estado
+                                </strong>
+
+                                <span
+                                    id="integridadLibrosEstado"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                             <div class="integridad-item">
-                                <strong>Afiliados sin estado</strong>
-                                <span id="integridadAfiliadosEstado" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Afiliados sin estado
+                                </strong>
+
+                                <span
+                                    id="integridadAfiliadosEstado"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                             <div class="integridad-item">
-                                <strong>Colaboradores sin estado</strong>
-                                <span id="integridadColaboradoresEstado" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Colaboradores sin estado
+                                </strong>
+
+                                <span
+                                    id="integridadColaboradoresEstado"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                             <div class="integridad-item">
-                                <strong>Préstamos sin código de libro</strong>
-                                <span id="integridadPrestamosLibro" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Préstamos sin código de libro
+                                </strong>
+
+                                <span
+                                    id="integridadPrestamosLibro"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                             <div class="integridad-item">
-                                <strong>Usuarios sin rol</strong>
-                                <span id="integridadUsuariosRol" class="integridad-estado">Comprobando...</span>
+                                <strong>
+                                    Usuarios sin rol
+                                </strong>
+
+                                <span
+                                    id="integridadUsuariosRol"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
                             </div>
 
                         </div>
@@ -850,48 +1179,84 @@ tr:last-child td{border-bottom:none}
             </div>
 
         </div>
+
     </section>
 
-    <!-- SITIOS -->
+
+    <!-- =====================================================
+         SITIOS
+    ====================================================== -->
 
     <section class="seccion">
-        <div class="seccion-titulo">Sitios</div>
+
+        <div class="seccion-titulo">
+            Sitios
+        </div>
 
         <div class="seccion-contenido">
 
             <div class="sitios">
 
                 <div class="sitio">
-                    <div class="sitio-codigo">F</div>
-                    <div class="sitio-nombre">Antigua Guatemala</div>
+                    <div class="sitio-codigo">
+                        F
+                    </div>
+
+                    <div class="sitio-nombre">
+                        Antigua Guatemala
+                    </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">M</div>
-                    <div class="sitio-nombre">San Miguel Milpas Altas</div>
+                    <div class="sitio-codigo">
+                        M
+                    </div>
+
+                    <div class="sitio-nombre">
+                        San Miguel Milpas Altas
+                    </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">R</div>
-                    <div class="sitio-nombre">San Rafael el Arado</div>
+                    <div class="sitio-codigo">
+                        R
+                    </div>
+
+                    <div class="sitio-nombre">
+                        San Rafael el Arado
+                    </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">N</div>
-                    <div class="sitio-nombre">Nueva Esperanza</div>
+                    <div class="sitio-codigo">
+                        N
+                    </div>
+
+                    <div class="sitio-nombre">
+                        Nueva Esperanza
+                    </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">Z</div>
-                    <div class="sitio-nombre">Zapote</div>
+                    <div class="sitio-codigo">
+                        Z
+                    </div>
+
+                    <div class="sitio-nombre">
+                        Zapote
+                    </div>
                 </div>
 
             </div>
 
         </div>
+
     </section>
 
-    <!-- USUARIOS -->
+
+    <!-- =====================================================
+         USUARIOS Y PERMISOS
+    ====================================================== -->
 
     <section class="seccion">
 
@@ -905,11 +1270,16 @@ tr:last-child td{border-bottom:none}
                 Usuarios registrados en el sistema y rol asignado a cada cuenta.
             </p>
 
+
+            <!-- ROLES -->
+
             <div class="usuarios-preparacion">
 
                 <div class="tarjeta-rol">
 
-                    <h3>Usuario</h3>
+                    <h3>
+                        Usuario
+                    </h3>
 
                     <p>
                         Perfil pensado para las personas que realizarán las tareas cotidianas de la biblioteca.
@@ -925,9 +1295,12 @@ tr:last-child td{border-bottom:none}
 
                 </div>
 
+
                 <div class="tarjeta-rol">
 
-                    <h3>Administrador</h3>
+                    <h3>
+                        Administrador
+                    </h3>
 
                     <p>
                         Perfil con acceso completo para administrar la información y el funcionamiento del sistema.
@@ -947,26 +1320,45 @@ tr:last-child td{border-bottom:none}
 
             </div>
 
+
+            <!-- RESUMEN DE USUARIOS + BOTÓN -->
+
             <div class="usuarios-barra">
 
                 <div class="usuarios-resumen">
 
                     <div class="usuario-resumen">
-                        <strong id="totalUsuarios">0</strong>
-                        <span>Usuarios registrados</span>
+                        <strong id="totalUsuarios">
+                            0
+                        </strong>
+
+                        <span>
+                            Usuarios registrados
+                        </span>
                     </div>
 
                     <div class="usuario-resumen">
-                        <strong id="usuariosAdministradores">0</strong>
-                        <span>Administradores</span>
+                        <strong id="usuariosAdministradores">
+                            0
+                        </strong>
+
+                        <span>
+                            Administradores
+                        </span>
                     </div>
 
                     <div class="usuario-resumen">
-                        <strong id="usuariosActivos">0</strong>
-                        <span>Usuarios activos</span>
+                        <strong id="usuariosActivos">
+                            0
+                        </strong>
+
+                        <span>
+                            Usuarios activos
+                        </span>
                     </div>
 
                 </div>
+
 
                 <div class="acciones-usuarios">
 
@@ -981,11 +1373,15 @@ tr:last-child td{border-bottom:none}
 
             </div>
 
+
+            <!-- TABLA DE USUARIOS -->
+
             <div class="tabla-contenedor">
 
                 <table>
 
                     <thead>
+
                         <tr>
                             <th>Nombre</th>
                             <th>Correo</th>
@@ -993,12 +1389,15 @@ tr:last-child td{border-bottom:none}
                             <th>Estado</th>
                             <th>Fecha de registro</th>
                         </tr>
+
                     </thead>
 
                     <tbody id="tablaUsuarios">
 
                         <tr>
-                            <td colspan="5" class="usuarios-cargando">
+                            <td
+                                colspan="5"
+                                class="usuarios-cargando">
                                 Cargando usuarios...
                             </td>
                         </tr>
@@ -1009,18 +1408,24 @@ tr:last-child td{border-bottom:none}
 
             </div>
 
+
             <div class="estado-preparacion">
+
                 <strong>Estado:</strong>
                 La gestión de usuarios está conectada con Supabase.
                 Los usuarios mostrados corresponden a los registros existentes
                 en la tabla de usuarios del sistema.
+
             </div>
 
         </div>
 
     </section>
 
-    <!-- SESIÓN -->
+
+    <!-- =====================================================
+         SESIÓN ACTUAL
+    ====================================================== -->
 
     <section class="seccion">
 
@@ -1033,34 +1438,51 @@ tr:last-child td{border-bottom:none}
             <div class="grid-informacion">
 
                 <div class="dato">
-                    <span class="dato-label">Usuario</span>
-                    <span id="usuarioActualSesion" class="dato-valor">
+                    <span class="dato-label">
+                        Usuario
+                    </span>
+
+                    <span
+                        id="usuarioActualSesion"
+                        class="dato-valor">
                         Comprobando...
                     </span>
                 </div>
 
                 <div class="dato">
-                    <span class="dato-label">Estado</span>
+                    <span class="dato-label">
+                        Estado
+                    </span>
+
                     <span class="dato-valor">
                         Sesión activa
                     </span>
                 </div>
 
                 <div class="dato">
-                    <span class="dato-label">Acceso</span>
-                    <span id="rolActual" class="dato-valor">
+                    <span class="dato-label">
+                        Acceso
+                    </span>
+
+                    <span
+                        id="rolActual"
+                        class="dato-valor">
                         Comprobando...
                     </span>
                 </div>
 
                 <div class="dato">
-                    <span class="dato-label">Base de datos</span>
+                    <span class="dato-label">
+                        Base de datos
+                    </span>
+
                     <span class="dato-valor">
                         Conectada
                     </span>
                 </div>
 
             </div>
+
 
             <div class="sesion-acciones">
 
@@ -1086,21 +1508,31 @@ tr:last-child td{border-bottom:none}
 
 </main>
 
+
 <div class="pie">
     Sistema de Biblioteca
 </div>
 
-<!-- MODAL GENERAL -->
 
-<div id="modalMensaje" class="modal-fondo">
+<!-- =====================================================
+     MODAL GENERAL
+====================================================== -->
+
+<div
+    id="modalMensaje"
+    class="modal-fondo">
 
     <div class="modal">
 
-        <div class="modal-cabecera" id="modalTitulo">
+        <div
+            class="modal-cabecera"
+            id="modalTitulo">
             Administración
         </div>
 
-        <div class="modal-cuerpo" id="modalMensajeTexto">
+        <div
+            class="modal-cuerpo"
+            id="modalMensajeTexto">
             Información
         </div>
 
@@ -1119,9 +1551,14 @@ tr:last-child td{border-bottom:none}
 
 </div>
 
-<!-- MODAL NUEVO USUARIO -->
 
-<div id="modalNuevoUsuario" class="modal-fondo">
+<!-- =====================================================
+     MODAL NUEVO USUARIO
+====================================================== -->
+
+<div
+    id="modalNuevoUsuario"
+    class="modal-fondo">
 
     <div class="modal modal-grande">
 
@@ -1137,6 +1574,7 @@ tr:last-child td{border-bottom:none}
                 onsubmit="guardarNuevoUsuario(event)">
 
                 <div class="campo">
+
                     <label for="nuevoUsuarioNombre">
                         Nombre
                     </label>
@@ -1147,9 +1585,11 @@ tr:last-child td{border-bottom:none}
                         placeholder="Nombre completo"
                         autocomplete="off"
                         required>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="nuevoUsuarioCorreo">
                         Correo
                     </label>
@@ -1160,37 +1600,65 @@ tr:last-child td{border-bottom:none}
                         placeholder="correo@ejemplo.com"
                         autocomplete="off"
                         required>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="nuevoUsuarioRol">
                         Rol
                     </label>
 
-                    <select id="nuevoUsuarioRol" required>
-                        <option value="Usuario">Usuario</option>
-                        <option value="Administrador">Administrador</option>
+                    <select
+                        id="nuevoUsuarioRol"
+                        required>
+
+                        <option value="Usuario">
+                            Usuario
+                        </option>
+
+                        <option value="Administrador">
+                            Administrador
+                        </option>
+
                     </select>
+
                 </div>
 
                 <div class="campo">
+
                     <label for="nuevoUsuarioEstado">
                         Estado
                     </label>
 
-                    <select id="nuevoUsuarioEstado" required>
-                        <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option>
+                    <select
+                        id="nuevoUsuarioEstado"
+                        required>
+
+                        <option value="Activo">
+                            Activo
+                        </option>
+
+                        <option value="Inactivo">
+                            Inactivo
+                        </option>
+
                     </select>
+
                 </div>
 
                 <div class="formulario-nota">
+
                     En esta etapa estamos preparando la información del usuario.
                     La creación de la cuenta de acceso se conectará posteriormente
                     con Supabase Auth para evitar crear registros que no puedan iniciar sesión.
+
                 </div>
 
-                <div id="errorFormularioUsuario" class="error-formulario"></div>
+                <div
+                    id="errorFormularioUsuario"
+                    class="error-formulario">
+                </div>
 
             </form>
 
@@ -1218,7 +1686,10 @@ tr:last-child td{border-bottom:none}
 
 </div>
 
-<!-- SUPABASE -->
+
+<!-- =====================================================
+     SUPABASE
+====================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
@@ -1244,26 +1715,28 @@ let datosAdministracion = {
    FUNCIONES GENERALES
 ========================================================= */
 
-function normalizar(valor){
+function normalizar(valor) {
 
-    if(valor === null || valor === undefined){
+    if (valor === null || valor === undefined) {
         return "";
     }
 
-    return String(valor).trim().toUpperCase();
+    return String(valor)
+        .trim()
+        .toUpperCase();
 }
 
 
-function obtenerValor(objeto,campo,valorPredeterminado=""){
+function obtenerValor(objeto, campo, valorPredeterminado = "") {
 
-    if(!objeto){
+    if (!objeto) {
         return valorPredeterminado;
     }
 
-    if(
+    if (
         objeto[campo] === null ||
         objeto[campo] === undefined
-    ){
+    ) {
         return valorPredeterminado;
     }
 
@@ -1271,51 +1744,60 @@ function obtenerValor(objeto,campo,valorPredeterminado=""){
 }
 
 
-function esEstadoActivo(valor){
+function esEstadoActivo(valor) {
+
     return normalizar(valor) === "ACTIVO";
+
 }
 
 
-function esEstadoInactivo(valor){
+function esEstadoInactivo(valor) {
+
     return normalizar(valor) === "INACTIVO";
+
 }
 
 
-function escapeHtml(valor){
+function escapeHtml(valor) {
 
-    if(valor === null || valor === undefined){
+    if (
+        valor === null ||
+        valor === undefined
+    ) {
         return "";
     }
 
     return String(valor)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
 }
 
 
-function formatearFecha(fecha){
+function formatearFecha(fecha) {
 
-    if(!fecha){
+    if (!fecha) {
         return "-";
     }
 
     const fechaObjeto = new Date(fecha);
 
-    if(Number.isNaN(fechaObjeto.getTime())){
+    if (Number.isNaN(fechaObjeto.getTime())) {
         return String(fecha);
     }
 
     return fechaObjeto.toLocaleDateString(
         "es-GT",
         {
-            year:"numeric",
-            month:"2-digit",
-            day:"2-digit"
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
         }
     );
+
 }
 
 
@@ -1323,22 +1805,25 @@ function formatearFecha(fecha){
    MODAL GENERAL
 ========================================================= */
 
-function mostrarModal(titulo,mensaje){
+function mostrarModal(titulo, mensaje) {
 
     document.getElementById("modalTitulo").textContent = titulo;
+
     document.getElementById("modalMensajeTexto").textContent = mensaje;
 
     document
         .getElementById("modalMensaje")
         .classList.add("visible");
+
 }
 
 
-function cerrarModal(){
+function cerrarModal() {
 
     document
         .getElementById("modalMensaje")
         .classList.remove("visible");
+
 }
 
 
@@ -1346,19 +1831,19 @@ function cerrarModal(){
    MODAL NUEVO USUARIO
 ========================================================= */
 
-function abrirModalNuevoUsuario(){
+function abrirModalNuevoUsuario() {
 
     const formulario =
         document.getElementById("formNuevoUsuario");
 
-    if(formulario){
+    if (formulario) {
         formulario.reset();
     }
 
     const error =
         document.getElementById("errorFormularioUsuario");
 
-    if(error){
+    if (error) {
         error.textContent = "";
         error.classList.remove("visible");
     }
@@ -1367,30 +1852,32 @@ function abrirModalNuevoUsuario(){
         .getElementById("modalNuevoUsuario")
         .classList.add("visible");
 
-    setTimeout(function(){
+    setTimeout(function() {
 
         const nombre =
             document.getElementById("nuevoUsuarioNombre");
 
-        if(nombre){
+        if (nombre) {
             nombre.focus();
         }
 
-    },100);
+    }, 100);
+
 }
 
 
-function cerrarModalNuevoUsuario(){
+function cerrarModalNuevoUsuario() {
 
     document
         .getElementById("modalNuevoUsuario")
         .classList.remove("visible");
+
 }
 
 
-function guardarNuevoUsuario(evento){
+function guardarNuevoUsuario(evento) {
 
-    if(evento){
+    if (evento) {
         evento.preventDefault();
     }
 
@@ -1407,72 +1894,83 @@ function guardarNuevoUsuario(evento){
             .trim();
 
     const rol =
-        document.getElementById("nuevoUsuarioRol").value;
+        document
+            .getElementById("nuevoUsuarioRol")
+            .value;
 
     const estado =
-        document.getElementById("nuevoUsuarioEstado").value;
+        document
+            .getElementById("nuevoUsuarioEstado")
+            .value;
 
     const elementoError =
-        document.getElementById("errorFormularioUsuario");
+        document.getElementById(
+            "errorFormularioUsuario"
+        );
 
 
-    if(!nombre){
+    if (!nombre) {
 
         mostrarErrorFormulario(
             "Es necesario ingresar el nombre del usuario."
         );
 
         return;
+
     }
 
 
-    if(!correo){
+    if (!correo) {
 
         mostrarErrorFormulario(
             "Es necesario ingresar el correo electrónico."
         );
 
         return;
+
     }
 
 
-    if(!correo.includes("@")){
+    if (!correo.includes("@")) {
 
         mostrarErrorFormulario(
             "El correo electrónico no parece tener un formato válido."
         );
 
         return;
+
     }
 
 
-    if(
+    if (
         rol !== "Usuario" &&
         rol !== "Administrador"
-    ){
+    ) {
 
         mostrarErrorFormulario(
             "Selecciona un rol válido."
         );
 
         return;
+
     }
 
 
-    if(
+    if (
         estado !== "Activo" &&
         estado !== "Inactivo"
-    ){
+    ) {
 
         mostrarErrorFormulario(
             "Selecciona un estado válido."
         );
 
         return;
+
     }
 
 
-    if(elementoError){
+    if (elementoError) {
         elementoError.textContent = "";
         elementoError.classList.remove("visible");
     }
@@ -1490,22 +1988,25 @@ function guardarNuevoUsuario(evento){
         estado +
         ". La creación de la cuenta de acceso se conectará en el siguiente paso."
     );
+
 }
 
 
-function mostrarErrorFormulario(mensaje){
+function mostrarErrorFormulario(mensaje) {
 
     const elemento =
         document.getElementById(
             "errorFormularioUsuario"
         );
 
-    if(!elemento){
+    if (!elemento) {
         return;
     }
 
     elemento.textContent = mensaje;
+
     elemento.classList.add("visible");
+
 }
 
 
@@ -1513,8 +2014,10 @@ function mostrarErrorFormulario(mensaje){
    NAVEGACIÓN
 ========================================================= */
 
-function volverAtras(){
+function volverAtras() {
+
     window.location.href = "index.html";
+
 }
 
 
@@ -1522,7 +2025,7 @@ function volverAtras(){
    INFORMACIÓN
 ========================================================= */
 
-function actualizarInformacion(){
+function actualizarInformacion() {
 
     const correo =
         usuarioSesionActual &&
@@ -1530,26 +2033,33 @@ function actualizarInformacion(){
             ? usuarioSesionActual.email
             : "Usuario autenticado";
 
+
     const usuarioActual =
         document.getElementById("usuarioActual");
 
     const usuarioActualSesion =
-        document.getElementById("usuarioActualSesion");
+        document.getElementById(
+            "usuarioActualSesion"
+        );
 
-    if(usuarioActual){
+
+    if (usuarioActual) {
         usuarioActual.textContent = correo;
     }
 
-    if(usuarioActualSesion){
+
+    if (usuarioActualSesion) {
         usuarioActualSesion.textContent = correo;
     }
+
 
     const rolActual =
         document.getElementById("rolActual");
 
-    if(rolActual){
+    if (rolActual) {
         rolActual.textContent = "Administrador";
     }
+
 }
 
 
@@ -1557,9 +2067,9 @@ function actualizarInformacion(){
    CARGA PRINCIPAL
 ========================================================= */
 
-async function cargarTodo(){
+async function cargarTodo() {
 
-    try{
+    try {
 
         await Promise.all([
             cargarAfiliados(),
@@ -1569,13 +2079,16 @@ async function cargarTodo(){
             cargarUsuarios()
         ]);
 
+
         actualizarEstadisticas();
+
         actualizarUsuarios();
+
         actualizarDiagnosticoBase();
 
         await revisarIntegridad();
 
-    }catch(error){
+    } catch (error) {
 
         console.error(
             "Error al cargar administración:",
@@ -1586,7 +2099,9 @@ async function cargarTodo(){
             "Error",
             "No fue posible cargar toda la información de administración. Revisa la consola para conocer el detalle."
         );
+
     }
+
 }
 
 
@@ -1594,38 +2109,60 @@ async function cargarTodo(){
    AFILIADOS
 ========================================================= */
 
-async function cargarAfiliados(){
+async function cargarAfiliados() {
 
-    const registros=[];
-    let desde=0;
-    const cantidad=1000;
+    const registros = [];
 
-    while(true){
+    let desde = 0;
 
-        const {data,error} =
-            await supabaseClient
-                .from("afiliados")
-                .select("*")
-                .range(desde,desde+cantidad-1);
+    const cantidad = 1000;
 
-        if(error){
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("afiliados")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
             throw error;
         }
 
-        if(!data || data.length===0){
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
             break;
         }
+
 
         registros.push(...data);
 
-        if(data.length<cantidad){
+
+        if (
+            data.length < cantidad
+        ) {
             break;
         }
 
-        desde+=cantidad;
+
+        desde += cantidad;
+
     }
 
-    datosAdministracion.afiliados=registros;
+
+    datosAdministracion.afiliados =
+        registros;
+
 }
 
 
@@ -1633,38 +2170,60 @@ async function cargarAfiliados(){
    LIBROS
 ========================================================= */
 
-async function cargarLibros(){
+async function cargarLibros() {
 
-    const registros=[];
-    let desde=0;
-    const cantidad=1000;
+    const registros = [];
 
-    while(true){
+    let desde = 0;
 
-        const {data,error} =
-            await supabaseClient
-                .from("libros")
-                .select("*")
-                .range(desde,desde+cantidad-1);
+    const cantidad = 1000;
 
-        if(error){
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("libros")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
             throw error;
         }
 
-        if(!data || data.length===0){
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
             break;
         }
+
 
         registros.push(...data);
 
-        if(data.length<cantidad){
+
+        if (
+            data.length < cantidad
+        ) {
             break;
         }
 
-        desde+=cantidad;
+
+        desde += cantidad;
+
     }
 
-    datosAdministracion.libros=registros;
+
+    datosAdministracion.libros =
+        registros;
+
 }
 
 
@@ -1672,38 +2231,60 @@ async function cargarLibros(){
    COLABORADORES
 ========================================================= */
 
-async function cargarColaboradores(){
+async function cargarColaboradores() {
 
-    const registros=[];
-    let desde=0;
-    const cantidad=1000;
+    const registros = [];
 
-    while(true){
+    let desde = 0;
 
-        const {data,error} =
-            await supabaseClient
-                .from("colaboradores")
-                .select("*")
-                .range(desde,desde+cantidad-1);
+    const cantidad = 1000;
 
-        if(error){
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("colaboradores")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
             throw error;
         }
 
-        if(!data || data.length===0){
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
             break;
         }
+
 
         registros.push(...data);
 
-        if(data.length<cantidad){
+
+        if (
+            data.length < cantidad
+        ) {
             break;
         }
 
-        desde+=cantidad;
+
+        desde += cantidad;
+
     }
 
-    datosAdministracion.colaboradores=registros;
+
+    datosAdministracion.colaboradores =
+        registros;
+
 }
 
 
@@ -1711,38 +2292,60 @@ async function cargarColaboradores(){
    PRÉSTAMOS
 ========================================================= */
 
-async function cargarPrestamos(){
+async function cargarPrestamos() {
 
-    const registros=[];
-    let desde=0;
-    const cantidad=1000;
+    const registros = [];
 
-    while(true){
+    let desde = 0;
 
-        const {data,error} =
-            await supabaseClient
-                .from("prestamos")
-                .select("*")
-                .range(desde,desde+cantidad-1);
+    const cantidad = 1000;
 
-        if(error){
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("prestamos")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
             throw error;
         }
 
-        if(!data || data.length===0){
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
             break;
         }
+
 
         registros.push(...data);
 
-        if(data.length<cantidad){
+
+        if (
+            data.length < cantidad
+        ) {
             break;
         }
 
-        desde+=cantidad;
+
+        desde += cantidad;
+
     }
 
-    datosAdministracion.prestamos=registros;
+
+    datosAdministracion.prestamos =
+        registros;
+
 }
 
 
@@ -1750,52 +2353,74 @@ async function cargarPrestamos(){
    USUARIOS
 ========================================================= */
 
-async function cargarUsuarios(){
+async function cargarUsuarios() {
 
-    const registros=[];
-    let desde=0;
-    const cantidad=1000;
+    const registros = [];
 
-    while(true){
+    let desde = 0;
 
-        const {data,error} =
-            await supabaseClient
-                .from("usuarios")
-                .select(`
-                    id,
-                    correo,
-                    nombre,
-                    rol,
-                    estado,
-                    fechaRegistro
-                `)
-                .order(
-                    "nombre",
-                    {
-                        ascending:true,
-                        nullsFirst:false
-                    }
-                )
-                .range(desde,desde+cantidad-1);
+    const cantidad = 1000;
 
-        if(error){
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("usuarios")
+            .select(`
+                id,
+                correo,
+                nombre,
+                rol,
+                estado,
+                fechaRegistro
+            `)
+            .order(
+                "nombre",
+                {
+                    ascending: true,
+                    nullsFirst: false
+                }
+            )
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
             throw error;
         }
 
-        if(!data || data.length===0){
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
             break;
         }
+
 
         registros.push(...data);
 
-        if(data.length<cantidad){
+
+        if (
+            data.length < cantidad
+        ) {
             break;
         }
 
-        desde+=cantidad;
+
+        desde += cantidad;
+
     }
 
-    datosAdministracion.usuarios=registros;
+
+    datosAdministracion.usuarios =
+        registros;
+
 }
 
 
@@ -1803,19 +2428,31 @@ async function cargarUsuarios(){
    ESTADÍSTICAS
 ========================================================= */
 
-function actualizarEstadisticas(){
+function actualizarEstadisticas() {
 
-    document.getElementById("estadisticaLibros").textContent =
+    document.getElementById(
+        "estadisticaLibros"
+    ).textContent =
         datosAdministracion.libros.length;
 
-    document.getElementById("estadisticaAfiliados").textContent =
+
+    document.getElementById(
+        "estadisticaAfiliados"
+    ).textContent =
         datosAdministracion.afiliados.length;
 
-    document.getElementById("estadisticaColaboradores").textContent =
+
+    document.getElementById(
+        "estadisticaColaboradores"
+    ).textContent =
         datosAdministracion.colaboradores.length;
 
-    document.getElementById("estadisticaPrestamos").textContent =
+
+    document.getElementById(
+        "estadisticaPrestamos"
+    ).textContent =
         datosAdministracion.prestamos.length;
+
 }
 
 
@@ -1823,36 +2460,57 @@ function actualizarEstadisticas(){
    TABLA DE USUARIOS
 ========================================================= */
 
-function actualizarUsuarios(){
+function actualizarUsuarios() {
 
     const tabla =
-        document.getElementById("tablaUsuarios");
+        document.getElementById(
+            "tablaUsuarios"
+        );
+
 
     const usuarios =
         datosAdministracion.usuarios;
 
-    document.getElementById("totalUsuarios").textContent =
+
+    document.getElementById(
+        "totalUsuarios"
+    ).textContent =
         usuarios.length;
 
+
     const administradores =
-        usuarios.filter(function(usuario){
-            return normalizar(usuario.rol)==="ADMINISTRADOR";
+        usuarios.filter(function(usuario) {
+
+            return normalizar(usuario.rol) ===
+                "ADMINISTRADOR";
+
         });
+
 
     const activos =
-        usuarios.filter(function(usuario){
-            return normalizar(usuario.estado)==="ACTIVO";
+        usuarios.filter(function(usuario) {
+
+            return normalizar(usuario.estado) ===
+                "ACTIVO";
+
         });
 
-    document.getElementById("usuariosAdministradores").textContent =
+
+    document.getElementById(
+        "usuariosAdministradores"
+    ).textContent =
         administradores.length;
 
-    document.getElementById("usuariosActivos").textContent =
+
+    document.getElementById(
+        "usuariosActivos"
+    ).textContent =
         activos.length;
 
-    if(!usuarios.length){
 
-        tabla.innerHTML=`
+    if (!usuarios.length) {
+
+        tabla.innerHTML = `
             <tr>
                 <td colspan="5" class="usuarios-vacio">
                     No hay usuarios registrados.
@@ -1861,26 +2519,42 @@ function actualizarUsuarios(){
         `;
 
         return;
+
     }
 
+
     tabla.innerHTML =
-        usuarios.map(function(usuario){
+        usuarios.map(function(usuario) {
 
             const rol =
-                obtenerValor(usuario,"rol","-");
+                obtenerValor(
+                    usuario,
+                    "rol",
+                    "-"
+                );
+
 
             const estado =
-                obtenerValor(usuario,"estado","-");
+                obtenerValor(
+                    usuario,
+                    "estado",
+                    "-"
+                );
+
 
             const claseRol =
-                normalizar(rol)==="ADMINISTRADOR"
+                normalizar(rol) ===
+                "ADMINISTRADOR"
                     ? "rol-administrador"
                     : "rol-usuario";
 
+
             const claseEstado =
-                normalizar(estado)==="ACTIVO"
+                normalizar(estado) ===
+                "ACTIVO"
                     ? "estado-activo"
                     : "estado-inactivo";
+
 
             return `
                 <tr>
@@ -1929,6 +2603,7 @@ function actualizarUsuarios(){
             `;
 
         }).join("");
+
 }
 
 
@@ -1941,59 +2616,80 @@ function actualizarFilaDiagnostico(
     cantidad,
     correcto,
     mensaje
-){
+) {
 
-    const mapa={
-        "Afiliados":"Afiliados",
-        "Libros":"Libros",
-        "Colaboradores":"Colaboradores",
-        "Préstamos":"Prestamos",
-        "Usuarios":"Usuarios"
+    const mapa = {
+        "Afiliados": "Afiliados",
+        "Libros": "Libros",
+        "Colaboradores": "Colaboradores",
+        "Préstamos": "Prestamos",
+        "Usuarios": "Usuarios"
     };
 
-    const clave=mapa[nombre];
 
-    if(!clave){
+    const clave =
+        mapa[nombre];
+
+
+    if (!clave) {
         return;
     }
 
+
     const estado =
         document.getElementById(
-            "diagnostico"+clave+"Estado"
+            "diagnostico" +
+            clave +
+            "Estado"
         );
+
 
     const cantidadElemento =
         document.getElementById(
-            "diagnostico"+clave+"Cantidad"
+            "diagnostico" +
+            clave +
+            "Cantidad"
         );
+
 
     const mensajeElemento =
         document.getElementById(
-            "diagnostico"+clave+"Mensaje"
+            "diagnostico" +
+            clave +
+            "Mensaje"
         );
 
-    if(estado){
+
+    if (estado) {
 
         estado.textContent =
-            correcto ? "Correcto" : "Revisar";
+            correcto
+                ? "Correcto"
+                : "Revisar";
 
         estado.className =
             correcto
                 ? "diagnostico-ok"
                 : "diagnostico-error";
+
     }
 
-    if(cantidadElemento){
-        cantidadElemento.textContent=cantidad;
+
+    if (cantidadElemento) {
+        cantidadElemento.textContent =
+            cantidad;
     }
 
-    if(mensajeElemento){
-        mensajeElemento.textContent=mensaje;
+
+    if (mensajeElemento) {
+        mensajeElemento.textContent =
+            mensaje;
     }
+
 }
 
 
-function actualizarDiagnosticoBase(){
+function actualizarDiagnosticoBase() {
 
     actualizarFilaDiagnostico(
         "Afiliados",
@@ -2002,12 +2698,14 @@ function actualizarDiagnosticoBase(){
         "Tabla disponible."
     );
 
+
     actualizarFilaDiagnostico(
         "Libros",
         datosAdministracion.libros.length,
         true,
         "Tabla disponible."
     );
+
 
     actualizarFilaDiagnostico(
         "Colaboradores",
@@ -2016,6 +2714,7 @@ function actualizarDiagnosticoBase(){
         "Tabla disponible."
     );
 
+
     actualizarFilaDiagnostico(
         "Préstamos",
         datosAdministracion.prestamos.length,
@@ -2023,12 +2722,14 @@ function actualizarDiagnosticoBase(){
         "Tabla disponible."
     );
 
+
     actualizarFilaDiagnostico(
         "Usuarios",
         datosAdministracion.usuarios.length,
         true,
         "Tabla disponible."
     );
+
 }
 
 
@@ -2040,25 +2741,30 @@ function establecerIntegridad(
     id,
     correcto,
     mensaje
-){
+) {
 
     const elemento =
         document.getElementById(id);
 
-    if(!elemento){
+
+    if (!elemento) {
         return;
     }
 
-    elemento.textContent=mensaje;
+
+    elemento.textContent =
+        mensaje;
+
 
     elemento.className =
         correcto
             ? "integridad-estado integridad-correcta"
             : "integridad-estado integridad-observacion";
+
 }
 
 
-async function revisarIntegridad(){
+async function revisarIntegridad() {
 
     const libros =
         datosAdministracion.libros;
@@ -2078,18 +2784,22 @@ async function revisarIntegridad(){
 
     const codigos =
         libros
-            .map(function(libro){
-                return normalizar(libro.codigoLibro);
+            .map(function(libro) {
+                return normalizar(
+                    libro.codigoLibro
+                );
             })
             .filter(Boolean);
+
 
     const codigosUnicos =
         new Set(codigos);
 
+
     establecerIntegridad(
         "integridadCodigosLibros",
-        codigos.length===codigosUnicos.size,
-        codigos.length===codigosUnicos.size
+        codigos.length === codigosUnicos.size,
+        codigos.length === codigosUnicos.size
             ? "Correcto"
             : "Se encontraron códigos repetidos"
     );
@@ -2097,25 +2807,29 @@ async function revisarIntegridad(){
 
     const personaIds =
         afiliados
-            .map(function(afiliado){
-                return normalizar(afiliado.PersonaId);
+            .map(function(afiliado) {
+                return normalizar(
+                    afiliado.PersonaId
+                );
             })
             .filter(Boolean);
+
 
     const personaIdsUnicos =
         new Set(personaIds);
 
+
     establecerIntegridad(
         "integridadPersonaId",
-        personaIds.length===personaIdsUnicos.size,
-        personaIds.length===personaIdsUnicos.size
+        personaIds.length === personaIdsUnicos.size,
+        personaIds.length === personaIdsUnicos.size
             ? "Correcto"
             : "Se encontraron PersonaId repetidos"
     );
 
 
     const familiasSinId =
-        afiliados.filter(function(afiliado){
+        afiliados.filter(function(afiliado) {
 
             return !String(
                 obtenerValor(
@@ -2127,17 +2841,19 @@ async function revisarIntegridad(){
 
         }).length;
 
+
     establecerIntegridad(
         "integridadFamiliaId",
-        familiasSinId===0,
-        familiasSinId===0
+        familiasSinId === 0,
+        familiasSinId === 0
             ? "Correcto"
-            : familiasSinId+" registros sin FamiliaId"
+            : familiasSinId +
+              " registros sin FamiliaId"
     );
 
 
     const librosSinEstado =
-        libros.filter(function(libro){
+        libros.filter(function(libro) {
 
             return !String(
                 obtenerValor(
@@ -2149,17 +2865,19 @@ async function revisarIntegridad(){
 
         }).length;
 
+
     establecerIntegridad(
         "integridadLibrosEstado",
-        librosSinEstado===0,
-        librosSinEstado===0
+        librosSinEstado === 0,
+        librosSinEstado === 0
             ? "Correcto"
-            : librosSinEstado+" libros sin estado"
+            : librosSinEstado +
+              " libros sin estado"
     );
 
 
     const afiliadosSinEstado =
-        afiliados.filter(function(afiliado){
+        afiliados.filter(function(afiliado) {
 
             return !String(
                 obtenerValor(
@@ -2171,17 +2889,19 @@ async function revisarIntegridad(){
 
         }).length;
 
+
     establecerIntegridad(
         "integridadAfiliadosEstado",
-        afiliadosSinEstado===0,
-        afiliadosSinEstado===0
+        afiliadosSinEstado === 0,
+        afiliadosSinEstado === 0
             ? "Correcto"
-            : afiliadosSinEstado+" afiliados sin estado"
+            : afiliadosSinEstado +
+              " afiliados sin estado"
     );
 
 
     const colaboradoresSinEstado =
-        colaboradores.filter(function(colaborador){
+        colaboradores.filter(function(colaborador) {
 
             return !String(
                 obtenerValor(
@@ -2193,18 +2913,19 @@ async function revisarIntegridad(){
 
         }).length;
 
+
     establecerIntegridad(
         "integridadColaboradoresEstado",
-        colaboradoresSinEstado===0,
-        colaboradoresSinEstado===0
+        colaboradoresSinEstado === 0,
+        colaboradoresSinEstado === 0
             ? "Correcto"
-            : colaboradoresSinEstado+
+            : colaboradoresSinEstado +
               " colaboradores sin estado"
     );
 
 
     const prestamosSinLibro =
-        prestamos.filter(function(prestamo){
+        prestamos.filter(function(prestamo) {
 
             return !String(
                 obtenerValor(
@@ -2216,18 +2937,19 @@ async function revisarIntegridad(){
 
         }).length;
 
+
     establecerIntegridad(
         "integridadPrestamosLibro",
-        prestamosSinLibro===0,
-        prestamosSinLibro===0
+        prestamosSinLibro === 0,
+        prestamosSinLibro === 0
             ? "Correcto"
-            : prestamosSinLibro+
+            : prestamosSinLibro +
               " préstamos sin código de libro"
     );
 
 
     const usuariosSinRol =
-        usuarios.filter(function(usuario){
+        usuarios.filter(function(usuario) {
 
             return !String(
                 obtenerValor(
@@ -2239,14 +2961,16 @@ async function revisarIntegridad(){
 
         }).length;
 
+
     establecerIntegridad(
         "integridadUsuariosRol",
-        usuariosSinRol===0,
-        usuariosSinRol===0
+        usuariosSinRol === 0,
+        usuariosSinRol === 0
             ? "Correcto"
-            : usuariosSinRol+
+            : usuariosSinRol +
               " usuarios sin rol"
     );
+
 }
 
 
@@ -2254,31 +2978,39 @@ async function revisarIntegridad(){
    CERRAR SESIÓN
 ========================================================= */
 
-async function cerrarSesion(){
+async function cerrarSesion() {
 
-    try{
+    try {
 
-        const {error} =
-            await supabaseClient.auth.signOut();
+        const {
+            error
+        } = await supabaseClient.auth.signOut();
 
-        if(error){
+
+        if (error) {
             throw error;
         }
 
-        window.location.href="index.html";
 
-    }catch(error){
+        window.location.href =
+            "index.html";
+
+
+    } catch (error) {
 
         console.error(
             "Error al cerrar sesión:",
             error
         );
 
+
         mostrarModal(
             "Error",
             "No fue posible cerrar la sesión correctamente."
         );
+
     }
+
 }
 
 
@@ -2290,9 +3022,12 @@ document
     .getElementById("modalMensaje")
     .addEventListener(
         "click",
-        function(evento){
+        function(evento) {
 
-            if(evento.target===this){
+            if (
+                evento.target ===
+                this
+            ) {
                 cerrarModal();
             }
 
@@ -2304,9 +3039,12 @@ document
     .getElementById("modalNuevoUsuario")
     .addEventListener(
         "click",
-        function(evento){
+        function(evento) {
 
-            if(evento.target===this){
+            if (
+                evento.target ===
+                this
+            ) {
                 cerrarModalNuevoUsuario();
             }
 
@@ -2319,35 +3057,39 @@ document
 ========================================================= */
 
 window.administracionAuth =
-    (async function protegerAdministracion(){
+    (async function protegerAdministracion() {
 
-        try{
+        try {
 
             const autorizado =
                 await window.protegerPagina();
 
-            if(!autorizado){
+
+            if (!autorizado) {
 
                 window.location.replace(
                     "index.html"
                 );
 
                 return false;
+
             }
 
 
-            if(!window.esAdministrador()){
+            if (!window.esAdministrador()) {
 
                 window.location.replace(
                     "index.html"
                 );
 
                 return false;
+
             }
 
 
             usuarioSesionActual =
                 window.usuarioSesion;
+
 
             perfilUsuarioActual =
                 window.perfilUsuario;
@@ -2358,11 +3100,13 @@ window.administracionAuth =
                     "usuarioActual"
                 );
 
-            if(elementoUsuario){
+
+            if (elementoUsuario) {
 
                 elementoUsuario.textContent =
                     usuarioSesionActual.email ||
                     "Usuario autenticado";
+
             }
 
 
@@ -2371,12 +3115,18 @@ window.administracionAuth =
                     "rolActual"
                 );
 
-            if(elementoRol){
-                elementoRol.textContent="Administrador";
+
+            if (elementoRol) {
+
+                elementoRol.textContent =
+                    "Administrador";
+
             }
 
 
-            window.administracionAutorizado=true;
+            window.administracionAutorizado =
+                true;
+
 
             actualizarInformacion();
 
@@ -2384,26 +3134,30 @@ window.administracionAuth =
             document
                 .documentElement
                 .style
-                .visibility="visible";
+                .visibility = "visible";
 
 
             await cargarTodo();
 
+
             return true;
 
 
-        }catch(error){
+        } catch (error) {
 
             console.error(
                 "Error de autenticación o permisos:",
                 error
             );
 
+
             window.location.replace(
                 "index.html"
             );
 
+
             return false;
+
         }
 
     })();
