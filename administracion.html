@@ -7,6 +7,7 @@
     <title>Administración - Biblioteca</title>
 
     <style>
+
         html {
             visibility: hidden;
         }
@@ -430,6 +431,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
+            margin-bottom: 18px;
         }
 
         .tarjeta-rol {
@@ -466,6 +468,87 @@
             background: #eceff1;
             border-radius: 6px;
             color: #546e7a;
+            font-size: 12px;
+        }
+
+        .usuarios-resumen {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .usuario-resumen {
+            background: #f7f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .usuario-resumen strong {
+            display: block;
+            font-size: 20px;
+            color: #37474f;
+            margin-bottom: 4px;
+        }
+
+        .usuario-resumen span {
+            font-size: 11px;
+            color: #607d8b;
+        }
+
+        .rol-usuario {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: #eceff1;
+            color: #455a64;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .rol-administrador {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: #dbe5ea;
+            color: #263238;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .usuario-activo {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: #d4edda;
+            color: #155724;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .usuario-inactivo {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: #f8d7da;
+            color: #721c24;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .usuarios-cargando {
+            text-align: center;
+            padding: 20px;
+            color: #78909c;
+            font-size: 12px;
+        }
+
+        .usuarios-vacio {
+            text-align: center;
+            padding: 20px;
+            color: #78909c;
             font-size: 12px;
         }
 
@@ -616,6 +699,10 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
+            .usuarios-resumen {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
         }
 
         @media (max-width: 700px) {
@@ -645,7 +732,8 @@
             .grid-informacion,
             .grid-sitios,
             .lista-integridad,
-            .usuarios-preparacion {
+            .usuarios-preparacion,
+            .usuarios-resumen {
                 grid-template-columns: 1fr;
             }
 
@@ -1400,8 +1488,8 @@
         <div class="seccion-contenido">
 
             <p class="descripcion-seccion">
-                Esta sección prepara la estructura de permisos que posteriormente
-                permitirá controlar qué funciones puede utilizar cada persona.
+                Usuarios registrados en el sistema y rol asignado a cada cuenta.
+                En esta etapa la sección permite consultar la información de usuarios.
             </p>
 
 
@@ -1455,15 +1543,92 @@
             </div>
 
 
+            <div class="usuarios-resumen">
+
+                <div class="usuario-resumen">
+
+                    <strong id="totalUsuarios">
+                        0
+                    </strong>
+
+                    <span>
+                        Usuarios registrados
+                    </span>
+
+                </div>
+
+
+                <div class="usuario-resumen">
+
+                    <strong id="usuariosAdministradores">
+                        0
+                    </strong>
+
+                    <span>
+                        Administradores
+                    </span>
+
+                </div>
+
+
+                <div class="usuario-resumen">
+
+                    <strong id="usuariosActivos">
+                        0
+                    </strong>
+
+                    <span>
+                        Usuarios activos
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Fecha de registro</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tablaUsuarios">
+
+                        <tr>
+                            <td
+                                colspan="5"
+                                class="usuarios-cargando">
+                                Cargando usuarios...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
             <div class="estado-preparacion">
 
                 <strong>
                     Estado:
                 </strong>
 
-                La administración de usuarios todavía no está activada.
-                La estructura visual está preparada para conectarla posteriormente
-                con Supabase Auth y los roles del sistema.
+                La gestión de usuarios está conectada con Supabase.
+                Los usuarios mostrados corresponden a los registros existentes
+                en la tabla de usuarios del sistema.
 
             </div>
 
@@ -1620,7 +1785,8 @@
         afiliados: [],
         libros: [],
         colaboradores: [],
-        prestamos: []
+        prestamos: [],
+        usuarios: []
     };
 
 
@@ -1671,11 +1837,6 @@
 
             }
 
-
-            /*
-             * Buscamos el perfil correspondiente
-             * en nuestra tabla public.usuarios.
-             */
 
             const {
                 data: perfil,
@@ -1745,12 +1906,6 @@
                 );
 
 
-            /*
-             * Esta pantalla de Administración
-             * solamente puede ser utilizada
-             * por administradores activos.
-             */
-
             if (
                 rol !== "ADMINISTRADOR" ||
                 estado !== "ACTIVO"
@@ -1792,10 +1947,6 @@
             }
 
 
-            /*
-             * El usuario tiene permisos de administrador.
-             */
-
             window.administracionAutorizado =
                 true;
 
@@ -1823,7 +1974,7 @@
             if (estadoPreparacion) {
 
                 estadoPreparacion.innerHTML =
-                    "<strong>Estado:</strong> Administración de usuarios preparada. El usuario actual tiene permisos de administrador.";
+                    "<strong>Estado:</strong> Administración de usuarios conectada. El usuario actual tiene permisos de administrador.";
 
             }
 
@@ -1951,6 +2102,42 @@
 
 
         return "";
+
+    }
+
+
+    function formatearFecha(fecha) {
+
+        if (!fecha) {
+
+            return "—";
+
+        }
+
+
+        const fechaObjeto =
+            new Date(fecha);
+
+
+        if (
+            Number.isNaN(
+                fechaObjeto.getTime()
+            )
+        ) {
+
+            return String(fecha);
+
+        }
+
+
+        return fechaObjeto.toLocaleDateString(
+            "es-GT",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        );
 
     }
 
@@ -2090,16 +2277,25 @@
         try {
 
             await Promise.all([
+
                 cargarAfiliados(),
+
                 cargarLibros(),
+
                 cargarColaboradores(),
-                cargarPrestamos()
+
+                cargarPrestamos(),
+
+                cargarUsuarios()
+
             ]);
 
 
             actualizarEstadisticas();
 
             actualizarDiagnosticoBase();
+
+            actualizarUsuarios();
 
             actualizarEstadoConexion(
                 true
@@ -2461,6 +2657,90 @@
 
 
     /* ==========================================================
+       CARGAR USUARIOS
+    ========================================================== */
+
+    async function cargarUsuarios() {
+
+        const registros = [];
+
+        let desde = 0;
+
+        const cantidad = 1000;
+
+
+        while (true) {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("usuarios")
+                .select(`
+                    id,
+                    correo,
+                    nombre,
+                    rol,
+                    estado,
+                    fechaRegistro
+                `)
+                .order(
+                    "nombre",
+                    {
+                        ascending: true,
+                        nullsFirst: false
+                    }
+                )
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                break;
+
+            }
+
+
+            registros.push(
+                ...data
+            );
+
+
+            if (
+                data.length <
+                cantidad
+            ) {
+
+                break;
+
+            }
+
+
+            desde += cantidad;
+
+        }
+
+
+        datosAdministracion.usuarios =
+            registros;
+
+    }
+
+
+    /* ==========================================================
        ESTADISTICAS
     ========================================================== */
 
@@ -2706,6 +2986,244 @@
         ).textContent =
             prestamosColaboradores.toLocaleString(
                 "es-GT"
+            );
+
+    }
+
+
+    /* ==========================================================
+       MOSTRAR USUARIOS
+    ========================================================== */
+
+    function actualizarUsuarios() {
+
+        const usuarios =
+            datosAdministracion.usuarios;
+
+
+        const tabla =
+            document.getElementById(
+                "tablaUsuarios"
+            );
+
+
+        const totalUsuarios =
+            document.getElementById(
+                "totalUsuarios"
+            );
+
+
+        const usuariosAdministradores =
+            document.getElementById(
+                "usuariosAdministradores"
+            );
+
+
+        const usuariosActivos =
+            document.getElementById(
+                "usuariosActivos"
+            );
+
+
+        const cantidadAdministradores =
+            usuarios.filter(
+                usuario =>
+                    normalizar(
+                        usuario.rol
+                    ) === "ADMINISTRADOR"
+            ).length;
+
+
+        const cantidadActivos =
+            usuarios.filter(
+                usuario =>
+                    esEstadoActivo(
+                        usuario.estado
+                    )
+            ).length;
+
+
+        if (totalUsuarios) {
+
+            totalUsuarios.textContent =
+                usuarios.length.toLocaleString(
+                    "es-GT"
+                );
+
+        }
+
+
+        if (usuariosAdministradores) {
+
+            usuariosAdministradores.textContent =
+                cantidadAdministradores.toLocaleString(
+                    "es-GT"
+                );
+
+        }
+
+
+        if (usuariosActivos) {
+
+            usuariosActivos.textContent =
+                cantidadActivos.toLocaleString(
+                    "es-GT"
+                );
+
+        }
+
+
+        if (!tabla) {
+
+            return;
+
+        }
+
+
+        if (usuarios.length === 0) {
+
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="5" class="usuarios-vacio">
+                        No hay usuarios registrados.
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+
+        tabla.innerHTML = "";
+
+
+        usuarios.forEach(
+            usuario => {
+
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const nombre =
+                    usuario.nombre ||
+                    "Sin nombre";
+
+
+                const correo =
+                    usuario.correo ||
+                    "Sin correo";
+
+
+                const rol =
+                    normalizar(
+                        usuario.rol
+                    );
+
+
+                const estado =
+                    normalizar(
+                        usuario.estado
+                    );
+
+
+                const claseRol =
+                    rol === "ADMINISTRADOR"
+                        ? "rol-administrador"
+                        : "rol-usuario";
+
+
+                const textoRol =
+                    rol === "ADMINISTRADOR"
+                        ? "Administrador"
+                        : "Usuario";
+
+
+                const claseEstado =
+                    estado === "ACTIVO"
+                        ? "usuario-activo"
+                        : "usuario-inactivo";
+
+
+                const textoEstado =
+                    estado === "ACTIVO"
+                        ? "Activo"
+                        : "Inactivo";
+
+
+                fila.innerHTML = `
+
+                    <td>
+                        ${escapeHtml(nombre)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(correo)}
+                    </td>
+
+                    <td>
+                        <span class="${claseRol}">
+                            ${textoRol}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="${claseEstado}">
+                            ${textoEstado}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            formatearFecha(
+                                usuario.fechaRegistro
+                            )
+                        )}
+                    </td>
+
+                `;
+
+
+                tabla.appendChild(
+                    fila
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ==========================================================
+       PROTECCION DE TEXTO
+    ========================================================== */
+
+    function escapeHtml(valor) {
+
+        return String(
+            valor ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
             );
 
     }
@@ -3232,10 +3750,6 @@
                     .prestamos;
 
 
-            /* ==========================
-               AFILIADOS SIN ESTADO
-            ========================== */
-
             const afiliadosSinEstado =
                 afiliados.filter(
                     afiliado => {
@@ -3259,10 +3773,6 @@
             );
 
 
-            /* ==========================
-               AFILIADOS SIN SITIO
-            ========================== */
-
             const afiliadosSinSitio =
                 afiliados.filter(
                     afiliado => {
@@ -3280,10 +3790,6 @@
                 afiliadosSinSitio
             );
 
-
-            /* ==========================
-               LIBROS SIN SITIO
-            ========================== */
 
             const librosSinSitio =
                 libros.filter(
@@ -3303,10 +3809,6 @@
             );
 
 
-            /* ==========================
-               LIBROS SIN CODIGO
-            ========================== */
-
             const librosSinCodigo =
                 libros.filter(
                     libro => {
@@ -3325,10 +3827,6 @@
                 librosSinCodigo
             );
 
-
-            /* ==========================
-               COLABORADORES SIN ESTADO
-            ========================== */
 
             const colaboradoresSinEstado =
                 colaboradores.filter(
@@ -3353,10 +3851,6 @@
             );
 
 
-            /* ==========================
-               COLABORADORES SIN CODIGO
-            ========================== */
-
             const colaboradoresSinCodigo =
                 colaboradores.filter(
                     colaborador => {
@@ -3375,10 +3869,6 @@
                 colaboradoresSinCodigo
             );
 
-
-            /* ==========================
-               ESTADOS DE LIBROS
-            ========================== */
 
             const estadosLibroValidos = [
                 "DISPONIBLE",
@@ -3415,10 +3905,6 @@
                 librosEstadoInvalido
             );
 
-
-            /* ==========================
-               PRESTAMOS SIN LIBRO
-            ========================== */
 
             const prestamosSinLibro =
                 prestamos.filter(
@@ -3466,10 +3952,6 @@
                 prestamosSinLibro
             );
 
-
-            /* ==========================
-               RESULTADO GENERAL
-            ========================== */
 
             const problemas =
                 afiliadosSinEstado +
@@ -3550,7 +4032,9 @@
 
             cargarColaboradores(),
 
-            cargarPrestamos()
+            cargarPrestamos(),
+
+            cargarUsuarios()
 
         ]);
 
@@ -3558,6 +4042,8 @@
         actualizarEstadisticas();
 
         actualizarDiagnosticoBase();
+
+        actualizarUsuarios();
 
         actualizarEstadoConexion(
             true
