@@ -1348,10 +1348,6 @@
                             Z
                         </option>
 
-                        <option value="NE">
-                            NE
-                        </option>
-
                     </select>
 
                 </div>
@@ -1700,6 +1696,10 @@
                             <th>Devolución</th>
 
                             <th>Estado</th>
+
+                            <th>Prestado por</th>
+
+                            <th>Devuelto por</th>
 
                         </tr>
 
@@ -2105,13 +2105,19 @@
         }
 
 
+        /*
+         * IMPORTANTE:
+         * SitioPréstamo es el sitio donde se realizó el préstamo.
+         *
+         * NO se utiliza prestamo.Sitio porque ese campo pertenece
+         * al registro de la familia/persona.
+         *
+         * NE NO es un sitio y por eso nunca se obtiene desde aquí.
+         */
+
         function obtenerSitioPrestamo(prestamo) {
 
             const sitio =
-
-                prestamo.Sitio ||
-
-                prestamo.sitio ||
 
                 prestamo.SitioPrestamo ||
 
@@ -2145,8 +2151,7 @@
                     "M",
                     "N",
                     "R",
-                    "Z",
-                    "NE"
+                    "Z"
                 ].includes(valor)
             ) {
 
@@ -2650,6 +2655,15 @@
 
                         }
 
+
+                        /*
+                         * Aquí sí utilizamos Biblioteca,
+                         * porque estamos filtrando libros por
+                         * la biblioteca donde están ubicados.
+                         *
+                         * NE puede aparecer aquí como Biblioteca,
+                         * pero nunca como SitioPréstamo.
+                         */
 
                         return (
 
@@ -3368,6 +3382,14 @@
                 );
 
 
+            /*
+             * Los sitios del filtro se obtienen exclusivamente
+             * de SitioPrestamo.
+             *
+             * NE no se agrega manualmente porque NE es una
+             * Biblioteca, no un Sitio.
+             */
+
             const sitios =
                 [
 
@@ -3417,6 +3439,24 @@
             sitios.forEach(
 
                 sitio => {
+
+                    /*
+                     * Por seguridad, si existiera un registro
+                     * antiguo con SitioPrestamo = NE, no lo
+                     * mostramos como una opción de sitio.
+                     */
+
+                    if (
+                        String(sitio)
+                            .trim()
+                            .toUpperCase() ===
+                        "NE"
+                    ) {
+
+                        return;
+
+                    }
+
 
                     const option =
                         document.createElement(
@@ -3911,7 +3951,7 @@
                     <tr>
 
                         <td
-                            colspan="13"
+                            colspan="15"
                             class="sin-resultados"
                         >
                             🔎 No se encontraron préstamos con los filtros seleccionados.
@@ -4146,6 +4186,16 @@
                         "—";
 
 
+                    const prestadoPor =
+                        prestamo.PrestadoPor ||
+                        "—";
+
+
+                    const devueltoPor =
+                        prestamo.DevueltoPor ||
+                        "—";
+
+
                     fila.innerHTML = `
 
                         <td>
@@ -4210,6 +4260,14 @@
 
                             </span>
 
+                        </td>
+
+                        <td>
+                            ${escapeHtml(prestadoPor)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(devueltoPor)}
                         </td>
 
                     `;
@@ -4430,6 +4488,14 @@
             let datos =
                 prestamos;
 
+
+            /*
+             * Las gráficas de préstamos y actividad
+             * utilizan exclusivamente SitioPrestamo.
+             *
+             * Como NE no es un sitio, ya no existe como
+             * opción y tampoco se busca aquí.
+             */
 
             if (
                 sitioSeleccionado !==
@@ -4772,7 +4838,19 @@
 
                             "Estado":
 
-                                estado
+                                estado,
+
+
+                            "Prestado por":
+
+                                prestamo.PrestadoPor ||
+                                "",
+
+
+                            "Devuelto por":
+
+                                prestamo.DevueltoPor ||
+                                ""
 
                         };
 
