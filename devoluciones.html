@@ -8,6 +8,7 @@
     <style>
         html {
             visibility: hidden;
+            scroll-behavior: smooth;
         }
 
         * {
@@ -767,7 +768,9 @@
     </section>
 
 
-    <section class="tabla-contenedor">
+    <section
+        class="tabla-contenedor"
+        id="seccionTabla">
 
         <table>
 
@@ -788,15 +791,15 @@
                     </th>
 
                     <th>
-                        Área
-                    </th>
-
-                    <th>
                         Biblioteca
                     </th>
 
                     <th>
-                        Libro
+                        Código del libro
+                    </th>
+
+                    <th>
+                        Nombre del libro
                     </th>
 
                     <th>
@@ -1307,7 +1310,7 @@
 
         } else {
 
-            const mapaBibliotecas = {};
+            const mapaLibros = {};
 
 
             (libros || []).forEach(
@@ -1321,8 +1324,8 @@
 
                     if (codigo) {
 
-                        mapaBibliotecas[codigo] =
-                            libro.Biblioteca || "";
+                        mapaLibros[codigo] =
+                            libro;
 
                     }
 
@@ -1339,14 +1342,27 @@
                                 prestamo.codigoLibro
                             );
 
+                        const libro =
+                            mapaLibros[
+                                codigoPrestamo
+                            ] || null;
+
 
                         return {
                             ...prestamo,
 
                             Biblioteca:
-                                mapaBibliotecas[
-                                    codigoPrestamo
-                                ] || ""
+                                libro?.Biblioteca || "",
+
+                            nombreLibro:
+                                libro?.nombreLibro ||
+                                prestamo.nombreLibro ||
+                                "",
+
+                            codigoLibro:
+                                libro?.codigoLibro ||
+                                prestamo.codigoLibro
+
                         };
 
                     }
@@ -1475,12 +1491,6 @@
                         : `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`.trim() || "—";
 
 
-                const area =
-                    colaborador
-                        ? prestamo.AreaColaborador || "—"
-                        : "—";
-
-
                 const biblioteca =
                     prestamo.Biblioteca || "—";
 
@@ -1517,18 +1527,16 @@
                     </td>
 
                     <td>
-                        ${escapeHtml(area)}
-                    </td>
-
-                    <td>
                         <span class="badge badge-biblioteca">
                             ${escapeHtml(biblioteca)}
                         </span>
                     </td>
 
-                    <td class="libro-columna">
+                    <td>
                         <strong>${escapeHtml(codigoLibro)}</strong>
-                        <br>
+                    </td>
+
+                    <td class="libro-columna">
                         ${escapeHtml(nombreLibro)}
                     </td>
 
@@ -1643,6 +1651,27 @@
 
             }
         );
+
+    }
+
+
+    function subirASeccionTabla() {
+
+        const seccionTabla =
+            document.getElementById(
+                "seccionTabla"
+            );
+
+
+        if (!seccionTabla) {
+            return;
+        }
+
+
+        seccionTabla.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
     }
 
@@ -2658,6 +2687,8 @@
 
                 mostrarPrestamos();
 
+                subirASeccionTabla();
+
             }
 
         }
@@ -2685,6 +2716,8 @@
                 paginaActual++;
 
                 mostrarPrestamos();
+
+                subirASeccionTabla();
 
             }
 
@@ -2832,4 +2865,3 @@
 
 </body>
 </html>
-```
