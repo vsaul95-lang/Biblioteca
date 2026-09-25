@@ -181,6 +181,10 @@
         .encabezado-contenido {
             max-width: 1100px;
             margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
         }
 
 
@@ -210,6 +214,27 @@
 
 
         /* =========================================
+           BOTON VOLVER
+        ========================================== */
+
+        .boton-volver {
+            display: inline-block;
+            text-decoration: none;
+            background: #37474f;
+            color: white;
+            padding: 8px 13px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+
+        .boton-volver:hover {
+            background: #455a64;
+        }
+
+
+        /* =========================================
            CONTENEDOR
         ========================================== */
 
@@ -221,10 +246,6 @@
 
 
         .barra-superior {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
             margin-bottom: 20px;
         }
 
@@ -232,24 +253,6 @@
         .barra-superior h2 {
             margin: 0;
             font-size: 22px;
-        }
-
-
-        .boton-volver {
-            display: inline-block;
-            text-decoration: none;
-            background: white;
-            color: #263238;
-            border: 1px solid #cfd8dc;
-            padding: 9px 15px;
-            border-radius: 7px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-
-        .boton-volver:hover {
-            background: #eceff1;
         }
 
 
@@ -644,9 +647,13 @@
             }
 
 
+            .encabezado-contenido {
+                align-items: flex-start;
+            }
+
+
             .barra-superior {
                 align-items: flex-start;
-                flex-direction: column;
             }
 
         }
@@ -667,6 +674,16 @@
 
             .archivo .boton {
                 width: 100%;
+            }
+
+
+            .encabezado-contenido {
+                flex-direction: column;
+            }
+
+
+            .boton-volver {
+                align-self: flex-end;
             }
 
         }
@@ -707,6 +724,14 @@
 
             </div>
 
+
+            <a
+                href="index.html"
+                class="boton-volver"
+            >
+                Volver al inicio
+            </a>
+
         </div>
 
     </header>
@@ -725,13 +750,6 @@
             <h2>
                 Familias y afiliados
             </h2>
-
-            <a
-                href="index.html"
-                class="boton-volver"
-            >
-                ← Volver al inicio
-            </a>
 
         </div>
 
@@ -826,78 +844,6 @@
 
             </div>
 
-
-        </section>
-
-
-
-        <!-- =====================================
-             IMPORTACION
-        ====================================== -->
-
-        <section class="seccion">
-
-            <h3>
-                📥 Actualizar base de afiliados
-            </h3>
-
-
-            <div class="importacion-info">
-
-                <strong>
-                    Importación anual
-                </strong>
-
-                <br>
-
-                Selecciona el archivo Excel actualizado de la organización.
-
-                El sistema utilizará las columnas:
-
-                <strong>
-                    Sitio, PersonaId, FamiliaId, Nombres y Apellidos
-                </strong>.
-
-                <br><br>
-
-                Las personas nuevas se agregarán como activas.
-                Las personas existentes se actualizarán.
-                Las personas que ya no aparezcan en el nuevo Excel
-                quedarán como inactivas.
-
-                <br><br>
-
-                Los préstamos registrados anteriormente
-                no serán eliminados.
-
-            </div>
-
-
-            <div class="archivo">
-
-                <input
-                    type="file"
-                    id="archivoExcel"
-                    accept=".xlsx,.xls"
-                >
-
-
-                <button
-                    type="button"
-                    class="boton boton-principal"
-                    id="botonActualizar"
-                    onclick="actualizarBase()"
-                >
-                    🔄 Actualizar base
-                </button>
-
-            </div>
-
-
-            <div
-                id="resultadoImportacion"
-                class="resultado-importacion"
-            ></div>
 
         </section>
 
@@ -1180,6 +1126,79 @@
                 </button>
 
             </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             ACTUALIZAR BASE
+             SE MOVIO AL FINAL
+        ====================================== -->
+
+        <section class="seccion">
+
+            <h3>
+                📥 Actualizar base de afiliados
+            </h3>
+
+
+            <div class="importacion-info">
+
+                <strong>
+                    Importación anual
+                </strong>
+
+                <br>
+
+                Selecciona el archivo Excel actualizado de la organización.
+
+                El sistema utilizará las columnas:
+
+                <strong>
+                    Sitio, PersonaId, FamiliaId, Nombres y Apellidos
+                </strong>.
+
+                <br><br>
+
+                Las personas nuevas se agregarán como activas.
+                Las personas existentes se actualizarán.
+                Las personas que ya no aparezcan en el nuevo Excel
+                quedarán como inactivas.
+
+                <br><br>
+
+                Los préstamos registrados anteriormente
+                no serán eliminados.
+
+            </div>
+
+
+            <div class="archivo">
+
+                <input
+                    type="file"
+                    id="archivoExcel"
+                    accept=".xlsx,.xls"
+                >
+
+
+                <button
+                    type="button"
+                    class="boton boton-principal"
+                    id="botonActualizar"
+                    onclick="actualizarBase()"
+                >
+                    🔄 Actualizar base
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoImportacion"
+                class="resultado-importacion"
+            ></div>
 
         </section>
 
