@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -188,7 +189,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1150px;
+            min-width: 1050px;
         }
 
         thead {
@@ -213,8 +214,7 @@
         }
 
         td.nombre-columna,
-        td.libro-columna,
-        td.comentario-columna {
+        td.libro-columna {
             text-align: left;
         }
 
@@ -813,10 +813,6 @@
                     </th>
 
                     <th>
-                        Comentarios
-                    </th>
-
-                    <th>
                         Acciones
                     </th>
 
@@ -1275,9 +1271,8 @@
          * ==========================================================
          * CONEXIÓN PRÉSTAMOS → LIBROS → BIBLIOTECA
          *
-         * La biblioteca NO se toma de Sitio ni de FamiliaId.
+         * La biblioteca se obtiene directamente de la tabla libros.
          *
-         * Relación:
          * prestamos.codigoLibro
          *        ↓
          * libros.codigoLibro
@@ -1303,12 +1298,13 @@
                 "error"
             );
 
-            prestamos = (data || []).map(
-                prestamo => ({
-                    ...prestamo,
-                    Biblioteca: ""
-                })
-            );
+            prestamos =
+                (data || []).map(
+                    prestamo => ({
+                        ...prestamo,
+                        Biblioteca: ""
+                    })
+                );
 
         } else {
 
@@ -1490,8 +1486,15 @@
                     prestamo.Biblioteca || "—";
 
 
-                const comentario =
-                    prestamo.comentarios || "—";
+                const codigoLibro =
+                    formatearCodigo(
+                        prestamo.codigoLibro
+                    );
+
+
+                const nombreLibro =
+                    prestamo.nombreLibro ||
+                    "—";
 
 
                 const tr =
@@ -1525,7 +1528,9 @@
                     </td>
 
                     <td class="libro-columna">
-                        ${escapeHtml(prestamo.nombreLibro || "—")}
+                        <strong>${escapeHtml(codigoLibro)}</strong>
+                        <br>
+                        ${escapeHtml(nombreLibro)}
                     </td>
 
                     <td>
@@ -1548,10 +1553,6 @@
                         <span class="badge badge-prestado">
                             Prestado
                         </span>
-                    </td>
-
-                    <td class="comentario-columna">
-                        ${escapeHtml(comentario)}
                     </td>
 
                     <td>
