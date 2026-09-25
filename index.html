@@ -20,11 +20,12 @@
 <style>
 
 /* =========================================
-   APARIENCIA PRINCIPAL
+   PALETA INSTITUCIONAL
 ========================================= */
 
 :root {
     --celeste-fundacion: #009ddc;
+    --celeste-oscuro: #008fc8;
     --celeste-suave: #eaf7fc;
     --fondo: #f4f7f9;
     --blanco: #ffffff;
@@ -58,8 +59,16 @@ body {
     box-shadow: 0 8px 28px rgba(31, 52, 63, 0.10) !important;
 }
 
+#pantallaAcceso > div > div:first-child {
+    color: var(--celeste-fundacion);
+}
+
 #pantallaAcceso h1 {
-    color: #263238;
+    color: var(--celeste-fundacion);
+}
+
+#pantallaAcceso p {
+    color: var(--texto-suave) !important;
 }
 
 #pantallaAcceso input {
@@ -79,7 +88,7 @@ body {
 }
 
 #botonIngresar:hover {
-    background: #008fc8 !important;
+    background: var(--celeste-oscuro) !important;
 }
 
 
@@ -89,41 +98,75 @@ body {
 
 .encabezado {
     background: var(--celeste-fundacion) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    color: white !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
 .encabezado-contenido {
-    min-height: 70px;
+    min-height: 74px;
 }
 
 .marca {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
+
+/* Logo de Biblioteca */
+
 .icono-marca {
-    font-size: 34px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.16);
+
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    border-radius: 12px;
+
+    font-size: 31px;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.10);
 }
+
+
+/* Título */
 
 .marca h1 {
     margin: 0;
-    font-size: 22px;
-    font-weight: 700;
+    color: white !important;
+    font-size: 25px;
+    font-weight: 750;
+    line-height: 1.1;
+    letter-spacing: 0.1px;
 }
+
+
+/* Subtítulo */
 
 .marca p {
-    margin: 2px 0 0;
+    margin: 4px 0 0;
+    color: white !important;
     font-size: 13px;
-    opacity: 0.92;
+    font-weight: 400;
+    opacity: 0.96;
 }
 
+
+/* Botón cerrar sesión */
+
 #botonCerrarSesion {
+    color: white !important;
+    border-color: rgba(255,255,255,0.42) !important;
     transition: 0.2s ease;
 }
 
 #botonCerrarSesion:hover {
-    background: rgba(255,255,255,0.14) !important;
+    background: rgba(255,255,255,0.15) !important;
 }
 
 
@@ -164,6 +207,7 @@ body {
 
 .bienvenida h2 {
     margin: 0 0 6px;
+    color: var(--texto);
     font-size: 23px;
     line-height: 1.25;
 }
@@ -183,49 +227,113 @@ body {
 
 .estadisticas {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+
+    /*
+       Los cuadros ya no ocupan todo el ancho.
+       Se mantienen centrados y equilibrados.
+    */
+    grid-template-columns:
+        repeat(4, minmax(150px, 185px));
+
+    justify-content: center;
+
+    gap: 18px;
+
     margin-bottom: 18px;
 }
 
+
+/* Cuadro individual */
+
 .tarjeta-estadistica {
     background: white !important;
+
     border: 1px solid var(--borde);
-    border-radius: 9px;
-    padding: 15px 16px !important;
-    min-height: 96px;
+    border-radius: 10px;
+
+    /*
+       Cuadros más angostos
+    */
+    width: 100%;
+    min-height: 116px;
+
+    padding: 15px 12px !important;
+
     box-sizing: border-box;
+
     box-shadow: var(--sombra);
-    display: grid;
-    grid-template-columns: 42px 1fr;
-    grid-template-rows: auto auto;
-    column-gap: 11px;
+
+    /*
+       Todo centrado
+    */
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
 }
 
+
+.tarjeta-estadistica:hover {
+    transform: translateY(-2px);
+
+    border-color: #a9dced;
+
+    box-shadow:
+        0 5px 15px rgba(0, 157, 220, 0.10);
+}
+
+
+/* Iconos */
+
 .estadistica-icono {
-    grid-row: 1 / 3;
     width: 42px;
     height: 42px;
-    border-radius: 9px;
+
+    margin-bottom: 8px;
+
+    border-radius: 10px;
+
     background: var(--celeste-suave);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 21px;
 }
 
+
+/* Números */
+
 .estadistica-numero {
-    font-size: 23px !important;
-    font-weight: 700;
+    font-size: 24px !important;
+    font-weight: 750;
+
     color: var(--celeste-fundacion);
+
     line-height: 1;
+
+    margin-bottom: 5px;
 }
+
+
+/* Texto */
 
 .estadistica-texto {
     color: var(--texto-suave);
+
     font-size: 13px;
-    margin-top: 3px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
 }
 
 
@@ -235,22 +343,35 @@ body {
 
 .seccion {
     background: white;
+
     border: 1px solid var(--borde);
+
     border-radius: 10px;
+
     margin-bottom: 18px;
+
     box-shadow: var(--sombra);
+
     overflow: hidden;
 }
 
+
 .seccion-titulo {
     margin: 0 !important;
+
     padding: 13px 18px !important;
+
     background: #fbfcfd;
+
     border-bottom: 1px solid var(--borde);
+
     color: #34434b;
+
     font-size: 16px !important;
+
     font-weight: 700;
 }
+
 
 .seccion-contenido {
     padding: 18px;
@@ -263,24 +384,41 @@ body {
 
 .acciones-principales {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
     gap: 12px;
+
     padding: 14px;
 }
 
+
 .accion {
     position: relative;
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     min-height: 78px;
+
     padding: 14px;
+
     box-sizing: border-box;
+
     background: #ffffff;
+
     border: 1px solid var(--borde);
+
     border-radius: 9px;
+
     text-decoration: none;
+
     color: var(--texto);
+
     transition:
         transform 0.18s ease,
         border-color 0.18s ease,
@@ -288,40 +426,60 @@ body {
         background 0.18s ease;
 }
 
+
 .accion:hover {
     transform: translateY(-2px);
+
     border-color: #9ed9ed;
+
     background: #fbfeff;
-    box-shadow: 0 5px 14px rgba(0, 157, 220, 0.10);
+
+    box-shadow:
+        0 5px 14px rgba(0, 157, 220, 0.10);
 }
+
 
 .accion-icono {
     width: 43px;
     height: 43px;
+
     min-width: 43px;
+
     border-radius: 9px;
+
     background: var(--celeste-suave);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 21px;
 }
 
+
 .accion-contenido {
     display: flex;
+
     flex-direction: column;
+
     gap: 4px;
+
     min-width: 0;
 }
 
+
 .accion-contenido strong {
     font-size: 14px;
+
     color: #263238;
 }
 
+
 .accion-contenido span {
     font-size: 12px;
+
     line-height: 1.35;
+
     color: var(--texto-suave);
 }
 
@@ -342,23 +500,39 @@ body {
 
 .administracion {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
     gap: 12px;
+
     padding: 14px;
 }
 
+
 .opcion {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     min-height: 82px;
+
     padding: 14px;
+
     box-sizing: border-box;
+
     background: #ffffff;
+
     border: 1px solid var(--borde);
+
     border-radius: 9px;
+
     text-decoration: none;
+
     color: var(--texto);
+
     transition:
         transform 0.18s ease,
         border-color 0.18s ease,
@@ -366,40 +540,60 @@ body {
         background 0.18s ease;
 }
 
+
 .opcion:hover {
     transform: translateY(-2px);
+
     border-color: #9ed9ed;
+
     background: #fbfeff;
-    box-shadow: 0 5px 14px rgba(0, 157, 220, 0.10);
+
+    box-shadow:
+        0 5px 14px rgba(0, 157, 220, 0.10);
 }
+
 
 .opcion-icono {
     width: 43px;
     height: 43px;
+
     min-width: 43px;
+
     border-radius: 9px;
+
     background: var(--celeste-suave);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 21px;
 }
 
+
 .opcion-contenido {
     display: flex;
+
     flex-direction: column;
+
     gap: 4px;
+
     min-width: 0;
 }
 
+
 .opcion-contenido strong {
     font-size: 14px;
+
     color: #263238;
 }
 
+
 .opcion-contenido span {
     font-size: 12px;
+
     line-height: 1.35;
+
     color: var(--texto-suave);
 }
 
@@ -410,36 +604,71 @@ body {
 
 .mensaje-inicio {
     background: var(--celeste-suave) !important;
+
     border: 1px solid #ccebf6;
+
     border-left: 4px solid var(--celeste-fundacion);
+
     border-radius: 9px;
+
     padding: 14px 18px;
+
     margin-top: 4px;
+
     margin-bottom: 18px;
 }
 
+
 .mensaje-inicio strong {
     color: #087ca9;
+
     font-size: 14px;
 }
 
+
 .mensaje-inicio p {
     color: #52636b;
+
     font-size: 13px;
+
     margin: 5px 0 0;
+
     line-height: 1.45;
 }
 
 
 /* =========================================
-   PIE
+   PIE / CREDITOS
 ========================================= */
 
 footer {
     color: #7a878e;
+
     font-size: 12px;
-    padding: 10px 0 22px;
+
+    padding: 15px 0 25px;
+
     text-align: center;
+
+    line-height: 1.7;
+}
+
+
+footer .version {
+    display: block;
+
+    color: #7a878e;
+
+    font-size: 11px;
+}
+
+
+footer .creditos {
+    display: block;
+
+    color: #87939a;
+
+    font-size: 11px;
 }
 
 
@@ -450,15 +679,19 @@ footer {
 @media (max-width: 950px) {
 
     .estadisticas {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, minmax(150px, 185px));
     }
+
 
     .acciones-principales {
         grid-template-columns: 1fr;
     }
 
+
     .administracion {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
 }
@@ -468,76 +701,138 @@ footer {
 
     .contenedor {
         margin-top: 16px;
+
         padding: 0 12px;
     }
+
 
     .encabezado-contenido {
         min-height: 64px;
     }
 
+
     .marca h1 {
-        font-size: 19px;
+        font-size: 20px;
     }
+
 
     .marca p {
         font-size: 11px;
+
+        margin-top: 3px;
     }
 
+
     .icono-marca {
-        font-size: 29px;
+        width: 44px;
+        height: 44px;
+
+        font-size: 27px;
     }
+
 
     #botonCerrarSesion {
         padding: 8px 10px !important;
+
         font-size: 12px !important;
     }
+
 
     .bienvenida {
         padding: 17px 18px;
     }
 
+
     .bienvenida h2 {
         font-size: 20px;
     }
 
+
     .estadisticas {
-        grid-template-columns: 1fr 1fr;
-        gap: 9px;
+        grid-template-columns:
+            repeat(2, minmax(135px, 170px));
+
+        gap: 10px;
     }
+
 
     .tarjeta-estadistica {
-        min-height: 88px;
+        min-height: 105px;
+
         padding: 12px !important;
-        grid-template-columns: 36px 1fr;
     }
+
 
     .estadistica-icono {
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
+        width: 37px;
+        height: 37px;
+
+        font-size: 19px;
+
+        margin-bottom: 7px;
     }
 
+
     .estadistica-numero {
-        font-size: 20px !important;
+        font-size: 21px !important;
     }
+
 
     .administracion {
         grid-template-columns: 1fr;
+
         gap: 9px;
     }
+
 
     .accion,
     .opcion {
         min-height: 70px;
+
         padding: 12px;
     }
+
 
     .accion-icono,
     .opcion-icono {
         width: 39px;
         height: 39px;
+
         min-width: 39px;
+
         font-size: 19px;
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .estadisticas {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+    }
+
+
+    .tarjeta-estadistica {
+        min-height: 100px;
+    }
+
+
+    .marca {
+        gap: 9px;
+    }
+
+
+    .marca h1 {
+        font-size: 18px;
+    }
+
+
+    .marca p {
+        font-size: 10px;
     }
 
 }
@@ -1257,12 +1552,22 @@ footer {
 
 
     <!-- =========================================
-         PIE
+         PIE Y CREDITOS
     ========================================== -->
 
     <footer>
 
-        Sistema de Biblioteca
+        <span>
+            Sistema de Biblioteca
+        </span>
+
+        <span class="version">
+            Versión 1.0
+        </span>
+
+        <span class="creditos">
+            Desarrollado por Saúl Velásquez
+        </span>
 
     </footer>
 
