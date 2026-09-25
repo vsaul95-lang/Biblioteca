@@ -484,6 +484,38 @@
         }
 
 
+        .vistas-resultados {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .btn-vista {
+
+            min-width: 175px;
+
+            padding: 11px 24px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            border-radius: 7px;
+
+        }
+
+
         .resultados-seccion {
 
             background: white;
@@ -1082,13 +1114,15 @@
 
             .vistas-resultados {
 
-                flex-direction: column;
+                justify-content: center;
+
+                flex-direction: row;
 
             }
 
             .btn-vista {
 
-                width: 100%;
+                min-width: 160px;
 
             }
 
@@ -4387,8 +4421,10 @@
 
 
             const fin =
-                inicio +
-                cantidadPagina;
+                Math.min(
+                    inicio + cantidadPagina,
+                    prestamosFiltrados.length
+                );
 
 
             paginacion.innerHTML = `
