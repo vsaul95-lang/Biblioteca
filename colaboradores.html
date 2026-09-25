@@ -171,10 +171,6 @@
             color: #455a64;
         }
 
-        /*
-         * REGISTRO MANUAL
-         */
-
         .formulario-colaborador {
             display: grid;
             grid-template-columns:
@@ -245,10 +241,6 @@
             background: #cfd8dc;
         }
 
-        /*
-         * BUSQUEDA
-         */
-
         .busqueda {
             display: flex;
             gap: 12px;
@@ -272,10 +264,6 @@
             font-size: 13px;
             background: white;
         }
-
-        /*
-         * TABLA
-         */
 
         .tabla-contenedor {
             overflow-x: auto;
@@ -326,10 +314,6 @@
             background: white;
         }
 
-        /*
-         * ESTADO
-         */
-
         .estado {
             display: inline-block;
             padding: 4px 8px;
@@ -347,10 +331,6 @@
             background: #eceff1;
             color: #546e7a;
         }
-
-        /*
-         * ACCIONES
-         */
 
         .acciones {
             display: flex;
@@ -386,20 +366,12 @@
             background: #b71c1c;
         }
 
-        /*
-         * RESULTADOS
-         */
-
         .sin-resultados {
             text-align: center;
             padding: 30px;
             color: #78909c;
             display: none;
         }
-
-        /*
-         * PAGINACION
-         */
 
         .paginacion {
             display: flex;
@@ -432,10 +404,6 @@
             color: #607d8b;
         }
 
-        /*
-         * MENSAJES
-         */
-
         .mensaje-exito {
             background: #d4edda;
             color: #155724;
@@ -457,10 +425,6 @@
             display: none;
             font-size: 13px;
         }
-
-        /*
-         * VENTANA DE EDICION
-         */
 
         .modal-fondo {
             position: fixed;
@@ -593,10 +557,6 @@
             background: #263238;
         }
 
-        /*
-         * ALERTA DEL SISTEMA
-         */
-
         .alerta-fondo {
             position: fixed;
             top: 0;
@@ -682,20 +642,12 @@
             background: #cfd8dc;
         }
 
-        /*
-         * FOOTER
-         */
-
         footer {
             text-align: center;
             color: #90a4ae;
             font-size: 12px;
             padding: 25px;
         }
-
-        /*
-         * RESPONSIVE
-         */
 
         @media (max-width: 1100px) {
 
@@ -811,8 +763,6 @@
     </div>
 
 
-    <!-- MENSAJES -->
-
     <div
         id="mensajeExito"
         class="mensaje-exito"
@@ -825,10 +775,7 @@
     ></div>
 
 
-    <!-- ESTADISTICAS -->
-
     <div class="estadisticas">
-
 
         <div class="tarjeta-estadistica">
 
@@ -893,11 +840,8 @@
 
         </div>
 
-
     </div>
 
-
-    <!-- REGISTRAR NUEVO COLABORADOR -->
 
     <div class="seccion">
 
@@ -1045,8 +989,6 @@
     </div>
 
 
-    <!-- IMPORTAR EXCEL -->
-
     <div class="seccion">
 
         <h3>
@@ -1081,8 +1023,6 @@
 
     </div>
 
-
-    <!-- BUSCAR -->
 
     <div class="seccion">
 
@@ -1121,8 +1061,6 @@
 
     </div>
 
-
-    <!-- TABLA -->
 
     <div class="seccion">
 
@@ -1280,8 +1218,6 @@
         </div>
 
 
-        <!-- PAGINACION -->
-
         <div class="paginacion">
 
             <button
@@ -1318,10 +1254,6 @@
     Sistema de Biblioteca
 </footer>
 
-
-<!-- =====================================================
-     VENTANA DE EDICION
-     ===================================================== -->
 
 <div
     id="modalEdicion"
@@ -1484,10 +1416,6 @@
 </div>
 
 
-<!-- =====================================================
-     ALERTA PERSONALIZADA
-     ===================================================== -->
-
 <div
     id="alertaFondo"
     class="alerta-fondo"
@@ -1547,7 +1475,7 @@
 
 <script src="supabase.js"></script>
 
-<script src="auth.js"></script>
+<script src="auth.js?v=1002"></script>
 
 
 <!-- SHEETJS -->
@@ -1560,6 +1488,8 @@
 
     /*
      * PROTECCION
+     *
+     * SOLO ADMINISTRADOR
      */
 
     window.colaboradoresAutorizado = false;
@@ -1570,23 +1500,35 @@
 
             try {
 
-                const {
-                    data: { session },
-                    error
-                } =
-                    await supabaseClient.auth.getSession();
+                const autorizado =
+                    await window.protegerPagina();
 
 
-                if (
-                    error ||
-                    !session
-                ) {
+                if (!autorizado) {
 
                     window.location.replace(
                         "index.html"
                     );
 
-                    return;
+                    return false;
+
+                }
+
+
+                if (
+                    !window.esAdministrador()
+                ) {
+
+                    console.warn(
+                        "Acceso denegado: se requiere rol Administrador."
+                    );
+
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return false;
 
                 }
 
@@ -1599,13 +1541,16 @@
                     "visible";
 
 
-                cargarBase();
+                await cargarBase();
+
+
+                return true;
 
 
             } catch (error) {
 
                 console.error(
-                    "Error al comprobar la sesión:",
+                    "Error al comprobar permisos de colaboradores:",
                     error
                 );
 
@@ -1613,6 +1558,9 @@
                 window.location.replace(
                     "index.html"
                 );
+
+
+                return false;
 
             }
 
@@ -1799,12 +1747,6 @@
         const mensajeElemento =
             document.getElementById(
                 "alertaMensaje"
-            );
-
-
-        const botonAceptar =
-            document.getElementById(
-                "botonAlertaAceptar"
             );
 
 
@@ -2118,6 +2060,15 @@
      */
 
     async function cargarBase() {
+
+        if (
+            !window.colaboradoresAutorizado
+        ) {
+
+            return;
+
+        }
+
 
         try {
 
@@ -2984,6 +2935,16 @@
 
     async function actualizarBase() {
 
+        if (
+            !window.colaboradoresAutorizado ||
+            !window.esAdministrador()
+        ) {
+
+            return;
+
+        }
+
+
         const archivo =
             document.getElementById(
                 "archivoExcel"
@@ -3333,6 +3294,16 @@
 
     async function registrarColaborador() {
 
+        if (
+            !window.colaboradoresAutorizado ||
+            !window.esAdministrador()
+        ) {
+
+            return;
+
+        }
+
+
         const codigo =
             document.getElementById(
                 "nuevoCodigo"
@@ -3561,6 +3532,16 @@
         codigo
     ) {
 
+        if (
+            !window.colaboradoresAutorizado ||
+            !window.esAdministrador()
+        ) {
+
+            return;
+
+        }
+
+
         const colaborador =
             colaboradores.find(
                 item =>
@@ -3696,11 +3677,6 @@
     );
 
 
-    /*
-     * CERRAR AL HACER CLIC
-     * FUERA DE LA VENTANA
-     */
-
     document.getElementById(
         "modalEdicion"
     ).addEventListener(
@@ -3733,6 +3709,16 @@
 
 
     async function guardarEdicion() {
+
+        if (
+            !window.colaboradoresAutorizado ||
+            !window.esAdministrador()
+        ) {
+
+            return;
+
+        }
+
 
         if (
             !codigoColaboradorEditando
@@ -3858,11 +3844,6 @@
 
         }
 
-
-        /*
-         * SI SE CAMBIA EL CODIGO,
-         * COMPROBAR HISTORIAL
-         */
 
         if (
             normalizar(
@@ -4036,15 +4017,21 @@
 
     /*
      * ELIMINAR COLABORADOR
-     *
-     * REGLA:
-     * Un colaborador solamente puede eliminarse
-     * si NO tiene ningún préstamo histórico.
      */
 
     async function eliminarColaborador(
         codigo
     ) {
+
+        if (
+            !window.colaboradoresAutorizado ||
+            !window.esAdministrador()
+        ) {
+
+            return;
+
+        }
+
 
         const colaborador =
             colaboradores.find(
@@ -4090,12 +4077,6 @@
                     );
 
 
-            /*
-             * POR SEGURIDAD,
-             * SI NO SE PUEDE CONSULTAR EL HISTORIAL,
-             * NO SE ELIMINA.
-             */
-
             if (
                 errorPrestamos
             ) {
@@ -4120,10 +4101,6 @@
                 prestamosColaborador || [];
 
 
-            /*
-             * PRÉSTAMO ACTIVO
-             */
-
             const prestamosActivos =
                 prestamos.filter(
                     prestamo =>
@@ -4146,10 +4123,6 @@
             }
 
 
-            /*
-             * PRÉSTAMO HISTÓRICO
-             */
-
             if (
                 prestamos.length > 0
             ) {
@@ -4162,10 +4135,6 @@
 
             }
 
-
-            /*
-             * CONFIRMACION PERSONALIZADA
-             */
 
             mostrarConfirmacion(
                 `¿Está seguro de eliminar al colaborador "${colaborador.Nombre}" con código ${colaborador.CodigoColaborador}?`,
