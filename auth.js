@@ -16,8 +16,7 @@ function normalizarTexto(valor) {
 
     return String(valor || "")
         .trim()
-        .toUpperCase();
-
+        .toLocaleUpperCase("es");
 }
 
 
