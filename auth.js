@@ -1,5 +1,7 @@
+```javascript
 // ==========================================
 // PROTECCIÓN DE ACCESO Y ROLES
+// Biblioteca FFdE
 // ==========================================
 
 window.usuarioSesion = null;
@@ -27,7 +29,15 @@ function normalizarTexto(valor) {
 
 window.protegerPagina = async function () {
 
+    console.log("==========================================");
+    console.log("AUTH - INICIANDO VALIDACIÓN");
+    console.log("==========================================");
+
     try {
+
+        // ==========================================
+        // 1. COMPROBAR SESIÓN DE SUPABASE
+        // ==========================================
 
         const {
             data: { session },
@@ -35,14 +45,16 @@ window.protegerPagina = async function () {
         } = await supabaseClient.auth.getSession();
 
 
+        console.log("AUTH - Sesión encontrada:", session);
+        console.log("AUTH - Error de sesión:", error);
+
+
         if (error) {
 
             console.error(
-                "Error al comprobar la sesión:",
+                "AUTH - Error al comprobar la sesión:",
                 error
             );
-
-            window.location.replace("index.html");
 
             return false;
         }
@@ -50,14 +62,35 @@ window.protegerPagina = async function () {
 
         if (!session) {
 
-            window.location.replace("index.html");
+            console.error(
+                "AUTH - NO EXISTE UNA SESIÓN ACTIVA."
+            );
 
             return false;
         }
 
 
+        // ==========================================
+        // 2. GUARDAR USUARIO AUTENTICADO
+        // ==========================================
+
         window.usuarioSesion = session.user;
 
+
+        console.log(
+            "AUTH - Usuario autenticado:",
+            session.user.email
+        );
+
+        console.log(
+            "AUTH - ID del usuario:",
+            session.user.id
+        );
+
+
+        // ==========================================
+        // 3. CONSULTAR PERFIL EN usuarios
+        // ==========================================
 
         const {
             data: perfil,
@@ -83,29 +116,81 @@ window.protegerPagina = async function () {
             .maybeSingle();
 
 
+        console.log(
+            "AUTH - Perfil encontrado:",
+            perfil
+        );
+
+        console.log(
+            "AUTH - Error al consultar perfil:",
+            errorPerfil
+        );
+
+
+        // ==========================================
+        // 4. ERROR EN LA CONSULTA DEL PERFIL
+        // ==========================================
+
         if (errorPerfil) {
 
             console.error(
-                "Error al consultar el perfil de usuario:",
+                "AUTH - ERROR CONSULTANDO usuarios:",
                 errorPerfil
+            );
+
+            console.error(
+                "AUTH - Código del error:",
+                errorPerfil.code
+            );
+
+            console.error(
+                "AUTH - Mensaje del error:",
+                errorPerfil.message
+            );
+
+            console.error(
+                "AUTH - Detalles del error:",
+                errorPerfil.details
+            );
+
+            console.error(
+                "AUTH - Hint del error:",
+                errorPerfil.hint
             );
 
             return false;
         }
 
+
+        // ==========================================
+        // 5. NO EXISTE PERFIL
+        // ==========================================
 
         if (!perfil) {
 
             console.error(
-                "La cuenta no tiene registro en la tabla usuarios."
+                "AUTH - NO SE ENCONTRÓ EL PERFIL EN usuarios."
+            );
+
+            console.error(
+                "AUTH - Se buscó el ID:",
+                session.user.id
             );
 
             return false;
         }
 
 
+        // ==========================================
+        // 6. GUARDAR PERFIL
+        // ==========================================
+
         window.perfilUsuario = perfil;
 
+
+        // ==========================================
+        // 7. OBTENER ROL Y ESTADO
+        // ==========================================
 
         window.rolUsuario =
             normalizarTexto(perfil.rol);
@@ -115,21 +200,91 @@ window.protegerPagina = async function () {
             normalizarTexto(perfil.estado);
 
 
+        console.log(
+            "AUTH - Nombre:",
+            perfil.nombre
+        );
+
+        console.log(
+            "AUTH - Correo:",
+            perfil.correo
+        );
+
+        console.log(
+            "AUTH - Rol:",
+            perfil.rol
+        );
+
+        console.log(
+            "AUTH - Rol normalizado:",
+            window.rolUsuario
+        );
+
+        console.log(
+            "AUTH - Estado:",
+            perfil.estado
+        );
+
+        console.log(
+            "AUTH - Estado normalizado:",
+            window.estadoUsuario
+        );
+
+
+        // ==========================================
+        // 8. COMPROBAR ESTADO
+        // ==========================================
+
         if (
             window.estadoUsuario !==
             "ACTIVO"
         ) {
 
             console.error(
-                "El usuario está marcado como inactivo."
+                "AUTH - EL USUARIO NO ESTÁ ACTIVO."
             );
 
-            await supabaseClient.auth.signOut();
+            console.error(
+                "AUTH - Estado recibido:",
+                perfil.estado
+            );
 
-            window.location.replace("index.html");
+            /*
+             * IMPORTANTE:
+             * NO cerramos sesión automáticamente.
+             *
+             * Primero necesitamos identificar
+             * cualquier problema de permisos.
+             */
 
             return false;
         }
+
+
+        // ==========================================
+        // 9. VALIDACIÓN CORRECTA
+        // ==========================================
+
+        console.log(
+            "AUTH - VALIDACIÓN CORRECTA"
+        );
+
+        console.log(
+            "AUTH - Usuario:",
+            perfil.nombre
+        );
+
+        console.log(
+            "AUTH - Rol:",
+            perfil.rol
+        );
+
+        console.log(
+            "AUTH - Estado:",
+            perfil.estado
+        );
+
+        console.log("==========================================");
 
 
         return true;
@@ -138,8 +293,18 @@ window.protegerPagina = async function () {
     } catch (error) {
 
         console.error(
-            "Error al comprobar la sesión y el rol:",
+            "AUTH - ERROR INESPERADO:",
             error
+        );
+
+        console.error(
+            "AUTH - Mensaje:",
+            error.message
+        );
+
+        console.error(
+            "AUTH - Stack:",
+            error.stack
         );
 
         return false;
@@ -188,3 +353,9 @@ window.tieneRol = function (rol) {
     );
 
 };
+
+
+// ==========================================
+// FIN DE auth.js
+// ==========================================
+```
