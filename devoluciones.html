@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -405,6 +406,7 @@
 
 </head>
 
+
 <body>
 
     <header>
@@ -425,7 +427,7 @@
             <button
                 type="button"
                 class="boton-volver"
-                onclick="window.location.href='index_NE.html'"
+                onclick="window.history.back()"
             >
                 ← Volver al inicio
             </button>
@@ -534,9 +536,7 @@
                 </thead>
 
 
-                <tbody id="tablaPrestamos">
-
-                </tbody>
+                <tbody id="tablaPrestamos"></tbody>
 
             </table>
 
@@ -580,7 +580,9 @@
     </footer>
 
 
-    <!-- MODAL DE DETALLE -->
+    <!-- ============================================================
+         MODAL DE DETALLE
+         ============================================================ -->
 
     <div
         class="modal"
@@ -612,9 +614,7 @@
 
                     <strong>Tipo</strong>
 
-                    <span id="detalleTipo">
-                        -
-                    </span>
+                    <span id="detalleTipo">-</span>
 
                 </div>
 
@@ -623,9 +623,7 @@
 
                     <strong>Familia / Código</strong>
 
-                    <span id="detalleFamilia">
-                        -
-                    </span>
+                    <span id="detalleFamilia">-</span>
 
                 </div>
 
@@ -634,9 +632,7 @@
 
                     <strong>Persona / Colaborador</strong>
 
-                    <span id="detallePersona">
-                        -
-                    </span>
+                    <span id="detallePersona">-</span>
 
                 </div>
 
@@ -645,9 +641,7 @@
 
                     <strong>Área</strong>
 
-                    <span id="detalleArea">
-                        -
-                    </span>
+                    <span id="detalleArea">-</span>
 
                 </div>
 
@@ -656,9 +650,7 @@
 
                     <strong>Código del libro</strong>
 
-                    <span id="detalleCodigoLibro">
-                        -
-                    </span>
+                    <span id="detalleCodigoLibro">-</span>
 
                 </div>
 
@@ -667,9 +659,7 @@
 
                     <strong>Libro</strong>
 
-                    <span id="detalleLibro">
-                        -
-                    </span>
+                    <span id="detalleLibro">-</span>
 
                 </div>
 
@@ -678,9 +668,7 @@
 
                     <strong>Fecha de préstamo</strong>
 
-                    <span id="detallePrestamo">
-                        -
-                    </span>
+                    <span id="detallePrestamo">-</span>
 
                 </div>
 
@@ -689,9 +677,7 @@
 
                     <strong>Fecha de devolución</strong>
 
-                    <span id="detalleDevolucion">
-                        -
-                    </span>
+                    <span id="detalleDevolucion">-</span>
 
                 </div>
 
@@ -700,9 +686,7 @@
 
                     <strong>Biblioteca</strong>
 
-                    <span id="detalleBiblioteca">
-                        NE
-                    </span>
+                    <span id="detalleBiblioteca">NE</span>
 
                 </div>
 
@@ -711,9 +695,7 @@
 
                     <strong>Sitio</strong>
 
-                    <span id="detalleSitio">
-                        -
-                    </span>
+                    <span id="detalleSitio">-</span>
 
                 </div>
 
@@ -769,6 +751,10 @@
     </div>
 
 
+    <!-- ============================================================
+         SUPABASE
+         ============================================================ -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase.js"></script>
@@ -783,23 +769,22 @@
          * CONFIGURACIÓN
          * ============================================================
          *
-         * IMPORTANTE:
+         * NE ES UNA BIBLIOTECA.
          *
-         * NE es una BIBLIOTECA.
+         * NO es un Sitio.
          *
-         * Los sitios son otro dato completamente diferente.
+         * Por eso:
          *
-         * Bibliotecas:
-         * F, M, N, R, Z, NE
+         * prestamos.Sitio  -> sitio real de la persona
          *
-         * Por eso aquí NO utilizamos:
-         *   .eq("Sitio", "NE")
+         * libros.Biblioteca -> lugar donde está el libro
          *
-         * El filtro se realiza sobre:
-         *   Biblioteca = NE
+         * Para esta página:
          *
+         * libros.Biblioteca = NE
+         *
+         * ============================================================
          */
-
 
         const BIBLIOTECA_ACTUAL = "NE";
 
@@ -814,17 +799,24 @@
 
         let prestamoSeleccionado = null;
 
+        let librosBiblioteca = [];
+
 
         /*
          * ============================================================
-         * FUNCIONES DE NORMALIZACIÓN
+         * NORMALIZACIÓN
          * ============================================================
          */
 
         function normalizar(valor) {
 
-            if (valor === null || valor === undefined) {
+            if (
+                valor === null ||
+                valor === undefined
+            ) {
+
                 return "";
+
             }
 
             return String(valor)
@@ -836,24 +828,38 @@
 
         function normalizarCodigo(valor) {
 
-            if (valor === null || valor === undefined) {
+            if (
+                valor === null ||
+                valor === undefined
+            ) {
+
                 return "";
+
             }
 
-            return String(valor)
-                .trim()
-                .replace(/^0+/, "");
+            const codigo =
+                String(valor)
+                    .trim()
+                    .replace(/\D/g, "")
+                    .replace(/^0+/, "");
+
+            return codigo;
 
         }
 
 
         function formatearCodigo(valor) {
 
-            const codigo = normalizarCodigo(valor);
+            const codigo =
+                normalizarCodigo(valor);
+
 
             if (!codigo) {
+
                 return "-";
+
             }
+
 
             return codigo.padStart(4, "0");
 
@@ -862,8 +868,13 @@
 
         function escapeHtml(valor) {
 
-            if (valor === null || valor === undefined) {
+            if (
+                valor === null ||
+                valor === undefined
+            ) {
+
                 return "";
+
             }
 
             return String(valor)
@@ -879,14 +890,26 @@
         function formatearFecha(fecha) {
 
             if (!fecha) {
+
                 return "-";
+
             }
 
-            const fechaObj = new Date(fecha);
 
-            if (Number.isNaN(fechaObj.getTime())) {
+            const fechaObj =
+                new Date(fecha);
+
+
+            if (
+                Number.isNaN(
+                    fechaObj.getTime()
+                )
+            ) {
+
                 return fecha;
+
             }
+
 
             return fechaObj.toLocaleDateString(
                 "es-GT",
@@ -908,21 +931,33 @@
 
         function esColaborador(prestamo) {
 
-            const tipo = normalizar(prestamo.tipo);
+            const tipo =
+                normalizar(
+                    prestamo.tipo ||
+                    prestamo.tipoPrestamo
+                );
+
 
             if (
                 tipo === "COLABORADOR" ||
                 tipo === "COLABORADORES"
             ) {
+
                 return true;
+
             }
+
 
             if (
                 prestamo.codigoColaborador ||
+                prestamo.CodigoColaborador ||
                 prestamo.ColaboradorId
             ) {
+
                 return true;
+
             }
+
 
             return false;
 
@@ -931,7 +966,92 @@
 
         /*
          * ============================================================
+         * CARGAR LIBROS DE LA BIBLIOTECA NE
+         * ============================================================
+         */
+
+        async function cargarLibrosBiblioteca() {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("libros")
+                    .select("*")
+                    .eq(
+                        "Biblioteca",
+                        BIBLIOTECA_ACTUAL
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Error al cargar libros de la biblioteca:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+            librosBiblioteca =
+                data || [];
+
+        }
+
+
+        /*
+         * ============================================================
+         * BUSCAR LIBRO DE NE POR CÓDIGO
+         * ============================================================
+         */
+
+        function buscarLibroBiblioteca(
+            codigoLibro
+        ) {
+
+            const codigo =
+                normalizarCodigo(
+                    codigoLibro
+                );
+
+
+            if (!codigo) {
+
+                return null;
+
+            }
+
+
+            return librosBiblioteca.find(
+                libro =>
+                    normalizarCodigo(
+                        libro.codigoLibro
+                    ) === codigo
+            ) || null;
+
+        }
+
+
+        /*
+         * ============================================================
          * CARGAR DATOS
+         * ============================================================
+         *
+         * IMPORTANTE:
+         *
+         * No hacemos:
+         *
+         * .eq("Biblioteca", "NE")
+         *
+         * sobre prestamos.
+         *
+         * Primero obtenemos los préstamos activos y luego
+         * determinamos cuáles corresponden a libros de NE.
+         *
          * ============================================================
          */
 
@@ -940,24 +1060,33 @@
             try {
 
                 /*
-                 * AQUÍ ESTÁ EL CAMBIO PRINCIPAL:
-                 *
-                 * Filtramos por BIBLIOTECA.
-                 *
-                 * NO filtramos por Sitio.
+                 * 1. Cargar libros que pertenecen a NE.
                  */
 
-                const { data, error } = await supabaseClient
-                    .from("prestamos")
-                    .select("*")
-                    .eq("Biblioteca", BIBLIOTECA_ACTUAL)
-                    .eq("estado", "Prestado")
-                    .order(
-                        "fechaPrestamo",
-                        {
-                            ascending: false
-                        }
-                    );
+                await cargarLibrosBiblioteca();
+
+
+                /*
+                 * 2. Obtener todos los préstamos activos.
+                 */
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("prestamos")
+                        .select("*")
+                        .eq(
+                            "estado",
+                            "Prestado"
+                        )
+                        .order(
+                            "fechaPrestamo",
+                            {
+                                ascending: false
+                            }
+                        );
 
 
                 if (error) {
@@ -968,7 +1097,8 @@
                     );
 
                     mostrarMensaje(
-                        "No fue posible cargar los préstamos.",
+                        "No fue posible cargar los préstamos: " +
+                        error.message,
                         "error"
                     );
 
@@ -977,11 +1107,29 @@
                 }
 
 
-                prestamos = data || [];
+                /*
+                 * 3. Filtrar los préstamos cuyo libro
+                 *    pertenece a la biblioteca NE.
+                 */
 
-                prestamosFiltrados = [...prestamos];
+                prestamos =
+                    (data || []).filter(
+                        prestamo => {
+
+                            return !!buscarLibroBiblioteca(
+                                prestamo.codigoLibro
+                            );
+
+                        }
+                    );
+
+
+                prestamosFiltrados =
+                    [...prestamos];
+
 
                 pagina = 1;
+
 
                 mostrarPrestamos();
 
@@ -993,10 +1141,17 @@
 
             catch (error) {
 
-                console.error(error);
+                console.error(
+                    "Error general:",
+                    error
+                );
 
                 mostrarMensaje(
-                    "Ocurrió un error al cargar los préstamos.",
+                    "Ocurrió un error al cargar los datos: " +
+                    (
+                        error.message ||
+                        error
+                    ),
                     "error"
                 );
 
@@ -1038,6 +1193,7 @@
                     </tr>
                 `;
 
+
                 actualizarPaginacion();
 
                 return;
@@ -1062,1307 +1218,69 @@
                 );
 
 
-            registros.forEach(prestamo => {
-
-                const colaborador =
-                    esColaborador(prestamo);
-
-
-                const tipo =
-                    colaborador
-                        ? "Colaborador"
-                        : "Familia";
-
-
-                const familia =
-                    colaborador
-                        ? (
-                            prestamo.codigoColaborador ||
-                            prestamo.ColaboradorId ||
-                            "-"
-                        )
-                        : (
-                            prestamo.FamiliaId ||
-                            "-"
-                        );
-
-
-                const persona =
-                    colaborador
-                        ? (
-                            prestamo.nombreColaborador ||
-                            prestamo.Nombres ||
-                            "-"
-                        )
-                        : (
-                            (
-                                prestamo.Nombres ||
-                                ""
-                            ) +
-                            " " +
-                            (
-                                prestamo.Apellidos ||
-                                ""
-                            )
-                        ).trim() || "-";
-
-
-                const area =
-                    prestamo.Area ||
-                    prestamo.area ||
-                    prestamo.Sitio ||
-                    "-";
-
-
-                const libro =
-                    prestamo.nombreLibro ||
-                    prestamo.NombreLibro ||
-                    "-";
-
-
-                const codigoLibro =
-                    formatearCodigo(
-                        prestamo.codigoLibro
-                    );
-
-
-                const fechaPrestamo =
-                    formatearFecha(
-                        prestamo.fechaPrestamo
-                    );
-
-
-                const fechaDevolucion =
-                    formatearFecha(
-                        prestamo.fechaDevolucion
-                    );
-
-
-                let claseEstado =
-                    "estado-normal";
-
-                let textoEstado =
-                    "En tiempo";
-
-
-                if (
-                    prestamo.fechaDevolucion
-                ) {
-
-                    const hoy =
-                        new Date();
-
-                    hoy.setHours(
-                        0,
-                        0,
-                        0,
-                        0
-                    );
-
-
-                    const fechaLimite =
-                        new Date(
-                            prestamo.fechaDevolucion
-                        );
-
-                    fechaLimite.setHours(
-                        0,
-                        0,
-                        0,
-                        0
-                    );
-
-
-                    if (
-                        fechaLimite < hoy
-                    ) {
-
-                        claseEstado =
-                            "estado-atrasado";
-
-                        textoEstado =
-                            "Atrasado";
-
-                    }
-
-                    else if (
-                        fechaLimite.getTime() ===
-                        hoy.getTime()
-                    ) {
-
-                        claseEstado =
-                            "estado-hoy";
-
-                        textoEstado =
-                            "Vence hoy";
-
-                    }
-
-                }
-
-
-                const comentarios =
-                    prestamo.comentarios ||
-                    "-";
-
-
-                const fila =
-                    document.createElement("tr");
-
-
-                fila.innerHTML = `
-
-                    <td>
-                        ${escapeHtml(tipo)}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(familia)}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(persona)}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(area)}
-                    </td>
-
-                    <td>
-                        <strong>
-                            ${escapeHtml(codigoLibro)}
-                        </strong>
-                        <br>
-                        ${escapeHtml(libro)}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(fechaPrestamo)}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(fechaDevolucion)}
-                    </td>
-
-                    <td>
-                        <span
-                            class="estado ${claseEstado}"
-                        >
-                            ${escapeHtml(textoEstado)}
-                        </span>
-                    </td>
-
-                    <td>
-                        ${escapeHtml(comentarios)}
-                    </td>
-
-                    <td>
-
-                        <div class="botones">
-
-                            <button
-                                type="button"
-                                class="boton boton-detalle"
-                                onclick="seleccionarPrestamo('${prestamo.id}')"
-                            >
-                                Ver
-                            </button>
-
-                            <button
-                                type="button"
-                                class="boton boton-devolver"
-                                onclick="seleccionarPrestamo('${prestamo.id}')"
-                            >
-                                Devolver
-                            </button>
-
-                            <button
-                                type="button"
-                                class="boton boton-eliminar"
-                                onclick="seleccionarPrestamoEliminar('${prestamo.id}')"
-                            >
-                                Eliminar
-                            </button>
-
-                        </div>
-
-                    </td>
-
-                `;
-
-
-                tbody.appendChild(fila);
-
-            });
-
-
-            actualizarPaginacion();
-
-        }
-
-
-        /*
-         * ============================================================
-         * OBTENER PRÉSTAMO
-         * ============================================================
-         */
-
-        function obtenerPrestamoPorId(id) {
-
-            return prestamos.find(
-                prestamo =>
-                    String(prestamo.id) ===
-                    String(id)
-            );
-
-        }
-
-
-        /*
-         * ============================================================
-         * CARGAR DETALLE
-         * ============================================================
-         */
-
-        function cargarDetalle(prestamo) {
-
-            const colaborador =
-                esColaborador(prestamo);
-
-
-            document.getElementById(
-                "detalleTipo"
-            ).textContent =
-                colaborador
-                    ? "Colaborador"
-                    : "Familia";
-
-
-            document.getElementById(
-                "detalleFamilia"
-            ).textContent =
-                colaborador
-                    ? (
-                        prestamo.codigoColaborador ||
-                        prestamo.ColaboradorId ||
-                        "-"
-                    )
-                    : (
-                        prestamo.FamiliaId ||
-                        "-"
-                    );
-
-
-            document.getElementById(
-                "detallePersona"
-            ).textContent =
-                colaborador
-                    ? (
-                        prestamo.nombreColaborador ||
-                        prestamo.Nombres ||
-                        "-"
-                    )
-                    : (
-                        (
-                            prestamo.Nombres ||
-                            ""
-                        ) +
-                        " " +
-                        (
-                            prestamo.Apellidos ||
-                            ""
-                        )
-                    ).trim() || "-";
-
-
-            document.getElementById(
-                "detalleArea"
-            ).textContent =
-                prestamo.Area ||
-                prestamo.area ||
-                prestamo.Sitio ||
-                "-";
-
-
-            document.getElementById(
-                "detalleCodigoLibro"
-            ).textContent =
-                formatearCodigo(
-                    prestamo.codigoLibro
-                );
-
-
-            document.getElementById(
-                "detalleLibro"
-            ).textContent =
-                prestamo.nombreLibro ||
-                prestamo.NombreLibro ||
-                "-";
-
-
-            document.getElementById(
-                "detallePrestamo"
-            ).textContent =
-                formatearFecha(
-                    prestamo.fechaPrestamo
-                );
-
-
-            document.getElementById(
-                "detalleDevolucion"
-            ).textContent =
-                formatearFecha(
-                    prestamo.fechaDevolucion
-                );
-
-
-            document.getElementById(
-                "detalleBiblioteca"
-            ).textContent =
-                prestamo.Biblioteca ||
-                BIBLIOTECA_ACTUAL;
-
-
-            document.getElementById(
-                "detalleSitio"
-            ).textContent =
-                prestamo.Sitio ||
-                "-";
-
-
-            document.getElementById(
-                "comentarioDevolucion"
-            ).value =
-                prestamo.comentarios ||
-                "";
-
-        }
-
-
-        /*
-         * ============================================================
-         * SELECCIONAR PRÉSTAMO
-         * ============================================================
-         */
-
-        function seleccionarPrestamo(id) {
-
-            const prestamo =
-                obtenerPrestamoPorId(id);
-
-
-            if (!prestamo) {
-
-                mostrarMensaje(
-                    "No se encontró el préstamo.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            prestamoSeleccionado =
-                prestamo;
-
-
-            cargarDetalle(
-                prestamo
-            );
-
-
-            document.getElementById(
-                "btnEliminarModal"
-            ).style.display =
-                "inline-block";
-
-
-            document.getElementById(
-                "btnDevolverModal"
-            ).style.display =
-                "inline-block";
-
-
-            document.getElementById(
-                "modalDetalle"
-            ).classList.add(
-                "activo"
-            );
-
-        }
-
-
-        /*
-         * ============================================================
-         * SELECCIONAR PARA ELIMINAR
-         * ============================================================
-         */
-
-        function seleccionarPrestamoEliminar(id) {
-
-            const prestamo =
-                obtenerPrestamoPorId(id);
-
-
-            if (!prestamo) {
-
-                mostrarMensaje(
-                    "No se encontró el préstamo.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            prestamoSeleccionado =
-                prestamo;
-
-
-            cargarDetalle(
-                prestamo
-            );
-
-
-            document.getElementById(
-                "modalDetalle"
-            ).classList.add(
-                "activo"
-            );
-
-        }
-
-
-        /*
-         * ============================================================
-         * CERRAR DETALLE
-         * ============================================================
-         */
-
-        function cerrarDetalle() {
-
-            document.getElementById(
-                "modalDetalle"
-            ).classList.remove(
-                "activo"
-            );
-
-
-            prestamoSeleccionado =
-                null;
-
-
-            document.getElementById(
-                "comentarioDevolucion"
-            ).value = "";
-
-        }
-
-
-        /*
-         * ============================================================
-         * CONFIRMAR DEVOLUCIÓN
-         * ============================================================
-         */
-
-        async function confirmarDevolucion() {
-
-            if (!prestamoSeleccionado) {
-
-                return;
-
-            }
-
-
-            const confirmar =
-                window.confirm(
-                    "¿Desea registrar la devolución de este libro?"
-                );
-
-
-            if (!confirmar) {
-
-                return;
-
-            }
-
-
-            const comentario =
-                document.getElementById(
-                    "comentarioDevolucion"
-                ).value.trim();
-
-
-            const fechaActual =
-                new Date().toISOString();
-
-
-            try {
-
-                /*
-                 * El préstamo ya pertenece a NE porque
-                 * fue cargado mediante Biblioteca = NE.
-                 *
-                 * Para actualizarlo usamos su ID único.
-                 */
-
-                const { error } =
-                    await supabaseClient
-                        .from("prestamos")
-                        .update({
-                            estado: "Devuelto",
-                            fechaDevolucionReal:
-                                fechaActual,
-                            comentarios:
-                                comentario || null
-                        })
-                        .eq(
-                            "id",
-                            prestamoSeleccionado.id
-                        );
-
-
-                if (error) {
-
-                    console.error(error);
-
-                    mostrarMensaje(
-                        "No fue posible registrar la devolución.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /*
-                 * Buscar el libro dentro de la biblioteca NE.
-                 *
-                 * Se utiliza el código del libro y la biblioteca
-                 * para evitar modificar un libro de otra biblioteca
-                 * que eventualmente tenga el mismo código.
-                 */
-
-                const codigoLibro =
-                    normalizarCodigo(
-                        prestamoSeleccionado.codigoLibro
-                    );
-
-
-                const {
-                    data: librosEncontrados,
-                    error: errorLibro
-                } =
-                    await supabaseClient
-                        .from("libros")
-                        .select("*")
-                        .eq(
-                            "Biblioteca",
-                            BIBLIOTECA_ACTUAL
-                        );
-
-
-                if (
-                    errorLibro
-                ) {
-
-                    console.error(
-                        "Error buscando libro:",
-                        errorLibro
-                    );
-
-                }
-
-                else {
-
-                    const libro =
-                        (
-                            librosEncontrados ||
-                            []
-                        ).find(
-                            item =>
-                                normalizarCodigo(
-                                    item.codigoLibro
-                                ) ===
-                                codigoLibro
-                        );
-
-
-                    if (libro) {
-
-                        const comentarioNormalizado =
-                            normalizar(
-                                comentario
-                            );
-
-
-                        const nuevoEstado =
-                            comentarioNormalizado ===
-                            "EXTRAVIADO"
-                                ? "Baja"
-                                : "Disponible";
-
-
-                        const {
-                            error: errorActualizarLibro
-                        } =
-                            await supabaseClient
-                                .from("libros")
-                                .update({
-                                    estado:
-                                        nuevoEstado
-                                })
-                                .eq(
-                                    "id",
-                                    libro.id
-                                );
-
-
-                        if (
-                            errorActualizarLibro
-                        ) {
-
-                            console.error(
-                                "Error actualizando libro:",
-                                errorActualizarLibro
-                            );
-
-                        }
-
-                    }
-
-                }
-
-
-                mostrarMensaje(
-                    "La devolución fue registrada correctamente.",
-                    "exito"
-                );
-
-
-                cerrarDetalle();
-
-
-                await cargarDatos();
-
-            }
-
-            catch (error) {
-
-                console.error(error);
-
-                mostrarMensaje(
-                    "Ocurrió un error al registrar la devolución.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        /*
-         * ============================================================
-         * CONFIRMAR ELIMINACIÓN
-         * ============================================================
-         */
-
-        async function confirmarEliminacion() {
-
-            if (!prestamoSeleccionado) {
-
-                return;
-
-            }
-
-
-            const confirmar =
-                window.confirm(
-                    "¿Está seguro de eliminar este préstamo? Esta acción no registra una devolución."
-                );
-
-
-            if (!confirmar) {
-
-                return;
-
-            }
-
-
-            const comentario =
-                document.getElementById(
-                    "comentarioDevolucion"
-                ).value.trim();
-
-
-            try {
-
-                /*
-                 * Primero buscamos el libro dentro de NE.
-                 */
-
-                const codigoLibro =
-                    normalizarCodigo(
-                        prestamoSeleccionado.codigoLibro
-                    );
-
-
-                const {
-                    data: librosEncontrados,
-                    error: errorLibro
-                } =
-                    await supabaseClient
-                        .from("libros")
-                        .select("*")
-                        .eq(
-                            "Biblioteca",
-                            BIBLIOTECA_ACTUAL
-                        );
-
-
-                if (
-                    errorLibro
-                ) {
-
-                    console.error(errorLibro);
-
-                }
-
-                else {
-
-                    const libro =
-                        (
-                            librosEncontrados ||
-                            []
-                        ).find(
-                            item =>
-                                normalizarCodigo(
-                                    item.codigoLibro
-                                ) ===
-                                codigoLibro
-                        );
-
-
-                    if (libro) {
-
-                        const comentarioNormalizado =
-                            normalizar(
-                                comentario
-                            );
-
-
-                        const nuevoEstado =
-                            comentarioNormalizado ===
-                            "EXTRAVIADO"
-                                ? "Baja"
-                                : "Disponible";
-
-
-                        const {
-                            error:
-                                errorActualizarLibro
-                        } =
-                            await supabaseClient
-                                .from("libros")
-                                .update({
-                                    estado:
-                                        nuevoEstado
-                                })
-                                .eq(
-                                    "id",
-                                    libro.id
-                                );
-
-
-                        if (
-                            errorActualizarLibro
-                        ) {
-
-                            console.error(
-                                errorActualizarLibro
-                            );
-
-                        }
-
-                    }
-
-                }
-
-
-                /*
-                 * Eliminar únicamente el préstamo seleccionado.
-                 */
-
-                const {
-                    error: errorEliminar
-                } =
-                    await supabaseClient
-                        .from("prestamos")
-                        .delete()
-                        .eq(
-                            "id",
-                            prestamoSeleccionado.id
-                        );
-
-
-                if (
-                    errorEliminar
-                ) {
-
-                    console.error(
-                        errorEliminar
-                    );
-
-                    mostrarMensaje(
-                        "No fue posible eliminar el préstamo.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                mostrarMensaje(
-                    "El préstamo fue eliminado correctamente.",
-                    "exito"
-                );
-
-
-                cerrarDetalle();
-
-
-                await cargarDatos();
-
-            }
-
-            catch (error) {
-
-                console.error(error);
-
-                mostrarMensaje(
-                    "Ocurrió un error al eliminar el préstamo.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        /*
-         * ============================================================
-         * BÚSQUEDA
-         * ============================================================
-         */
-
-        function aplicarBusqueda() {
-
-            const texto =
-                normalizar(
-                    document.getElementById(
-                        "busqueda"
-                    ).value
-                );
-
-
-            if (!texto) {
-
-                prestamosFiltrados =
-                    [...prestamos];
-
-            }
-
-            else {
-
-                prestamosFiltrados =
-                    prestamos.filter(
-                        prestamo => {
-
-                            const colaborador =
-                                esColaborador(
-                                    prestamo
-                                );
-
-
-                            const datos = [
-
-                                prestamo.FamiliaId,
-
-                                prestamo.Nombres,
-
-                                prestamo.Apellidos,
-
-                                prestamo.nombreLibro,
-
-                                prestamo.NombreLibro,
-
-                                prestamo.codigoLibro,
-
-                                prestamo.codigoColaborador,
-
-                                prestamo.nombreColaborador,
-
-                                prestamo.Sitio,
-
-                                prestamo.Area,
-
-                                prestamo.Biblioteca
-
-                            ];
-
-
-                            return datos.some(
-                                valor =>
-                                    normalizar(
-                                        valor
-                                    ).includes(
-                                        texto
-                                    )
-                            );
-
-                        }
-                    );
-
-            }
-
-
-            pagina = 1;
-
-            mostrarPrestamos();
-
-        }
-
-
-        /*
-         * ============================================================
-         * RESUMEN
-         * ============================================================
-         */
-
-        function actualizarResumen() {
-
-            const total =
-                prestamos.length;
-
-
-            let atrasados = 0;
-
-
-            const hoy =
-                new Date();
-
-            hoy.setHours(
-                0,
-                0,
-                0,
-                0
-            );
-
-
-            prestamos.forEach(
+            registros.forEach(
                 prestamo => {
 
-                    if (
-                        !prestamo.fechaDevolucion
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    const fechaLimite =
-                        new Date(
-                            prestamo.fechaDevolucion
-                        );
-
-                    fechaLimite.setHours(
-                        0,
-                        0,
-                        0,
-                        0
-                    );
-
-
-                    if (
-                        fechaLimite < hoy
-                    ) {
-
-                        atrasados++;
-
-                    }
-
-                }
-            );
-
-
-            document.getElementById(
-                "totalPrestamos"
-            ).textContent =
-                total;
-
-
-            document.getElementById(
-                "totalAtrasados"
-            ).textContent =
-                atrasados;
-
-        }
-
-
-        /*
-         * ============================================================
-         * LIBROS DISPONIBLES
-         * ============================================================
-         */
-
-        async function cargarLibrosDisponibles() {
-
-            try {
-
-                /*
-                 * Igual que con los préstamos:
-                 *
-                 * NE se identifica mediante Biblioteca,
-                 * NO mediante Sitio.
-                 */
-
-                const {
-                    count,
-                    error
-                } =
-                    await supabaseClient
-                        .from("libros")
-                        .select(
-                            "id",
-                            {
-                                count: "exact",
-                                head: true
-                            }
-                        )
-                        .eq(
-                            "Biblioteca",
-                            BIBLIOTECA_ACTUAL
-                        )
-                        .eq(
-                            "estado",
-                            "Disponible"
+                    const colaborador =
+                        esColaborador(
+                            prestamo
                         );
 
 
-                if (error) {
-
-                    console.error(
-                        error
-                    );
-
-                    return;
-
-                }
-
-
-                document.getElementById(
-                    "totalDisponibles"
-                ).textContent =
-                    count || 0;
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    error
-                );
-
-            }
-
-        }
-
-
-        /*
-         * ============================================================
-         * PAGINACIÓN
-         * ============================================================
-         */
-
-        function actualizarPaginacion() {
-
-            const totalPaginas =
-                Math.max(
-                    1,
-                    Math.ceil(
-                        prestamosFiltrados.length /
-                        registrosPorPagina
-                    )
-                );
-
-
-            document.getElementById(
-                "paginaActual"
-            ).textContent =
-                `Página ${pagina} de ${totalPaginas}`;
-
-
-            document.getElementById(
-                "btnAnterior"
-            ).disabled =
-                pagina <= 1;
-
-
-            document.getElementById(
-                "btnSiguiente"
-            ).disabled =
-                pagina >= totalPaginas;
-
-        }
-
-
-        function paginaAnterior() {
-
-            if (pagina > 1) {
-
-                pagina--;
-
-                mostrarPrestamos();
-
-            }
-
-        }
-
-
-        function paginaSiguiente() {
-
-            const totalPaginas =
-                Math.ceil(
-                    prestamosFiltrados.length /
-                    registrosPorPagina
-                );
-
-
-            if (
-                pagina < totalPaginas
-            ) {
-
-                pagina++;
-
-                mostrarPrestamos();
-
-            }
-
-        }
-
-
-        /*
-         * ============================================================
-         * MENSAJES
-         * ============================================================
-         */
-
-        function mostrarMensaje(
-            texto,
-            tipo
-        ) {
-
-            const mensaje =
-                document.getElementById(
-                    "mensaje"
-                );
-
-
-            mensaje.textContent =
-                texto;
-
-
-            mensaje.className =
-                `mensaje ${tipo}`;
-
-
-            setTimeout(
-                () => {
-
-                    mensaje.className =
-                        "mensaje";
-
-                },
-                4000
-            );
-
-        }
-
-
-        /*
-         * ============================================================
-         * EVENTOS
-         * ============================================================
-         */
-
-        document
-            .getElementById("busqueda")
-            .addEventListener(
-                "input",
-                aplicarBusqueda
-            );
-
-
-        document
-            .getElementById("modalDetalle")
-            .addEventListener(
-                "click",
-                function(event) {
-
-                    if (
-                        event.target === this
-                    ) {
-
-                        cerrarDetalle();
-
-                    }
-
-                }
-            );
-
-
-        /*
-         * ============================================================
-         * INICIO
-         * ============================================================
-         */
-
-        async function iniciarDevoluciones() {
-
-            try {
-
-                await window.devolucionesAuth;
-
-                await cargarDatos();
-
-                document.documentElement.style.visibility =
-                    "visible";
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    error
-                );
-
-                document.documentElement.style.visibility =
-                    "visible";
-
-            }
-
-        }
-
-
-        iniciarDevoluciones();
-
-    </script>
-
-</body>
-
-</html>
+                    const tipo =
+                        colaborador
+                            ? "Colaborador"
+                            : "Familia";
+
+
+                    const familia =
+                        colaborador
+                            ? (
+                                prestamo.codigoColaborador ||
+                                prestamo.CodigoColaborador ||
+                                prestamo.ColaboradorId ||
+                                "-"
+                            )
+                            : (
+                                prestamo.FamiliaId ||
+                                "-"
+                            );
+
+
+                    const persona =
+                        colaborador
+                            ? (
+                                prestamo.nombreColaborador ||
+                                prestamo.NombreColaborador ||
+                                prestamo.Nombres ||
+                                "-"
+                            )
+                            : (
+                                (
+                                    prestamo.Nombres ||
+                                    ""
+                                ) +
+                                " " +
+                                (
+                                    prestamo.Apellidos ||
+                                    ""
+                                )
+                            ).trim() || "-";
+
+
+                    /*
+                     * Área debe ser Área.
+                     *
+                     * NO usamos Sitio como reemplazo.
+                     */
+
+                    const area =
+                        prestamo.Area ||
+                        prestamo.area ||
+                        "-";
+
+
+                    const libro =
+                        prestamo.nombreLibro ||
+                        presta
+```
