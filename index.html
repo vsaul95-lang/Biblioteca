@@ -18,7 +18,6 @@
     href="estilos.css"
 >
 
-
 </head>
 
 <body>
@@ -755,8 +754,11 @@
 
 
 <!-- =========================================
-     AUTENTICACION
+     AUTENTICACION Y PERMISOS
 ========================================== -->
+
+<script src="auth.js?v=1002"></script>
+
 
 <script>
 
@@ -878,96 +880,23 @@
 
 
     // =========================================
-    // OBTENER PERFIL DEL USUARIO
-    // =========================================
-
-    async function obtenerPerfilUsuario(
-        usuarioId
-    ) {
-
-        const {
-            data: perfil,
-            error
-        } = await supabaseClient
-
-            .from("usuarios")
-
-            .select(`
-                id,
-                correo,
-                nombre,
-                rol,
-                estado,
-                fechaRegistro
-            `)
-
-            .eq(
-                "id",
-                usuarioId
-            )
-
-            .maybeSingle();
-
-
-        if (error) {
-
-            console.error(
-                "Error al consultar el perfil:",
-                error
-            );
-
-            return null;
-        }
-
-
-        return perfil;
-
-    }
-
-
-    // =========================================
     // MOSTRAR BIBLIOTECA
     // =========================================
 
-    async function mostrarBiblioteca(
-        usuario
-    ) {
+    async function mostrarBiblioteca() {
 
-        const perfil =
-            await obtenerPerfilUsuario(
-                usuario.id
-            );
+        // -----------------------------------------
+        // AUTENTICACION CENTRALIZADA
+        // -----------------------------------------
+
+        const autorizado =
+            await window.protegerPagina();
 
 
-        if (!perfil) {
-
-            await supabaseClient.auth.signOut();
+        if (!autorizado) {
 
             mostrarError(
-                "La cuenta no está configurada en el sistema."
-            );
-
-            return;
-
-        }
-
-
-        const estado =
-            String(
-                perfil.estado || ""
-            )
-                .trim()
-                .toUpperCase();
-
-
-        if (
-            estado !== "ACTIVO"
-        ) {
-
-            await supabaseClient.auth.signOut();
-
-            mostrarError(
-                "La cuenta está inactiva y no puede utilizar el sistema."
+                "No fue posible validar la sesión del usuario."
             );
 
             return;
@@ -980,7 +909,7 @@
         // -----------------------------------------
 
         aplicarPermisosMenu(
-            perfil.rol
+            window.rolUsuario
         );
 
 
@@ -1061,9 +990,7 @@
 
         if (session) {
 
-            await mostrarBiblioteca(
-                session.user
-            );
+            await mostrarBiblioteca();
 
         }
 
@@ -1136,9 +1063,7 @@
 
             if (data.session) {
 
-                await mostrarBiblioteca(
-                    data.session.user
-                );
+                await mostrarBiblioteca();
 
             }
 
