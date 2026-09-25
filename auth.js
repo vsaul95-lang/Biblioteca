@@ -1,11 +1,29 @@
+// ==========================================
+// PROTECCIÓN DE ACCESO Y ROLES
+// ==========================================
+
 window.usuarioSesion = null;
 window.perfilUsuario = null;
 window.rolUsuario = null;
 window.estadoUsuario = null;
 
+
+// ==========================================
+// NORMALIZAR TEXTO
+// ==========================================
+
 function normalizarTexto(valor) {
-    return String(valor || "").trim().toUpperCase();
+
+    return String(valor || "")
+        .trim()
+        .toUpperCase();
+
 }
+
+
+// ==========================================
+// COMPROBAR SESIÓN
+// ==========================================
 
 window.protegerPagina = async function () {
 
@@ -13,8 +31,13 @@ window.protegerPagina = async function () {
 
     try {
 
+        // ==========================================
+        // SESIÓN
+        // ==========================================
+
         const resultadoSesion =
             await supabaseClient.auth.getSession();
+
 
         if (resultadoSesion.error) {
 
@@ -26,8 +49,10 @@ window.protegerPagina = async function () {
             return false;
         }
 
+
         const session =
             resultadoSesion.data.session;
+
 
         if (!session) {
 
@@ -38,14 +63,20 @@ window.protegerPagina = async function () {
             return false;
         }
 
+
         console.log(
             "SESION ENCONTRADA:",
             session.user.email
         );
 
+
         window.usuarioSesion =
             session.user;
 
+
+        // ==========================================
+        // PERFIL DEL USUARIO
+        // ==========================================
 
         const resultadoPerfil =
             await supabaseClient
@@ -94,10 +125,20 @@ window.protegerPagina = async function () {
         window.perfilUsuario =
             perfil;
 
+
+        // ==========================================
+        // ROL
+        // ==========================================
+
         window.rolUsuario =
             normalizarTexto(
                 perfil.rol
             );
+
+
+        // ==========================================
+        // ESTADO
+        // ==========================================
 
         window.estadoUsuario =
             normalizarTexto(
@@ -105,19 +146,39 @@ window.protegerPagina = async function () {
             );
 
 
+        console.log(
+            "ROL NORMALIZADO:",
+            window.rolUsuario
+        );
+
+
+        console.log(
+            "ESTADO NORMALIZADO:",
+            window.estadoUsuario
+        );
+
+
+        // ==========================================
+        // COMPROBAR ESTADO
+        // ==========================================
+
         if (
             window.estadoUsuario !==
             "ACTIVO"
         ) {
 
             console.error(
-                "USUARIO INACTIVO:",
+                "USUARIO INACTIVO. VALOR RECIBIDO:",
                 perfil.estado
             );
 
             return false;
         }
 
+
+        // ==========================================
+        // USUARIO AUTORIZADO
+        // ==========================================
 
         console.log(
             "USUARIO AUTORIZADO:",
@@ -137,8 +198,13 @@ window.protegerPagina = async function () {
 
         return false;
     }
+
 };
 
+
+// ==========================================
+// COMPROBAR ADMINISTRADOR
+// ==========================================
 
 window.esAdministrador = function () {
 
@@ -150,6 +216,10 @@ window.esAdministrador = function () {
 };
 
 
+// ==========================================
+// COMPROBAR USUARIO
+// ==========================================
+
 window.esUsuario = function () {
 
     return (
@@ -159,6 +229,10 @@ window.esUsuario = function () {
 
 };
 
+
+// ==========================================
+// COMPROBAR ROL
+// ==========================================
 
 window.tieneRol = function (rol) {
 
