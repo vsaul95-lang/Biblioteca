@@ -40,26 +40,35 @@
                 const autorizado =
                     await window.protegerPagina();
 
+
                 if (!autorizado) {
 
-                    window.location.replace("index.html");
+                    window.location.replace(
+                        "index.html"
+                    );
 
                     return false;
 
                 }
+
 
                 if (!window.esAdministrador()) {
 
-                    window.location.replace("index.html");
+                    window.location.replace(
+                        "index.html"
+                    );
 
                     return false;
 
                 }
+
 
                 document.documentElement.style.visibility =
                     "visible";
 
+
                 return true;
+
 
             } catch (error) {
 
@@ -68,7 +77,11 @@
                     error
                 );
 
-                window.location.replace("index.html");
+
+                window.location.replace(
+                    "index.html"
+                );
+
 
                 return false;
 
@@ -83,6 +96,1038 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+
+    <style>
+
+        .reportes-contenedor {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 20px;
+
+        }
+
+
+        .encabezado .encabezado-contenido {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+        }
+
+
+        .volver-header {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 8px 14px;
+
+            border-radius: 6px;
+
+            background: rgba(38, 50, 56, 0.55);
+
+            border: 1px solid rgba(255, 255, 255, 0.55);
+
+            color: #ffffff !important;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+
+        }
+
+
+        .volver-header:hover {
+
+            background: rgba(38, 50, 56, 0.72);
+
+            border-color: #ffffff;
+
+            color: #ffffff !important;
+
+            text-decoration: none;
+
+        }
+
+
+        .reporte-encabezado {
+
+            margin-bottom: 16px;
+
+        }
+
+
+        .reporte-encabezado h1 {
+
+            margin: 0 0 4px;
+
+            font-size: 26px;
+
+            color: #263238;
+
+        }
+
+
+        .reporte-encabezado p {
+
+            margin: 0;
+
+            color: #607d8b;
+
+            font-size: 13px;
+
+        }
+
+
+        .estadisticas-reportes {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .estadistica-reporte {
+
+            background: white;
+
+            border: 1px solid #e0e0e0;
+
+            border-radius: 9px;
+
+            padding: 11px 8px;
+
+            text-align: center;
+
+            box-shadow:
+                0 2px 5px rgba(0,0,0,0.04);
+
+        }
+
+
+        .estadistica-reporte .icono {
+
+            font-size: 19px;
+
+            line-height: 1;
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .estadistica-reporte .numero {
+
+            font-size: 22px;
+
+            line-height: 1.1;
+
+            font-weight: bold;
+
+            color: #263238;
+
+        }
+
+
+        .estadistica-reporte .texto {
+
+            margin-top: 3px;
+
+            font-size: 11px;
+
+            color: #78909c;
+
+        }
+
+
+        .graficos-seccion {
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .graficos-encabezado {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .graficos-encabezado h2 {
+
+            margin: 0;
+
+            font-size: 17px;
+
+            color: #37474f;
+
+        }
+
+
+        .graficos-encabezado p {
+
+            margin: 3px 0 0;
+
+            color: #78909c;
+
+            font-size: 11px;
+
+        }
+
+
+        .filtro-graficas {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .filtro-graficas label {
+
+            font-size: 11px;
+
+            color: #607d8b;
+
+            font-weight: 600;
+
+        }
+
+
+        .selector-grafica {
+
+            border:
+                1px solid #cfd8dc;
+
+            border-radius: 5px;
+
+            background: white;
+
+            color: #37474f;
+
+            font-size: 11px;
+
+            padding: 6px 8px;
+
+            outline: none;
+
+            cursor: pointer;
+
+        }
+
+
+        .selector-grafica:focus {
+
+            border-color: #78909c;
+
+        }
+
+
+        .graficos-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .grafico-card {
+
+            background: white;
+
+            border: 1px solid #e0e0e0;
+
+            border-radius: 9px;
+
+            padding: 14px;
+
+            box-shadow:
+                0 2px 5px rgba(0,0,0,0.04);
+
+            min-width: 0;
+
+        }
+
+
+        .grafico-card h2 {
+
+            margin: 0 0 8px;
+
+            font-size: 15px;
+
+            color: #37474f;
+
+        }
+
+
+        .grafico-contenedor {
+
+            position: relative;
+
+            height: 245px;
+
+        }
+
+
+        .grafico-libros .grafico-contenedor {
+
+            height: 245px;
+
+        }
+
+
+        .grafico-libros .leyenda-circular {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 22px;
+
+            margin-top: -2px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .leyenda-circular-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            font-size: 11px;
+
+            color: #455a64;
+
+            font-weight: 600;
+
+        }
+
+
+        .leyenda-circular-punto {
+
+            width: 10px;
+
+            height: 10px;
+
+            border-radius: 50%;
+
+            display: inline-block;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .leyenda-circular-numero {
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #263238;
+
+            margin-left: 2px;
+
+        }
+
+
+        .resultados-seccion {
+
+            background: white;
+
+            border: 1px solid #e0e0e0;
+
+            border-radius: 9px;
+
+            padding: 14px;
+
+            box-shadow:
+                0 2px 5px rgba(0,0,0,0.04);
+
+        }
+
+
+        .resultados-encabezado {
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .resultados-encabezado h2 {
+
+            margin: 0;
+
+            font-size: 18px;
+
+            color: #37474f;
+
+        }
+
+
+        .resultados-encabezado p {
+
+            margin: 3px 0 0;
+
+            font-size: 12px;
+
+            color: #78909c;
+
+        }
+
+
+        .filtros {
+
+            background: #f7f9fa;
+
+            border: 1px solid #e1e7ea;
+
+            border-radius: 7px;
+
+            padding: 10px;
+
+            margin-bottom: 11px;
+
+        }
+
+
+        .filtros-titulo {
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #455a64;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .filtros-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr 1fr 1fr 1.5fr;
+
+            gap: 7px;
+
+            align-items: end;
+
+        }
+
+
+        .campo {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 3px;
+
+        }
+
+
+        .campo label {
+
+            font-size: 10px;
+
+            color: #607d8b;
+
+            font-weight: 600;
+
+        }
+
+
+        .campo input,
+        .campo select {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 7px 8px;
+
+            border:
+                1px solid #cfd8dc;
+
+            border-radius: 5px;
+
+            background: white;
+
+            color: #37474f;
+
+            font-size: 12px;
+
+            outline: none;
+
+        }
+
+
+        .campo input:focus,
+        .campo select:focus {
+
+            border-color: #78909c;
+
+        }
+
+
+        .filtros-fechas {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 5px;
+
+        }
+
+
+        .botones-filtros {
+
+            display: flex;
+
+            gap: 6px;
+
+            margin-top: 7px;
+
+        }
+
+
+        .btn {
+
+            border: none;
+
+            border-radius: 5px;
+
+            padding: 7px 11px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        .btn-buscar,
+        .btn-limpiar {
+
+            min-width: 145px;
+
+        }
+
+
+        .btn-buscar {
+
+            background: #455a64;
+
+            color: white;
+
+        }
+
+
+        .btn-buscar:hover {
+
+            background: #37474f;
+
+        }
+
+
+        .btn-limpiar {
+
+            background: #eceff1;
+
+            color: #455a64;
+
+        }
+
+
+        .btn-limpiar:hover {
+
+            background: #cfd8dc;
+
+        }
+
+
+        .btn-excel {
+
+            background: #2e7d32;
+
+            color: white;
+
+            min-width: 155px;
+
+        }
+
+
+        .btn-excel:hover {
+
+            background: #1b5e20;
+
+        }
+
+
+        .resultado-resumen {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .cantidad-resultados {
+
+            font-size: 12px;
+
+            color: #607d8b;
+
+        }
+
+
+        .filtros-activos {
+
+            font-size: 10px;
+
+            color: #546e7a;
+
+            background: #eceff1;
+
+            padding: 4px 8px;
+
+            border-radius: 15px;
+
+        }
+
+
+        .tabla-contenedor {
+
+            overflow-x: auto;
+
+            border: 1px solid #e0e0e0;
+
+            border-radius: 6px;
+
+        }
+
+
+        .tabla-resultados {
+
+            width: 100%;
+
+            min-width: 1250px;
+
+            border-collapse: collapse;
+
+            font-size: 11px;
+
+        }
+
+
+        .tabla-resultados th {
+
+            background: #37474f;
+
+            color: white;
+
+            padding: 8px 7px;
+
+            text-align: center;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+
+        }
+
+
+        .tabla-resultados td {
+
+            padding: 7px;
+
+            border-bottom:
+                1px solid #eceff1;
+
+            text-align: center;
+
+            color: #455a64;
+
+        }
+
+
+        .tabla-resultados tbody tr:hover {
+
+            background: #f8fafb;
+
+        }
+
+
+        .tabla-resultados td.nombre {
+
+            text-align: left;
+
+            min-width: 145px;
+
+        }
+
+
+        .tabla-resultados td.libro {
+
+            text-align: left;
+
+            min-width: 180px;
+
+        }
+
+
+        .estado {
+
+            display: inline-block;
+
+            padding: 3px 7px;
+
+            border-radius: 11px;
+
+            font-size: 10px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+        }
+
+
+        .estado-prestado {
+
+            background: #e3f2fd;
+
+            color: #1565c0;
+
+        }
+
+
+        .estado-vencido {
+
+            background: #ffebee;
+
+            color: #c62828;
+
+        }
+
+
+        .estado-devuelto {
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+        }
+
+
+        .sin-resultados {
+
+            text-align: center !important;
+
+            padding: 30px 15px !important;
+
+            color: #78909c !important;
+
+            font-size: 13px !important;
+
+        }
+
+
+        .paginacion-resultados {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 12px;
+
+        }
+
+
+        .btn-pagina {
+
+            border: 1px solid #cfd8dc;
+
+            border-radius: 5px;
+
+            background: #eceff1;
+
+            color: #455a64;
+
+            padding: 7px 13px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+        }
+
+
+        .btn-pagina:hover:not(:disabled) {
+
+            background: #cfd8dc;
+
+        }
+
+
+        .btn-pagina:disabled {
+
+            opacity: 0.45;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .pagina-info {
+
+            color: #607d8b;
+
+            font-size: 11px;
+
+            min-width: 105px;
+
+            text-align: center;
+
+        }
+
+
+        @media (max-width: 950px) {
+
+            .estadisticas-reportes {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+
+            .graficos-grid {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+
+            .filtros-grid {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .graficos-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .graficos-encabezado {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+            .filtro-graficas {
+
+                width: 100%;
+
+                justify-content: space-between;
+
+            }
+
+
+            .selector-grafica {
+
+                flex: 1;
+
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .reportes-contenedor {
+
+                padding:
+                    15px 10px 25px;
+
+            }
+
+
+            .encabezado .encabezado-contenido {
+
+                gap: 10px;
+
+            }
+
+
+            .volver-header {
+
+                padding: 7px 10px;
+
+                font-size: 11px;
+
+            }
+
+
+            .estadisticas-reportes {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .filtros-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .botones-filtros {
+
+                flex-direction: column;
+
+            }
+
+
+            .btn {
+
+                width: 100%;
+
+            }
+
+
+            .btn-buscar,
+            .btn-limpiar,
+            .btn-excel {
+
+                min-width: 0;
+
+            }
+
+
+            .grafico-contenedor {
+
+                height: 235px;
+
+            }
+
+
+            .grafico-libros .grafico-contenedor {
+
+                height: 235px;
+
+            }
+
+
+            .paginacion-resultados {
+
+                gap: 6px;
+
+            }
+
+
+            .btn-pagina {
+
+                padding:
+                    7px 10px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -276,7 +1321,7 @@
                     <select
                         id="filtroSitioGraficas"
                         class="selector-grafica"
-                        title="Filtrar las gráficas"
+                        title="Filtrar las tres gráficas por sitio"
                     >
 
                         <option value="Todos">
@@ -694,10 +1739,6 @@
         }
 
 
-        /* =========================================================
-           ESTADO GENERAL
-           ========================================================= */
-
         let libros = [];
 
         let prestamos = [];
@@ -716,10 +1757,6 @@
 
         let paginaResultados = 1;
 
-
-        /* =========================================================
-           FUNCIONES GENERALES
-           ========================================================= */
 
         function normalizarTexto(valor) {
 
@@ -759,10 +1796,14 @@
             }
 
 
-            return valor.replace(
-                /^0+(?=\d)/,
-                ""
-            );
+            valor =
+                valor.replace(
+                    /^0+(?=\d)/,
+                    ""
+                );
+
+
+            return valor;
 
         }
 
@@ -820,7 +1861,8 @@
 
 
             if (
-                /^\d{4}-\d{2}-\d{2}/.test(texto)
+                /^\d{4}-\d{2}-\d{2}/
+                    .test(texto)
             ) {
 
                 const partes =
@@ -916,7 +1958,11 @@
                 ).padStart(2, "0");
 
 
-            return `${dia}/${mes}/${fechaObj.getFullYear()}`;
+            const anio =
+                fechaObj.getFullYear();
+
+
+            return `${dia}/${mes}/${anio}`;
 
         }
 
@@ -940,19 +1986,13 @@
         }
 
 
-        /* =========================================================
-           ESTADO DEL PRÉSTAMO
-           ========================================================= */
-
         function obtenerEstado(prestamo) {
 
             if (
-
                 normalizarTexto(
                     prestamo.estado
                 ) ===
                 "devuelto"
-
             ) {
 
                 return "Devuelto";
@@ -966,13 +2006,13 @@
                 );
 
 
+            const hoy =
+                obtenerHoy();
+
+
             if (
-
                 fechaDevolucion &&
-
-                fechaDevolucion <
-                obtenerHoy()
-
+                fechaDevolucion < hoy
             ) {
 
                 return "Vencido";
@@ -985,21 +2025,13 @@
         }
 
 
-        /* =========================================================
-           TIPO DE PRÉSTAMO
-           ========================================================= */
-
         function esColaborador(prestamo) {
 
             const tipo =
                 normalizarTexto(
-
                     prestamo.tipoPrestamo ||
-
                     prestamo.TipoPrestamo ||
-
                     ""
-
                 );
 
 
@@ -1010,7 +2042,6 @@
                 Boolean(
 
                     prestamo.CodigoColaborador ||
-
                     prestamo.codigoColaborador
 
                 )
@@ -1023,9 +2054,7 @@
         function obtenerTipoPrestamo(prestamo) {
 
             return esColaborador(prestamo)
-
                 ? "Colaborador"
-
                 : "Afiliado";
 
         }
@@ -1076,29 +2105,14 @@
         }
 
 
-        /* =========================================================
-           SITIO
-           =========================================================
-
-           IMPORTANTE:
-
-           prestamo.Sitio NO se utiliza aquí.
-
-           Sitio:
-               pertenece a afiliados/personas.
-
-           SitioPrestamo:
-               pertenece al registro del préstamo.
-
-           Biblioteca:
-               pertenece al libro.
-
-           NE NO SE CONVIERTE EN SITIO.
-           ========================================================= */
-
         function obtenerSitioPrestamo(prestamo) {
 
             const sitio =
+
+                prestamo.Sitio ||
+
+                prestamo.sitio ||
+
                 prestamo.SitioPrestamo ||
 
                 prestamo.sitioPrestamo ||
@@ -1106,48 +2120,45 @@
                 "";
 
 
-            return String(sitio)
-                .trim()
-                .toUpperCase() ||
-
-                "Sin sitio registrado";
-
-        }
+            const valor =
+                String(sitio).trim().toUpperCase();
 
 
-        function obtenerCodigoSitio(valor) {
-
-            return String(valor ?? "")
-                .trim()
-                .toUpperCase();
+            return valor || "Sin sitio registrado";
 
         }
 
 
-        /* =========================================================
-           BIBLIOTECA
-           ========================================================= */
+        function obtenerCodigoSitio(sitio) {
 
-        function obtenerBibliotecaLibro(libro) {
+            const valor =
+                String(
+                    sitio ?? ""
+                )
+                    .trim()
+                    .toUpperCase();
 
-            return String(
 
-                libro?.Biblioteca ||
+            if (
+                [
+                    "F",
+                    "M",
+                    "N",
+                    "R",
+                    "Z",
+                    "NE"
+                ].includes(valor)
+            ) {
 
-                libro?.biblioteca ||
+                return valor;
 
-                ""
+            }
 
-            )
-                .trim()
-                .toUpperCase();
+
+            return valor;
 
         }
 
-
-        /* =========================================================
-           PERSONA
-           ========================================================= */
 
         function obtenerNombrePersona(prestamo) {
 
@@ -1175,13 +2186,18 @@
                 ).trim();
 
 
-            const completo =
+            const nombreCompleto =
                 `${nombres} ${apellidos}`.trim();
 
 
-            return (
+            if (nombreCompleto) {
 
-                completo ||
+                return nombreCompleto;
+
+            }
+
+
+            return (
 
                 prestamo.PersonaId ||
 
@@ -1194,17 +2210,11 @@
         }
 
 
-        /* =========================================================
-           DATOS DEL LIBRO
-           ========================================================= */
-
         function obtenerDatosLibro(prestamo) {
 
             const codigo =
                 prestamo.codigoLibro ||
-
                 prestamo.CodigoLibro ||
-
                 "";
 
 
@@ -1270,25 +2280,21 @@
 
                 anio:
 
-                    libroEncontrado?.año ||
+                    libroEncontrado?.["año"] ||
 
                     "",
 
 
                 biblioteca:
 
-                    obtenerBibliotecaLibro(
-                        libroEncontrado
-                    )
+                    libroEncontrado?.Biblioteca ||
+
+                    ""
 
             };
 
         }
 
-
-        /* =========================================================
-           CARGAR LIBROS
-           ========================================================= */
 
         async function cargarLibros() {
 
@@ -1315,15 +2321,19 @@
                         .order(
                             "id",
                             {
-                                ascending: true
+                                ascending:
+                                    true
                             }
                         )
 
                         .range(
+
                             desde,
+
                             desde +
                             cantidad -
                             1
+
                         );
 
 
@@ -1369,10 +2379,6 @@
         }
 
 
-        /* =========================================================
-           CARGAR PRÉSTAMOS
-           ========================================================= */
-
         async function cargarPrestamos() {
 
             prestamos = [];
@@ -1398,15 +2404,19 @@
                         .order(
                             "fechaPrestamo",
                             {
-                                ascending: false
+                                ascending:
+                                    false
                             }
                         )
 
                         .range(
+
                             desde,
+
                             desde +
                             cantidad -
                             1
+
                         );
 
 
@@ -1452,10 +2462,6 @@
         }
 
 
-        /* =========================================================
-           CARGAR TODO
-           ========================================================= */
-
         async function cargarDatos() {
 
             try {
@@ -1489,10 +2495,6 @@
 
         }
 
-
-        /* =========================================================
-           ESTADÍSTICAS
-           ========================================================= */
 
         function actualizarEstadisticas() {
 
@@ -1596,30 +2598,17 @@
             ).textContent =
                 prestamos.length;
 
+
+            actualizarGraficosFiltrados();
+
         }
 
 
-        /* =========================================================
-           FILTRO REAL DE GRÁFICAS
-           =========================================================
+        function actualizarGraficaLibros(
 
-           Aquí está la corrección principal.
+            datosPrestamosSitio
 
-           El selector visual se conserva.
-
-           F, M, N, R y Z:
-               pueden utilizarse para filtrar los registros
-               de préstamo por SitioPréstamo.
-
-           NE:
-               NO se busca en SitioPréstamo.
-
-               NE se busca como Biblioteca del libro.
-
-           Esto evita tratar NE como un sitio.
-           ========================================================= */
-
-        function obtenerPrestamosParaGrafica() {
+        ) {
 
             const selector =
                 document.getElementById(
@@ -1627,53 +2616,47 @@
                 );
 
 
-            const seleccionado =
+            const sitioSeleccionado =
                 selector
-                    ? String(selector.value)
-                        .trim()
-                        .toUpperCase()
-                    : "TODOS";
+                    ? selector.value
+                    : "Todos";
 
 
-            if (
-                seleccionado ===
-                "TODOS"
-            ) {
+            const librosActivos =
+                libros.filter(
 
-                return prestamos;
+                    libro => {
 
-            }
+                        const activo =
+                            normalizarTexto(
+                                libro.estado
+                            ) !==
+                            "baja";
 
 
-            /* -----------------------------------------------------
-               NE ES BIBLIOTECA, NO SITIO
-               ----------------------------------------------------- */
+                        if (!activo) {
 
-            if (
-                seleccionado ===
-                "NE"
-            ) {
+                            return false;
 
-                return prestamos.filter(
+                        }
 
-                    prestamo => {
 
-                        const datosLibro =
-                            obtenerDatosLibro(
-                                prestamo
-                            );
+                        if (
+                            sitioSeleccionado ===
+                            "Todos"
+                        ) {
+
+                            return true;
+
+                        }
 
 
                         return (
 
-                            obtenerBibliotecaLibro({
-                                Biblioteca:
-                                    datosLibro.biblioteca
-                            })
-
-                            ===
-
-                            "NE"
+                            obtenerCodigoSitio(
+                                libro.Biblioteca
+                            ) ===
+                            sitioSeleccionado
 
                         );
 
@@ -1681,111 +2664,9 @@
 
                 );
 
-            }
-
-
-            /* -----------------------------------------------------
-               Los demás valores se comparan contra SitioPréstamo.
-               ----------------------------------------------------- */
-
-            return prestamos.filter(
-
-                prestamo =>
-
-                    obtenerCodigoSitio(
-
-                        obtenerSitioPrestamo(
-                            prestamo
-                        )
-
-                    ) ===
-                    seleccionado
-
-            );
-
-        }
-
-
-        /* =========================================================
-           DATOS DE LIBROS PARA LA GRÁFICA
-           ========================================================= */
-
-        function obtenerLibrosParaGrafica() {
-
-            const selector =
-                document.getElementById(
-                    "filtroSitioGraficas"
-                );
-
-
-            const seleccionado =
-                selector
-                    ? String(selector.value)
-                        .trim()
-                        .toUpperCase()
-                    : "TODOS";
-
-
-            const librosActivos =
-                libros.filter(
-
-                    libro =>
-
-                        normalizarTexto(
-                            libro.estado
-                        ) !==
-                        "baja"
-
-                );
-
-
-            if (
-                seleccionado ===
-                "TODOS"
-            ) {
-
-                return librosActivos;
-
-            }
-
-
-            /*
-
-                Para la gráfica de libros,
-                TODOS los valores son Biblioteca.
-
-                Esto es especialmente importante para NE.
-
-            */
-
-            return librosActivos.filter(
-
-                libro =>
-
-                    obtenerBibliotecaLibro(
-                        libro
-                    ) ===
-                    seleccionado
-
-            );
-
-        }
-
-
-        /* =========================================================
-           GRÁFICA DE LIBROS
-           ========================================================= */
-
-        function actualizarGraficaLibros(
-            datosPrestamos
-        ) {
-
-            const librosFiltrados =
-                obtenerLibrosParaGrafica();
-
 
             const prestamosActivos =
-                datosPrestamos.filter(
+                datosPrestamosSitio.filter(
 
                     prestamo =>
 
@@ -1814,7 +2695,7 @@
 
 
             const disponibles =
-                librosFiltrados.filter(
+                librosActivos.filter(
 
                     libro =>
 
@@ -1830,19 +2711,7 @@
 
 
             const prestados =
-                librosFiltrados.filter(
-
-                    libro =>
-
-                        codigosPrestados.has(
-
-                            normalizarCodigo(
-                                libro.codigoLibro
-                            )
-
-                        )
-
-                ).length;
+                prestamosActivos.length;
 
 
             document.getElementById(
@@ -1926,6 +2795,23 @@
                                 "58%",
 
 
+                            layout: {
+
+                                padding: {
+
+                                    top: 4,
+
+                                    bottom: 4,
+
+                                    left: 4,
+
+                                    right: 4
+
+                                }
+
+                            },
+
+
                             plugins: {
 
                                 legend: {
@@ -1971,6 +2857,7 @@
                                                             valor /
                                                             total *
                                                             100
+
                                                         ).toFixed(1)
 
                                                         :
@@ -2002,10 +2889,6 @@
 
         }
 
-
-        /* =========================================================
-           GRÁFICA PRÉSTAMOS POR MES
-           ========================================================= */
 
         function actualizarGraficaMeses(datos) {
 
@@ -2056,7 +2939,9 @@
 
                     const fecha =
                         obtenerFechaSoloDia(
+
                             prestamo.fechaPrestamo
+
                         );
 
 
@@ -2068,8 +2953,10 @@
 
 
                     if (
+
                         fecha.getFullYear() !==
                         anioActual
+
                     ) {
 
                         return;
@@ -2195,6 +3082,14 @@
 
                                     }
 
+                                },
+
+
+                                tooltip: {
+
+                                    padding:
+                                        7
+
                                 }
 
                             },
@@ -2210,6 +3105,35 @@
                                     ticks: {
 
                                         precision:
+                                            0,
+
+                                        font: {
+
+                                            size:
+                                                9
+
+                                        }
+
+                                    }
+
+                                },
+
+
+                                x: {
+
+                                    ticks: {
+
+                                        font: {
+
+                                            size:
+                                                8
+
+                                        },
+
+                                        maxRotation:
+                                            0,
+
+                                        minRotation:
                                             0
 
                                     }
@@ -2226,10 +3150,6 @@
 
         }
 
-
-        /* =========================================================
-           GRÁFICA DE ACTIVIDAD
-           ========================================================= */
 
         function actualizarGraficaActividad(datos) {
 
@@ -2360,6 +3280,9 @@
                                     display:
                                         true,
 
+                                    color:
+                                        "#37474f",
+
                                     anchor:
                                         "end",
 
@@ -2397,7 +3320,30 @@
                                     ticks: {
 
                                         precision:
-                                            0
+                                            0,
+
+                                        font: {
+
+                                            size:
+                                                9
+
+                                        }
+
+                                    }
+
+                                },
+
+
+                                x: {
+
+                                    ticks: {
+
+                                        font: {
+
+                                            size:
+                                                10
+
+                                        }
 
                                     }
 
@@ -2414,47 +3360,6 @@
         }
 
 
-        /* =========================================================
-           ACTUALIZAR LAS TRES GRÁFICAS
-           ========================================================= */
-
-        function actualizarGraficosFiltrados() {
-
-            const datosPrestamos =
-                obtenerPrestamosParaGrafica();
-
-
-            actualizarGraficaMeses(
-                datosPrestamos
-            );
-
-
-            actualizarGraficaLibros(
-                datosPrestamos
-            );
-
-
-            actualizarGraficaActividad(
-                datosPrestamos
-            );
-
-        }
-
-
-        /* =========================================================
-           CARGAR SITIOS DEL FILTRO DE RESULTADOS
-           =========================================================
-
-           Aquí solamente se utilizan los valores reales de
-           SitioPréstamo.
-
-           No se obtiene Sitio desde afiliados.
-
-           No se obtiene Biblioteca.
-
-           No se agrega NE artificialmente.
-           ========================================================= */
-
         function cargarSitios() {
 
             const select =
@@ -2468,26 +3373,15 @@
 
                     ...new Set(
 
-                        prestamos
+                        prestamos.map(
 
-                            .map(
+                            prestamo =>
 
-                                prestamo =>
+                                obtenerSitioPrestamo(
+                                    prestamo
+                                )
 
-                                    obtenerSitioPrestamo(
-                                        prestamo
-                                    )
-
-                            )
-
-                            .filter(
-
-                                sitio =>
-
-                                    sitio !==
-                                    "Sin sitio registrado"
-
-                            )
+                        )
 
                     )
 
@@ -2499,12 +3393,18 @@
                 (a, b) =>
 
                     a.localeCompare(
+
                         b,
+
                         "es",
+
                         {
+
                             sensitivity:
                                 "base"
+
                         }
+
                     )
 
             );
@@ -2542,10 +3442,6 @@
 
         }
 
-
-        /* =========================================================
-           FILTROS
-           ========================================================= */
 
         function aplicarFiltros() {
 
@@ -2620,7 +3516,7 @@
                             );
 
 
-                        const sitioPrestamo =
+                        const sitio =
                             obtenerSitioPrestamo(
                                 prestamo
                             );
@@ -2689,9 +3585,7 @@
 
                                     datosLibro.anio,
 
-                                    sitioPrestamo,
-
-                                    datosLibro.biblioteca
+                                    sitio
 
                                 ].join(" ")
 
@@ -2733,7 +3627,7 @@
                             sitioFiltro !==
                             "Todos" &&
 
-                            sitioPrestamo !==
+                            sitio !==
                             sitioFiltro
 
                         ) {
@@ -2745,11 +3639,19 @@
 
                         const fechaPrestamo =
                             obtenerFechaSoloDia(
+
                                 prestamo.fechaPrestamo
+
                             );
 
 
-                        if (fechaDesde) {
+                        if (
+
+                            fechaDesde &&
+
+                            fechaPrestamo
+
+                        ) {
 
                             const desde =
                                 new Date(
@@ -2759,7 +3661,6 @@
 
 
                             if (
-                                !fechaPrestamo ||
                                 fechaPrestamo <
                                 desde
                             ) {
@@ -2771,7 +3672,13 @@
                         }
 
 
-                        if (fechaHasta) {
+                        if (
+
+                            fechaHasta &&
+
+                            fechaPrestamo
+
+                        ) {
 
                             const hasta =
                                 new Date(
@@ -2781,7 +3688,6 @@
 
 
                             if (
-                                !fechaPrestamo ||
                                 fechaPrestamo >
                                 hasta
                             ) {
@@ -2823,9 +3729,8 @@
 
                         return (
 
-                            (fechaB?.getTime() || 0) -
-
-                            (fechaA?.getTime() || 0)
+                            (fechaB || 0) -
+                            (fechaA || 0)
 
                         );
 
@@ -2851,9 +3756,8 @@
 
                         return (
 
-                            (fechaA?.getTime() || 0) -
-
-                            (fechaB?.getTime() || 0)
+                            (fechaA || 0) -
+                            (fechaB || 0)
 
                         );
 
@@ -2866,19 +3770,22 @@
                     ) {
 
                         return String(
-                            a.FamiliaId || ""
+
+                            a.FamiliaId ||
+
+                            ""
+
                         ).localeCompare(
 
                             String(
-                                b.FamiliaId || ""
+
+                                b.FamiliaId ||
+
+                                ""
+
                             ),
 
-                            "es",
-
-                            {
-                                sensitivity:
-                                    "base"
-                            }
+                            "es"
 
                         );
 
@@ -2890,10 +3797,17 @@
                         "persona"
                     ) {
 
-                        return obtenerNombrePersona(a)
+                        return (
+
+                            obtenerNombrePersona(
+                                a
+                            )
+
                             .localeCompare(
 
-                                obtenerNombrePersona(b),
+                                obtenerNombrePersona(
+                                    b
+                                ),
 
                                 "es",
 
@@ -2902,7 +3816,9 @@
                                         "base"
                                 }
 
-                            );
+                            )
+
+                        );
 
                     }
 
@@ -2912,21 +3828,25 @@
                         "libro"
                     ) {
 
-                        return obtenerDatosLibro(a)
-                            .nombre
-                            .localeCompare(
+                        return (
 
-                                obtenerDatosLibro(b)
-                                    .nombre,
+                            obtenerDatosLibro(a)
+                                .nombre
+                                .localeCompare(
 
-                                "es",
+                                    obtenerDatosLibro(b)
+                                        .nombre,
 
-                                {
-                                    sensitivity:
-                                        "base"
-                                }
+                                    "es",
 
-                            );
+                                    {
+                                        sensitivity:
+                                            "base"
+                                    }
+
+                                )
+
+                        );
 
                     }
 
@@ -2943,12 +3863,10 @@
 
             actualizarResultados();
 
+            actualizarGraficosFiltrados();
+
         }
 
-
-        /* =========================================================
-           RESULTADOS
-           ========================================================= */
 
         function actualizarResultados() {
 
@@ -3112,7 +4030,7 @@
                     }
 
 
-                    const colaborador =
+                    const esColab =
                         esColaborador(
                             prestamo
                         );
@@ -3132,21 +4050,24 @@
 
                     const familia =
 
-                        colaborador
+                        esColab
 
                             ? "—"
 
                             :
 
                             (
+
                                 prestamo.FamiliaId ||
+
                                 "—"
+
                             );
 
 
                     const personaCodigo =
 
-                        colaborador
+                        esColab
 
                             ?
 
@@ -3157,14 +4078,17 @@
                             :
 
                             (
+
                                 prestamo.PersonaId ||
+
                                 "—"
+
                             );
 
 
                     const nombre =
 
-                        colaborador
+                        esColab
 
                             ?
 
@@ -3181,21 +4105,24 @@
 
                     const apellidos =
 
-                        colaborador
+                        esColab
 
                             ? "—"
 
                             :
 
                             (
+
                                 prestamo.Apellidos ||
+
                                 "—"
+
                             );
 
 
                     const area =
 
-                        colaborador
+                        esColab
 
                             ?
 
@@ -3212,6 +4139,11 @@
                         obtenerDatosLibro(
                             prestamo
                         );
+
+
+                    const genero =
+                        datosLibro.genero ||
+                        "—";
 
 
                     fila.innerHTML = `
@@ -3253,9 +4185,7 @@
                         </td>
 
                         <td>
-                            ${escapeHtml(
-                                datosLibro.genero || "—"
-                            )}
+                            ${escapeHtml(genero)}
                         </td>
 
                         <td>
@@ -3275,7 +4205,9 @@
                             <span
                                 class="estado ${claseEstado}"
                             >
+
                                 ${escapeHtml(estado)}
+
                             </span>
 
                         </td>
@@ -3307,10 +4239,6 @@
 
         }
 
-
-        /* =========================================================
-           PAGINACIÓN
-           ========================================================= */
 
         function renderizarPaginacion(
 
@@ -3421,7 +4349,9 @@
 
 
         function cambiarPaginaResultados(
+
             nuevaPagina
+
         ) {
 
             const totalPaginas =
@@ -3483,9 +4413,64 @@
         }
 
 
-        /* =========================================================
-           FILTROS ACTIVOS
-           ========================================================= */
+        function actualizarGraficosFiltrados() {
+
+            const selector =
+                document.getElementById(
+                    "filtroSitioGraficas"
+                );
+
+
+            const sitioSeleccionado =
+                selector
+                    ? selector.value
+                    : "Todos";
+
+
+            let datos =
+                prestamos;
+
+
+            if (
+                sitioSeleccionado !==
+                "Todos"
+            ) {
+
+                datos =
+                    prestamos.filter(
+
+                        prestamo =>
+
+                            obtenerCodigoSitio(
+
+                                obtenerSitioPrestamo(
+                                    prestamo
+                                )
+
+                            ) ===
+                            sitioSeleccionado
+
+                    );
+
+            }
+
+
+            actualizarGraficaMeses(
+                datos
+            );
+
+
+            actualizarGraficaLibros(
+                datos
+            );
+
+
+            actualizarGraficaActividad(
+                datos
+            );
+
+        }
+
 
         function actualizarFiltrosActivos() {
 
@@ -3587,24 +4572,23 @@
                 );
 
 
-            contenedor.textContent =
+            if (
+                elementos.length === 0
+            ) {
 
-                elementos.length
-
-                    ?
-
-                    elementos.join(" • ")
-
-                    :
-
+                contenedor.textContent =
                     "Sin filtros activos";
+
+                return;
+
+            }
+
+
+            contenedor.textContent =
+                elementos.join(" • ");
 
         }
 
-
-        /* =========================================================
-           EXPORTAR EXCEL
-           ========================================================= */
 
         function exportarExcel() {
 
@@ -3651,7 +4635,7 @@
                         }
 
 
-                        const colaborador =
+                        const esColab =
                             esColaborador(
                                 prestamo
                             );
@@ -3679,15 +4663,9 @@
                                 ),
 
 
-                            "Biblioteca":
-
-                                datosLibro.biblioteca ||
-                                "",
-
-
                             "FamiliaId":
 
-                                colaborador
+                                esColab
 
                                     ? ""
 
@@ -3701,7 +4679,7 @@
 
                             "PersonaId / Código":
 
-                                colaborador
+                                esColab
 
                                     ?
 
@@ -3719,7 +4697,7 @@
 
                             "Nombres / Colaborador":
 
-                                colaborador
+                                esColab
 
                                     ?
 
@@ -3736,7 +4714,7 @@
 
                             "Apellidos":
 
-                                colaborador
+                                esColab
 
                                     ? ""
 
@@ -3750,7 +4728,7 @@
 
                             "Área":
 
-                                colaborador
+                                esColab
 
                                     ?
 
@@ -3775,8 +4753,7 @@
 
                             "Género":
 
-                                datosLibro.genero ||
-                                "",
+                                datosLibro.genero || "",
 
 
                             "Préstamo":
@@ -3795,19 +4772,7 @@
 
                             "Estado":
 
-                                estado,
-
-
-                            "PrestadoPor":
-
-                                prestamo.PrestadoPor ||
-                                "",
-
-
-                            "DevueltoPor":
-
-                                prestamo.DevueltoPor ||
-                                ""
+                                estado
 
                         };
 
@@ -3847,10 +4812,6 @@
 
         }
 
-
-        /* =========================================================
-           LIMPIAR FILTROS
-           ========================================================= */
 
         function limpiarFiltros() {
 
@@ -3892,31 +4853,36 @@
         }
 
 
-        /* =========================================================
-           EVENTOS
-           ========================================================= */
-
         document.getElementById(
             "btnBuscar"
         ).addEventListener(
+
             "click",
+
             aplicarFiltros
+
         );
 
 
         document.getElementById(
             "btnLimpiar"
         ).addEventListener(
+
             "click",
+
             limpiarFiltros
+
         );
 
 
         document.getElementById(
             "btnExcel"
         ).addEventListener(
+
             "click",
+
             exportarExcel
+
         );
 
 
@@ -3945,40 +4911,55 @@
         document.getElementById(
             "filtroEstado"
         ).addEventListener(
+
             "change",
+
             aplicarFiltros
+
         );
 
 
         document.getElementById(
             "filtroSitio"
         ).addEventListener(
+
             "change",
+
             aplicarFiltros
+
         );
 
 
         document.getElementById(
             "filtroOrden"
         ).addEventListener(
+
             "change",
+
             aplicarFiltros
+
         );
 
 
         document.getElementById(
             "fechaDesde"
         ).addEventListener(
+
             "change",
+
             aplicarFiltros
+
         );
 
 
         document.getElementById(
             "fechaHasta"
         ).addEventListener(
+
             "change",
+
             aplicarFiltros
+
         );
 
 
@@ -3996,10 +4977,6 @@
 
         );
 
-
-        /* =========================================================
-           INICIO
-           ========================================================= */
 
         async function iniciarReportes() {
 
@@ -4025,13 +5002,6 @@
 
 
             await cargarDatos();
-
-
-            /*
-             * Las gráficas se actualizan DESPUÉS de cargar
-             * libros y préstamos.
-             */
-            actualizarGraficosFiltrados();
 
         }
 
