@@ -213,19 +213,15 @@
         }
 
 
-        /* =========================================
-           BOTON VOLVER
-        ========================================== */
-
         .boton-volver {
             display: inline-block;
             text-decoration: none;
             background: #37474f;
             color: white;
-            padding: 8px 13px;
-            border-radius: 6px;
+            padding: 9px 15px;
+            border-radius: 7px;
             font-size: 14px;
-            font-weight: normal;
+            font-weight: bold;
         }
 
 
@@ -246,6 +242,10 @@
 
 
         .barra-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
@@ -647,13 +647,20 @@
             }
 
 
-            .encabezado-contenido {
+            .barra-superior {
                 align-items: flex-start;
+                flex-direction: column;
             }
 
 
-            .barra-superior {
+            .encabezado-contenido {
                 align-items: flex-start;
+                flex-direction: column;
+            }
+
+
+            .boton-volver {
+                align-self: flex-end;
             }
 
         }
@@ -674,16 +681,6 @@
 
             .archivo .boton {
                 width: 100%;
-            }
-
-
-            .encabezado-contenido {
-                flex-direction: column;
-            }
-
-
-            .boton-volver {
-                align-self: flex-end;
             }
 
         }
@@ -916,7 +913,10 @@
              LISTADO
         ====================================== -->
 
-        <section class="seccion">
+        <section
+            class="seccion"
+            id="seccionAfiliados"
+        >
 
             <div class="informacion-base">
 
@@ -1132,8 +1132,7 @@
 
 
         <!-- =====================================
-             ACTUALIZAR BASE
-             SE MOVIO AL FINAL
+             IMPORTACION
         ====================================== -->
 
         <section class="seccion">
@@ -2082,6 +2081,44 @@
 
 
         // =========================================
+        // DESPLAZAR AL APARTADO DE AFILIADOS
+        // =========================================
+
+        function desplazarASeccionAfiliados() {
+
+            const seccion =
+                document.getElementById(
+                    "seccionAfiliados"
+                );
+
+
+            if (!seccion) {
+
+                return;
+
+            }
+
+
+            const posicion =
+                seccion.getBoundingClientRect().top +
+                window.pageYOffset -
+                15;
+
+
+            window.scrollTo({
+
+                top:
+                    posicion,
+
+                behavior:
+                    "smooth"
+
+            });
+
+        }
+
+
+        // =========================================
         // PAGINA ANTERIOR
         // =========================================
 
@@ -2100,6 +2137,16 @@
             paginaActual--;
 
             mostrarAfiliados();
+
+
+            setTimeout(
+                () => {
+
+                    desplazarASeccionAfiliados();
+
+                },
+                50
+            );
 
         }
 
@@ -2130,6 +2177,16 @@
             paginaActual++;
 
             mostrarAfiliados();
+
+
+            setTimeout(
+                () => {
+
+                    desplazarASeccionAfiliados();
+
+                },
+                50
+            );
 
         }
 
