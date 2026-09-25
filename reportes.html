@@ -29,10 +29,8 @@
 
     <script src="supabase.js"></script>
 
-    <!-- Protección central de sesión y rol -->
     <script src="auth.js?v=1002"></script>
 
-    <!-- Protección directa de esta página -->
     <script>
 
         window.reportesAuth = (async function () {
@@ -41,7 +39,6 @@
 
                 const autorizado =
                     await window.protegerPagina();
-
 
                 if (!autorizado) {
 
@@ -53,7 +50,6 @@
 
                 }
 
-
                 if (!window.esAdministrador()) {
 
                     window.location.replace(
@@ -64,13 +60,10 @@
 
                 }
 
-
                 document.documentElement.style.visibility =
                     "visible";
 
-
                 return true;
-
 
             } catch (error) {
 
@@ -79,11 +72,9 @@
                     error
                 );
 
-
                 window.location.replace(
                     "index.html"
                 );
-
 
                 return false;
 
@@ -113,6 +104,10 @@
         }
 
 
+        /* =========================
+           ENCABEZADO DEL REPORTE
+        ========================= */
+
         .reporte-encabezado {
 
             margin-bottom: 16px;
@@ -124,7 +119,7 @@
 
             margin: 0 0 4px;
 
-            font-size: 26px;
+            font-size: 25px;
 
             color: #263238;
 
@@ -142,29 +137,54 @@
         }
 
 
-        .volver {
+        .encabezado .volver {
 
             display: inline-block;
 
-            margin-bottom: 9px;
+            margin-left: auto;
 
-            color: #546e7a;
+            color: white;
 
             text-decoration: none;
 
             font-size: 13px;
 
+            font-weight: 600;
+
+            padding: 7px 12px;
+
+            border: 1px solid rgba(255,255,255,0.35);
+
+            border-radius: 5px;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+
         }
 
 
-        .volver:hover {
+        .encabezado .volver:hover {
 
-            text-decoration: underline;
+            background:
+                rgba(255,255,255,0.12);
 
-            color: #263238;
+            border-color:
+                rgba(255,255,255,0.55);
 
         }
 
+
+        .reporte-encabezado .volver {
+
+            display: none;
+
+        }
+
+
+        /* =========================
+           ESTADÍSTICAS
+        ========================= */
 
         .estadisticas-reportes {
 
@@ -200,7 +220,7 @@
 
         .estadistica-reporte .icono {
 
-            font-size: 19px;
+            font-size: 18px;
 
             line-height: 1;
 
@@ -211,7 +231,7 @@
 
         .estadistica-reporte .numero {
 
-            font-size: 22px;
+            font-size: 21px;
 
             line-height: 1.1;
 
@@ -232,6 +252,10 @@
 
         }
 
+
+        /* =========================
+           GRÁFICOS
+        ========================= */
 
         .graficos-grid {
 
@@ -353,6 +377,10 @@
         }
 
 
+        /* =========================
+           RESULTADOS
+        ========================= */
+
         .resultados-seccion {
 
             background: white;
@@ -365,6 +393,8 @@
 
             box-shadow:
                 0 2px 5px rgba(0,0,0,0.04);
+
+            scroll-margin-top: 15px;
 
         }
 
@@ -511,9 +541,31 @@
 
             display: flex;
 
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 9px;
+
+        }
+
+
+        .grupo-botones-filtros {
+
+            display: flex;
+
             gap: 6px;
 
-            margin-top: 7px;
+        }
+
+
+        .grupo-boton-reporte {
+
+            display: flex;
+
+            justify-content: flex-end;
 
         }
 
@@ -531,6 +583,17 @@
             font-size: 12px;
 
             font-weight: 600;
+
+            transition:
+                background 0.2s ease,
+                transform 0.1s ease;
+
+        }
+
+
+        .btn:active {
+
+            transform: translateY(1px);
 
         }
 
@@ -572,6 +635,8 @@
             background: #607d8b;
 
             color: white;
+
+            min-width: 145px;
 
         }
 
@@ -623,6 +688,10 @@
 
         }
 
+
+        /* =========================
+           TABLA
+        ========================= */
 
         .tabla-contenedor {
 
@@ -761,6 +830,87 @@
         }
 
 
+        /* =========================
+           PAGINACIÓN
+        ========================= */
+
+        .paginacion-reportes {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 12px;
+
+            padding-top: 11px;
+
+            border-top: 1px solid #eceff1;
+
+        }
+
+
+        .btn-paginacion {
+
+            border:
+                1px solid #cfd8dc;
+
+            background: white;
+
+            color: #455a64;
+
+            border-radius: 5px;
+
+            padding: 7px 12px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+
+        }
+
+
+        .btn-paginacion:hover:not(:disabled) {
+
+            background: #eceff1;
+
+            border-color: #b0bec5;
+
+        }
+
+
+        .btn-paginacion:disabled {
+
+            opacity: 0.45;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .pagina-info {
+
+            min-width: 100px;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            color: #607d8b;
+
+        }
+
+
         @media (max-width: 950px) {
 
             .estadisticas-reportes {
@@ -841,6 +991,31 @@
 
                 flex-direction: column;
 
+                align-items: stretch;
+
+            }
+
+
+            .grupo-botones-filtros {
+
+                width: 100%;
+
+                flex-direction: column;
+
+            }
+
+
+            .grupo-boton-reporte {
+
+                width: 100%;
+
+            }
+
+
+            .btn-excel {
+
+                width: 100%;
+
             }
 
 
@@ -861,6 +1036,15 @@
             .selector-grafica {
 
                 flex-shrink: 0;
+
+            }
+
+
+            .encabezado .volver {
+
+                font-size: 12px;
+
+                padding: 6px 9px;
 
             }
 
@@ -900,6 +1084,14 @@
 
         </div>
 
+
+        <a
+            href="index.html"
+            class="volver"
+        >
+            Volver al inicio
+        </a>
+
     </header>
 
 
@@ -907,13 +1099,6 @@
 
 
         <section class="reporte-encabezado">
-
-            <a
-                href="index.html"
-                class="volver"
-            >
-                ← Volver al inicio
-            </a>
 
             <h1>
                 📊 Reportes
@@ -1161,7 +1346,10 @@
         </section>
 
 
-        <section class="resultados-seccion">
+        <section
+            class="resultados-seccion"
+            id="seccionResultados"
+        >
 
 
             <div class="resultados-encabezado">
@@ -1311,31 +1499,41 @@
 
                 <div class="botones-filtros">
 
-                    <button
-                        type="button"
-                        class="btn btn-buscar"
-                        id="btnBuscar"
-                    >
-                        🔎 Buscar
-                    </button>
+
+                    <div class="grupo-botones-filtros">
+
+                        <button
+                            type="button"
+                            class="btn btn-buscar"
+                            id="btnBuscar"
+                        >
+                            🔎 Buscar
+                        </button>
 
 
-                    <button
-                        type="button"
-                        class="btn btn-limpiar"
-                        id="btnLimpiar"
-                    >
-                        ↺ Limpiar filtros
-                    </button>
+                        <button
+                            type="button"
+                            class="btn btn-limpiar"
+                            id="btnLimpiar"
+                        >
+                            ↺ Limpiar filtros
+                        </button>
+
+                    </div>
 
 
-                    <button
-                        type="button"
-                        class="btn btn-excel"
-                        id="btnExcel"
-                    >
-                        📥 Exportar Excel
-                    </button>
+                    <div class="grupo-boton-reporte">
+
+                        <button
+                            type="button"
+                            class="btn btn-excel"
+                            id="btnExcel"
+                        >
+                            📥 Exportar Reporte
+                        </button>
+
+                    </div>
+
 
                 </div>
 
@@ -1408,6 +1606,40 @@
 
             </div>
 
+
+            <div
+                class="paginacion-reportes"
+                id="paginacionReportes"
+            >
+
+                <button
+                    type="button"
+                    class="btn-paginacion"
+                    id="btnAnterior"
+                >
+                    Anterior
+                </button>
+
+
+                <div
+                    class="pagina-info"
+                    id="paginaInfo"
+                >
+                    Página 1 de 1
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-paginacion"
+                    id="btnSiguiente"
+                >
+                    Siguiente
+                </button>
+
+            </div>
+
+
         </section>
 
     </main>
@@ -1428,6 +1660,160 @@
         let graficaActividad = null;
 
         let reportesIniciados = false;
+
+
+        /* =========================
+           PAGINACIÓN
+        ========================= */
+
+        const REGISTROS_POR_PAGINA = 25;
+
+        let paginaActual = 1;
+
+
+        function obtenerTotalPaginas() {
+
+            return Math.max(
+
+                1,
+
+                Math.ceil(
+
+                    prestamosFiltrados.length /
+                    REGISTROS_POR_PAGINA
+
+                )
+
+            );
+
+        }
+
+
+        function volverAlInicioResultados() {
+
+            const seccion =
+                document.getElementById(
+                    "seccionResultados"
+                );
+
+
+            if (!seccion) {
+
+                return;
+
+            }
+
+
+            const posicion =
+                seccion.getBoundingClientRect().top +
+                window.pageYOffset -
+                15;
+
+
+            window.scrollTo({
+
+                top:
+                    Math.max(
+                        0,
+                        posicion
+                    ),
+
+                behavior:
+                    "smooth"
+
+            });
+
+        }
+
+
+        function actualizarPaginacion() {
+
+            const totalPaginas =
+                obtenerTotalPaginas();
+
+
+            if (
+                paginaActual >
+                totalPaginas
+            ) {
+
+                paginaActual =
+                    totalPaginas;
+
+            }
+
+
+            if (
+                paginaActual <
+                1
+            ) {
+
+                paginaActual =
+                    1;
+
+            }
+
+
+            const btnAnterior =
+                document.getElementById(
+                    "btnAnterior"
+                );
+
+
+            const btnSiguiente =
+                document.getElementById(
+                    "btnSiguiente"
+                );
+
+
+            const paginaInfo =
+                document.getElementById(
+                    "paginaInfo"
+                );
+
+
+            btnAnterior.disabled =
+                paginaActual <= 1;
+
+
+            btnSiguiente.disabled =
+                paginaActual >= totalPaginas;
+
+
+            paginaInfo.textContent =
+
+                `Página ${paginaActual} de ${totalPaginas}`;
+
+        }
+
+
+        function cambiarPagina(nuevaPagina) {
+
+            const totalPaginas =
+                obtenerTotalPaginas();
+
+
+            if (
+                nuevaPagina < 1 ||
+                nuevaPagina > totalPaginas
+            ) {
+
+                return;
+
+            }
+
+
+            paginaActual =
+                nuevaPagina;
+
+
+            actualizarResultados();
+
+            actualizarPaginacion();
+
+            volverAlInicioResultados();
+
+        }
 
 
         function normalizarTexto(valor) {
@@ -3514,6 +3900,9 @@
             );
 
 
+            paginaActual = 1;
+
+
             actualizarResultados();
 
             actualizarGraficosFiltrados();
@@ -3551,6 +3940,9 @@
                 }`;
 
 
+            actualizarPaginacion();
+
+
             if (
                 prestamosFiltrados.length === 0
             ) {
@@ -3578,7 +3970,24 @@
             }
 
 
-            prestamosFiltrados.forEach(
+            const inicio =
+                (paginaActual - 1) *
+                REGISTROS_POR_PAGINA;
+
+
+            const fin =
+                inicio +
+                REGISTROS_POR_PAGINA;
+
+
+            const registrosPagina =
+                prestamosFiltrados.slice(
+                    inicio,
+                    fin
+                );
+
+
+            registrosPagina.forEach(
 
                 prestamo => {
 
@@ -4329,6 +4738,40 @@
             "click",
 
             exportarExcel
+
+        );
+
+
+        document.getElementById(
+            "btnAnterior"
+        ).addEventListener(
+
+            "click",
+
+            function() {
+
+                cambiarPagina(
+                    paginaActual - 1
+                );
+
+            }
+
+        );
+
+
+        document.getElementById(
+            "btnSiguiente"
+        ).addEventListener(
+
+            "click",
+
+            function() {
+
+                cambiarPagina(
+                    paginaActual + 1
+                );
+
+            }
 
         );
 
