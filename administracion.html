@@ -502,6 +502,11 @@
             background: #263238;
         }
 
+        .boton-principal:disabled {
+            background: #90a4ae;
+            cursor: wait;
+        }
+
         .boton-secundario {
             background: #eceff1;
             color: #37474f;
@@ -594,6 +599,7 @@
         ========================= */
 
         @media (max-width: 1000px) {
+
             .grid-estadisticas {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -609,9 +615,11 @@
             .grid-estadisticas-secundarias {
                 grid-template-columns: repeat(2, 1fr);
             }
+
         }
 
         @media (max-width: 700px) {
+
             .contenedor {
                 padding: 18px 10px 30px;
             }
@@ -652,34 +660,52 @@
             .resultado-integridad {
                 min-width: 80px;
             }
+
         }
+
     </style>
 </head>
 
 <body>
 
 <header>
+
     <div class="encabezado-contenido">
+
         <div class="encabezado-icono">⚙️</div>
 
         <div class="encabezado-texto">
+
             <strong>Biblioteca</strong>
-            <span>Administración del sistema</span>
+
+            <span>
+                Administración del sistema
+            </span>
+
         </div>
+
     </div>
 
-    <button class="boton-volver" onclick="volverAtras()">
+    <button
+        type="button"
+        class="boton-volver"
+        onclick="volverAtras()">
         Volver atrás
     </button>
+
 </header>
+
 
 <main class="contenedor">
 
-    <h1 class="titulo-principal">Administración</h1>
+    <h1 class="titulo-principal">
+        Administración
+    </h1>
 
     <p class="subtitulo-principal">
         Centro de control, diagnóstico y configuración del sistema de biblioteca.
     </p>
+
 
     <!-- =========================
          INFORMACION DEL SISTEMA
@@ -696,25 +722,56 @@
             <div class="grid-informacion">
 
                 <div class="dato">
-                    <span class="dato-label">Sistema</span>
-                    <span class="dato-valor">Biblioteca</span>
+
+                    <span class="dato-label">
+                        Sistema
+                    </span>
+
+                    <span class="dato-valor">
+                        Biblioteca
+                    </span>
+
                 </div>
 
-                <div class="dato">
-                    <span class="dato-label">Versión</span>
-                    <span class="dato-valor">1.0</span>
-                </div>
 
                 <div class="dato">
-                    <span class="dato-label">Base de datos</span>
-                    <span class="dato-valor">Supabase</span>
+
+                    <span class="dato-label">
+                        Versión
+                    </span>
+
+                    <span class="dato-valor">
+                        1.0
+                    </span>
+
                 </div>
 
+
                 <div class="dato">
-                    <span class="dato-label">Conexión</span>
-                    <span id="estadoConexion" class="estado-conexion estado-pendiente">
+
+                    <span class="dato-label">
+                        Base de datos
+                    </span>
+
+                    <span class="dato-valor">
+                        Supabase
+                    </span>
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Conexión
+                    </span>
+
+                    <span
+                        id="estadoConexion"
+                        class="estado-conexion estado-pendiente">
                         Comprobando...
                     </span>
+
                 </div>
 
             </div>
@@ -722,6 +779,7 @@
         </div>
 
     </section>
+
 
     <!-- =========================
          ESTADISTICAS GENERALES
@@ -739,92 +797,214 @@
                 Resumen general de la información registrada actualmente en el sistema.
             </p>
 
+
             <div class="grid-estadisticas">
 
                 <div class="tarjeta-estadistica">
-                    <div class="numero" id="totalLibros">0</div>
-                    <div class="texto">Libros</div>
+
+                    <div
+                        class="numero"
+                        id="totalLibros">
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Libros
+                    </div>
+
                 </div>
 
-                <div class="tarjeta-estadistica">
-                    <div class="numero" id="totalAfiliados">0</div>
-                    <div class="texto">Afiliados</div>
-                </div>
 
                 <div class="tarjeta-estadistica">
-                    <div class="numero" id="totalColaboradores">0</div>
-                    <div class="texto">Colaboradores</div>
+
+                    <div
+                        class="numero"
+                        id="totalAfiliados">
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Afiliados
+                    </div>
+
                 </div>
 
+
                 <div class="tarjeta-estadistica">
-                    <div class="numero" id="totalPrestamos">0</div>
-                    <div class="texto">Préstamos</div>
+
+                    <div
+                        class="numero"
+                        id="totalColaboradores">
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Colaboradores
+                    </div>
+
                 </div>
+
+
+                <div class="tarjeta-estadistica">
+
+                    <div
+                        class="numero"
+                        id="totalPrestamos">
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Préstamos
+                    </div>
+
+                </div>
+
 
                 <div class="tarjeta-estadistica total">
-                    <div class="numero" id="totalRegistros">0</div>
-                    <div class="texto">Registros totales</div>
+
+                    <div
+                        class="numero"
+                        id="totalRegistros">
+                        0
+                    </div>
+
+                    <div class="texto">
+                        Registros totales
+                    </div>
+
                 </div>
 
             </div>
+
 
             <div class="subtitulo-estadistica">
                 Estado actual
             </div>
 
+
             <div class="grid-estadisticas-secundarias">
 
                 <div class="estadistica-secundaria">
-                    <strong id="librosDisponibles">0</strong>
-                    <span>Libros disponibles</span>
+
+                    <strong id="librosDisponibles">
+                        0
+                    </strong>
+
+                    <span>
+                        Libros disponibles
+                    </span>
+
                 </div>
 
-                <div class="estadistica-secundaria">
-                    <strong id="librosPrestados">0</strong>
-                    <span>Libros prestados</span>
-                </div>
 
                 <div class="estadistica-secundaria">
-                    <strong id="afiliadosActivos">0</strong>
-                    <span>Afiliados activos</span>
+
+                    <strong id="librosPrestados">
+                        0
+                    </strong>
+
+                    <span>
+                        Libros prestados
+                    </span>
+
                 </div>
 
-                <div class="estadistica-secundaria">
-                    <strong id="afiliadosInactivos">0</strong>
-                    <span>Afiliados inactivos</span>
-                </div>
 
                 <div class="estadistica-secundaria">
-                    <strong id="colaboradoresActivos">0</strong>
-                    <span>Colaboradores activos</span>
+
+                    <strong id="afiliadosActivos">
+                        0
+                    </strong>
+
+                    <span>
+                        Afiliados activos
+                    </span>
+
                 </div>
 
-                <div class="estadistica-secundaria">
-                    <strong id="colaboradoresInactivos">0</strong>
-                    <span>Colaboradores inactivos</span>
-                </div>
 
                 <div class="estadistica-secundaria">
-                    <strong id="prestamosAfiliados">0</strong>
-                    <span>Préstamos de afiliados</span>
+
+                    <strong id="afiliadosInactivos">
+                        0
+                    </strong>
+
+                    <span>
+                        Afiliados inactivos
+                    </span>
+
                 </div>
 
+
                 <div class="estadistica-secundaria">
-                    <strong id="prestamosColaboradores">0</strong>
-                    <span>Préstamos de colaboradores</span>
+
+                    <strong id="colaboradoresActivos">
+                        0
+                    </strong>
+
+                    <span>
+                        Colaboradores activos
+                    </span>
+
+                </div>
+
+
+                <div class="estadistica-secundaria">
+
+                    <strong id="colaboradoresInactivos">
+                        0
+                    </strong>
+
+                    <span>
+                        Colaboradores inactivos
+                    </span>
+
+                </div>
+
+
+                <div class="estadistica-secundaria">
+
+                    <strong id="prestamosAfiliados">
+                        0
+                    </strong>
+
+                    <span>
+                        Préstamos de afiliados
+                    </span>
+
+                </div>
+
+
+                <div class="estadistica-secundaria">
+
+                    <strong id="prestamosColaboradores">
+                        0
+                    </strong>
+
+                    <span>
+                        Préstamos de colaboradores
+                    </span>
+
                 </div>
 
             </div>
 
+
             <div class="acciones-seccion">
-                <button class="boton boton-principal" onclick="cargarTodo()">
+
+                <button
+                    type="button"
+                    class="boton boton-principal"
+                    onclick="cargarTodo()">
                     Actualizar información
                 </button>
+
             </div>
 
         </div>
 
     </section>
+
 
     <!-- =========================
          DIAGNOSTICO
@@ -843,63 +1023,135 @@
                 y puedan ser consultadas.
             </p>
 
+
             <div class="tabla-contenedor">
 
                 <table>
 
                     <thead>
+
                         <tr>
-                            <th>Tabla</th>
-                            <th>Función</th>
-                            <th>Registros</th>
-                            <th>Estado</th>
+
+                            <th>
+                                Tabla
+                            </th>
+
+                            <th>
+                                Función
+                            </th>
+
+                            <th>
+                                Registros
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
                         </tr>
+
                     </thead>
+
 
                     <tbody id="tablaDiagnostico">
 
                         <tr>
-                            <td>afiliados</td>
-                            <td>Familias y afiliados</td>
-                            <td>—</td>
+
                             <td>
+                                afiliados
+                            </td>
+
+                            <td>
+                                Familias y afiliados
+                            </td>
+
+                            <td>
+                                —
+                            </td>
+
+                            <td>
+
                                 <span class="estado-tabla estado-revision">
                                     Pendiente
                                 </span>
+
                             </td>
+
                         </tr>
 
-                        <tr>
-                            <td>libros</td>
-                            <td>Catálogo de libros</td>
-                            <td>—</td>
-                            <td>
-                                <span class="estado-tabla estado-revision">
-                                    Pendiente
-                                </span>
-                            </td>
-                        </tr>
 
                         <tr>
-                            <td>colaboradores</td>
-                            <td>Personal colaborador</td>
-                            <td>—</td>
+
                             <td>
+                                libros
+                            </td>
+
+                            <td>
+                                Catálogo de libros
+                            </td>
+
+                            <td>
+                                —
+                            </td>
+
+                            <td>
+
                                 <span class="estado-tabla estado-revision">
                                     Pendiente
                                 </span>
+
                             </td>
+
                         </tr>
 
+
                         <tr>
-                            <td>prestamos</td>
-                            <td>Préstamos y devoluciones</td>
-                            <td>—</td>
+
                             <td>
+                                colaboradores
+                            </td>
+
+                            <td>
+                                Personal colaborador
+                            </td>
+
+                            <td>
+                                —
+                            </td>
+
+                            <td>
+
                                 <span class="estado-tabla estado-revision">
                                     Pendiente
                                 </span>
+
                             </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                prestamos
+                            </td>
+
+                            <td>
+                                Préstamos y devoluciones
+                            </td>
+
+                            <td>
+                                —
+                            </td>
+
+                            <td>
+
+                                <span class="estado-tabla estado-revision">
+                                    Pendiente
+                                </span>
+
+                            </td>
+
                         </tr>
 
                     </tbody>
@@ -908,9 +1160,14 @@
 
             </div>
 
+
             <div class="acciones-seccion">
 
-                <button class="boton boton-principal" onclick="ejecutarDiagnostico()">
+                <button
+                    type="button"
+                    class="boton boton-principal"
+                    id="botonDiagnostico"
+                    onclick="ejecutarDiagnostico()">
                     Comprobar sistema
                 </button>
 
@@ -919,6 +1176,7 @@
         </div>
 
     </section>
+
 
     <!-- =========================
          INTEGRIDAD
@@ -937,123 +1195,187 @@
                 Esta sección no modifica ni elimina información.
             </p>
 
+
             <div class="lista-integridad">
 
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Afiliados sin estado</strong>
+
+                        <strong>
+                            Afiliados sin estado
+                        </strong>
+
                         <span>
                             Registros que no tienen definido Activo o Inactivo.
                         </span>
+
                     </div>
 
-                    <div id="integridadAfiliadosEstado" class="resultado-integridad">
+                    <div
+                        id="integridadAfiliadosEstado"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
                 </div>
 
+
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Afiliados sin sitio</strong>
+
+                        <strong>
+                            Afiliados sin sitio
+                        </strong>
+
                         <span>
                             Registros que no tienen definido F, M, N, R o Z.
                         </span>
+
                     </div>
 
-                    <div id="integridadAfiliadosSitio" class="resultado-integridad">
+                    <div
+                        id="integridadAfiliadosSitio"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
                 </div>
 
+
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Libros sin sitio</strong>
+
+                        <strong>
+                            Libros sin sitio
+                        </strong>
+
                         <span>
                             Libros cuyo campo Biblioteca está vacío o no corresponde a un sitio válido.
                         </span>
+
                     </div>
 
-                    <div id="integridadLibrosSitio" class="resultado-integridad">
+                    <div
+                        id="integridadLibrosSitio"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
                 </div>
 
+
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Libros sin código</strong>
+
+                        <strong>
+                            Libros sin código
+                        </strong>
+
                         <span>
                             Libros que no tienen código de identificación.
                         </span>
+
                     </div>
 
-                    <div id="integridadLibrosCodigo" class="resultado-integridad">
+                    <div
+                        id="integridadLibrosCodigo"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
                 </div>
 
+
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Colaboradores sin estado</strong>
+
+                        <strong>
+                            Colaboradores sin estado
+                        </strong>
+
                         <span>
                             Registros que no tienen definido Activo o Inactivo.
                         </span>
+
                     </div>
 
-                    <div id="integridadColaboradoresEstado" class="resultado-integridad">
+                    <div
+                        id="integridadColaboradoresEstado"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
                 </div>
 
+
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Colaboradores sin código</strong>
+
+                        <strong>
+                            Colaboradores sin código
+                        </strong>
+
                         <span>
                             Registros que no tienen código de colaborador.
                         </span>
+
                     </div>
 
-                    <div id="integridadColaboradoresCodigo" class="resultado-integridad">
+                    <div
+                        id="integridadColaboradoresCodigo"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
                 </div>
 
+
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Libros con estado inválido</strong>
+
+                        <strong>
+                            Libros con estado inválido
+                        </strong>
+
                         <span>
                             Registros cuyo estado no corresponde a un estado conocido.
                         </span>
+
                     </div>
 
-                    <div id="integridadLibrosEstado" class="resultado-integridad">
+                    <div
+                        id="integridadLibrosEstado"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
                 </div>
 
+
                 <div class="item-integridad">
 
                     <div class="integridad-texto">
-                        <strong>Préstamos sin libro</strong>
+
+                        <strong>
+                            Préstamos sin libro
+                        </strong>
+
                         <span>
                             Préstamos que no tienen código o referencia de libro.
                         </span>
+
                     </div>
 
-                    <div id="integridadPrestamosLibro" class="resultado-integridad">
+                    <div
+                        id="integridadPrestamosLibro"
+                        class="resultado-integridad">
                         Pendiente
                     </div>
 
@@ -1061,9 +1383,14 @@
 
             </div>
 
+
             <div class="acciones-seccion">
 
-                <button class="boton boton-principal" onclick="revisarIntegridad()">
+                <button
+                    type="button"
+                    class="boton boton-principal"
+                    id="botonIntegridad"
+                    onclick="revisarIntegridad()">
                     Revisar integridad
                 </button>
 
@@ -1072,6 +1399,7 @@
         </div>
 
     </section>
+
 
     <!-- =========================
          SITIOS
@@ -1091,36 +1419,91 @@
                 de familias y personas.
             </p>
 
+
             <div class="grid-sitios">
 
                 <div class="sitio">
-                    <div class="sitio-codigo">F</div>
-                    <strong>Antigua</strong>
-                    <span>Familias F</span>
+
+                    <div class="sitio-codigo">
+                        F
+                    </div>
+
+                    <strong>
+                        Antigua
+                    </strong>
+
+                    <span>
+                        Familias F
+                    </span>
+
                 </div>
 
-                <div class="sitio">
-                    <div class="sitio-codigo">M</div>
-                    <strong>San Miguel Milpas Altas</strong>
-                    <span>Familias M</span>
-                </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">R</div>
-                    <strong>San Rafael el Arado</strong>
-                    <span>Familias R</span>
+
+                    <div class="sitio-codigo">
+                        M
+                    </div>
+
+                    <strong>
+                        San Miguel Milpas Altas
+                    </strong>
+
+                    <span>
+                        Familias M
+                    </span>
+
                 </div>
 
-                <div class="sitio">
-                    <div class="sitio-codigo">N</div>
-                    <strong>Nueva Esperanza</strong>
-                    <span>Familias N</span>
-                </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">Z</div>
-                    <strong>Zapote</strong>
-                    <span>Familias Z</span>
+
+                    <div class="sitio-codigo">
+                        R
+                    </div>
+
+                    <strong>
+                        San Rafael el Arado
+                    </strong>
+
+                    <span>
+                        Familias R
+                    </span>
+
+                </div>
+
+
+                <div class="sitio">
+
+                    <div class="sitio-codigo">
+                        N
+                    </div>
+
+                    <strong>
+                        Nueva Esperanza
+                    </strong>
+
+                    <span>
+                        Familias N
+                    </span>
+
+                </div>
+
+
+                <div class="sitio">
+
+                    <div class="sitio-codigo">
+                        Z
+                    </div>
+
+                    <strong>
+                        Zapote
+                    </strong>
+
+                    <span>
+                        Familias Z
+                    </span>
+
                 </div>
 
             </div>
@@ -1129,8 +1512,9 @@
 
     </section>
 
+
     <!-- =========================
-         PREPARACION USUARIOS
+         USUARIOS
     ========================== -->
 
     <section class="seccion">
@@ -1146,11 +1530,14 @@
                 permitirá controlar qué funciones puede utilizar cada persona.
             </p>
 
+
             <div class="usuarios-preparacion">
 
                 <div class="tarjeta-rol">
 
-                    <h3>Usuario</h3>
+                    <h3>
+                        Usuario
+                    </h3>
 
                     <p>
                         Perfil pensado para las personas que realizarán las tareas
@@ -1158,18 +1545,37 @@
                     </p>
 
                     <ul>
-                        <li>Registrar libros</li>
-                        <li>Registrar préstamos</li>
-                        <li>Registrar devoluciones</li>
-                        <li>Buscar información</li>
-                        <li>Consultar información necesaria para su trabajo</li>
+
+                        <li>
+                            Registrar libros
+                        </li>
+
+                        <li>
+                            Registrar préstamos
+                        </li>
+
+                        <li>
+                            Registrar devoluciones
+                        </li>
+
+                        <li>
+                            Buscar información
+                        </li>
+
+                        <li>
+                            Consultar información necesaria para su trabajo
+                        </li>
+
                     </ul>
 
                 </div>
 
+
                 <div class="tarjeta-rol">
 
-                    <h3>Administrador</h3>
+                    <h3>
+                        Administrador
+                    </h3>
 
                     <p>
                         Perfil con acceso completo para administrar la información
@@ -1177,29 +1583,58 @@
                     </p>
 
                     <ul>
-                        <li>Acceso a todos los módulos</li>
-                        <li>Importar información desde Excel</li>
-                        <li>Administrar familias y afiliados</li>
-                        <li>Administrar libros y colaboradores</li>
-                        <li>Consultar y descargar reportes</li>
-                        <li>Realizar respaldos y restauraciones</li>
-                        <li>Administrar usuarios y permisos</li>
+
+                        <li>
+                            Acceso a todos los módulos
+                        </li>
+
+                        <li>
+                            Importar información desde Excel
+                        </li>
+
+                        <li>
+                            Administrar familias y afiliados
+                        </li>
+
+                        <li>
+                            Administrar libros y colaboradores
+                        </li>
+
+                        <li>
+                            Consultar y descargar reportes
+                        </li>
+
+                        <li>
+                            Realizar respaldos y restauraciones
+                        </li>
+
+                        <li>
+                            Administrar usuarios y permisos
+                        </li>
+
                     </ul>
 
                 </div>
 
             </div>
 
+
             <div class="estado-preparacion">
-                <strong>Estado:</strong>
+
+                <strong>
+                    Estado:
+                </strong>
+
                 La administración de usuarios todavía no está activada.
                 La estructura visual está preparada para conectarla posteriormente
                 con Supabase Auth y los roles del sistema.
+
             </div>
 
         </div>
 
     </section>
+
 
     <!-- =========================
          SESION
@@ -1216,42 +1651,76 @@
             <div class="grid-informacion">
 
                 <div class="dato">
-                    <span class="dato-label">Usuario</span>
-                    <span id="usuarioActual" class="dato-valor">
+
+                    <span class="dato-label">
+                        Usuario
+                    </span>
+
+                    <span
+                        id="usuarioActual"
+                        class="dato-valor">
                         Comprobando...
                     </span>
+
                 </div>
 
+
                 <div class="dato">
-                    <span class="dato-label">Estado</span>
+
+                    <span class="dato-label">
+                        Estado
+                    </span>
+
                     <span class="dato-valor">
                         Sesión activa
                     </span>
+
                 </div>
 
+
                 <div class="dato">
-                    <span class="dato-label">Acceso</span>
-                    <span id="rolActual" class="dato-valor">
+
+                    <span class="dato-label">
+                        Acceso
+                    </span>
+
+                    <span
+                        id="rolActual"
+                        class="dato-valor">
                         Pendiente
                     </span>
+
                 </div>
 
+
                 <div class="dato">
-                    <span class="dato-label">Base de datos</span>
+
+                    <span class="dato-label">
+                        Base de datos
+                    </span>
+
                     <span class="dato-valor">
                         Conectada
                     </span>
+
                 </div>
 
             </div>
 
+
             <div class="sesion-acciones">
 
-                <button class="boton boton-secundario" onclick="volverAtras()">
+                <button
+                    type="button"
+                    class="boton boton-secundario"
+                    onclick="volverAtras()">
                     Volver al inicio
                 </button>
 
-                <button class="boton boton-rojo" onclick="cerrarSesion()">
+                <button
+                    type="button"
+                    class="boton boton-rojo"
+                    onclick="cerrarSesion()">
                     Cerrar sesión
                 </button>
 
@@ -1263,6 +1732,7 @@
 
 </main>
 
+
 <footer>
     Sistema de Biblioteca
 </footer>
@@ -1272,21 +1742,28 @@
      MODAL
 ========================== -->
 
-<div id="modalMensaje" class="modal-fondo">
+<div
+    id="modalMensaje"
+    class="modal-fondo">
 
     <div class="modal">
 
-        <div class="modal-cabecera" id="modalTitulo">
+        <div
+            class="modal-cabecera"
+            id="modalTitulo">
             Administración
         </div>
 
-        <div class="modal-cuerpo" id="modalMensajeTexto">
+        <div
+            class="modal-cuerpo"
+            id="modalMensajeTexto">
             Información
         </div>
 
         <div class="modal-pie">
 
             <button
+                type="button"
                 class="boton boton-principal"
                 onclick="cerrarModal()">
                 Aceptar
@@ -1334,19 +1811,25 @@
                 error
             } = await supabaseClient.auth.getSession();
 
+
             if (error || !session) {
 
                 window.location.href = "index.html";
+
                 return;
 
             }
 
+
             window.administracionAutorizado = true;
+
 
             const usuario = session.user;
 
+
             const elementoUsuario =
                 document.getElementById("usuarioActual");
+
 
             if (elementoUsuario) {
 
@@ -1355,24 +1838,25 @@
 
             }
 
-            /*
-             * Por ahora todavía no tenemos una tabla de perfiles
-             * y roles conectada.
-             *
-             * Cuando construyamos el módulo de usuarios,
-             * este valor será obtenido desde la tabla correspondiente.
-             */
 
             document.getElementById("rolActual").textContent =
                 "Pendiente de configuración";
 
-            document.documentElement.style.visibility = "visible";
+
+            document.documentElement.style.visibility =
+                "visible";
+
 
             await cargarTodo();
 
+
         } catch (error) {
 
-            console.error("Error de autenticación:", error);
+            console.error(
+                "Error de autenticación:",
+                error
+            );
+
 
             window.location.href = "index.html";
 
@@ -1396,13 +1880,19 @@
 
     function obtenerSitioValido(valor) {
 
-        const sitio = normalizar(valor);
+        const sitio =
+            normalizar(valor);
 
-        if (["F", "M", "N", "R", "Z"].includes(sitio)) {
+
+        if (
+            ["F", "M", "N", "R", "Z"]
+                .includes(sitio)
+        ) {
 
             return sitio;
 
         }
+
 
         return "";
 
@@ -1411,7 +1901,9 @@
 
     function esEstadoActivo(valor) {
 
-        const estado = normalizar(valor);
+        const estado =
+            normalizar(valor);
+
 
         return (
             estado === "ACTIVO" ||
@@ -1423,7 +1915,9 @@
 
     function esEstadoInactivo(valor) {
 
-        const estado = normalizar(valor);
+        const estado =
+            normalizar(valor);
+
 
         return (
             estado === "INACTIVO" ||
@@ -1435,10 +1929,16 @@
 
     function obtenerValor(objeto, nombres) {
 
+        if (!objeto) {
+
+            return "";
+
+        }
+
+
         for (const nombre of nombres) {
 
             if (
-                objeto &&
                 objeto[nombre] !== undefined &&
                 objeto[nombre] !== null
             ) {
@@ -1448,6 +1948,7 @@
             }
 
         }
+
 
         return "";
 
@@ -1460,20 +1961,28 @@
 
     function mostrarModal(titulo, mensaje) {
 
-        document.getElementById("modalTitulo").textContent = titulo;
+        document.getElementById(
+            "modalTitulo"
+        ).textContent = titulo;
 
-        document.getElementById("modalMensajeTexto").textContent = mensaje;
 
-        document.getElementById("modalMensaje").classList.add("mostrar");
+        document.getElementById(
+            "modalMensajeTexto"
+        ).textContent = mensaje;
+
+
+        document.getElementById(
+            "modalMensaje"
+        ).classList.add("mostrar");
 
     }
 
 
     function cerrarModal() {
 
-        document
-            .getElementById("modalMensaje")
-            .classList.remove("mostrar");
+        document.getElementById(
+            "modalMensaje"
+        ).classList.remove("mostrar");
 
     }
 
@@ -1484,7 +1993,8 @@
 
     function volverAtras() {
 
-        window.location.href = "index.html";
+        window.location.href =
+            "index.html";
 
     }
 
@@ -1501,6 +2011,7 @@
 
         }
 
+
         try {
 
             await Promise.all([
@@ -1510,6 +2021,7 @@
                 cargarPrestamos()
             ]);
 
+
             actualizarEstadisticas();
 
             actualizarDiagnosticoBase();
@@ -1518,11 +2030,17 @@
 
             actualizarEstadoConexion(true);
 
+
         } catch (error) {
 
-            console.error("Error cargando administración:", error);
+            console.error(
+                "Error cargando administración:",
+                error
+            );
+
 
             actualizarEstadoConexion(false);
+
 
             mostrarModal(
                 "Error",
@@ -1546,9 +2064,13 @@
 
         const cantidad = 1000;
 
+
         while (true) {
 
-            const { data, error } = await supabaseClient
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("afiliados")
                 .select(`
                     id,
@@ -1559,7 +2081,11 @@
                     estado,
                     Sitio
                 `)
-                .range(desde, desde + cantidad - 1);
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
+
 
             if (error) {
 
@@ -1567,13 +2093,16 @@
 
             }
 
+
             if (!data || data.length === 0) {
 
                 break;
 
             }
 
+
             registros.push(...data);
+
 
             if (data.length < cantidad) {
 
@@ -1581,11 +2110,14 @@
 
             }
 
+
             desde += cantidad;
 
         }
 
-        datosAdministracion.afiliados = registros;
+
+        datosAdministracion.afiliados =
+            registros;
 
     }
 
@@ -1602,9 +2134,13 @@
 
         const cantidad = 1000;
 
+
         while (true) {
 
-            const { data, error } = await supabaseClient
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("libros")
                 .select(`
                     id,
@@ -1617,7 +2153,11 @@
                     Biblioteca,
                     estado
                 `)
-                .range(desde, desde + cantidad - 1);
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
+
 
             if (error) {
 
@@ -1625,13 +2165,16 @@
 
             }
 
+
             if (!data || data.length === 0) {
 
                 break;
 
             }
 
+
             registros.push(...data);
+
 
             if (data.length < cantidad) {
 
@@ -1639,11 +2182,14 @@
 
             }
 
+
             desde += cantidad;
 
         }
 
-        datosAdministracion.libros = registros;
+
+        datosAdministracion.libros =
+            registros;
 
     }
 
@@ -1660,9 +2206,13 @@
 
         const cantidad = 1000;
 
+
         while (true) {
 
-            const { data, error } = await supabaseClient
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("colaboradores")
                 .select(`
                     id,
@@ -1673,25 +2223,27 @@
                     Correo,
                     estado
                 `)
-                .range(desde, desde + cantidad - 1);
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
+
 
             if (error) {
-
-                /*
-                 * Si la tabla todavía no estuviera disponible,
-                 * no detenemos toda la administración.
-                 */
 
                 console.warn(
                     "No fue posible cargar colaboradores:",
                     error
                 );
 
-                datosAdministracion.colaboradores = [];
+
+                datosAdministracion.colaboradores =
+                    [];
 
                 return;
 
             }
+
 
             if (!data || data.length === 0) {
 
@@ -1699,7 +2251,9 @@
 
             }
 
+
             registros.push(...data);
+
 
             if (data.length < cantidad) {
 
@@ -1707,11 +2261,14 @@
 
             }
 
+
             desde += cantidad;
 
         }
 
-        datosAdministracion.colaboradores = registros;
+
+        datosAdministracion.colaboradores =
+            registros;
 
     }
 
@@ -1728,12 +2285,20 @@
 
         const cantidad = 1000;
 
+
         while (true) {
 
-            const { data, error } = await supabaseClient
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("prestamos")
                 .select("*")
-                .range(desde, desde + cantidad - 1);
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
+
 
             if (error) {
 
@@ -1741,13 +2306,16 @@
 
             }
 
+
             if (!data || data.length === 0) {
 
                 break;
 
             }
 
+
             registros.push(...data);
+
 
             if (data.length < cantidad) {
 
@@ -1755,11 +2323,14 @@
 
             }
 
+
             desde += cantidad;
 
         }
 
-        datosAdministracion.prestamos = registros;
+
+        datosAdministracion.prestamos =
+            registros;
 
     }
 
@@ -1786,7 +2357,9 @@
         const librosDisponibles =
             libros.filter(libro => {
 
-                return normalizar(libro.estado) === "DISPONIBLE";
+                return normalizar(
+                    libro.estado
+                ) === "DISPONIBLE";
 
             }).length;
 
@@ -1794,7 +2367,9 @@
         const librosPrestados =
             libros.filter(libro => {
 
-                return normalizar(libro.estado) !== "DISPONIBLE";
+                return normalizar(
+                    libro.estado
+                ) !== "DISPONIBLE";
 
             }).length;
 
@@ -1802,7 +2377,9 @@
         const afiliadosActivos =
             afiliados.filter(afiliado => {
 
-                return esEstadoActivo(afiliado.estado);
+                return esEstadoActivo(
+                    afiliado.estado
+                );
 
             }).length;
 
@@ -1810,7 +2387,9 @@
         const afiliadosInactivos =
             afiliados.filter(afiliado => {
 
-                return esEstadoInactivo(afiliado.estado);
+                return esEstadoInactivo(
+                    afiliado.estado
+                );
 
             }).length;
 
@@ -1818,7 +2397,9 @@
         const colaboradoresActivos =
             colaboradores.filter(colaborador => {
 
-                return esEstadoActivo(colaborador.estado);
+                return esEstadoActivo(
+                    colaborador.estado
+                );
 
             }).length;
 
@@ -1826,7 +2407,9 @@
         const colaboradoresInactivos =
             colaboradores.filter(colaborador => {
 
-                return esEstadoInactivo(colaborador.estado);
+                return esEstadoInactivo(
+                    colaborador.estado
+                );
 
             }).length;
 
@@ -1848,6 +2431,7 @@
                         ]
                     )
                 );
+
 
             const codigoColaborador =
                 obtenerValor(
@@ -1882,44 +2466,81 @@
             prestamos.length;
 
 
-        document.getElementById("totalLibros").textContent =
+        document.getElementById(
+            "totalLibros"
+        ).textContent =
             libros.length.toLocaleString("es-GT");
 
-        document.getElementById("totalAfiliados").textContent =
+
+        document.getElementById(
+            "totalAfiliados"
+        ).textContent =
             afiliados.length.toLocaleString("es-GT");
 
-        document.getElementById("totalColaboradores").textContent =
+
+        document.getElementById(
+            "totalColaboradores"
+        ).textContent =
             colaboradores.length.toLocaleString("es-GT");
 
-        document.getElementById("totalPrestamos").textContent =
+
+        document.getElementById(
+            "totalPrestamos"
+        ).textContent =
             prestamos.length.toLocaleString("es-GT");
 
-        document.getElementById("totalRegistros").textContent =
+
+        document.getElementById(
+            "totalRegistros"
+        ).textContent =
             totalRegistros.toLocaleString("es-GT");
 
 
-        document.getElementById("librosDisponibles").textContent =
+        document.getElementById(
+            "librosDisponibles"
+        ).textContent =
             librosDisponibles.toLocaleString("es-GT");
 
-        document.getElementById("librosPrestados").textContent =
+
+        document.getElementById(
+            "librosPrestados"
+        ).textContent =
             librosPrestados.toLocaleString("es-GT");
 
-        document.getElementById("afiliadosActivos").textContent =
+
+        document.getElementById(
+            "afiliadosActivos"
+        ).textContent =
             afiliadosActivos.toLocaleString("es-GT");
 
-        document.getElementById("afiliadosInactivos").textContent =
+
+        document.getElementById(
+            "afiliadosInactivos"
+        ).textContent =
             afiliadosInactivos.toLocaleString("es-GT");
 
-        document.getElementById("colaboradoresActivos").textContent =
+
+        document.getElementById(
+            "colaboradoresActivos"
+        ).textContent =
             colaboradoresActivos.toLocaleString("es-GT");
 
-        document.getElementById("colaboradoresInactivos").textContent =
+
+        document.getElementById(
+            "colaboradoresInactivos"
+        ).textContent =
             colaboradoresInactivos.toLocaleString("es-GT");
 
-        document.getElementById("prestamosAfiliados").textContent =
+
+        document.getElementById(
+            "prestamosAfiliados"
+        ).textContent =
             prestamosAfiliados.toLocaleString("es-GT");
 
-        document.getElementById("prestamosColaboradores").textContent =
+
+        document.getElementById(
+            "prestamosColaboradores"
+        ).textContent =
             prestamosColaboradores.toLocaleString("es-GT");
 
     }
@@ -1932,18 +2553,25 @@
     function actualizarEstadoConexion(conectado) {
 
         const elemento =
-            document.getElementById("estadoConexion");
+            document.getElementById(
+                "estadoConexion"
+            );
+
 
         if (conectado) {
 
-            elemento.textContent = "Conectada";
+            elemento.textContent =
+                "Conectada";
+
 
             elemento.className =
                 "estado-conexion estado-ok";
 
         } else {
 
-            elemento.textContent = "Error";
+            elemento.textContent =
+                "Error";
+
 
             elemento.className =
                 "estado-conexion estado-error";
@@ -1965,17 +2593,20 @@
             datosAdministracion.afiliados.length
         );
 
+
         actualizarFilaDiagnostico(
             "libros",
             true,
             datosAdministracion.libros.length
         );
 
+
         actualizarFilaDiagnostico(
             "colaboradores",
             true,
             datosAdministracion.colaboradores.length
         );
+
 
         actualizarFilaDiagnostico(
             "prestamos",
@@ -2021,19 +2652,32 @@
 
             const estado =
                 fila.children[3]
-                    .querySelector(".estado-tabla");
+                    .querySelector(
+                        ".estado-tabla"
+                    );
+
+
+            if (!estado) {
+
+                return;
+
+            }
 
 
             if (disponible) {
 
-                estado.textContent = "Disponible";
+                estado.textContent =
+                    "Disponible";
+
 
                 estado.className =
                     "estado-tabla estado-disponible";
 
             } else {
 
-                estado.textContent = "No disponible";
+                estado.textContent =
+                    "No disponible";
+
 
                 estado.className =
                     "estado-tabla estado-problema";
@@ -2046,6 +2690,18 @@
 
 
     async function ejecutarDiagnostico() {
+
+        const boton =
+            document.getElementById(
+                "botonDiagnostico"
+            );
+
+
+        boton.disabled = true;
+
+        boton.textContent =
+            "Comprobando...";
+
 
         try {
 
@@ -2062,18 +2718,26 @@
 
             for (const tabla of tablas) {
 
-                const { count, error } =
-                    await supabaseClient
-                        .from(tabla)
-                        .select("id", {
-                            count: "exact",
-                            head: true
-                        });
+                const {
+                    count,
+                    error
+                } = await supabaseClient
+                    .from(tabla)
+                    .select("id", {
+                        count: "exact",
+                        head: true
+                    });
 
 
                 resultados[tabla] = {
+
                     disponible: !error,
-                    cantidad: error ? 0 : (count || 0)
+
+                    cantidad:
+                        error
+                            ? 0
+                            : (count || 0)
+
                 };
 
             }
@@ -2101,6 +2765,7 @@
 
                 actualizarEstadoConexion(true);
 
+
                 mostrarModal(
                     "Diagnóstico completado",
                     "Las principales tablas del sistema están disponibles y pueden ser consultadas correctamente."
@@ -2110,12 +2775,14 @@
 
                 actualizarEstadoConexion(false);
 
+
                 mostrarModal(
                     "Diagnóstico",
                     "Se detectaron problemas al consultar una o más tablas del sistema."
                 );
 
             }
+
 
         } catch (error) {
 
@@ -2124,12 +2791,22 @@
                 error
             );
 
+
             actualizarEstadoConexion(false);
+
 
             mostrarModal(
                 "Error",
                 "No fue posible completar el diagnóstico del sistema."
             );
+
+
+        } finally {
+
+            boton.disabled = false;
+
+            boton.textContent =
+                "Comprobar sistema";
 
         }
 
@@ -2137,17 +2814,17 @@
 
 
     /* ==========================================================
-       INTEGRIDAD DE DATOS
+       INTEGRIDAD
     ========================================================== */
 
     function establecerResultado(
         id,
-        cantidad,
-        textoCorrecto = "Correcto"
+        cantidad
     ) {
 
         const elemento =
             document.getElementById(id);
+
 
         if (!elemento) {
 
@@ -2159,7 +2836,8 @@
         if (cantidad === 0) {
 
             elemento.textContent =
-                textoCorrecto;
+                "Correcto";
+
 
             elemento.className =
                 "resultado-integridad resultado-ok";
@@ -2170,6 +2848,7 @@
                 cantidad.toLocaleString("es-GT") +
                 " encontrados";
 
+
             elemento.className =
                 "resultado-integridad resultado-aviso";
 
@@ -2178,10 +2857,11 @@
     }
 
 
-    function establecerErrorResultado(id) {
+    function establecerResultadoError(id) {
 
         const elemento =
             document.getElementById(id);
+
 
         if (!elemento) {
 
@@ -2189,7 +2869,10 @@
 
         }
 
-        elemento.textContent = "Error";
+
+        elemento.textContent =
+            "Error";
+
 
         elemento.className =
             "resultado-integridad resultado-error";
@@ -2197,18 +2880,92 @@
     }
 
 
-    function revisarIntegridad() {
+    function establecerResultadoRevisando(id) {
+
+        const elemento =
+            document.getElementById(id);
+
+
+        if (!elemento) {
+
+            return;
+
+        }
+
+
+        elemento.textContent =
+            "Revisando...";
+
+
+        elemento.className =
+            "resultado-integridad";
+
+    }
+
+
+    async function revisarIntegridad() {
+
+        const boton =
+            document.getElementById(
+                "botonIntegridad"
+            );
+
+
+        boton.disabled = true;
+
+        boton.textContent =
+            "Revisando...";
+
+
+        const elementos = [
+            "integridadAfiliadosEstado",
+            "integridadAfiliadosSitio",
+            "integridadLibrosSitio",
+            "integridadLibrosCodigo",
+            "integridadColaboradoresEstado",
+            "integridadColaboradoresCodigo",
+            "integridadLibrosEstado",
+            "integridadPrestamosLibro"
+        ];
+
+
+        elementos.forEach(
+            establecerResultadoRevisando
+        );
+
 
         try {
+
+            /*
+             * Si todavía no hay información cargada,
+             * volvemos a cargarla antes de revisar.
+             */
+
+            const necesitaCarga =
+                datosAdministracion.afiliados.length === 0 &&
+                datosAdministracion.libros.length === 0 &&
+                datosAdministracion.colaboradores.length === 0 &&
+                datosAdministracion.prestamos.length === 0;
+
+
+            if (necesitaCarga) {
+
+                await cargarTodoSinIntegridad();
+
+            }
+
 
             const afiliados =
                 datosAdministracion.afiliados;
 
+
             const libros =
                 datosAdministracion.libros;
 
+
             const colaboradores =
                 datosAdministracion.colaboradores;
+
 
             const prestamos =
                 datosAdministracion.prestamos;
@@ -2221,8 +2978,14 @@
             const afiliadosSinEstado =
                 afiliados.filter(afiliado => {
 
-                    return !esEstadoActivo(afiliado.estado) &&
-                           !esEstadoInactivo(afiliado.estado);
+                    return (
+                        !esEstadoActivo(
+                            afiliado.estado
+                        ) &&
+                        !esEstadoInactivo(
+                            afiliado.estado
+                        )
+                    );
 
                 }).length;
 
@@ -2300,8 +3063,14 @@
             const colaboradoresSinEstado =
                 colaboradores.filter(colaborador => {
 
-                    return !esEstadoActivo(colaborador.estado) &&
-                           !esEstadoInactivo(colaborador.estado);
+                    return (
+                        !esEstadoActivo(
+                            colaborador.estado
+                        ) &&
+                        !esEstadoInactivo(
+                            colaborador.estado
+                        )
+                    );
 
                 }).length;
 
@@ -2333,7 +3102,7 @@
 
 
             /* ==========================
-               LIBROS CON ESTADO INVALIDO
+               ESTADOS DE LIBROS
             ========================== */
 
             const estadosLibroValidos = [
@@ -2348,11 +3117,16 @@
                 libros.filter(libro => {
 
                     const estado =
-                        normalizar(libro.estado);
+                        normalizar(
+                            libro.estado
+                        );
+
 
                     return (
                         !estado ||
-                        !estadosLibroValidos.includes(estado)
+                        !estadosLibroValidos.includes(
+                            estado
+                        )
                     );
 
                 }).length;
@@ -2394,8 +3168,12 @@
 
 
                     return (
-                        !String(codigoLibro ?? "").trim() &&
-                        !String(nombreLibro ?? "").trim()
+                        !String(
+                            codigoLibro ?? ""
+                        ).trim() &&
+                        !String(
+                            nombreLibro ?? ""
+                        ).trim()
                     );
 
                 }).length;
@@ -2415,21 +3193,50 @@
             );
 
 
-            const elementos = [
-                "integridadAfiliadosEstado",
-                "integridadAfiliadosSitio",
-                "integridadLibrosSitio",
-                "integridadLibrosCodigo",
-                "integridadColaboradoresEstado",
-                "integridadColaboradoresCodigo",
-                "integridadLibrosEstado",
-                "integridadPrestamosLibro"
-            ];
+            elementos.forEach(
+                establecerResultadoError
+            );
 
 
-            elementos.forEach(establecerErrorResultado);
+            mostrarModal(
+                "Error en la revisión",
+                "No fue posible completar la revisión de integridad. Revise la consola del navegador para obtener más información."
+            );
+
+
+        } finally {
+
+            boton.disabled = false;
+
+            boton.textContent =
+                "Revisar integridad";
 
         }
+
+    }
+
+
+    /* ==========================================================
+       CARGA AUXILIAR
+       Evita que revisarIntegridad() llame nuevamente
+       a revisarIntegridad() mediante cargarTodo().
+    ========================================================== */
+
+    async function cargarTodoSinIntegridad() {
+
+        await Promise.all([
+            cargarAfiliados(),
+            cargarLibros(),
+            cargarColaboradores(),
+            cargarPrestamos()
+        ]);
+
+
+        actualizarEstadisticas();
+
+        actualizarDiagnosticoBase();
+
+        actualizarEstadoConexion(true);
 
     }
 
@@ -2442,8 +3249,10 @@
 
         try {
 
-            const { error } =
-                await supabaseClient.auth.signOut();
+            const {
+                error
+            } = await supabaseClient.auth.signOut();
+
 
             if (error) {
 
@@ -2451,7 +3260,10 @@
 
             }
 
-            window.location.href = "index.html";
+
+            window.location.href =
+                "index.html";
+
 
         } catch (error) {
 
@@ -2459,6 +3271,7 @@
                 "Error cerrando sesión:",
                 error
             );
+
 
             mostrarModal(
                 "Error",
@@ -2476,16 +3289,18 @@
 
     document
         .getElementById("modalMensaje")
-        .addEventListener("click", function(event) {
+        .addEventListener(
+            "click",
+            function(event) {
 
-            if (event.target === this) {
+                if (event.target === this) {
 
-                cerrarModal();
+                    cerrarModal();
+
+                }
 
             }
-
-        });
-
+        );
 
 </script>
 
