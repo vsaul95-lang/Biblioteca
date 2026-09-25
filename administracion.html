@@ -436,8 +436,6 @@
             padding: 20px;
         }
 
-        /* MODALES */
-
         .modal-fondo {
             display: none;
             position: fixed;
@@ -625,8 +623,6 @@
 
 <main class="contenedor">
 
-    <!-- INFORMACIÓN DEL SISTEMA -->
-
     <section class="seccion">
         <div class="seccion-titulo">
             Información del sistema
@@ -652,9 +648,7 @@
 
                 <div class="dato">
                     <span class="dato-label">Usuario actual</span>
-                    <span
-                        id="usuarioActual"
-                        class="dato-valor">
+                    <span id="usuarioActual" class="dato-valor">
                         Comprobando...
                     </span>
                 </div>
@@ -662,9 +656,6 @@
             </div>
         </div>
     </section>
-
-
-    <!-- ESTADÍSTICAS -->
 
     <section class="seccion">
 
@@ -701,9 +692,6 @@
         </div>
 
     </section>
-
-
-    <!-- DIAGNÓSTICO -->
 
     <section class="seccion">
 
@@ -787,9 +775,6 @@
 
     </section>
 
-
-    <!-- INTEGRIDAD -->
-
     <section class="seccion">
 
         <div class="seccion-titulo">
@@ -866,9 +851,6 @@
 
     </section>
 
-
-    <!-- SITIOS -->
-
     <section class="seccion">
 
         <div class="seccion-titulo">
@@ -920,9 +902,6 @@
 
     </section>
 
-
-    <!-- USUARIOS -->
-
     <section class="seccion">
 
         <div class="seccion-titulo">
@@ -934,7 +913,6 @@
             <p class="descripcion-seccion">
                 Usuarios registrados en el sistema y rol asignado a cada cuenta.
             </p>
-
 
             <div class="usuarios-preparacion">
 
@@ -955,7 +933,6 @@
                     </ul>
 
                 </div>
-
 
                 <div class="tarjeta-rol">
 
@@ -979,9 +956,6 @@
 
             </div>
 
-
-            <!-- NUEVO USUARIO -->
-
             <div class="acciones-usuarios">
 
                 <button
@@ -992,9 +966,6 @@
                 </button>
 
             </div>
-
-
-            <!-- RESUMEN DE USUARIOS -->
 
             <div class="usuarios-resumen">
 
@@ -1014,9 +985,6 @@
                 </div>
 
             </div>
-
-
-            <!-- TABLA DE USUARIOS -->
 
             <div class="tabla-contenedor">
 
@@ -1050,7 +1018,6 @@
 
             </div>
 
-
             <div class="estado-preparacion">
 
                 <strong>Estado:</strong>
@@ -1063,9 +1030,6 @@
         </div>
 
     </section>
-
-
-    <!-- SESIÓN -->
 
     <section class="seccion">
 
@@ -1111,7 +1075,6 @@
 
             </div>
 
-
             <div class="sesion-acciones">
 
                 <button
@@ -1136,13 +1099,9 @@
 
 </main>
 
-
 <div class="pie">
     Sistema de Biblioteca
 </div>
-
-
-<!-- MODAL DE MENSAJES -->
 
 <div
     id="modalMensaje"
@@ -1177,9 +1136,6 @@
 
 </div>
 
-
-<!-- MODAL NUEVO USUARIO -->
-
 <div
     id="modalNuevoUsuario"
     class="modal-fondo">
@@ -1212,7 +1168,6 @@
 
                 </div>
 
-
                 <div class="campo">
 
                     <label for="nuevoUsuarioCorreo">
@@ -1227,7 +1182,6 @@
                         required>
 
                 </div>
-
 
                 <div class="campo">
 
@@ -1251,7 +1205,6 @@
 
                 </div>
 
-
                 <div class="campo">
 
                     <label for="nuevoUsuarioEstado">
@@ -1274,7 +1227,6 @@
 
                 </div>
 
-
                 <div class="formulario-nota">
 
                     En esta etapa estamos preparando la información del usuario.
@@ -1282,7 +1234,6 @@
                     con Supabase Auth para evitar crear registros que no puedan iniciar sesión.
 
                 </div>
-
 
                 <div
                     id="errorFormularioUsuario"
@@ -1292,7 +1243,6 @@
             </form>
 
         </div>
-
 
         <div class="modal-pie">
 
@@ -1316,13 +1266,11 @@
 
 </div>
 
-
 <!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-<script src="auth.js"></script>
-
+<script src="auth.js?v=1002"></script>
 
 <script>
 
@@ -1330,7 +1278,6 @@
     let perfilUsuarioActual = null;
 
     window.administracionAutorizado = false;
-
 
     let datosAdministracion = {
         afiliados: [],
@@ -1606,21 +1553,6 @@
             elementoError.textContent = "";
             elementoError.classList.remove("visible");
         }
-
-
-        /*
-            IMPORTANTE:
-
-            No insertamos todavía en public.usuarios.
-
-            La tabla usuarios utiliza el ID de Supabase Auth.
-            Crear aquí un UUID inventado produciría un registro que
-            no tendría una cuenta real para iniciar sesión.
-
-            Primero se prueba el formulario.
-            La creación real de la cuenta se conectará en el
-            siguiente paso mediante un mecanismo seguro.
-        */
 
 
         cerrarModalNuevoUsuario();
@@ -2429,8 +2361,6 @@
             datosAdministracion.usuarios;
 
 
-        /* Códigos de libros */
-
         const codigos =
             libros
                 .map(function(libro) {
@@ -2453,8 +2383,6 @@
                 : "Se encontraron códigos repetidos"
         );
 
-
-        /* PersonaId */
 
         const personaIds =
             afiliados
@@ -2479,8 +2407,6 @@
         );
 
 
-        /* FamiliaId */
-
         const familiasSinId =
             afiliados.filter(function(afiliado) {
 
@@ -2503,8 +2429,6 @@
                 : familiasSinId + " registros sin FamiliaId"
         );
 
-
-        /* Libros sin estado */
 
         const librosSinEstado =
             libros.filter(function(libro) {
@@ -2529,8 +2453,6 @@
         );
 
 
-        /* Afiliados sin estado */
-
         const afiliadosSinEstado =
             afiliados.filter(function(afiliado) {
 
@@ -2553,8 +2475,6 @@
                 : afiliadosSinEstado + " afiliados sin estado"
         );
 
-
-        /* Colaboradores sin estado */
 
         const colaboradoresSinEstado =
             colaboradores.filter(function(colaborador) {
@@ -2580,8 +2500,6 @@
         );
 
 
-        /* Préstamos sin código */
-
         const prestamosSinLibro =
             prestamos.filter(function(prestamo) {
 
@@ -2605,8 +2523,6 @@
                   " préstamos sin código de libro"
         );
 
-
-        /* Usuarios sin rol */
 
         const usuariosSinRol =
             usuarios.filter(function(usuario) {
@@ -2719,30 +2635,38 @@
 
             try {
 
-                const {
-                    data: {
-                        session
-                    },
-                    error
-                } =
-                    await supabaseClient.auth.getSession();
+                const autorizado =
+                    await window.protegerPagina();
 
 
-                if (
-                    error ||
-                    !session
-                ) {
+                if (!autorizado) {
 
-                    window.location.href =
-                        "index.html";
+                    window.location.replace(
+                        "index.html"
+                    );
 
-                    return;
+                    return false;
+
+                }
+
+
+                if (!window.esAdministrador()) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return false;
 
                 }
 
 
                 usuarioSesionActual =
-                    session.user;
+                    window.usuarioSesion;
+
+
+                perfilUsuarioActual =
+                    window.perfilUsuario;
 
 
                 const elementoUsuario =
@@ -2760,128 +2684,6 @@
                 }
 
 
-                const {
-                    data: perfil,
-                    error: errorPerfil
-                } =
-                    await supabaseClient
-                        .from("usuarios")
-                        .select(`
-                            id,
-                            correo,
-                            nombre,
-                            rol,
-                            estado,
-                            fechaRegistro
-                        `)
-                        .eq(
-                            "id",
-                            usuarioSesionActual.id
-                        )
-                        .maybeSingle();
-
-
-                if (errorPerfil) {
-                    throw errorPerfil;
-                }
-
-
-                if (!perfil) {
-
-                    document
-                        .documentElement
-                        .style
-                        .visibility = "visible";
-
-
-                    mostrarModal(
-                        "Acceso no configurado",
-                        "La cuenta ha iniciado sesión, pero todavía no tiene un registro de usuario en el sistema de biblioteca."
-                    );
-
-
-                    setTimeout(
-                        function() {
-
-                            window.location.href =
-                                "index.html";
-
-                        },
-                        2500
-                    );
-
-
-                    return;
-
-                }
-
-
-                perfilUsuarioActual =
-                    perfil;
-
-
-                const rol =
-                    normalizar(
-                        perfil.rol
-                    );
-
-
-                const estado =
-                    normalizar(
-                        perfil.estado
-                    );
-
-
-                if (
-                    rol !== "ADMINISTRADOR" ||
-                    estado !== "ACTIVO"
-                ) {
-
-                    document
-                        .documentElement
-                        .style
-                        .visibility = "visible";
-
-
-                    if (
-                        rol !== "ADMINISTRADOR"
-                    ) {
-
-                        mostrarModal(
-                            "Acceso restringido",
-                            "Tu cuenta no tiene permisos de administrador para acceder a esta sección."
-                        );
-
-                    } else {
-
-                        mostrarModal(
-                            "Usuario inactivo",
-                            "Tu cuenta está marcada como inactiva y no puede acceder a esta sección."
-                        );
-
-                    }
-
-
-                    setTimeout(
-                        function() {
-
-                            window.location.href =
-                                "index.html";
-
-                        },
-                        2500
-                    );
-
-
-                    return;
-
-                }
-
-
-                window.administracionAutorizado =
-                    true;
-
-
                 const elementoRol =
                     document.getElementById(
                         "rolActual"
@@ -2896,6 +2698,10 @@
                 }
 
 
+                window.administracionAutorizado =
+                    true;
+
+
                 actualizarInformacion();
 
 
@@ -2908,6 +2714,9 @@
                 await cargarTodo();
 
 
+                return true;
+
+
             } catch (error) {
 
                 console.error(
@@ -2916,27 +2725,11 @@
                 );
 
 
-                document
-                    .documentElement
-                    .style
-                    .visibility = "visible";
-
-
-                mostrarModal(
-                    "Error",
-                    "No fue posible comprobar los permisos de la cuenta. Será necesario volver a iniciar sesión."
+                window.location.replace(
+                    "index.html"
                 );
 
-
-                setTimeout(
-                    function() {
-
-                        window.location.href =
-                            "index.html";
-
-                    },
-                    2500
-                );
+                return false;
 
             }
 
