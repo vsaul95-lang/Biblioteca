@@ -51,6 +51,20 @@
             margin-top: 2px;
         }
 
+        .boton-volver {
+            background: #37474f;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .boton-volver:hover {
+            background: #455a64;
+        }
+
         main {
             max-width: 1400px;
             margin: 0 auto;
@@ -68,20 +82,6 @@
         .titulo-seccion h1 {
             margin: 0;
             font-size: 24px;
-        }
-
-        .boton-volver {
-            background: #37474f;
-            color: white;
-            border: none;
-            padding: 9px 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .boton-volver:hover {
-            background: #455a64;
         }
 
         .resumen {
@@ -125,6 +125,7 @@
 
         .campo-busqueda {
             flex: 1;
+            min-width: 250px;
             padding: 9px 11px;
             border: 1px solid #cfd8dc;
             border-radius: 5px;
@@ -132,6 +133,21 @@
         }
 
         .campo-busqueda:focus {
+            outline: none;
+            border-color: #78909c;
+        }
+
+        .filtro-select {
+            width: 170px;
+            padding: 9px 11px;
+            border: 1px solid #cfd8dc;
+            border-radius: 5px;
+            font-size: 13px;
+            background: white;
+            color: #263238;
+        }
+
+        .filtro-select:focus {
             outline: none;
             border-color: #78909c;
         }
@@ -172,7 +188,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1050px;
+            min-width: 1150px;
         }
 
         thead {
@@ -227,6 +243,11 @@
         .badge-afiliado {
             background: #f3e5f5;
             color: #6a1b9a;
+        }
+
+        .badge-biblioteca {
+            background: #e8f5e9;
+            color: #2e7d32;
         }
 
         .acciones {
@@ -525,7 +546,7 @@
             display: block;
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
             main {
                 padding: 15px;
             }
@@ -540,7 +561,17 @@
             }
 
             .fila-busqueda {
-                flex-direction: column;
+                flex-wrap: wrap;
+            }
+
+            .campo-busqueda {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .filtro-select {
+                flex: 1;
+                min-width: 150px;
             }
 
             .detalle-grid {
@@ -557,48 +588,99 @@
 <body>
 
 <header>
+
     <div class="encabezado-izquierdo">
-        <div class="encabezado-icono">📚</div>
-        <div>
-            <div class="encabezado-titulo">Biblioteca</div>
-            <div class="encabezado-subtitulo">Sistema de control de préstamos</div>
+
+        <div class="encabezado-icono">
+            📚
         </div>
+
+        <div>
+
+            <div class="encabezado-titulo">
+                Biblioteca
+            </div>
+
+            <div class="encabezado-subtitulo">
+                Sistema de control de préstamos
+            </div>
+
+        </div>
+
     </div>
+
+    <button
+        type="button"
+        class="boton-volver"
+        onclick="window.location.href='index.html'">
+        Volver al inicio
+    </button>
+
 </header>
+
 
 <main>
 
     <div class="titulo-seccion">
-        <h1>Devoluciones</h1>
 
-        <button
-            type="button"
-            class="boton-volver"
-            onclick="window.location.href='index.html'">
-            ← Volver al inicio
-        </button>
+        <h1>
+            Devoluciones
+        </h1>
+
     </div>
 
+
     <div id="mensaje" class="mensaje"></div>
+
 
     <section class="resumen">
 
         <div class="tarjeta">
-            <div class="tarjeta-titulo">Préstamos activos</div>
-            <div class="tarjeta-numero" id="totalPrestamos">0</div>
+
+            <div class="tarjeta-titulo">
+                Préstamos activos
+            </div>
+
+            <div
+                class="tarjeta-numero"
+                id="totalPrestamos">
+                0
+            </div>
+
         </div>
 
-        <div class="tarjeta">
-            <div class="tarjeta-titulo">Préstamos vencidos</div>
-            <div class="tarjeta-numero" id="totalVencidos">0</div>
-        </div>
 
         <div class="tarjeta">
-            <div class="tarjeta-titulo">Libros disponibles</div>
-            <div class="tarjeta-numero" id="totalDisponibles">0</div>
+
+            <div class="tarjeta-titulo">
+                Préstamos vencidos
+            </div>
+
+            <div
+                class="tarjeta-numero"
+                id="totalVencidos">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta">
+
+            <div class="tarjeta-titulo">
+                Libros disponibles
+            </div>
+
+            <div
+                class="tarjeta-numero"
+                id="totalDisponibles">
+                0
+            </div>
+
         </div>
 
     </section>
+
 
     <section class="contenedor-busqueda">
 
@@ -611,12 +693,68 @@
                 placeholder="Buscar por familia, persona, colaborador, libro o código..."
                 autocomplete="off">
 
+
+            <select
+                id="filtroTipo"
+                class="filtro-select">
+
+                <option value="">
+                    Todos los tipos
+                </option>
+
+                <option value="AFILIADO">
+                    Afiliado
+                </option>
+
+                <option value="COLABORADOR">
+                    Colaborador
+                </option>
+
+            </select>
+
+
+            <select
+                id="filtroBiblioteca"
+                class="filtro-select">
+
+                <option value="">
+                    Todas las bibliotecas
+                </option>
+
+                <option value="F">
+                    F
+                </option>
+
+                <option value="M">
+                    M
+                </option>
+
+                <option value="N">
+                    N
+                </option>
+
+                <option value="R">
+                    R
+                </option>
+
+                <option value="Z">
+                    Z
+                </option>
+
+                <option value="NE">
+                    NE
+                </option>
+
+            </select>
+
+
             <button
                 type="button"
                 id="btnBuscar"
                 class="boton boton-buscar">
                 🔍 Buscar
             </button>
+
 
             <button
                 type="button"
@@ -629,28 +767,67 @@
 
     </section>
 
+
     <section class="tabla-contenedor">
 
         <table>
 
             <thead>
+
                 <tr>
-                    <th>Tipo</th>
-                    <th>Familia / Código</th>
-                    <th>Persona / Colaborador</th>
-                    <th>Área</th>
-                    <th>Libro</th>
-                    <th>Préstamo</th>
-                    <th>Devolución</th>
-                    <th>Estado</th>
-                    <th>Comentarios</th>
-                    <th>Acciones</th>
+
+                    <th>
+                        Tipo
+                    </th>
+
+                    <th>
+                        Familia / Código
+                    </th>
+
+                    <th>
+                        Persona / Colaborador
+                    </th>
+
+                    <th>
+                        Área
+                    </th>
+
+                    <th>
+                        Biblioteca
+                    </th>
+
+                    <th>
+                        Libro
+                    </th>
+
+                    <th>
+                        Préstamo
+                    </th>
+
+                    <th>
+                        Devolución
+                    </th>
+
+                    <th>
+                        Estado
+                    </th>
+
+                    <th>
+                        Comentarios
+                    </th>
+
+                    <th>
+                        Acciones
+                    </th>
+
                 </tr>
+
             </thead>
 
             <tbody id="tablaPrestamos"></tbody>
 
         </table>
+
 
         <div
             id="sinResultados"
@@ -658,6 +835,7 @@
             style="display:none;">
             No se encontraron préstamos.
         </div>
+
 
         <div class="paginacion">
 
@@ -668,11 +846,13 @@
                 ← Anterior
             </button>
 
+
             <span
                 id="informacionPagina"
                 class="informacion-pagina">
                 Página 1
             </span>
+
 
             <button
                 type="button"
@@ -686,6 +866,7 @@
     </section>
 
 </main>
+
 
 <footer>
     Sistema de Biblioteca
@@ -717,15 +898,19 @@
 
         </div>
 
+
         <div class="detalle-contenido">
 
             <div class="detalle-tipo">
+
                 <span
                     id="detalleTipo"
                     class="badge badge-afiliado">
                     Afiliado
                 </span>
+
             </div>
+
 
             <div class="detalle-grid">
 
@@ -745,6 +930,7 @@
 
                 </div>
 
+
                 <div class="detalle-item">
 
                     <div
@@ -760,6 +946,7 @@
                     </div>
 
                 </div>
+
 
                 <div
                     class="detalle-item"
@@ -779,6 +966,7 @@
 
                 </div>
 
+
                 <div
                     class="detalle-item"
                     id="detalleAreaContenedor">
@@ -795,6 +983,22 @@
 
                 </div>
 
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Biblioteca
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleBiblioteca">
+                        —
+                    </div>
+
+                </div>
+
+
                 <div class="detalle-item">
 
                     <div class="detalle-etiqueta">
@@ -808,6 +1012,7 @@
                     </div>
 
                 </div>
+
 
                 <div class="detalle-item">
 
@@ -823,6 +1028,7 @@
 
                 </div>
 
+
                 <div class="detalle-item">
 
                     <div class="detalle-etiqueta">
@@ -836,6 +1042,7 @@
                     </div>
 
                 </div>
+
 
                 <div class="detalle-item">
 
@@ -853,6 +1060,7 @@
 
             </div>
 
+
             <div
                 id="contenedorComentario"
                 class="campo-detalle">
@@ -867,17 +1075,27 @@
 
             </div>
 
+
             <div
                 id="advertenciaExtraviado"
                 class="advertencia">
-                ⚠️ Si selecciona <strong>Extraviado</strong>, el libro quedará registrado como dado de baja.
+
+                ⚠️ Si selecciona
+                <strong>Extraviado</strong>,
+                el libro quedará registrado como dado de baja.
+
             </div>
+
 
             <div
                 id="confirmacionEliminar"
                 class="confirmacion-eliminar">
-                ⚠️ Está a punto de eliminar este registro de préstamo. Esta acción no se puede deshacer.
+
+                ⚠️ Está a punto de eliminar este registro de préstamo.
+                Esta acción no se puede deshacer.
+
             </div>
+
 
             <div class="detalle-acciones">
 
@@ -888,12 +1106,14 @@
                     Cancelar
                 </button>
 
+
                 <button
                     type="button"
                     id="btnConfirmarDevolucion"
                     class="btn-modal btn-confirmar-devolucion">
                     Devolver
                 </button>
+
 
                 <button
                     type="button"
@@ -916,6 +1136,7 @@
 <script src="supabase.js"></script>
 <script src="auth.js"></script>
 
+
 <script>
 
     let prestamos = [];
@@ -929,39 +1150,48 @@
 
 
     function normalizar(valor) {
+
         return String(valor ?? "")
             .trim()
             .toUpperCase();
+
     }
 
 
     function normalizarCodigo(valor) {
 
-        const texto = String(valor ?? "").trim();
+        const texto =
+            String(valor ?? "").trim();
 
         if (!texto) {
             return "";
         }
 
-        const numero = texto.replace(/\D/g, "");
+        const numero =
+            texto.replace(/\D/g, "");
 
         if (!numero) {
             return "";
         }
 
-        return String(parseInt(numero, 10));
+        return String(
+            parseInt(numero, 10)
+        );
+
     }
 
 
     function formatearCodigo(valor) {
 
-        const codigo = normalizarCodigo(valor);
+        const codigo =
+            normalizarCodigo(valor);
 
         if (!codigo) {
             return "—";
         }
 
         return codigo.padStart(8, "0");
+
     }
 
 
@@ -973,6 +1203,7 @@
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+
     }
 
 
@@ -982,38 +1213,50 @@
             return "—";
         }
 
-        const fechaObj = new Date(fecha);
+        const fechaObj =
+            new Date(fecha);
 
         if (isNaN(fechaObj.getTime())) {
             return "—";
         }
 
-        return fechaObj.toLocaleDateString("es-GT", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        });
+        return fechaObj.toLocaleDateString(
+            "es-GT",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        );
+
     }
 
 
     function esColaborador(prestamo) {
 
         return (
-            normalizar(prestamo.tipoPrestamo) === "COLABORADOR" ||
+            normalizar(
+                prestamo.tipoPrestamo
+            ) === "COLABORADOR" ||
             !!prestamo.CodigoColaborador
         );
+
     }
 
 
     async function cargarDatos() {
 
-        const { data, error } = await supabaseClient
+        const {
+            data,
+            error
+        } = await supabaseClient
             .from("prestamos")
             .select("*")
             .eq("estado", "Prestado")
             .order("fechaPrestamo", {
                 ascending: false
             });
+
 
         if (error) {
 
@@ -1027,387 +1270,640 @@
             return;
         }
 
+
         prestamos = data || [];
-        prestamosFiltrados = [...prestamos];
+
+        prestamosFiltrados =
+            [...prestamos];
+
 
         mostrarPrestamos();
+
         actualizarResumen();
+
     }
 
 
     function mostrarPrestamos() {
 
-        const tabla = document.getElementById("tablaPrestamos");
-        const sinResultados = document.getElementById("sinResultados");
+        const tabla =
+            document.getElementById(
+                "tablaPrestamos"
+            );
+
+        const sinResultados =
+            document.getElementById(
+                "sinResultados"
+            );
+
 
         tabla.innerHTML = "";
 
-        const total = prestamosFiltrados.length;
+
+        const total =
+            prestamosFiltrados.length;
+
 
         if (total === 0) {
 
-            sinResultados.style.display = "block";
+            sinResultados.style.display =
+                "block";
+
 
             document.getElementById(
                 "informacionPagina"
-            ).textContent = "Sin resultados";
+            ).textContent =
+                "Sin resultados";
+
 
             document.getElementById(
                 "botonAnterior"
             ).disabled = true;
 
+
             document.getElementById(
                 "botonSiguiente"
             ).disabled = true;
 
+
             return;
+
         }
 
-        sinResultados.style.display = "none";
 
-        const totalPaginas = Math.ceil(
-            total / registrosPorPagina
-        );
+        sinResultados.style.display =
+            "none";
+
+
+        const totalPaginas =
+            Math.ceil(
+                total / registrosPorPagina
+            );
+
 
         if (paginaActual > totalPaginas) {
             paginaActual = totalPaginas;
         }
 
+
         const inicio =
-            (paginaActual - 1) * registrosPorPagina;
+            (paginaActual - 1) *
+            registrosPorPagina;
+
 
         const fin =
             inicio + registrosPorPagina;
 
+
         const registrosPagina =
-            prestamosFiltrados.slice(inicio, fin);
+            prestamosFiltrados.slice(
+                inicio,
+                fin
+            );
 
-        registrosPagina.forEach(prestamo => {
 
-            const colaborador =
-                esColaborador(prestamo);
+        registrosPagina.forEach(
+            prestamo => {
 
-            const tipoTexto =
-                colaborador
-                    ? "Colaborador"
-                    : "Afiliado";
+                const colaborador =
+                    esColaborador(prestamo);
 
-            const tipoClase =
-                colaborador
-                    ? "badge-colaborador"
-                    : "badge-afiliado";
 
-            const identificacion =
-                colaborador
-                    ? prestamo.CodigoColaborador || "—"
-                    : prestamo.FamiliaId || "—";
+                const tipoTexto =
+                    colaborador
+                        ? "Colaborador"
+                        : "Afiliado";
 
-            const persona =
-                colaborador
-                    ? prestamo.NombreColaborador || "—"
-                    : `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`.trim() || "—";
 
-            const area =
-                colaborador
-                    ? prestamo.AreaColaborador || "—"
-                    : "—";
+                const tipoClase =
+                    colaborador
+                        ? "badge-colaborador"
+                        : "badge-afiliado";
 
-            const comentario =
-                prestamo.comentarios || "—";
 
-            const tr = document.createElement("tr");
+                const identificacion =
+                    colaborador
+                        ? prestamo.CodigoColaborador || "—"
+                        : prestamo.FamiliaId || "—";
 
-            tr.innerHTML = `
 
-                <td>
-                    <span class="badge ${tipoClase}">
-                        ${escapeHtml(tipoTexto)}
-                    </span>
-                </td>
+                const persona =
+                    colaborador
+                        ? prestamo.NombreColaborador || "—"
+                        : `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`.trim() || "—";
 
-                <td>
-                    ${escapeHtml(identificacion)}
-                </td>
 
-                <td class="nombre-columna">
-                    ${escapeHtml(persona)}
-                </td>
+                const area =
+                    colaborador
+                        ? prestamo.AreaColaborador || "—"
+                        : "—";
 
-                <td>
-                    ${escapeHtml(area)}
-                </td>
 
-                <td class="libro-columna">
-                    ${escapeHtml(prestamo.nombreLibro || "—")}
-                </td>
+                const biblioteca =
+                    prestamo.Biblioteca || "—";
 
-                <td>
-                    ${escapeHtml(formatearFecha(prestamo.fechaPrestamo))}
-                </td>
 
-                <td>
-                    ${escapeHtml(formatearFecha(prestamo.fechaDevolucion))}
-                </td>
+                const comentario =
+                    prestamo.comentarios || "—";
 
-                <td>
-                    <span class="badge badge-prestado">
-                        Prestado
-                    </span>
-                </td>
 
-                <td class="comentario-columna">
-                    ${escapeHtml(comentario)}
-                </td>
+                const tr =
+                    document.createElement("tr");
 
-                <td>
 
-                    <div class="acciones">
+                tr.innerHTML = `
 
-                        <button
-                            type="button"
-                            class="btn-accion btn-devolver"
-                            data-id="${prestamo.id}">
-                            Devolver
-                        </button>
+                    <td>
+                        <span class="badge ${tipoClase}">
+                            ${escapeHtml(tipoTexto)}
+                        </span>
+                    </td>
 
-                        <button
-                            type="button"
-                            class="btn-accion btn-eliminar"
-                            data-id="${prestamo.id}">
-                            Eliminar
-                        </button>
+                    <td>
+                        ${escapeHtml(identificacion)}
+                    </td>
 
-                    </div>
+                    <td class="nombre-columna">
+                        ${escapeHtml(persona)}
+                    </td>
 
-                </td>
-            `;
+                    <td>
+                        ${escapeHtml(area)}
+                    </td>
 
-            tabla.appendChild(tr);
-        });
+                    <td>
+                        <span class="badge badge-biblioteca">
+                            ${escapeHtml(biblioteca)}
+                        </span>
+                    </td>
+
+                    <td class="libro-columna">
+                        ${escapeHtml(prestamo.nombreLibro || "—")}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            formatearFecha(
+                                prestamo.fechaPrestamo
+                            )
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            formatearFecha(
+                                prestamo.fechaDevolucion
+                            )
+                        )}
+                    </td>
+
+                    <td>
+                        <span class="badge badge-prestado">
+                            Prestado
+                        </span>
+                    </td>
+
+                    <td class="comentario-columna">
+                        ${escapeHtml(comentario)}
+                    </td>
+
+                    <td>
+
+                        <div class="acciones">
+
+                            <button
+                                type="button"
+                                class="btn-accion btn-devolver"
+                                data-id="${prestamo.id}">
+                                Devolver
+                            </button>
+
+                            <button
+                                type="button"
+                                class="btn-accion btn-eliminar"
+                                data-id="${prestamo.id}">
+                                Eliminar
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                tabla.appendChild(tr);
+
+            }
+        );
+
 
         document.getElementById(
             "informacionPagina"
         ).textContent =
             `Página ${paginaActual} de ${totalPaginas}`;
 
+
         document.getElementById(
             "botonAnterior"
-        ).disabled = paginaActual <= 1;
+        ).disabled =
+            paginaActual <= 1;
+
 
         document.getElementById(
             "botonSiguiente"
-        ).disabled = paginaActual >= totalPaginas;
+        ).disabled =
+            paginaActual >= totalPaginas;
 
-        document.querySelectorAll(".btn-devolver")
-            .forEach(boton => {
 
-                boton.addEventListener("click", () => {
+        document.querySelectorAll(
+            ".btn-devolver"
+        ).forEach(
+            boton => {
 
-                    const id = boton.dataset.id;
+                boton.addEventListener(
+                    "click",
+                    () => {
 
-                    seleccionarPrestamo(id);
-                });
+                        const id =
+                            boton.dataset.id;
 
-            });
+                        seleccionarPrestamo(id);
 
-        document.querySelectorAll(".btn-eliminar")
-            .forEach(boton => {
+                    }
+                );
 
-                boton.addEventListener("click", () => {
+            }
+        );
 
-                    const id = boton.dataset.id;
 
-                    seleccionarPrestamoEliminar(id);
-                });
+        document.querySelectorAll(
+            ".btn-eliminar"
+        ).forEach(
+            boton => {
 
-            });
+                boton.addEventListener(
+                    "click",
+                    () => {
+
+                        const id =
+                            boton.dataset.id;
+
+                        seleccionarPrestamoEliminar(id);
+
+                    }
+                );
+
+            }
+        );
+
     }
 
 
     function obtenerPrestamoPorId(id) {
 
         return prestamos.find(
-            prestamo => String(prestamo.id) === String(id)
+            prestamo =>
+                String(prestamo.id) ===
+                String(id)
         );
+
     }
 
 
-    function cargarDetalle(prestamo, modo) {
+    function cargarDetalle(
+        prestamo,
+        modo
+    ) {
 
-        prestamoSeleccionado = prestamo;
-        modoDetalle = modo;
+        prestamoSeleccionado =
+            prestamo;
+
+        modoDetalle =
+            modo;
+
 
         const colaborador =
             esColaborador(prestamo);
 
+
         const modal =
-            document.getElementById("modalDetalle");
+            document.getElementById(
+                "modalDetalle"
+            );
+
 
         const titulo =
-            document.getElementById("tituloDetalle");
+            document.getElementById(
+                "tituloDetalle"
+            );
+
 
         const tipo =
-            document.getElementById("detalleTipo");
+            document.getElementById(
+                "detalleTipo"
+            );
+
 
         const etiquetaIdentificacion =
-            document.getElementById("etiquetaIdentificacion");
+            document.getElementById(
+                "etiquetaIdentificacion"
+            );
+
 
         const detalleIdentificacion =
-            document.getElementById("detalleIdentificacion");
+            document.getElementById(
+                "detalleIdentificacion"
+            );
+
 
         const etiquetaPersona =
-            document.getElementById("etiquetaPersona");
+            document.getElementById(
+                "etiquetaPersona"
+            );
+
 
         const detallePersona =
-            document.getElementById("detallePersona");
+            document.getElementById(
+                "detallePersona"
+            );
+
 
         const detallePersonaId =
-            document.getElementById("detallePersonaId");
+            document.getElementById(
+                "detallePersonaId"
+            );
+
 
         const detallePersonaIdContenedor =
-            document.getElementById("detallePersonaIdContenedor");
+            document.getElementById(
+                "detallePersonaIdContenedor"
+            );
+
 
         const detalleArea =
-            document.getElementById("detalleArea");
+            document.getElementById(
+                "detalleArea"
+            );
+
 
         const detalleAreaContenedor =
-            document.getElementById("detalleAreaContenedor");
+            document.getElementById(
+                "detalleAreaContenedor"
+            );
+
+
+        const detalleBiblioteca =
+            document.getElementById(
+                "detalleBiblioteca"
+            );
+
 
         const detalleLibro =
-            document.getElementById("detalleLibro");
+            document.getElementById(
+                "detalleLibro"
+            );
+
 
         const detalleCodigo =
-            document.getElementById("detalleCodigo");
+            document.getElementById(
+                "detalleCodigo"
+            );
+
 
         const detalleFechaPrestamo =
-            document.getElementById("detalleFechaPrestamo");
+            document.getElementById(
+                "detalleFechaPrestamo"
+            );
+
 
         const detalleFechaLimite =
-            document.getElementById("detalleFechaLimite");
+            document.getElementById(
+                "detalleFechaLimite"
+            );
+
 
         const comentario =
-            document.getElementById("comentarioDevolucion");
+            document.getElementById(
+                "comentarioDevolucion"
+            );
+
 
         const contenedorComentario =
-            document.getElementById("contenedorComentario");
+            document.getElementById(
+                "contenedorComentario"
+            );
+
 
         const advertencia =
-            document.getElementById("advertenciaExtraviado");
+            document.getElementById(
+                "advertenciaExtraviado"
+            );
+
 
         const confirmacionEliminar =
-            document.getElementById("confirmacionEliminar");
+            document.getElementById(
+                "confirmacionEliminar"
+            );
+
 
         const btnDevolver =
-            document.getElementById("btnConfirmarDevolucion");
+            document.getElementById(
+                "btnConfirmarDevolucion"
+            );
+
 
         const btnEliminar =
-            document.getElementById("btnConfirmarEliminar");
+            document.getElementById(
+                "btnConfirmarEliminar"
+            );
+
 
         if (modo === "eliminar") {
 
             titulo.textContent =
                 "Eliminar préstamo";
 
-            btnDevolver.style.display = "none";
-            btnEliminar.style.display = "inline-block";
 
-            contenedorComentario.style.display = "none";
-            advertencia.classList.remove("mostrar");
+            btnDevolver.style.display =
+                "none";
 
-            confirmacionEliminar.classList.add("mostrar");
+
+            btnEliminar.style.display =
+                "inline-block";
+
+
+            contenedorComentario.style.display =
+                "none";
+
+
+            advertencia.classList.remove(
+                "mostrar"
+            );
+
+
+            confirmacionEliminar.classList.add(
+                "mostrar"
+            );
 
         } else {
 
             titulo.textContent =
                 "Registrar devolución";
 
-            btnDevolver.style.display = "inline-block";
-            btnEliminar.style.display = "none";
 
-            contenedorComentario.style.display = "block";
-            confirmacionEliminar.classList.remove("mostrar");
+            btnDevolver.style.display =
+                "inline-block";
+
+
+            btnEliminar.style.display =
+                "none";
+
+
+            contenedorComentario.style.display =
+                "block";
+
+
+            confirmacionEliminar.classList.remove(
+                "mostrar"
+            );
+
         }
 
 
         if (colaborador) {
 
-            tipo.textContent = "Colaborador";
+            tipo.textContent =
+                "Colaborador";
+
+
             tipo.className =
                 "badge badge-colaborador";
+
 
             etiquetaIdentificacion.textContent =
                 "Código de colaborador";
 
+
             detalleIdentificacion.textContent =
-                prestamo.CodigoColaborador || "—";
+                prestamo.CodigoColaborador ||
+                "—";
+
 
             etiquetaPersona.textContent =
                 "Colaborador";
 
+
             detallePersona.textContent =
-                prestamo.NombreColaborador || "—";
+                prestamo.NombreColaborador ||
+                "—";
+
 
             detallePersonaIdContenedor.style.display =
                 "none";
 
+
             detalleAreaContenedor.style.display =
                 "block";
 
+
             detalleArea.textContent =
-                prestamo.AreaColaborador || "—";
+                prestamo.AreaColaborador ||
+                "—";
 
         } else {
 
-            tipo.textContent = "Afiliado";
+            tipo.textContent =
+                "Afiliado";
+
+
             tipo.className =
                 "badge badge-afiliado";
+
 
             etiquetaIdentificacion.textContent =
                 "FamiliaId";
 
+
             detalleIdentificacion.textContent =
-                prestamo.FamiliaId || "—";
+                prestamo.FamiliaId ||
+                "—";
+
 
             etiquetaPersona.textContent =
                 "Persona";
 
+
             const nombreCompleto =
                 `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`.trim();
 
+
             detallePersona.textContent =
-                nombreCompleto || "—";
+                nombreCompleto ||
+                "—";
+
 
             detallePersonaIdContenedor.style.display =
                 "block";
 
+
             detallePersonaId.textContent =
-                prestamo.PersonaId || "—";
+                prestamo.PersonaId ||
+                "—";
+
 
             detalleAreaContenedor.style.display =
                 "none";
+
         }
 
 
+        detalleBiblioteca.textContent =
+            prestamo.Biblioteca ||
+            "—";
+
+
         detalleLibro.textContent =
-            prestamo.nombreLibro || "—";
+            prestamo.nombreLibro ||
+            "—";
+
 
         detalleCodigo.textContent =
-            formatearCodigo(prestamo.codigoLibro);
+            formatearCodigo(
+                prestamo.codigoLibro
+            );
+
 
         detalleFechaPrestamo.textContent =
-            formatearFecha(prestamo.fechaPrestamo);
+            formatearFecha(
+                prestamo.fechaPrestamo
+            );
+
 
         detalleFechaLimite.textContent =
-            formatearFecha(prestamo.fechaDevolucion);
+            formatearFecha(
+                prestamo.fechaDevolucion
+            );
+
 
         comentario.value =
-            prestamo.comentarios || "";
+            prestamo.comentarios ||
+            "";
 
-        advertencia.classList.remove("mostrar");
 
-        modal.classList.add("mostrar");
+        advertencia.classList.remove(
+            "mostrar"
+        );
 
-        document.body.style.overflow = "hidden";
+
+        modal.classList.add(
+            "mostrar"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 
@@ -1416,14 +1912,17 @@
         const prestamo =
             obtenerPrestamoPorId(id);
 
+
         if (!prestamo) {
             return;
         }
+
 
         cargarDetalle(
             prestamo,
             "devolucion"
         );
+
     }
 
 
@@ -1432,14 +1931,17 @@
         const prestamo =
             obtenerPrestamoPorId(id);
 
+
         if (!prestamo) {
             return;
         }
+
 
         cargarDetalle(
             prestamo,
             "eliminar"
         );
+
     }
 
 
@@ -1447,11 +1949,18 @@
 
         document.getElementById(
             "modalDetalle"
-        ).classList.remove("mostrar");
+        ).classList.remove(
+            "mostrar"
+        );
 
-        document.body.style.overflow = "";
 
-        prestamoSeleccionado = null;
+        document.body.style.overflow =
+            "";
+
+
+        prestamoSeleccionado =
+            null;
+
     }
 
 
@@ -1461,26 +1970,41 @@
             return;
         }
 
+
         const comentario =
             document.getElementById(
                 "comentarioDevolucion"
             ).value.trim();
 
+
         const prestamo =
             prestamoSeleccionado;
+
 
         const fechaActual =
             new Date().toISOString();
 
-        const { error } =
-            await supabaseClient
-                .from("prestamos")
-                .update({
-                    estado: "Devuelto",
-                    fechaDevolucionReal: fechaActual,
-                    comentarios: comentario || null
-                })
-                .eq("id", prestamo.id);
+
+        const {
+            error
+        } = await supabaseClient
+            .from("prestamos")
+            .update({
+
+                estado: "Devuelto",
+
+                fechaDevolucionReal:
+                    fechaActual,
+
+                comentarios:
+                    comentario || null
+
+            })
+            .eq(
+                "id",
+                prestamo.id
+            );
+
 
         if (error) {
 
@@ -1492,6 +2016,7 @@
             );
 
             return;
+
         }
 
 
@@ -1499,6 +2024,7 @@
             normalizarCodigo(
                 prestamo.codigoLibro
             );
+
 
         if (codigoLibro) {
 
@@ -1508,6 +2034,7 @@
             } = await supabaseClient
                 .from("libros")
                 .select("*");
+
 
             if (errorLibro) {
 
@@ -1521,30 +2048,43 @@
             } else {
 
                 const libro =
-                    (librosEncontrados || []).find(
-                        item =>
-                            normalizarCodigo(
-                                item.codigoLibro
-                            ) === codigoLibro
-                    );
+                    (librosEncontrados || [])
+                        .find(
+                            item =>
+                                normalizarCodigo(
+                                    item.codigoLibro
+                                ) === codigoLibro
+                        );
+
 
                 if (libro) {
 
                     const estadoLibro =
-                        normalizar(comentario) === "EXTRAVIADO"
+                        normalizar(
+                            comentario
+                        ) === "EXTRAVIADO"
                             ? "Baja"
                             : "Disponible";
 
+
                     const {
-                        error: errorActualizarLibro
+                        error:
+                            errorActualizarLibro
                     } = await supabaseClient
                         .from("libros")
                         .update({
-                            estado: estadoLibro
+                            estado:
+                                estadoLibro
                         })
-                        .eq("id", libro.id);
+                        .eq(
+                            "id",
+                            libro.id
+                        );
 
-                    if (errorActualizarLibro) {
+
+                    if (
+                        errorActualizarLibro
+                    ) {
 
                         console.error(
                             errorActualizarLibro
@@ -1556,19 +2096,25 @@
                         );
 
                     }
+
                 }
+
             }
+
         }
 
 
         cerrarDetalle();
+
 
         mostrarMensaje(
             "La devolución se registró correctamente.",
             "exito"
         );
 
+
         await cargarDatos();
+
     }
 
 
@@ -1578,8 +2124,10 @@
             return;
         }
 
+
         const prestamo =
             prestamoSeleccionado;
+
 
         const codigoLibro =
             normalizarCodigo(
@@ -1596,6 +2144,7 @@
                 .from("libros")
                 .select("*");
 
+
             if (errorLibro) {
 
                 console.error(errorLibro);
@@ -1606,28 +2155,40 @@
                 );
 
                 return;
+
             }
 
+
             const libro =
-                (librosEncontrados || []).find(
-                    item =>
-                        normalizarCodigo(
-                            item.codigoLibro
-                        ) === codigoLibro
-                );
+                (librosEncontrados || [])
+                    .find(
+                        item =>
+                            normalizarCodigo(
+                                item.codigoLibro
+                            ) === codigoLibro
+                    );
+
 
             if (libro) {
 
                 const {
-                    error: errorActualizarLibro
+                    error:
+                        errorActualizarLibro
                 } = await supabaseClient
                     .from("libros")
                     .update({
-                        estado: "Disponible"
+                        estado:
+                            "Disponible"
                     })
-                    .eq("id", libro.id);
+                    .eq(
+                        "id",
+                        libro.id
+                    );
 
-                if (errorActualizarLibro) {
+
+                if (
+                    errorActualizarLibro
+                ) {
 
                     console.error(
                         errorActualizarLibro
@@ -1639,8 +2200,11 @@
                     );
 
                     return;
+
                 }
+
             }
+
         }
 
 
@@ -1649,11 +2213,17 @@
         } = await supabaseClient
             .from("prestamos")
             .delete()
-            .eq("id", prestamo.id);
+            .eq(
+                "id",
+                prestamo.id
+            );
+
 
         if (errorEliminar) {
 
-            console.error(errorEliminar);
+            console.error(
+                errorEliminar
+            );
 
             mostrarMensaje(
                 "No fue posible eliminar el préstamo.",
@@ -1661,17 +2231,21 @@
             );
 
             return;
+
         }
 
 
         cerrarDetalle();
+
 
         mostrarMensaje(
             "El préstamo se eliminó correctamente.",
             "exito"
         );
 
+
         await cargarDatos();
+
     }
 
 
@@ -1684,20 +2258,47 @@
                 ).value
             );
 
-        if (!texto) {
 
-            prestamosFiltrados =
-                [...prestamos];
+        const filtroTipo =
+            normalizar(
+                document.getElementById(
+                    "filtroTipo"
+                ).value
+            );
 
-        } else {
 
-            prestamosFiltrados =
-                prestamos.filter(prestamo => {
+        const filtroBiblioteca =
+            normalizar(
+                document.getElementById(
+                    "filtroBiblioteca"
+                ).value
+            );
+
+
+        prestamosFiltrados =
+            prestamos.filter(
+                prestamo => {
 
                     const colaborador =
-                        esColaborador(prestamo);
+                        esColaborador(
+                            prestamo
+                        );
+
+
+                    const tipoPrestamo =
+                        colaborador
+                            ? "COLABORADOR"
+                            : "AFILIADO";
+
+
+                    const biblioteca =
+                        normalizar(
+                            prestamo.Biblioteca
+                        );
+
 
                     const textoBusqueda = [
+
                         prestamo.FamiliaId,
                         prestamo.PersonaId,
                         prestamo.Nombres,
@@ -1707,22 +2308,51 @@
                         prestamo.AreaColaborador,
                         prestamo.nombreLibro,
                         prestamo.codigoLibro,
-                        prestamo.tipoPrestamo
+                        prestamo.tipoPrestamo,
+                        prestamo.Biblioteca
+
                     ]
-                        .map(valor =>
-                            normalizar(valor)
+                        .map(
+                            valor =>
+                                normalizar(valor)
                         )
                         .join(" ");
 
-                    return textoBusqueda.includes(
-                        texto
+
+                    const coincideTexto =
+                        !texto ||
+                        textoBusqueda.includes(
+                            texto
+                        );
+
+
+                    const coincideTipo =
+                        !filtroTipo ||
+                        tipoPrestamo ===
+                            filtroTipo;
+
+
+                    const coincideBiblioteca =
+                        !filtroBiblioteca ||
+                        biblioteca ===
+                            filtroBiblioteca;
+
+
+                    return (
+                        coincideTexto &&
+                        coincideTipo &&
+                        coincideBiblioteca
                     );
-                });
-        }
+
+                }
+            );
+
 
         paginaActual = 1;
 
+
         mostrarPrestamos();
+
     }
 
 
@@ -1731,35 +2361,48 @@
         const total =
             prestamos.length;
 
+
         const hoy =
             new Date();
 
+
         const vencidos =
-            prestamos.filter(prestamo => {
+            prestamos.filter(
+                prestamo => {
 
-                if (!prestamo.fechaDevolucion) {
-                    return false;
+                    if (
+                        !prestamo.fechaDevolucion
+                    ) {
+                        return false;
+                    }
+
+
+                    const fechaLimite =
+                        new Date(
+                            prestamo.fechaDevolucion
+                        );
+
+
+                    return fechaLimite < hoy;
+
                 }
-
-                const fechaLimite =
-                    new Date(
-                        prestamo.fechaDevolucion
-                    );
-
-                return fechaLimite < hoy;
-            }).length;
+            ).length;
 
 
         document.getElementById(
             "totalPrestamos"
-        ).textContent = total;
+        ).textContent =
+            total;
+
 
         document.getElementById(
             "totalVencidos"
-        ).textContent = vencidos;
+        ).textContent =
+            vencidos;
 
 
         cargarLibrosDisponibles();
+
     }
 
 
@@ -1770,11 +2413,18 @@
             error
         } = await supabaseClient
             .from("libros")
-            .select("id", {
-                count: "exact",
-                head: true
-            })
-            .eq("estado", "Disponible");
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "estado",
+                "Disponible"
+            );
+
 
         if (error) {
 
@@ -1782,36 +2432,52 @@
 
             document.getElementById(
                 "totalDisponibles"
-            ).textContent = "—";
+            ).textContent =
+                "—";
 
             return;
+
         }
+
 
         document.getElementById(
             "totalDisponibles"
-        ).textContent = count || 0;
+        ).textContent =
+            count || 0;
+
     }
 
 
-    function mostrarMensaje(texto, tipo) {
+    function mostrarMensaje(
+        texto,
+        tipo
+    ) {
 
         const mensaje =
             document.getElementById(
                 "mensaje"
             );
 
-        mensaje.textContent = texto;
+
+        mensaje.textContent =
+            texto;
+
 
         mensaje.className =
             `mensaje ${tipo} mostrar`;
 
-        setTimeout(() => {
 
-            mensaje.classList.remove(
-                "mostrar"
-            );
+        setTimeout(
+            () => {
 
-        }, 4000);
+                mensaje.classList.remove(
+                    "mostrar"
+                );
+
+            },
+            4000
+        );
+
     }
 
 
@@ -1829,11 +2495,31 @@
         "keydown",
         function(event) {
 
-            if (event.key === "Enter") {
+            if (
+                event.key === "Enter"
+            ) {
+
                 aplicarBusqueda();
+
             }
 
         }
+    );
+
+
+    document.getElementById(
+        "filtroTipo"
+    ).addEventListener(
+        "change",
+        aplicarBusqueda
+    );
+
+
+    document.getElementById(
+        "filtroBiblioteca"
+    ).addEventListener(
+        "change",
+        aplicarBusqueda
     );
 
 
@@ -1847,12 +2533,26 @@
                 "buscar"
             ).value = "";
 
+
+            document.getElementById(
+                "filtroTipo"
+            ).value = "";
+
+
+            document.getElementById(
+                "filtroBiblioteca"
+            ).value = "";
+
+
             prestamosFiltrados =
                 [...prestamos];
 
+
             paginaActual = 1;
 
+
             mostrarPrestamos();
+
         }
     );
 
@@ -1863,12 +2563,16 @@
         "click",
         function() {
 
-            if (paginaActual > 1) {
+            if (
+                paginaActual > 1
+            ) {
 
                 paginaActual--;
 
                 mostrarPrestamos();
+
             }
+
         }
     );
 
@@ -1885,12 +2589,18 @@
                     registrosPorPagina
                 );
 
-            if (paginaActual < totalPaginas) {
+
+            if (
+                paginaActual <
+                totalPaginas
+            ) {
 
                 paginaActual++;
 
                 mostrarPrestamos();
+
             }
+
         }
     );
 
@@ -1934,10 +2644,11 @@
         function(event) {
 
             if (
-                event.target ===
-                this
+                event.target === this
             ) {
+
                 cerrarDetalle();
+
             }
 
         }
@@ -1960,6 +2671,7 @@
             ) {
 
                 cerrarDetalle();
+
             }
 
         }
@@ -1973,12 +2685,16 @@
         function() {
 
             const valor =
-                normalizar(this.value);
+                normalizar(
+                    this.value
+                );
+
 
             const advertencia =
                 document.getElementById(
                     "advertenciaExtraviado"
                 );
+
 
             if (
                 valor === "EXTRAVIADO"
@@ -1993,6 +2709,7 @@
                 advertencia.classList.remove(
                     "mostrar"
                 );
+
             }
 
         }
@@ -2016,7 +2733,9 @@
 
             document.documentElement.style.visibility =
                 "visible";
+
         }
+
     }
 
 
