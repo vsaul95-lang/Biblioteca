@@ -898,8 +898,8 @@
                 <input
                     type="text"
                     id="buscarColaborador"
-                    placeholder="Ingrese código del colaborador..."
-                    maxlength="30"
+                    placeholder="Ingrese nombre, apellido o código del colaborador..."
+                    maxlength="100"
                     autocomplete="off"
                 >
 
@@ -2396,7 +2396,7 @@ function seleccionarPersona(
 
 async function buscarColaborador() {
 
-    const codigoIngresado =
+    const textoIngresado =
         buscarColaboradorInput.value.trim();
 
     limpiarMensaje(
@@ -2414,27 +2414,11 @@ async function buscarColaborador() {
 
     actualizarDetalle();
 
-    if (!codigoIngresado) {
+    if (!textoIngresado) {
 
         mostrarMensaje(
             mensajeColaborador,
-            "Ingrese el código del colaborador.",
-            "error"
-        );
-
-        return;
-    }
-
-    const codigoNormalizado =
-        normalizarCodigoColaborador(
-            codigoIngresado
-        );
-
-    if (!codigoNormalizado) {
-
-        mostrarMensaje(
-            mensajeColaborador,
-            "Ingrese un código de colaborador válido.",
+            "Ingrese el nombre, apellido o código del colaborador.",
             "error"
         );
 
@@ -2459,14 +2443,66 @@ async function buscarColaborador() {
             throw error;
         }
 
+        const textoBusqueda =
+            normalizarTexto(
+                textoIngresado
+            );
+
+        const codigoBusqueda =
+            normalizarCodigoColaborador(
+                textoIngresado
+            );
+
         const encontrados =
             (data || [])
                 .filter(
-                    colaborador =>
-                        normalizarCodigoColaborador(
-                            colaborador.CodigoColaborador
-                        ) ===
-                        codigoNormalizado
+                    colaborador => {
+
+                        const nombre =
+                            normalizarTexto(
+                                colaborador.Nombre
+                            );
+
+                        const codigo =
+                            normalizarTexto(
+                                colaborador.CodigoColaborador
+                            );
+
+                        const codigoNormalizado =
+                            normalizarCodigoColaborador(
+                                colaborador.CodigoColaborador
+                            );
+
+                        /*
+                           Se puede encontrar por:
+                           - Nombre completo
+                           - Parte del nombre
+                           - Código
+                           - Código sin ceros iniciales
+                        */
+
+                        const coincideNombre =
+                            nombre.includes(
+                                textoBusqueda
+                            );
+
+                        const coincideCodigo =
+                            codigo.includes(
+                                textoBusqueda
+                            ) ||
+                            (
+                                codigoBusqueda &&
+                                codigoNormalizado.includes(
+                                    codigoBusqueda
+                                )
+                            );
+
+                        return (
+                            coincideNombre ||
+                            coincideCodigo
+                        );
+
+                    }
                 );
 
         if (
@@ -2475,7 +2511,7 @@ async function buscarColaborador() {
 
             mostrarMensaje(
                 mensajeColaborador,
-                "No se encontró un colaborador activo con ese código.",
+                "No se encontró un colaborador activo con ese nombre, apellido o código.",
                 "error"
             );
 
@@ -4023,7 +4059,7 @@ document
     );
 
 
-/* =========================================================
+/* =================================================
    ENTER - FAMILIA
 ========================================================= */
 
