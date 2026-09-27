@@ -1,23 +1,18 @@
 (function () {
-
-    // ============================================================
-    // VARIABLES GLOBALES DEL USUARIO
-    // ============================================================
-
     window.usuarioSesion = null;
     window.perfilUsuario = null;
     window.rolUsuario = null;
     window.estadoUsuario = null;
-
-    // Nombre del usuario actualmente autenticado.
-    // Este valor será utilizado por:
-    // PrestadoPor
-    // DevueltoPor
     window.nombreUsuarioActual = "";
 
-    // ============================================================
-    // NORMALIZAR TEXTO
-    // ============================================================
+    /* =========================================================
+       CONFIGURACIÓN DE INACTIVIDAD
+       30 minutos = 1,800,000 milisegundos
+       ========================================================= */
+
+    const TIEMPO_INACTIVIDAD = 30 * 60 * 1000;
+
+    let temporizadorInactividad = null;
 
     function normalizarTextoAuth(valor) {
         return String(valor || "")
@@ -25,30 +20,91 @@
             .toUpperCase();
     }
 
-    // ============================================================
-    // PROTEGER PÁGINA / OBTENER USUARIO
-    // ============================================================
+    /* =========================================================
+       CIERRE DE SESIÓN POR INACTIVIDAD
+       ========================================================= */
+
+    function iniciarTemporizadorInactividad() {
+        if (temporizadorInactividad) {
+            clearTimeout(temporizadorInactividad);
+        }
+
+        temporizadorInactividad = setTimeout(
+            async function () {
+                console.log(
+                    "SESION CERRADA POR 30 MINUTOS DE INACTIVIDAD"
+                );
+
+                try {
+                    await supabaseClient.auth.signOut();
+                } catch (error) {
+                    console.error(
+                        "ERROR AL CERRAR SESION POR INACTIVIDAD:",
+                        error
+                    );
+                }
+
+                window.usuarioSesion = null;
+                window.perfilUsuario = null;
+                window.rolUsuario = null;
+                window.estadoUsuario = null;
+                window.nombreUsuarioActual = "";
+
+                window.location.href = "index.html";
+            },
+            TIEMPO_INACTIVIDAD
+        );
+    }
+
+    function reiniciarTemporizadorInactividad() {
+        if (!window.usuarioSesion) {
+            return;
+        }
+
+        iniciarTemporizadorInactividad();
+    }
+
+    /* =========================================================
+       ACTIVIDAD DEL USUARIO
+       ========================================================= */
+
+    const eventosActividad = [
+        "click",
+        "mousemove",
+        "mousedown",
+        "keydown",
+        "scroll",
+        "touchstart",
+        "touchmove",
+        "wheel"
+    ];
+
+    eventosActividad.forEach(function (evento) {
+        document.addEventListener(
+            evento,
+            reiniciarTemporizadorInactividad,
+            {
+                passive: true
+            }
+        );
+    });
+
+    /* =========================================================
+       PROTEGER PAGINA
+       ========================================================= */
 
     window.protegerPagina = async function () {
-
         console.log("AUTH REAL INICIADO");
 
         try {
-
-            // ----------------------------------------------------
-            // 1. OBTENER SESIÓN ACTUAL
-            // ----------------------------------------------------
-
             const resultadoSesion =
                 await supabaseClient.auth.getSession();
 
             if (resultadoSesion.error) {
-
                 console.error(
                     "ERROR SESION:",
                     resultadoSesion.error
                 );
-
                 return false;
             }
 
@@ -56,9 +112,7 @@
                 resultadoSesion.data.session;
 
             if (!session) {
-
                 console.error("NO HAY SESION");
-
                 return false;
             }
 
@@ -67,13 +121,7 @@
                 session.user.email
             );
 
-            // Guardar usuario de Supabase Auth
-            window.usuarioSesion =
-                session.user;
-
-            // ----------------------------------------------------
-            // 2. BUSCAR PERFIL EN TABLA usuarios
-            // ----------------------------------------------------
+            window.usuarioSesion = session.user;
 
             const resultadoPerfil =
                 await supabaseClient
@@ -85,25 +133,20 @@
                     .maybeSingle();
 
             if (resultadoPerfil.error) {
-
                 console.error(
                     "ERROR PERFIL:",
                     resultadoPerfil.error
                 );
-
                 return false;
             }
 
-            const perfil =
-                resultadoPerfil.data;
+            const perfil = resultadoPerfil.data;
 
             if (!perfil) {
-
                 console.error(
                     "PERFIL NO ENCONTRADO PARA EL USUARIO:",
                     session.user.id
                 );
-
                 return false;
             }
 
@@ -112,13 +155,7 @@
                 perfil
             );
 
-            // Guardar perfil completo
-            window.perfilUsuario =
-                perfil;
-
-            // ----------------------------------------------------
-            // 3. OBTENER ROL Y ESTADO
-            // ----------------------------------------------------
+            window.perfilUsuario = perfil;
 
             window.rolUsuario =
                 normalizarTextoAuth(perfil.rol);
@@ -126,38 +163,24 @@
             window.estadoUsuario =
                 normalizarTextoAuth(perfil.estado);
 
-            // ----------------------------------------------------
-            // 4. VERIFICAR QUE EL USUARIO ESTÉ ACTIVO
-            // ----------------------------------------------------
-
             if (window.estadoUsuario !== "ACTIVO") {
-
                 console.error(
                     "USUARIO INACTIVO. VALOR RECIBIDO:",
                     perfil.estado
                 );
-
                 return false;
             }
 
-            // ----------------------------------------------------
-            // 5. OBTENER AUTOMÁTICAMENTE EL NOMBRE REAL
-            // ----------------------------------------------------
-
             const nombreReal =
-                String(perfil.nombre || "")
-                    .trim();
+                String(perfil.nombre || "").trim();
 
             if (!nombreReal) {
-
                 console.error(
                     "EL USUARIO NO TIENE NOMBRE REGISTRADO EN usuarios"
                 );
-
                 return false;
             }
 
-            // Nombre que utilizarán los módulos
             window.nombreUsuarioActual =
                 nombreReal;
 
@@ -171,10 +194,15 @@
                 window.nombreUsuarioActual
             );
 
+            /* =================================================
+               INICIAR LOS 30 MINUTOS DESDE LA AUTORIZACIÓN
+               ================================================= */
+
+            iniciarTemporizadorInactividad();
+
             return true;
 
         } catch (error) {
-
             console.error(
                 "ERROR AUTH:",
                 error
@@ -184,94 +212,98 @@
         }
     };
 
-    // ============================================================
-    // OBTENER NOMBRE DEL USUARIO ACTUAL
-    // ============================================================
+    /* =========================================================
+       OBTENER NOMBRE DEL USUARIO
+       ========================================================= */
 
-    window.obtenerNombreUsuarioActual = function () {
+    window.obtenerNombreUsuarioActual =
+        function () {
 
-        if (
-            window.nombreUsuarioActual &&
-            String(window.nombreUsuarioActual).trim()
-        ) {
-            return String(
-                window.nombreUsuarioActual
-            ).trim();
-        }
+            if (
+                window.nombreUsuarioActual &&
+                String(
+                    window.nombreUsuarioActual
+                ).trim()
+            ) {
+                return String(
+                    window.nombreUsuarioActual
+                ).trim();
+            }
 
-        if (
-            window.perfilUsuario &&
-            window.perfilUsuario.nombre
-        ) {
-            return String(
+            if (
+                window.perfilUsuario &&
                 window.perfilUsuario.nombre
-            ).trim();
-        }
+            ) {
+                return String(
+                    window.perfilUsuario.nombre
+                ).trim();
+            }
 
-        return "";
-    };
+            return "";
+        };
 
-    // ============================================================
-    // OBTENER CORREO DEL USUARIO ACTUAL
-    // ============================================================
+    /* =========================================================
+       OBTENER CORREO DEL USUARIO
+       ========================================================= */
 
-    window.obtenerCorreoUsuarioActual = function () {
+    window.obtenerCorreoUsuarioActual =
+        function () {
 
-        if (
-            window.perfilUsuario &&
-            window.perfilUsuario.correo
-        ) {
-            return String(
+            if (
+                window.perfilUsuario &&
                 window.perfilUsuario.correo
-            ).trim();
-        }
+            ) {
+                return String(
+                    window.perfilUsuario.correo
+                ).trim();
+            }
 
-        if (
-            window.usuarioSesion &&
-            window.usuarioSesion.email
-        ) {
-            return String(
+            if (
+                window.usuarioSesion &&
                 window.usuarioSesion.email
-            ).trim();
-        }
+            ) {
+                return String(
+                    window.usuarioSesion.email
+                ).trim();
+            }
 
-        return "";
-    };
+            return "";
+        };
 
-    // ============================================================
-    // VERIFICAR ROL ADMINISTRADOR
-    // ============================================================
+    /* =========================================================
+       COMPROBAR ADMINISTRADOR
+       ========================================================= */
 
-    window.esAdministrador = function () {
+    window.esAdministrador =
+        function () {
+            return (
+                window.rolUsuario ===
+                "ADMINISTRADOR"
+            );
+        };
 
-        return (
-            window.rolUsuario ===
-            "ADMINISTRADOR"
-        );
-    };
+    /* =========================================================
+       COMPROBAR USUARIO
+       ========================================================= */
 
-    // ============================================================
-    // VERIFICAR ROL USUARIO
-    // ============================================================
+    window.esUsuario =
+        function () {
+            return (
+                window.rolUsuario ===
+                "USUARIO"
+            );
+        };
 
-    window.esUsuario = function () {
+    /* =========================================================
+       COMPROBAR ROL
+       ========================================================= */
 
-        return (
-            window.rolUsuario ===
-            "USUARIO"
-        );
-    };
-
-    // ============================================================
-    // VERIFICAR CUALQUIER ROL
-    // ============================================================
-
-    window.tieneRol = function (rol) {
-
-        return (
-            window.rolUsuario ===
-            normalizarTextoAuth(rol)
-        );
-    };
+    window.tieneRol =
+        function (rol) {
+            return (
+                window.rolUsuario ===
+                normalizarTextoAuth(rol)
+            );
+        };
 
 })();
