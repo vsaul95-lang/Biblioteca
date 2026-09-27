@@ -739,7 +739,7 @@
                 class="filtro-select">
 
                 <option value="">
-                    Todas las bibliotecas
+                    Todos los sitios de préstamo
                 </option>
 
                 <option value="F">
@@ -760,10 +760,6 @@
 
                 <option value="Z">
                     Z
-                </option>
-
-                <option value="NE">
-                    NE
                 </option>
 
             </select>
@@ -1388,8 +1384,36 @@
         }
 
 
+        /*
+         * Orden de seguridad:
+         * los préstamos más recientes siempre
+         * quedan primero, independientemente
+         * del orden recibido desde Supabase.
+         */
+        prestamos.sort(
+            (a, b) => {
+
+                const fechaA =
+                    new Date(
+                        a.fechaPrestamo || 0
+                    ).getTime();
+
+                const fechaB =
+                    new Date(
+                        b.fechaPrestamo || 0
+                    ).getTime();
+
+                return fechaB - fechaA;
+
+            }
+        );
+
+
         prestamosFiltrados =
             [...prestamos];
+
+
+        paginaActual = 1;
 
 
         mostrarPrestamos();
@@ -2438,7 +2462,7 @@
             );
 
 
-        const filtroBiblioteca =
+        const filtroSitioPrestamo =
             normalizar(
                 document.getElementById(
                     "filtroBiblioteca"
@@ -2462,9 +2486,9 @@
                             : "AFILIADO";
 
 
-                    const biblioteca =
+                    const sitioPrestamo =
                         normalizar(
-                            prestamo.Biblioteca
+                            prestamo.SitioPrestamo
                         );
 
 
@@ -2480,7 +2504,8 @@
                         prestamo.nombreLibro,
                         prestamo.codigoLibro,
                         prestamo.tipoPrestamo,
-                        prestamo.Biblioteca
+                        prestamo.Biblioteca,
+                        prestamo.SitioPrestamo
 
                     ]
                         .map(
@@ -2503,20 +2528,44 @@
                             filtroTipo;
 
 
-                    const coincideBiblioteca =
-                        !filtroBiblioteca ||
-                        biblioteca ===
-                            filtroBiblioteca;
+                    const coincideSitioPrestamo =
+                        !filtroSitioPrestamo ||
+                        sitioPrestamo ===
+                            filtroSitioPrestamo;
 
 
                     return (
                         coincideTexto &&
                         coincideTipo &&
-                        coincideBiblioteca
+                        coincideSitioPrestamo
                     );
 
                 }
             );
+
+
+        /*
+         * Mantener siempre los registros
+         * más recientes primero después
+         * de aplicar cualquier filtro.
+         */
+        prestamosFiltrados.sort(
+            (a, b) => {
+
+                const fechaA =
+                    new Date(
+                        a.fechaPrestamo || 0
+                    ).getTime();
+
+                const fechaB =
+                    new Date(
+                        b.fechaPrestamo || 0
+                    ).getTime();
+
+                return fechaB - fechaA;
+
+            }
+        );
 
 
         paginaActual = 1;
