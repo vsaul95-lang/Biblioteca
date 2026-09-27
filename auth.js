@@ -9,28 +9,25 @@
     window.rolUsuario = null;
     window.estadoUsuario = null;
 
-    // Nombre del usuario actualmente autenticado.
-    // Este valor será utilizado por:
+    // Nombre real del usuario autenticado.
+    // Se utiliza para:
     // PrestadoPor
     // DevueltoPor
     window.nombreUsuarioActual = "";
+
 
     // ============================================================
     // CONFIGURACIÓN DE SESIÓN POR INACTIVIDAD
     // ============================================================
 
-    const TIEMPO_INACTIVIDAD =
-        30 * 60 * 1000; // 30 minutos
+    const TIEMPO_INACTIVIDAD = 30 * 60 * 1000; // 30 minutos
 
     const CLAVE_ULTIMA_ACTIVIDAD =
         "biblioteca_ultima_actividad";
 
     let temporizadorInactividad = null;
+    let intervaloActividad = null;
 
-    let ultimaActividadRegistrada = 0;
-
-    // Evita escribir en localStorage demasiadas veces
-    // cuando el usuario mueve continuamente el mouse.
     let ultimaActualizacionActividad = 0;
 
     const INTERVALO_ACTUALIZACION_ACTIVIDAD =
@@ -51,27 +48,39 @@
 
 
     // ============================================================
-    // OBTENER MARCA DE TIEMPO DE ÚLTIMA ACTIVIDAD
+    // OBTENER ÚLTIMA ACTIVIDAD
     // ============================================================
 
     function obtenerUltimaActividad() {
 
-        const valor =
-            localStorage.getItem(
-                CLAVE_ULTIMA_ACTIVIDAD
+        try {
+
+            const valor =
+                localStorage.getItem(
+                    CLAVE_ULTIMA_ACTIVIDAD
+                );
+
+            const numero =
+                Number(valor);
+
+            if (
+                !numero ||
+                !Number.isFinite(numero)
+            ) {
+                return 0;
+            }
+
+            return numero;
+
+        } catch (error) {
+
+            console.error(
+                "ERROR AL LEER ÚLTIMA ACTIVIDAD:",
+                error
             );
 
-        const numero =
-            Number(valor);
-
-        if (
-            !numero ||
-            !Number.isFinite(numero)
-        ) {
             return 0;
         }
-
-        return numero;
 
     }
 
@@ -80,32 +89,39 @@
     // GUARDAR ACTIVIDAD
     // ============================================================
 
-    function registrarActividad(
-        forzar = false
-    ) {
+    function registrarActividad(forzar = false) {
 
-        const ahora =
-            Date.now();
+        if (!window.usuarioSesion) {
+            return;
+        }
+
+        const ahora = Date.now();
 
         if (
             !forzar &&
-            ahora -
-                ultimaActualizacionActividad <
+            ahora - ultimaActualizacionActividad <
             INTERVALO_ACTUALIZACION_ACTIVIDAD
         ) {
             return;
         }
 
-        ultimaActualizacionActividad =
-            ahora;
+        ultimaActualizacionActividad = ahora;
 
-        ultimaActividadRegistrada =
-            ahora;
+        try {
 
-        localStorage.setItem(
-            CLAVE_ULTIMA_ACTIVIDAD,
-            String(ahora)
-        );
+            localStorage.setItem(
+                CLAVE_ULTIMA_ACTIVIDAD,
+                String(ahora)
+            );
+
+        } catch (error) {
+
+            console.error(
+                "ERROR AL GUARDAR ACTIVIDAD:",
+                error
+            );
+
+        }
 
         programarCierreInactividad();
 
@@ -118,16 +134,13 @@
 
     function limpiarTemporizadorInactividad() {
 
-        if (
-            temporizadorInactividad
-        ) {
+        if (temporizadorInactividad) {
 
             clearTimeout(
                 temporizadorInactividad
             );
 
-            temporizadorInactividad =
-                null;
+            temporizadorInactividad = null;
 
         }
 
@@ -143,12 +156,23 @@
         limpiarTemporizadorInactividad();
 
         console.log(
-            "La sesión se cerrará por 30 minutos de inactividad."
+            "Sesión cerrada por 30 minutos de inactividad."
         );
 
-        localStorage.removeItem(
-            CLAVE_ULTIMA_ACTIVIDAD
-        );
+        try {
+
+            localStorage.removeItem(
+                CLAVE_ULTIMA_ACTIVIDAD
+            );
+
+        } catch (error) {
+
+            console.error(
+                "ERROR AL LIMPIAR ACTIVIDAD:",
+                error
+            );
+
+        }
 
         window.usuarioSesion = null;
         window.perfilUsuario = null;
@@ -158,7 +182,14 @@
 
         try {
 
-            await supabaseClient.auth.signOut();
+            if (
+                window.supabaseClient &&
+                supabaseClient.auth
+            ) {
+
+                await supabaseClient.auth.signOut();
+
+            }
 
         } catch (error) {
 
@@ -169,21 +200,17 @@
 
         }
 
-        // Volver a la pantalla principal.
-        // index.html mostrará nuevamente el inicio de sesión.
+        // Volver a index.html
         if (
             !window.location.pathname
                 .toLowerCase()
                 .endsWith("index.html")
         ) {
 
-            window.location.href =
-                "index.html";
+            window.location.href = "index.html";
 
         } else {
 
-            // Si ya estamos en index.html,
-            // recargar para mostrar el acceso.
             window.location.reload();
 
         }
@@ -192,12 +219,16 @@
 
 
     // ============================================================
-    // PROGRAMAR CIERRE AUTOMÁTICO
+    // PROGRAMAR CIERRE POR INACTIVIDAD
     // ============================================================
 
     function programarCierreInactividad() {
 
         limpiarTemporizadorInactividad();
+
+        if (!window.usuarioSesion) {
+            return;
+        }
 
         const ultimaActividad =
             obtenerUltimaActividad();
@@ -206,28 +237,20 @@
             return;
         }
 
-        ultimaActividadRegistrada =
-            ultimaActividad;
-
-        const ahora =
-            Date.now();
+        const ahora = Date.now();
 
         const tiempoTranscurrido =
-            ahora -
-            ultimaActividad;
+            ahora - ultimaActividad;
 
         const tiempoRestante =
             TIEMPO_INACTIVIDAD -
             tiempoTranscurrido;
 
-        if (
-            tiempoRestante <= 0
-        ) {
+        if (tiempoRestante <= 0) {
 
             cerrarSesionPorInactividad();
 
             return;
-
         }
 
         temporizadorInactividad =
@@ -237,26 +260,31 @@
                     const ultima =
                         obtenerUltimaActividad();
 
+                    if (!ultima) {
+                        return;
+                    }
+
                     const momentoActual =
                         Date.now();
 
                     if (
-                        ultima &&
-                        momentoActual -
-                            ultima >=
+                        momentoActual - ultima >=
                         TIEMPO_INACTIVIDAD
                     ) {
 
                         cerrarSesionPorInactividad();
 
-                        return;
+                    } else {
+
+                        programarCierreInactividad();
 
                     }
 
-                    programarCierreInactividad();
-
                 },
-                tiempoRestante
+                Math.min(
+                    tiempoRestante,
+                    30000
+                )
             );
 
     }
@@ -268,21 +296,35 @@
 
     function iniciarControlInactividad() {
 
-        const ultimaActividad =
+        if (!window.usuarioSesion) {
+            return;
+        }
+
+        let ultimaActividad =
             obtenerUltimaActividad();
 
         if (!ultimaActividad) {
 
             registrarActividad(true);
 
-        } else {
-
-            ultimaActividadRegistrada =
-                ultimaActividad;
-
-            programarCierreInactividad();
-
+            return;
         }
+
+        const tiempoTranscurrido =
+            Date.now() -
+            ultimaActividad;
+
+        if (
+            tiempoTranscurrido >=
+            TIEMPO_INACTIVIDAD
+        ) {
+
+            cerrarSesionPorInactividad();
+
+            return;
+        }
+
+        programarCierreInactividad();
 
     }
 
@@ -295,15 +337,22 @@
 
         limpiarTemporizadorInactividad();
 
-        localStorage.removeItem(
-            CLAVE_ULTIMA_ACTIVIDAD
-        );
+        try {
 
-        ultimaActividadRegistrada =
-            0;
+            localStorage.removeItem(
+                CLAVE_ULTIMA_ACTIVIDAD
+            );
 
-        ultimaActualizacionActividad =
-            0;
+        } catch (error) {
+
+            console.error(
+                "ERROR AL LIMPIAR ACTIVIDAD:",
+                error
+            );
+
+        }
+
+        ultimaActualizacionActividad = 0;
 
     }
 
@@ -333,8 +382,6 @@
                     evento,
                     function () {
 
-                        // Solo registrar actividad si
-                        // existe una sesión de usuario.
                         if (
                             window.usuarioSesion
                         ) {
@@ -352,39 +399,48 @@
             }
         );
 
-        // También revisar periódicamente el tiempo de inactividad.
-        setInterval(
-            function () {
+        // Evitar crear múltiples intervalos
+        if (intervaloActividad) {
 
-                if (
-                    !window.usuarioSesion
-                ) {
-                    return;
-                }
+            clearInterval(
+                intervaloActividad
+            );
 
-                const ultima =
-                    obtenerUltimaActividad();
+        }
 
-                if (!ultima) {
-                    return;
-                }
+        intervaloActividad =
+            setInterval(
+                function () {
 
-                const tiempoTranscurrido =
-                    Date.now() -
-                    ultima;
+                    if (
+                        !window.usuarioSesion
+                    ) {
+                        return;
+                    }
 
-                if (
-                    tiempoTranscurrido >=
-                    TIEMPO_INACTIVIDAD
-                ) {
+                    const ultima =
+                        obtenerUltimaActividad();
 
-                    cerrarSesionPorInactividad();
+                    if (!ultima) {
+                        return;
+                    }
 
-                }
+                    const tiempoTranscurrido =
+                        Date.now() -
+                        ultima;
 
-            },
-            30 * 1000
-        );
+                    if (
+                        tiempoTranscurrido >=
+                        TIEMPO_INACTIVIDAD
+                    ) {
+
+                        cerrarSesionPorInactividad();
+
+                    }
+
+                },
+                30000
+            );
 
     }
 
@@ -402,27 +458,29 @@
         try {
 
             // ----------------------------------------------------
-            // 1. VERIFICAR INACTIVIDAD ANTES DE OBTENER SESIÓN
+            // 1. VERIFICAR QUE SUPABASE ESTÉ DISPONIBLE
             // ----------------------------------------------------
 
-            const ultimaActividad =
-                obtenerUltimaActividad();
-
             if (
-                ultimaActividad &&
-                Date.now() -
-                    ultimaActividad >=
-                TIEMPO_INACTIVIDAD
+                !window.supabaseClient
             ) {
 
-                console.log(
-                    "SESION EXPIRADA POR INACTIVIDAD"
+                console.error(
+                    "SUPABASECLIENT NO ESTÁ DISPONIBLE."
                 );
 
-                await cerrarSesionPorInactividad();
+                return false;
+            }
+
+            if (
+                !supabaseClient.auth
+            ) {
+
+                console.error(
+                    "EL CLIENTE DE SUPABASE AUTH NO ESTÁ DISPONIBLE."
+                );
 
                 return false;
-
             }
 
 
@@ -430,13 +488,19 @@
             // 2. OBTENER SESIÓN ACTUAL
             // ----------------------------------------------------
 
+            console.log(
+                "VERIFICANDO SESIÓN DE SUPABASE..."
+            );
+
             const resultadoSesion =
                 await supabaseClient.auth.getSession();
 
-            if (resultadoSesion.error) {
+            if (
+                resultadoSesion.error
+            ) {
 
                 console.error(
-                    "ERROR SESION:",
+                    "ERROR SESIÓN:",
                     resultadoSesion.error
                 );
 
@@ -444,12 +508,19 @@
             }
 
             const session =
-                resultadoSesion.data.session;
+                resultadoSesion.data
+                    ? resultadoSesion.data.session
+                    : null;
+
+
+            // ----------------------------------------------------
+            // 3. VERIFICAR QUE EXISTA SESIÓN
+            // ----------------------------------------------------
 
             if (!session) {
 
                 console.error(
-                    "NO HAY SESION"
+                    "NO HAY SESIÓN ACTIVA."
                 );
 
                 detenerControlInactividad();
@@ -458,7 +529,7 @@
             }
 
             console.log(
-                "SESION ENCONTRADA:",
+                "SESIÓN ENCONTRADA:",
                 session.user.email
             );
 
@@ -469,33 +540,12 @@
 
 
             // ----------------------------------------------------
-            // 3. VERIFICAR NUEVAMENTE EL TIEMPO
+            // 4. BUSCAR PERFIL EN usuarios
             // ----------------------------------------------------
 
-            const actividadDespuesSesion =
-                obtenerUltimaActividad();
-
-            if (
-                actividadDespuesSesion &&
-                Date.now() -
-                    actividadDespuesSesion >=
-                TIEMPO_INACTIVIDAD
-            ) {
-
-                console.log(
-                    "SESION EXPIRADA POR INACTIVIDAD"
-                );
-
-                await cerrarSesionPorInactividad();
-
-                return false;
-
-            }
-
-
-            // ----------------------------------------------------
-            // 4. BUSCAR PERFIL EN TABLA usuarios
-            // ----------------------------------------------------
+            console.log(
+                "BUSCANDO PERFIL EN usuarios..."
+            );
 
             const resultadoPerfil =
                 await supabaseClient
@@ -509,7 +559,9 @@
                     )
                     .maybeSingle();
 
-            if (resultadoPerfil.error) {
+            if (
+                resultadoPerfil.error
+            ) {
 
                 console.error(
                     "ERROR PERFIL:",
@@ -521,6 +573,11 @@
 
             const perfil =
                 resultadoPerfil.data;
+
+
+            // ----------------------------------------------------
+            // 5. VERIFICAR PERFIL
+            // ----------------------------------------------------
 
             if (!perfil) {
 
@@ -544,7 +601,7 @@
 
 
             // ----------------------------------------------------
-            // 5. OBTENER ROL Y ESTADO
+            // 6. OBTENER ROL Y ESTADO
             // ----------------------------------------------------
 
             window.rolUsuario =
@@ -559,7 +616,7 @@
 
 
             // ----------------------------------------------------
-            // 6. VERIFICAR QUE EL USUARIO ESTÉ ACTIVO
+            // 7. VERIFICAR USUARIO ACTIVO
             // ----------------------------------------------------
 
             if (
@@ -577,46 +634,38 @@
 
 
             // ----------------------------------------------------
-            // 7. OBTENER AUTOMÁTICAMENTE EL NOMBRE REAL
+            // 8. OBTENER NOMBRE REAL
             // ----------------------------------------------------
 
             const nombreReal =
                 String(
                     perfil.nombre || ""
-                )
-                    .trim();
+                ).trim();
 
             if (!nombreReal) {
 
                 console.error(
-                    "EL USUARIO NO TIENE NOMBRE REGISTRADO EN usuarios"
+                    "EL USUARIO NO TIENE NOMBRE REGISTRADO EN usuarios."
                 );
 
                 return false;
             }
 
 
-            // Nombre que utilizarán los módulos
             window.nombreUsuarioActual =
                 nombreReal;
 
 
             // ----------------------------------------------------
-            // 8. INICIAR / CONTINUAR CONTROL DE INACTIVIDAD
+            // 9. AHORA SÍ ACTIVAR INACTIVIDAD
             // ----------------------------------------------------
 
-            if (
-                !obtenerUltimaActividad()
-            ) {
+            iniciarControlInactividad();
 
-                registrarActividad(true);
 
-            } else {
-
-                programarCierreInactividad();
-
-            }
-
+            // ----------------------------------------------------
+            // 10. CONFIRMACIÓN
+            // ----------------------------------------------------
 
             console.log(
                 "USUARIO AUTORIZADO:",
@@ -639,6 +688,7 @@
 
             return false;
         }
+
     };
 
 
@@ -760,12 +810,9 @@
 
 
     // ============================================================
-    // ACTIVAR CONTROL DE ACTIVIDAD
+    // ACTIVAR DETECCIÓN DE ACTIVIDAD
     // ============================================================
 
     configurarDeteccionActividad();
 
 })();
-
-[/code]
-[/writing]
