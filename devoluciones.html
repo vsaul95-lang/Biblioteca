@@ -179,6 +179,39 @@
             background: #d8e8ee;
         }
 
+        /* ==============================
+           BOTONES DE TIPO
+        ============================== */
+
+        .botones-tipo {
+            display: flex;
+            gap: 6px;
+            margin-top: 9px;
+        }
+
+        .boton-tipo {
+            border: 1px solid #cfd8dc;
+            background: white;
+            color: #546e7a;
+            border-radius: 6px;
+            padding: 7px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .boton-tipo:hover {
+            background: #eaf7fc;
+            border-color: #009ddc;
+            color: #009ddc;
+        }
+
+        .boton-tipo.activo {
+            background: #009ddc;
+            border-color: #009ddc;
+            color: white;
+        }
+
         .tabla-contenedor {
             background: white;
             border: 1px solid #dfeaf0;
@@ -782,6 +815,26 @@
 
         </div>
 
+
+        <div class="botones-tipo">
+
+            <button
+                type="button"
+                id="btnAfiliados"
+                class="boton-tipo">
+                Afiliados
+            </button>
+
+
+            <button
+                type="button"
+                id="btnColaboradores"
+                class="boton-tipo">
+                Colaboradores
+            </button>
+
+        </div>
+
     </section>
 
 
@@ -1173,6 +1226,8 @@
 
     let autenticacionLista = false;
 
+    let filtroTipoBoton = "";
+
 
     function normalizar(valor) {
 
@@ -1202,6 +1257,45 @@
         return String(
             parseInt(numero, 10)
         );
+
+    }
+
+
+    /*
+     * Normaliza códigos de colaborador.
+     *
+     * Ejemplos:
+     * C099 → C99
+     * c099 → C99
+     * C0099 → C99
+     * C99 → C99
+     *
+     * Esto permite buscar sin tener que
+     * escribir los ceros iniciales.
+     */
+    function normalizarCodigoColaborador(valor) {
+
+        const texto =
+            normalizar(valor);
+
+        if (!texto) {
+            return "";
+        }
+
+        const coincidencia =
+            texto.match(/^C0*(\d+)$/);
+
+        if (!coincidencia) {
+            return texto;
+        }
+
+        return "C" +
+            String(
+                parseInt(
+                    coincidencia[1],
+                    10
+                )
+            );
 
     }
 
@@ -1264,6 +1358,29 @@
                 prestamo.tipoPrestamo
             ) === "COLABORADOR" ||
             !!prestamo.CodigoColaborador
+        );
+
+    }
+
+
+    function ordenarPorFechaDescendente(lista) {
+
+        return [...lista].sort(
+            (a, b) => {
+
+                const fechaA =
+                    new Date(
+                        a.fechaPrestamo || 0
+                    ).getTime();
+
+                const fechaB =
+                    new Date(
+                        b.fechaPrestamo || 0
+                    ).getTime();
+
+                return fechaB - fechaA;
+
+            }
         );
 
     }
@@ -1384,29 +1501,10 @@
         }
 
 
-        /*
-         * Orden de seguridad:
-         * los préstamos más recientes siempre
-         * quedan primero, independientemente
-         * del orden recibido desde Supabase.
-         */
-        prestamos.sort(
-            (a, b) => {
-
-                const fechaA =
-                    new Date(
-                        a.fechaPrestamo || 0
-                    ).getTime();
-
-                const fechaB =
-                    new Date(
-                        b.fechaPrestamo || 0
-                    ).getTime();
-
-                return fechaB - fechaA;
-
-            }
-        );
+        prestamos =
+            ordenarPorFechaDescendente(
+                prestamos
+            );
 
 
         prestamosFiltrados =
@@ -1414,6 +1512,23 @@
 
 
         paginaActual = 1;
+
+
+        filtroTipoBoton = "";
+
+
+        document.getElementById(
+            "btnAfiliados"
+        ).classList.remove(
+            "activo"
+        );
+
+
+        document.getElementById(
+            "btnColaboradores"
+        ).classList.remove(
+            "activo"
+        );
 
 
         mostrarPrestamos();
@@ -2470,6 +2585,11 @@
             );
 
 
+        const tipoSeleccionado =
+            filtroTipoBoton ||
+            filtroTipo;
+
+
         prestamosFiltrados =
             prestamos.filter(
                 prestamo => {
@@ -2492,40 +2612,74 @@
                         );
 
 
-                    const textoBusqueda = [
-
-                        prestamo.FamiliaId,
-                        prestamo.PersonaId,
-                        prestamo.Nombres,
-                        prestamo.Apellidos,
-                        prestamo.CodigoColaborador,
-                        prestamo.NombreColaborador,
-                        prestamo.AreaColaborador,
-                        prestamo.nombreLibro,
-                        prestamo.codigoLibro,
-                        prestamo.tipoPrestamo,
-                        prestamo.Biblioteca,
-                        prestamo.SitioPrestamo
-
-                    ]
-                        .map(
-                            valor =>
-                                normalizar(valor)
-                        )
-                        .join(" ");
+                    const codigoColaborador =
+                        normalizarCodigoColaborador(
+                            prestamo.CodigoColaborador
+                        );
 
 
-                    const coincideTexto =
-                        !texto ||
-                        textoBusqueda.includes(
+                    /*
+                     * Para la búsqueda del código del
+                     * colaborador se normalizan los
+                     * ceros iniciales.
+                     *
+                     * Ejemplo:
+                     * Registro: C099
+                     * Usuario busca: C99
+                     * Ambos se convierten en C99.
+                     */
+                    const textoNormalizado =
+                        normalizarCodigoColaborador(
                             texto
                         );
 
 
+                    const textoBusquedaNormal =
+                        [
+                            prestamo.FamiliaId,
+                            prestamo.PersonaId,
+                            prestamo.Nombres,
+                            prestamo.Apellidos,
+                            prestamo.CodigoColaborador,
+                            prestamo.NombreColaborador,
+                            prestamo.AreaColaborador,
+                            prestamo.nombreLibro,
+                            prestamo.codigoLibro,
+                            prestamo.tipoPrestamo,
+                            prestamo.Biblioteca,
+                            prestamo.SitioPrestamo
+                        ]
+                            .map(
+                                valor =>
+                                    normalizar(valor)
+                            )
+                            .join(" ");
+
+
+                    const coincideCodigoColaborador =
+                        !!texto &&
+                        !!codigoColaborador &&
+                        (
+                            codigoColaborador ===
+                            textoNormalizado ||
+                            codigoColaborador.includes(
+                                textoNormalizado
+                            )
+                        );
+
+
+                    const coincideTexto =
+                        !texto ||
+                        textoBusquedaNormal.includes(
+                            texto
+                        ) ||
+                        coincideCodigoColaborador;
+
+
                     const coincideTipo =
-                        !filtroTipo ||
+                        !tipoSeleccionado ||
                         tipoPrestamo ===
-                            filtroTipo;
+                            tipoSeleccionado;
 
 
                     const coincideSitioPrestamo =
@@ -2544,34 +2698,77 @@
             );
 
 
-        /*
-         * Mantener siempre los registros
-         * más recientes primero después
-         * de aplicar cualquier filtro.
-         */
-        prestamosFiltrados.sort(
-            (a, b) => {
-
-                const fechaA =
-                    new Date(
-                        a.fechaPrestamo || 0
-                    ).getTime();
-
-                const fechaB =
-                    new Date(
-                        b.fechaPrestamo || 0
-                    ).getTime();
-
-                return fechaB - fechaA;
-
-            }
-        );
+        prestamosFiltrados =
+            ordenarPorFechaDescendente(
+                prestamosFiltrados
+            );
 
 
         paginaActual = 1;
 
 
         mostrarPrestamos();
+
+    }
+
+
+    function activarFiltroTipo(tipo) {
+
+        const botonAfiliados =
+            document.getElementById(
+                "btnAfiliados"
+            );
+
+        const botonColaboradores =
+            document.getElementById(
+                "btnColaboradores"
+            );
+
+
+        if (
+            filtroTipoBoton ===
+            tipo
+        ) {
+
+            filtroTipoBoton = "";
+
+
+            botonAfiliados.classList.remove(
+                "activo"
+            );
+
+
+            botonColaboradores.classList.remove(
+                "activo"
+            );
+
+        } else {
+
+            filtroTipoBoton =
+                tipo;
+
+
+            botonAfiliados.classList.toggle(
+                "activo",
+                tipo === "AFILIADO"
+            );
+
+
+            botonColaboradores.classList.toggle(
+                "activo",
+                tipo === "COLABORADOR"
+            );
+
+        }
+
+
+        document.getElementById(
+            "filtroTipo"
+        ).value =
+            filtroTipoBoton;
+
+
+        aplicarBusqueda();
 
     }
 
@@ -2731,7 +2928,31 @@
         "filtroTipo"
     ).addEventListener(
         "change",
-        aplicarBusqueda
+        function() {
+
+            filtroTipoBoton =
+                this.value;
+
+
+            document.getElementById(
+                "btnAfiliados"
+            ).classList.toggle(
+                "activo",
+                this.value === "AFILIADO"
+            );
+
+
+            document.getElementById(
+                "btnColaboradores"
+            ).classList.toggle(
+                "activo",
+                this.value === "COLABORADOR"
+            );
+
+
+            aplicarBusqueda();
+
+        }
     );
 
 
@@ -2740,6 +2961,34 @@
     ).addEventListener(
         "change",
         aplicarBusqueda
+    );
+
+
+    document.getElementById(
+        "btnAfiliados"
+    ).addEventListener(
+        "click",
+        function() {
+
+            activarFiltroTipo(
+                "AFILIADO"
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnColaboradores"
+    ).addEventListener(
+        "click",
+        function() {
+
+            activarFiltroTipo(
+                "COLABORADOR"
+            );
+
+        }
     );
 
 
@@ -2764,8 +3013,28 @@
             ).value = "";
 
 
+            filtroTipoBoton =
+                "";
+
+
+            document.getElementById(
+                "btnAfiliados"
+            ).classList.remove(
+                "activo"
+            );
+
+
+            document.getElementById(
+                "btnColaboradores"
+            ).classList.remove(
+                "activo"
+            );
+
+
             prestamosFiltrados =
-                [...prestamos];
+                ordenarPorFechaDescendente(
+                    prestamos
+                );
 
 
             paginaActual = 1;
