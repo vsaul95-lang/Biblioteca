@@ -303,6 +303,95 @@
 
 
         /* =====================================================
+           LIBROS ADICIONALES
+        ====================================================== */
+
+        .libros-adicionales {
+            margin-top: 15px;
+        }
+
+        .libro-adicional {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .libro-adicional-titulo {
+            font-size: 14px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .libro-adicional-info {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #eaf7fc;
+            border: 1px solid #c9eaf6;
+            border-radius: 7px;
+            font-size: 13px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .libro-adicional-info strong {
+            color: #007caf;
+        }
+
+        .acciones-libros {
+            margin-top: 14px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-agregar-libro {
+            background: #009ddc;
+            color: white;
+        }
+
+        .btn-agregar-libro:hover {
+            opacity: 0.9;
+        }
+
+        .btn-quitar-libro {
+            background: #6b7280;
+            color: white;
+            padding: 7px 11px;
+            font-size: 12px;
+        }
+
+        .btn-quitar-libro:hover {
+            opacity: 0.9;
+        }
+
+        .mensaje-libro-adicional {
+            margin-top: 10px;
+            padding: 9px 11px;
+            border-radius: 7px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .mensaje-libro-adicional.error {
+            display: block;
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .mensaje-libro-adicional.exito {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+
+        /* =====================================================
            RESUMEN DEL PRÉSTAMO
         ====================================================== */
 
@@ -375,6 +464,35 @@
             font-weight: 600;
             text-align: right;
             color: #1f2937;
+        }
+
+
+        /* =====================================================
+           LISTA DE LIBROS EN RESUMEN
+        ====================================================== */
+
+        .lista-resumen-libros {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .resumen-libro-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
+            padding: 10px 12px;
+        }
+
+        .resumen-libro-item strong {
+            color: #007caf;
+        }
+
+        .resumen-libro-numero {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            margin-bottom: 4px;
         }
 
 
@@ -573,6 +691,14 @@
                 text-align: left;
             }
 
+            .acciones-libros {
+                flex-direction: column;
+            }
+
+            .acciones-libros button {
+                width: 100%;
+            }
+
         }
 
     </style>
@@ -593,7 +719,6 @@
         </h1>
 
     </div>
-
 
     <a
         href="index.html"
@@ -780,6 +905,8 @@
 
         <h2>2. Buscar libro</h2>
 
+        <!-- LIBRO PRINCIPAL -->
+
         <div class="fila-busqueda">
 
             <input
@@ -810,6 +937,31 @@
             id="libroInfo"
             class="libro-info"
         ></div>
+
+
+        <!-- LIBROS ADICIONALES -->
+
+        <div
+            id="librosAdicionales"
+            class="libros-adicionales"
+        ></div>
+
+
+        <div
+            id="accionesLibros"
+            class="acciones-libros"
+            style="display:none;"
+        >
+
+            <button
+                type="button"
+                id="btnAgregarLibro"
+                class="btn-agregar-libro"
+            >
+                + Agregar libro
+            </button>
+
+        </div>
 
     </section>
 
@@ -907,38 +1059,16 @@
                         </div>
 
 
-                        <!-- LIBRO -->
+                        <!-- LIBROS -->
 
                         <div class="tarjeta-dato">
 
-                            <h3>📚 Libro</h3>
+                            <h3>📚 Libros</h3>
 
-
-                            <div class="dato">
-
-                                <span>Código</span>
-
-                                <span id="resumenCodigoLibro"></span>
-
-                            </div>
-
-
-                            <div class="dato">
-
-                                <span>Nombre</span>
-
-                                <span id="resumenNombreLibro"></span>
-
-                            </div>
-
-
-                            <div class="dato">
-
-                                <span>Estado</span>
-
-                                <span>Disponible</span>
-
-                            </div>
+                            <div
+                                id="listaResumenLibros"
+                                class="lista-resumen-libros"
+                            ></div>
 
                         </div>
 
@@ -1054,7 +1184,8 @@
                 </div>
 
                 <p class="confirmacion-texto">
-                    Revise que la persona, el libro, el sitio y las fechas sean correctos antes de continuar.
+                    Revise que la persona, los libros, el sitio y las fechas sean correctos antes de continuar.
+                    Cada libro se registrará como un préstamo independiente.
                 </p>
 
 
@@ -1102,6 +1233,19 @@ let personaSeleccionada = null;
 let colaboradorSeleccionado = null;
 
 let libroSeleccionado = null;
+
+/*
+   librosSeleccionados contiene todos los libros de esta
+   operación.
+
+   El primer libro también se mantiene en libroSeleccionado
+   para conservar la lógica principal del sistema.
+*/
+let librosSeleccionados = [];
+
+let cantidadLibros = 0;
+
+const MAX_LIBROS = 3;
 
 let tipoSolicitante = "Afiliado";
 
@@ -1260,6 +1404,15 @@ const mensajeFinal =
 const libroInfo =
     document.getElementById("libroInfo");
 
+const librosAdicionales =
+    document.getElementById("librosAdicionales");
+
+const accionesLibros =
+    document.getElementById("accionesLibros");
+
+const btnAgregarLibro =
+    document.getElementById("btnAgregarLibro");
+
 const resumenPrestamo =
     document.getElementById("resumenPrestamo");
 
@@ -1322,11 +1475,8 @@ const resumenNombre =
 const resumenSitio =
     document.getElementById("resumenSitio");
 
-const resumenCodigoLibro =
-    document.getElementById("resumenCodigoLibro");
-
-const resumenNombreLibro =
-    document.getElementById("resumenNombreLibro");
+const listaResumenLibros =
+    document.getElementById("listaResumenLibros");
 
 
 /* =========================================================
@@ -1889,6 +2039,8 @@ function cambiarTipoSolicitante(
 
     buscarColaboradorInput.value =
         "";
+
+    limpiarTodosLosLibros();
 
 
     if (
@@ -2484,7 +2636,7 @@ function seleccionarColaborador(
 
 
 /* =========================================================
-   BUSCAR LIBRO
+   BUSCAR LIBRO PRINCIPAL
 ========================================================= */
 
 async function buscarLibro() {
@@ -2502,6 +2654,8 @@ async function buscarLibro() {
     libroSeleccionado =
         null;
 
+    librosSeleccionados = [];
+
     actualizarDetalle();
 
 
@@ -2516,6 +2670,53 @@ async function buscarLibro() {
         return;
     }
 
+
+    const libro =
+        await buscarLibroDisponible(
+            codigoIngresado
+        );
+
+
+    if (!libro) {
+        return;
+    }
+
+
+    libroSeleccionado =
+        libro;
+
+    librosSeleccionados = [
+        libro
+    ];
+
+    cantidadLibros = 1;
+
+
+    libroInfo.innerHTML = `
+        <strong>Libro encontrado</strong><br>
+        Código: ${escapeHtml(libro.codigoLibro)}<br>
+        Nombre: ${escapeHtml(libro.nombreLibro)}<br>
+        Estado: Disponible
+    `;
+
+
+    libroInfo.style.display =
+        "block";
+
+
+    actualizarInterfazLibros();
+
+    actualizarDetalle();
+}
+
+
+/* =========================================================
+   BUSCAR LIBRO EN SUPABASE
+========================================================= */
+
+async function buscarLibroDisponible(
+    codigoIngresado
+) {
 
     const codigoNormalizado =
         normalizarCodigo(
@@ -2558,7 +2759,7 @@ async function buscarLibro() {
                 "error"
             );
 
-            return;
+            return null;
         }
 
 
@@ -2575,7 +2776,7 @@ async function buscarLibro() {
                 "error"
             );
 
-            return;
+            return null;
         }
 
 
@@ -2585,7 +2786,7 @@ async function buscarLibro() {
         } =
             await supabaseClient
                 .from("prestamos")
-                .select("*")
+                .select("codigoLibro, estado")
                 .eq(
                     "estado",
                     "Prestado"
@@ -2622,39 +2823,1061 @@ async function buscarLibro() {
                 "error"
             );
 
-            return;
+            return null;
         }
 
 
-        libroSeleccionado =
-            libro;
-
-
-        libroInfo.innerHTML = `
-            <strong>Libro encontrado</strong><br>
-            Código: ${escapeHtml(libro.codigoLibro)}<br>
-            Nombre: ${escapeHtml(libro.nombreLibro)}<br>
-            Estado: Disponible
-        `;
-
-
-        libroInfo.style.display =
-            "block";
-
-
-        actualizarDetalle();
+        return libro;
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "ERROR BUSCANDO LIBRO:",
+            error
+        );
 
         mostrarMensaje(
             mensajeLibro,
             "Ocurrió un error al consultar el libro.",
             "error"
         );
+
+        return null;
     }
+}
+
+
+/* =========================================================
+   AGREGAR LIBRO
+========================================================= */
+
+function agregarLibro() {
+
+    if (
+        librosSeleccionados.length === 0
+    ) {
+
+        mostrarMensaje(
+            mensajeLibro,
+            "Primero debe seleccionar un libro.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (
+        librosSeleccionados.length >= MAX_LIBROS
+    ) {
+
+        mostrarMensaje(
+            mensajeLibro,
+            "Puede registrar un máximo de 3 libros por préstamo.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const numero =
+        librosSeleccionados.length + 1;
+
+
+    crearBuscadorLibroAdicional(
+        numero
+    );
+
+
+    actualizarInterfazLibros();
+}
+
+
+/* =========================================================
+   CREAR BUSCADOR ADICIONAL
+========================================================= */
+
+function crearBuscadorLibroAdicional(
+    numero
+) {
+
+    const contenedor =
+        document.createElement("div");
+
+    contenedor.className =
+        "libro-adicional";
+
+    contenedor.id =
+        `libroAdicional${numero}`;
+
+
+    contenedor.innerHTML = `
+
+        <div class="libro-adicional-titulo">
+            Libro ${numero}
+        </div>
+
+        <div class="fila-busqueda">
+
+            <input
+                type="text"
+                id="buscarLibro${numero}"
+                placeholder="Ingrese código del libro..."
+                maxlength="8"
+                inputmode="numeric"
+            >
+
+            <button
+                type="button"
+                class="btn-buscar"
+                id="btnBuscarLibro${numero}"
+            >
+                Buscar
+            </button>
+
+        </div>
+
+        <div
+            id="mensajeLibro${numero}"
+            class="mensaje-libro-adicional"
+        ></div>
+
+        <div
+            id="libroInfo${numero}"
+            class="libro-adicional-info"
+        ></div>
+
+        <div
+            id="accionesLibro${numero}"
+            style="margin-top:10px; display:none;"
+        >
+
+            <button
+                type="button"
+                class="btn-quitar-libro"
+                id="btnQuitarLibro${numero}"
+            >
+                Quitar libro
+            </button>
+
+        </div>
+    `;
+
+
+    librosAdicionales.appendChild(
+        contenedor
+    );
+
+
+    const input =
+        document.getElementById(
+            `buscarLibro${numero}`
+        );
+
+    const boton =
+        document.getElementById(
+            `btnBuscarLibro${numero}`
+        );
+
+
+    boton.addEventListener(
+        "click",
+        function() {
+
+            buscarLibroAdicional(
+                numero
+            );
+
+        }
+    );
+
+
+    input.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                buscarLibroAdicional(
+                    numero
+                );
+
+            }
+
+        }
+    );
+
+
+    input.addEventListener(
+        "input",
+        function() {
+
+            this.value =
+                this.value
+                    .replace(
+                        /\D/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        8
+                    );
+
+        }
+    );
+
+
+    document
+        .getElementById(
+            `btnQuitarLibro${numero}`
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                quitarLibroAdicional(
+                    numero
+                );
+
+            }
+        );
+
+
+    input.focus();
+}
+
+
+/* =========================================================
+   BUSCAR LIBRO ADICIONAL
+========================================================= */
+
+async function buscarLibroAdicional(
+    numero
+) {
+
+    const input =
+        document.getElementById(
+            `buscarLibro${numero}`
+        );
+
+    const mensaje =
+        document.getElementById(
+            `mensajeLibro${numero}`
+        );
+
+    const info =
+        document.getElementById(
+            `libroInfo${numero}`
+        );
+
+    const acciones =
+        document.getElementById(
+            `accionesLibro${numero}`
+        );
+
+
+    if (
+        !input ||
+        !mensaje ||
+        !info
+    ) {
+
+        return;
+    }
+
+
+    mensaje.textContent =
+        "";
+
+    mensaje.className =
+        "mensaje-libro-adicional";
+
+    info.innerHTML =
+        "";
+
+    info.style.display =
+        "none";
+
+    if (acciones) {
+        acciones.style.display =
+            "none";
+    }
+
+
+    const codigoIngresado =
+        input.value.trim();
+
+
+    if (!codigoIngresado) {
+
+        mensaje.textContent =
+            "Ingrese el código del libro.";
+
+        mensaje.className =
+            "mensaje-libro-adicional error";
+
+        return;
+    }
+
+
+    const codigoNormalizado =
+        normalizarCodigo(
+            codigoIngresado
+        );
+
+
+    /* =====================================================
+       COMPROBAR QUE NO SEA UN LIBRO YA SELECCIONADO
+    ====================================================== */
+
+    const repetido =
+        librosSeleccionados
+            .some(
+                libro =>
+                    normalizarCodigo(
+                        libro.codigoLibro
+                    ) ===
+                    codigoNormalizado
+            );
+
+
+    if (repetido) {
+
+        mensaje.textContent =
+            "Este libro ya está seleccionado en este préstamo.";
+
+        mensaje.className =
+            "mensaje-libro-adicional error";
+
+        return;
+    }
+
+
+    /* =====================================================
+       BUSCAR LIBRO
+    ====================================================== */
+
+    const libro =
+        await buscarLibroDisponibleAdicional(
+            codigoIngresado,
+            mensaje
+        );
+
+
+    if (!libro) {
+        return;
+    }
+
+
+    /*
+       Guardamos temporalmente el libro en una propiedad
+       del contenedor. Solo se agrega al arreglo cuando
+       la búsqueda fue exitosa.
+    */
+
+    const contenedor =
+        document.getElementById(
+            `libroAdicional${numero}`
+        );
+
+    if (!contenedor) {
+        return;
+    }
+
+
+    contenedor.dataset.libroId =
+        String(
+            libro.id
+        );
+
+
+    contenedor._libroSeleccionado =
+        libro;
+
+
+    librosSeleccionados.push(
+        libro
+    );
+
+
+    info.innerHTML = `
+        <strong>Libro encontrado</strong><br>
+        Código: ${escapeHtml(libro.codigoLibro)}<br>
+        Nombre: ${escapeHtml(libro.nombreLibro)}<br>
+        Estado: Disponible
+    `;
+
+
+    info.style.display =
+        "block";
+
+
+    if (acciones) {
+
+        acciones.style.display =
+            "block";
+
+    }
+
+
+    cantidadLibros =
+        librosSeleccionados.length;
+
+
+    actualizarInterfazLibros();
+
+    actualizarDetalle();
+}
+
+
+/* =========================================================
+   BUSCAR LIBRO ADICIONAL EN SUPABASE
+========================================================= */
+
+async function buscarLibroDisponibleAdicional(
+    codigoIngresado,
+    mensajeElemento
+) {
+
+    const codigoNormalizado =
+        normalizarCodigo(
+            codigoIngresado
+        );
+
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("libros")
+                .select("*");
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        const libro =
+            (data || [])
+                .find(
+                    item =>
+                        normalizarCodigo(
+                            item.codigoLibro
+                        ) ===
+                        codigoNormalizado
+                );
+
+
+        if (!libro) {
+
+            mensajeElemento.textContent =
+                "No se encontró un libro con ese código.";
+
+            mensajeElemento.className =
+                "mensaje-libro-adicional error";
+
+            return null;
+        }
+
+
+        if (
+            normalizarTexto(
+                libro.estado
+            ) ===
+            "BAJA"
+        ) {
+
+            mensajeElemento.textContent =
+                "Este libro está dado de baja.";
+
+            mensajeElemento.className =
+                "mensaje-libro-adicional error";
+
+            return null;
+        }
+
+
+        const {
+            data: prestamosActivos,
+            error: errorPrestamos
+        } =
+            await supabaseClient
+                .from("prestamos")
+                .select("codigoLibro, estado")
+                .eq(
+                    "estado",
+                    "Prestado"
+                );
+
+
+        if (errorPrestamos) {
+            throw errorPrestamos;
+        }
+
+
+        const yaPrestado =
+            (prestamosActivos || [])
+                .some(
+                    prestamo =>
+                        normalizarCodigo(
+                            prestamo.codigoLibro
+                        ) ===
+                        codigoNormalizado
+                );
+
+
+        if (
+            yaPrestado ||
+            normalizarTexto(
+                libro.estado
+            ) ===
+            "PRESTADO"
+        ) {
+
+            mensajeElemento.textContent =
+                "Este libro actualmente está prestado.";
+
+            mensajeElemento.className =
+                "mensaje-libro-adicional error";
+
+            return null;
+        }
+
+
+        return libro;
+
+
+    } catch (error) {
+
+        console.error(
+            "ERROR BUSCANDO LIBRO ADICIONAL:",
+            error
+        );
+
+        mensajeElemento.textContent =
+            "Ocurrió un error al consultar el libro.";
+
+        mensajeElemento.className =
+            "mensaje-libro-adicional error";
+
+        return null;
+    }
+}
+
+
+/* =========================================================
+   QUITAR LIBRO ADICIONAL
+========================================================= */
+
+function quitarLibroAdicional(
+    numero
+) {
+
+    const contenedor =
+        document.getElementById(
+            `libroAdicional${numero}`
+        );
+
+
+    if (!contenedor) {
+        return;
+    }
+
+
+    const libro =
+        contenedor._libroSeleccionado;
+
+
+    if (libro) {
+
+        const indice =
+            librosSeleccionados.findIndex(
+                item =>
+                    String(item.id) ===
+                    String(libro.id)
+            );
+
+
+        if (
+            indice !== -1
+        ) {
+
+            librosSeleccionados.splice(
+                indice,
+                1
+            );
+
+        }
+
+    }
+
+
+    contenedor.remove();
+
+
+    /*
+       Si se quita un libro intermedio, reconstruimos
+       los buscadores para que siempre aparezcan como
+       Libro 2 y Libro 3 en orden.
+    */
+
+    reconstruirLibrosAdicionales();
+
+    cantidadLibros =
+        librosSeleccionados.length;
+
+
+    actualizarInterfazLibros();
+
+    actualizarDetalle();
+}
+
+
+/* =========================================================
+   RECONSTRUIR LIBROS ADICIONALES
+========================================================= */
+
+function reconstruirLibrosAdicionales() {
+
+    const libros =
+        librosSeleccionados.slice(1);
+
+
+    librosAdicionales.innerHTML =
+        "";
+
+
+    /*
+       El primer libro se mantiene en libroInfo.
+       Los restantes se vuelven a crear.
+    */
+
+    libros.forEach(
+        (
+            libro,
+            indice
+        ) => {
+
+            const numero =
+                indice + 2;
+
+
+            const contenedor =
+                document.createElement("div");
+
+            contenedor.className =
+                "libro-adicional";
+
+            contenedor.id =
+                `libroAdicional${numero}`;
+
+
+            contenedor.innerHTML = `
+
+                <div class="libro-adicional-titulo">
+                    Libro ${numero}
+                </div>
+
+                <div class="fila-busqueda">
+
+                    <input
+                        type="text"
+                        id="buscarLibro${numero}"
+                        placeholder="Ingrese código del libro..."
+                        maxlength="8"
+                        inputmode="numeric"
+                        value="${escapeHtml(libro.codigoLibro)}"
+                    >
+
+                    <button
+                        type="button"
+                        class="btn-buscar"
+                        id="btnBuscarLibro${numero}"
+                    >
+                        Buscar
+                    </button>
+
+                </div>
+
+                <div
+                    id="mensajeLibro${numero}"
+                    class="mensaje-libro-adicional"
+                ></div>
+
+                <div
+                    id="libroInfo${numero}"
+                    class="libro-adicional-info"
+                    style="display:block;"
+                >
+                    <strong>Libro encontrado</strong><br>
+                    Código: ${escapeHtml(libro.codigoLibro)}<br>
+                    Nombre: ${escapeHtml(libro.nombreLibro)}<br>
+                    Estado: Disponible
+                </div>
+
+                <div
+                    id="accionesLibro${numero}"
+                    style="margin-top:10px; display:block;"
+                >
+
+                    <button
+                        type="button"
+                        class="btn-quitar-libro"
+                        id="btnQuitarLibro${numero}"
+                    >
+                        Quitar libro
+                    </button>
+
+                </div>
+            `;
+
+
+            contenedor._libroSeleccionado =
+                libro;
+
+
+            contenedor.dataset.libroId =
+                String(
+                    libro.id
+                );
+
+
+            librosAdicionales.appendChild(
+                contenedor
+            );
+
+
+            const input =
+                document.getElementById(
+                    `buscarLibro${numero}`
+                );
+
+
+            const boton =
+                document.getElementById(
+                    `btnBuscarLibro${numero}`
+                );
+
+
+            boton.addEventListener(
+                "click",
+                function() {
+
+                    reemplazarLibroAdicional(
+                        numero
+                    );
+
+                }
+            );
+
+
+            input.addEventListener(
+                "keydown",
+                function(event) {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        reemplazarLibroAdicional(
+                            numero
+                        );
+
+                    }
+
+                }
+            );
+
+
+            input.addEventListener(
+                "input",
+                function() {
+
+                    this.value =
+                        this.value
+                            .replace(
+                                /\D/g,
+                                ""
+                            )
+                            .slice(
+                                0,
+                                8
+                            );
+
+                }
+            );
+
+
+            document
+                .getElementById(
+                    `btnQuitarLibro${numero}`
+                )
+                .addEventListener(
+                    "click",
+                    function() {
+
+                        quitarLibroAdicional(
+                            numero
+                        );
+
+                    }
+                );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   REEMPLAZAR LIBRO ADICIONAL
+========================================================= */
+
+async function reemplazarLibroAdicional(
+    numero
+) {
+
+    const contenedor =
+        document.getElementById(
+            `libroAdicional${numero}`
+        );
+
+    if (!contenedor) {
+        return;
+    }
+
+
+    const input =
+        document.getElementById(
+            `buscarLibro${numero}`
+        );
+
+    const mensaje =
+        document.getElementById(
+            `mensajeLibro${numero}`
+        );
+
+    const info =
+        document.getElementById(
+            `libroInfo${numero}`
+        );
+
+
+    const codigoIngresado =
+        input.value.trim();
+
+
+    mensaje.textContent =
+        "";
+
+    mensaje.className =
+        "mensaje-libro-adicional";
+
+
+    if (!codigoIngresado) {
+
+        mensaje.textContent =
+            "Ingrese el código del libro.";
+
+        mensaje.className =
+            "mensaje-libro-adicional error";
+
+        return;
+    }
+
+
+    const codigoNormalizado =
+        normalizarCodigo(
+            codigoIngresado
+        );
+
+
+    /*
+       Buscar si el código ya pertenece a otro libro
+       seleccionado. Se excluye el libro actual.
+    */
+
+    const libroActual =
+        contenedor._libroSeleccionado;
+
+
+    const repetido =
+        librosSeleccionados
+            .some(
+                libro =>
+                    libro !== libroActual &&
+                    normalizarCodigo(
+                        libro.codigoLibro
+                    ) ===
+                    codigoNormalizado
+            );
+
+
+    if (repetido) {
+
+        mensaje.textContent =
+            "Este libro ya está seleccionado en este préstamo.";
+
+        mensaje.className =
+            "mensaje-libro-adicional error";
+
+        return;
+    }
+
+
+    const libro =
+        await buscarLibroDisponibleAdicional(
+            codigoIngresado,
+            mensaje
+        );
+
+
+    if (!libro) {
+        return;
+    }
+
+
+    const indice =
+        librosSeleccionados.findIndex(
+            item =>
+                String(item.id) ===
+                String(libroActual.id)
+        );
+
+
+    if (
+        indice === -1
+    ) {
+        return;
+    }
+
+
+    librosSeleccionados[indice] =
+        libro;
+
+
+    contenedor._libroSeleccionado =
+        libro;
+
+
+    contenedor.dataset.libroId =
+        String(
+            libro.id
+        );
+
+
+    info.innerHTML = `
+        <strong>Libro encontrado</strong><br>
+        Código: ${escapeHtml(libro.codigoLibro)}<br>
+        Nombre: ${escapeHtml(libro.nombreLibro)}<br>
+        Estado: Disponible
+    `;
+
+
+    info.style.display =
+        "block";
+
+
+    actualizarDetalle();
+}
+
+
+/* =========================================================
+   ACTUALIZAR INTERFAZ DE LIBROS
+========================================================= */
+
+function actualizarInterfazLibros() {
+
+    cantidadLibros =
+        librosSeleccionados.length;
+
+
+    if (
+        cantidadLibros === 0
+    ) {
+
+        accionesLibros.style.display =
+            "none";
+
+        librosAdicionales.innerHTML =
+            "";
+
+        return;
+    }
+
+
+    accionesLibros.style.display =
+        "flex";
+
+
+    if (
+        cantidadLibros >= MAX_LIBROS
+    ) {
+
+        btnAgregarLibro.disabled =
+            true;
+
+        btnAgregarLibro.textContent =
+            "Máximo 3 libros";
+
+    } else {
+
+        btnAgregarLibro.disabled =
+            false;
+
+        btnAgregarLibro.textContent =
+            "+ Agregar libro";
+    }
+}
+
+
+/* =========================================================
+   LIMPIAR TODOS LOS LIBROS
+========================================================= */
+
+function limpiarTodosLosLibros() {
+
+    libroSeleccionado =
+        null;
+
+    librosSeleccionados =
+        [];
+
+    cantidadLibros =
+        0;
+
+
+    buscarLibroInput.value =
+        "";
+
+    libroInfo.innerHTML =
+        "";
+
+    libroInfo.style.display =
+        "none";
+
+
+    librosAdicionales.innerHTML =
+        "";
+
+
+    accionesLibros.style.display =
+        "none";
+
+
+    limpiarMensaje(
+        mensajeLibro
+    );
+
+
+    actualizarDetalle();
 }
 
 
@@ -2672,7 +3895,7 @@ function actualizarDetalle() {
 
     if (
         !haySolicitante ||
-        !libroSeleccionado
+        librosSeleccionados.length === 0
     ) {
 
         resumenPrestamo.style.display =
@@ -2773,14 +3996,57 @@ function actualizarDetalle() {
     }
 
 
-    resumenCodigoLibro.textContent =
-        libroSeleccionado.codigoLibro ||
+    /* =====================================================
+       MOSTRAR TODOS LOS LIBROS
+    ====================================================== */
+
+    listaResumenLibros.innerHTML =
         "";
 
 
-    resumenNombreLibro.textContent =
-        libroSeleccionado.nombreLibro ||
-        "";
+    librosSeleccionados.forEach(
+        (
+            libro,
+            indice
+        ) => {
+
+            const elemento =
+                document.createElement("div");
+
+            elemento.className =
+                "resumen-libro-item";
+
+
+            elemento.innerHTML = `
+                <div class="resumen-libro-numero">
+                    Libro ${indice + 1}
+                </div>
+
+                <strong>
+                    Código:
+                </strong>
+                ${escapeHtml(libro.codigoLibro)}
+                <br>
+
+                <strong>
+                    Nombre:
+                </strong>
+                ${escapeHtml(libro.nombreLibro)}
+                <br>
+
+                <strong>
+                    Estado:
+                </strong>
+                Disponible
+            `;
+
+
+            listaResumenLibros.appendChild(
+                elemento
+            );
+
+        }
+    );
 
 
     resumenPrestamo.style.display =
@@ -2857,12 +4123,12 @@ async function confirmarPrestamo() {
 
     if (
         !haySolicitante ||
-        !libroSeleccionado
+        librosSeleccionados.length === 0
     ) {
 
         mostrarMensaje(
             mensajeFinal,
-            "Debe seleccionar una persona o colaborador y un libro.",
+            "Debe seleccionar una persona o colaborador y al menos un libro.",
             "error"
         );
 
@@ -2889,7 +4155,7 @@ async function confirmarPrestamo() {
     try {
 
         /* =================================================
-           VERIFICAR NUEVAMENTE QUE EL LIBRO NO ESTÉ PRESTADO
+           VERIFICAR NUEVAMENTE TODOS LOS LIBROS
         ================================================= */
 
         const {
@@ -2898,7 +4164,7 @@ async function confirmarPrestamo() {
         } =
             await supabaseClient
                 .from("prestamos")
-                .select("*")
+                .select("codigoLibro, estado")
                 .eq(
                     "estado",
                     "Prestado"
@@ -2910,32 +4176,147 @@ async function confirmarPrestamo() {
         }
 
 
-        const codigoNormalizado =
-            normalizarCodigo(
-                libroSeleccionado.codigoLibro
+        const codigosActivos =
+            new Set(
+                (prestamosExistentes || [])
+                    .map(
+                        prestamo =>
+                            normalizarCodigo(
+                                prestamo.codigoLibro
+                            )
+                    )
             );
 
 
-        const duplicado =
-            (prestamosExistentes || [])
-                .some(
-                    prestamo =>
-                        normalizarCodigo(
-                            prestamo.codigoLibro
-                        ) ===
-                        codigoNormalizado
+        /*
+           Comprobar también que no haya códigos repetidos
+           dentro de la operación actual.
+        */
+
+        const codigosOperacion =
+            new Set();
+
+
+        for (
+            const libro of librosSeleccionados
+        ) {
+
+            const codigo =
+                normalizarCodigo(
+                    libro.codigoLibro
                 );
 
 
-        if (duplicado) {
+            if (
+                codigosOperacion.has(
+                    codigo
+                )
+            ) {
 
-            mostrarMensaje(
-                mensajeFinal,
-                "Este libro ya fue prestado.",
-                "error"
+                mostrarMensaje(
+                    mensajeFinal,
+                    "No puede registrar el mismo libro más de una vez en un mismo préstamo.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            codigosOperacion.add(
+                codigo
             );
 
-            return;
+
+            if (
+                codigosActivos.has(
+                    codigo
+                ) ||
+                normalizarTexto(
+                    libro.estado
+                ) ===
+                "PRESTADO"
+            ) {
+
+                mostrarMensaje(
+                    mensajeFinal,
+                    `El libro ${libro.codigoLibro} ya fue prestado. Actualice la información e intente nuevamente.`,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+               Verificación adicional directamente contra
+               la tabla de libros.
+            */
+
+            const {
+                data: libroActualizado,
+                error: errorLibroConsulta
+            } =
+                await supabaseClient
+                    .from("libros")
+                    .select("*")
+                    .eq(
+                        "id",
+                        libro.id
+                    )
+                    .maybeSingle();
+
+
+            if (errorLibroConsulta) {
+                throw errorLibroConsulta;
+            }
+
+
+            if (!libroActualizado) {
+
+                mostrarMensaje(
+                    mensajeFinal,
+                    `No se pudo verificar el libro ${libro.codigoLibro}.`,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                normalizarTexto(
+                    libroActualizado.estado
+                ) ===
+                "BAJA"
+            ) {
+
+                mostrarMensaje(
+                    mensajeFinal,
+                    `El libro ${libro.codigoLibro} está dado de baja.`,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                normalizarTexto(
+                    libroActualizado.estado
+                ) ===
+                "PRESTADO"
+            ) {
+
+                mostrarMensaje(
+                    mensajeFinal,
+                    `El libro ${libro.codigoLibro} ya está prestado.`,
+                    "error"
+                );
+
+                return;
+            }
+
         }
 
 
@@ -2969,7 +4350,11 @@ async function confirmarPrestamo() {
             );
 
 
-        let nuevoPrestamo = null;
+        /* =================================================
+           CONSTRUIR REGISTROS
+        ================================================= */
+
+        const nuevosPrestamos = [];
 
 
         /* =================================================
@@ -2998,62 +4383,69 @@ async function confirmarPrestamo() {
             }
 
 
-            nuevoPrestamo = {
+            librosSeleccionados.forEach(
+                libro => {
 
-                tipoPrestamo:
-                    "Afiliado",
+                    nuevosPrestamos.push({
 
-                Sitio:
-                    sitio,
+                        tipoPrestamo:
+                            "Afiliado",
 
-                SitioPrestamo:
-                    sitioPrestamo,
+                        Sitio:
+                            sitio,
 
-                FamiliaId:
-                    personaSeleccionada.FamiliaId,
+                        SitioPrestamo:
+                            sitioPrestamo,
 
-                PersonaId:
-                    personaSeleccionada.PersonaId,
+                        FamiliaId:
+                            personaSeleccionada.FamiliaId,
 
-                Nombres:
-                    personaSeleccionada.Nombres,
+                        PersonaId:
+                            personaSeleccionada.PersonaId,
 
-                Apellidos:
-                    personaSeleccionada.Apellidos,
+                        Nombres:
+                            personaSeleccionada.Nombres,
 
-                CodigoColaborador:
-                    null,
+                        Apellidos:
+                            personaSeleccionada.Apellidos,
 
-                NombreColaborador:
-                    null,
+                        CodigoColaborador:
+                            null,
 
-                AreaColaborador:
-                    null,
+                        NombreColaborador:
+                            null,
 
-                codigoLibro:
-                    libroSeleccionado.codigoLibro,
+                        AreaColaborador:
+                            null,
 
-                nombreLibro:
-                    libroSeleccionado.nombreLibro,
+                        codigoLibro:
+                            libro.codigoLibro,
 
-                fechaPrestamo:
-                    fechaPrestamo,
+                        nombreLibro:
+                            libro.nombreLibro,
 
-                fechaDevolucion:
-                    fechaDevolucion,
+                        fechaPrestamo:
+                            fechaPrestamo,
 
-                estado:
-                    "Prestado",
+                        fechaDevolucion:
+                            fechaDevolucion,
 
-                fechaDevolucionReal:
-                    null,
+                        estado:
+                            "Prestado",
 
-                PrestadoPor:
-                    usuarioActual,
+                        fechaDevolucionReal:
+                            null,
 
-                DevueltoPor:
-                    null
-            };
+                        PrestadoPor:
+                            usuarioActual,
+
+                        DevueltoPor:
+                            null
+
+                    });
+
+                }
+            );
 
 
         } else {
@@ -3063,87 +4455,93 @@ async function confirmarPrestamo() {
                COLABORADOR
             ================================================= */
 
-            nuevoPrestamo = {
+            librosSeleccionados.forEach(
+                libro => {
 
-                tipoPrestamo:
-                    "Colaborador",
+                    nuevosPrestamos.push({
 
-                Sitio:
-                    sitioPrestamo,
+                        tipoPrestamo:
+                            "Colaborador",
 
-                SitioPrestamo:
-                    sitioPrestamo,
+                        Sitio:
+                            sitioPrestamo,
 
-                FamiliaId:
-                    null,
+                        SitioPrestamo:
+                            sitioPrestamo,
 
-                PersonaId:
-                    null,
+                        FamiliaId:
+                            null,
 
-                Nombres:
-                    null,
+                        PersonaId:
+                            null,
 
-                Apellidos:
-                    null,
+                        Nombres:
+                            null,
 
-                CodigoColaborador:
-                    colaboradorSeleccionado.CodigoColaborador,
+                        Apellidos:
+                            null,
 
-                NombreColaborador:
-                    colaboradorSeleccionado.Nombre,
+                        CodigoColaborador:
+                            colaboradorSeleccionado.CodigoColaborador,
 
-                AreaColaborador:
-                    colaboradorSeleccionado.Area,
+                        NombreColaborador:
+                            colaboradorSeleccionado.Nombre,
 
-                codigoLibro:
-                    libroSeleccionado.codigoLibro,
+                        AreaColaborador:
+                            colaboradorSeleccionado.Area,
 
-                nombreLibro:
-                    libroSeleccionado.nombreLibro,
+                        codigoLibro:
+                            libro.codigoLibro,
 
-                fechaPrestamo:
-                    fechaPrestamo,
+                        nombreLibro:
+                            libro.nombreLibro,
 
-                fechaDevolucion:
-                    fechaDevolucion,
+                        fechaPrestamo:
+                            fechaPrestamo,
 
-                estado:
-                    "Prestado",
+                        fechaDevolucion:
+                            fechaDevolucion,
 
-                fechaDevolucionReal:
-                    null,
+                        estado:
+                            "Prestado",
 
-                PrestadoPor:
-                    usuarioActual,
+                        fechaDevolucionReal:
+                            null,
 
-                DevueltoPor:
-                    null
-            };
+                        PrestadoPor:
+                            usuarioActual,
+
+                        DevueltoPor:
+                            null
+
+                    });
+
+                }
+            );
 
         }
 
 
         console.log(
-            "DATOS DEL PRÉSTAMO:",
-            nuevoPrestamo
+            "REGISTROS DE PRÉSTAMO:",
+            nuevosPrestamos
         );
 
 
         /* =================================================
-           INSERTAR PRÉSTAMO
+           INSERTAR TODOS LOS PRÉSTAMOS
         ================================================= */
 
         const {
-            data: prestamoGuardado,
+            data: prestamosGuardados,
             error: errorInsertar
         } =
             await supabaseClient
                 .from("prestamos")
                 .insert(
-                    nuevoPrestamo
+                    nuevosPrestamos
                 )
-                .select()
-                .single();
+                .select();
 
 
         if (errorInsertar) {
@@ -3152,31 +4550,37 @@ async function confirmarPrestamo() {
 
 
         console.log(
-            "PRÉSTAMO GUARDADO:",
-            prestamoGuardado
+            "PRÉSTAMOS GUARDADOS:",
+            prestamosGuardados
         );
 
 
         /* =================================================
-           ACTUALIZAR ESTADO DEL LIBRO
+           ACTUALIZAR ESTADO DE CADA LIBRO
         ================================================= */
 
-        const {
-            error: errorLibro
-        } =
-            await supabaseClient
-                .from("libros")
-                .update({
-                    estado: "Prestado"
-                })
-                .eq(
-                    "id",
-                    libroSeleccionado.id
-                );
+        for (
+            const libro of librosSeleccionados
+        ) {
+
+            const {
+                error: errorLibro
+            } =
+                await supabaseClient
+                    .from("libros")
+                    .update({
+                        estado: "Prestado"
+                    })
+                    .eq(
+                        "id",
+                        libro.id
+                    );
 
 
-        if (errorLibro) {
-            throw errorLibro;
+            if (errorLibro) {
+                throw errorLibro;
+            }
+
         }
 
 
@@ -3184,9 +4588,15 @@ async function confirmarPrestamo() {
            ÉXITO
         ================================================= */
 
+        const cantidadRegistrada =
+            nuevosPrestamos.length;
+
+
         mostrarMensaje(
             mensajeFinal,
-            "Préstamo registrado correctamente.",
+            cantidadRegistrada === 1
+                ? "Préstamo registrado correctamente."
+                : `${cantidadRegistrada} préstamos registrados correctamente.`,
             "exito"
         );
 
@@ -3203,6 +4613,12 @@ async function confirmarPrestamo() {
 
         libroSeleccionado =
             null;
+
+        librosSeleccionados =
+            [];
+
+        cantidadLibros =
+            0;
 
         fechaDevolucionModificada =
             false;
@@ -3268,6 +4684,14 @@ async function confirmarPrestamo() {
             "none";
 
 
+        librosAdicionales.innerHTML =
+            "";
+
+
+        accionesLibros.style.display =
+            "none";
+
+
         resumenPrestamo.style.display =
             "none";
 
@@ -3315,16 +4739,8 @@ async function confirmarPrestamo() {
 
 function cancelarPrestamo() {
 
-    libroSeleccionado =
-        null;
+    limpiarTodosLosLibros();
 
-    libroInfo.style.display =
-        "none";
-
-    buscarLibroInput.value =
-        "";
-
-    actualizarDetalle();
 }
 
 
@@ -3476,6 +4892,16 @@ document
     .addEventListener(
         "click",
         buscarLibro
+    );
+
+
+document
+    .getElementById(
+        "btnAgregarLibro"
+    )
+    .addEventListener(
+        "click",
+        agregarLibro
     );
 
 
