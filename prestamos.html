@@ -18,6 +18,10 @@
 
     <style>
 
+        /* =====================================================
+           ESTILO GENERAL — MISMA IDENTIDAD DE INDEX
+        ====================================================== */
+
         * {
             box-sizing: border-box;
         }
@@ -25,51 +29,113 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #333;
+            background: #f5f7fa;
+            color: #1f2937;
         }
 
+
+        /* =====================================================
+           ENCABEZADO
+        ====================================================== */
+
         .encabezado {
-            background: #263238;
+            background: #009ddc;
             color: white;
             padding: 18px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 20px;
+        }
+
+        .encabezado-izquierda {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .encabezado-logo {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            flex-shrink: 0;
+        }
+
+        .encabezado-textos {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .encabezado h1 {
             margin: 0;
             font-size: 22px;
+            font-weight: 700;
+        }
+
+        .encabezado-subtitulo {
+            font-size: 13px;
+            opacity: 0.95;
         }
 
         .btn-volver {
-            background: #546e7a;
+            background: rgba(255, 255, 255, 0.16);
             color: white;
             text-decoration: none;
             padding: 9px 14px;
-            border-radius: 6px;
+            border-radius: 7px;
             font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            transition: background 0.2s ease;
+            white-space: nowrap;
         }
+
+        .btn-volver:hover {
+            background: rgba(255, 255, 255, 0.26);
+        }
+
+
+        /* =====================================================
+           CONTENEDOR
+        ====================================================== */
 
         .contenedor {
             max-width: 1100px;
-            margin: 20px auto;
-            padding: 0 15px;
+            margin: 24px auto;
+            padding: 0 18px;
         }
 
+
+        /* =====================================================
+           SECCIONES
+        ====================================================== */
+
         .seccion {
-            background: white;
-            border-radius: 8px;
-            padding: 18px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
             margin-bottom: 18px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
 
         .seccion h2 {
-            margin: 0 0 15px;
+            margin: 0 0 16px;
             font-size: 18px;
+            color: #1f2937;
+            font-weight: 700;
         }
+
+
+        /* =====================================================
+           BÚSQUEDA
+        ====================================================== */
 
         .fila-busqueda {
             display: flex;
@@ -80,17 +146,34 @@
         input {
             flex: 1;
             padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
             font-size: 14px;
+            color: #1f2937;
+            background: #ffffff;
+            outline: none;
+            transition: border-color 0.2s ease,
+                        box-shadow 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #009ddc;
+            box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.12);
         }
 
         button {
             border: none;
-            border-radius: 5px;
+            border-radius: 7px;
             padding: 10px 15px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 600;
+            transition: opacity 0.2s ease,
+                        transform 0.1s ease;
+        }
+
+        button:active {
+            transform: translateY(1px);
         }
 
         button:disabled {
@@ -99,28 +182,45 @@
         }
 
         .btn-buscar {
-            background: #1976d2;
+            background: #009ddc;
             color: white;
         }
 
+        .btn-buscar:hover {
+            opacity: 0.9;
+        }
+
+
+        /* =====================================================
+           MENSAJES
+        ====================================================== */
+
         .mensaje {
             margin-top: 12px;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 10px 12px;
+            border-radius: 7px;
             display: none;
+            font-size: 13px;
         }
 
         .mensaje.exito {
             display: block;
             background: #e8f5e9;
             color: #2e7d32;
+            border: 1px solid #c8e6c9;
         }
 
         .mensaje.error {
             display: block;
             background: #ffebee;
             color: #c62828;
+            border: 1px solid #ffcdd2;
         }
+
+
+        /* =====================================================
+           TABLAS
+        ====================================================== */
 
         .tabla-contenedor {
             overflow-x: auto;
@@ -134,20 +234,27 @@
         }
 
         th {
-            background: #eceff1;
-            padding: 9px;
-            border-bottom: 1px solid #ccc;
+            background: #f8fafc;
+            color: #374151;
+            padding: 10px 9px;
+            border-bottom: 1px solid #e5e7eb;
             text-align: center;
+            font-weight: 700;
         }
 
         td {
             padding: 9px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eef0f2;
             text-align: center;
+            color: #374151;
         }
 
         td.nombre {
             text-align: left;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
         }
 
         tr.seleccionada {
@@ -155,16 +262,31 @@
             border-left: 4px solid #2e7d32;
         }
 
+
+        /* =====================================================
+           BOTÓN SELECCIONAR
+        ====================================================== */
+
         .btn-seleccionar {
-            background: #1976d2;
+            background: #009ddc;
             color: white;
             padding: 6px 10px;
             font-size: 12px;
+            border-radius: 6px;
+        }
+
+        .btn-seleccionar:hover {
+            opacity: 0.9;
         }
 
         .btn-seleccionar.seleccionada {
             background: #2e7d32;
         }
+
+
+        /* =====================================================
+           TIPO DE SOLICITANTE
+        ====================================================== */
 
         .tipo-solicitante {
             display: flex;
@@ -174,49 +296,60 @@
 
         .opcion-tipo {
             flex: 1;
-            border: 1px solid #ccc;
-            background: #f7f9fa;
-            color: #37474f;
+            border: 1px solid #e5e7eb;
+            background: #f8fafc;
+            color: #374151;
             padding: 11px 15px;
-            border-radius: 6px;
+            border-radius: 7px;
             cursor: pointer;
             text-align: center;
             font-weight: 600;
         }
 
         .opcion-tipo:hover {
-            background: #eceff1;
+            background: #eef7fb;
+            border-color: #b9ddeb;
         }
 
         .opcion-tipo.activa {
-            background: #37474f;
+            background: #009ddc;
             color: white;
-            border-color: #37474f;
+            border-color: #009ddc;
         }
+
+
+        /* =====================================================
+           RESUMEN DEL PRÉSTAMO
+        ====================================================== */
 
         .resumen-prestamo {
             display: none;
         }
 
         .bloque-resumen {
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
             overflow: hidden;
             margin-top: 15px;
         }
 
         .titulo-bloque {
-            background: #eceff1;
-            padding: 10px 13px;
+            background: #f8fafc;
+            padding: 11px 13px;
             font-size: 14px;
             font-weight: bold;
-            color: #37474f;
-            border-bottom: 1px solid #ddd;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .contenido-resumen {
             padding: 14px;
         }
+
+
+        /* =====================================================
+           TARJETAS DE DATOS
+        ====================================================== */
 
         .datos-persona-libro {
             display: grid;
@@ -225,16 +358,16 @@
         }
 
         .tarjeta-dato {
-            background: #f7f9fa;
-            border-radius: 6px;
+            background: #f8fafc;
+            border-radius: 7px;
             padding: 12px;
-            border: 1px solid #e8ecee;
+            border: 1px solid #e5e7eb;
         }
 
         .tarjeta-dato h3 {
             margin: 0 0 9px;
             font-size: 14px;
-            color: #455a64;
+            color: #374151;
         }
 
         .dato {
@@ -242,7 +375,7 @@
             justify-content: space-between;
             gap: 10px;
             padding: 5px 0;
-            border-bottom: 1px solid #e5e8ea;
+            border-bottom: 1px solid #e5e7eb;
             font-size: 13px;
         }
 
@@ -251,14 +384,19 @@
         }
 
         .dato span:first-child {
-            color: #607d8b;
+            color: #6b7280;
         }
 
         .dato span:last-child {
             font-weight: 600;
             text-align: right;
-            color: #333;
+            color: #1f2937;
         }
+
+
+        /* =====================================================
+           FECHAS
+        ====================================================== */
 
         .fechas-prestamo {
             display: grid;
@@ -275,7 +413,7 @@
         .campo-fecha label {
             font-size: 13px;
             font-weight: bold;
-            color: #455a64;
+            color: #374151;
         }
 
         .campo-fecha input,
@@ -284,10 +422,17 @@
             flex: none;
             background: white;
             padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #e5e7eb;
+            border-radius: 7px;
             font-size: 14px;
-            color: #333;
+            color: #1f2937;
+            outline: none;
+        }
+
+        .campo-fecha input:focus,
+        .campo-fecha select:focus {
+            border-color: #009ddc;
+            box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.12);
         }
 
         .campo-fecha select {
@@ -296,15 +441,20 @@
 
         .ayuda-fecha {
             font-size: 11px;
-            color: #78909c;
+            color: #6b7280;
             margin-top: 1px;
             line-height: 1.3;
         }
 
+
+        /* =====================================================
+           CONFIRMACIÓN
+        ====================================================== */
+
         .confirmacion {
             background: #fff8e1;
             border: 1px solid #ffe082;
-            border-radius: 7px;
+            border-radius: 8px;
             padding: 15px;
             margin-top: 18px;
             display: none;
@@ -333,26 +483,47 @@
         }
 
         .btn-confirmar {
-            background: #2e7d32;
+            background: #009ddc;
             color: white;
         }
 
+        .btn-confirmar:hover {
+            opacity: 0.9;
+        }
+
         .btn-cancelar {
-            background: #757575;
+            background: #6b7280;
             color: white;
         }
+
+        .btn-cancelar:hover {
+            opacity: 0.9;
+        }
+
+
+        /* =====================================================
+           INFORMACIÓN DEL LIBRO
+        ====================================================== */
 
         .libro-info {
             margin-top: 12px;
             padding: 12px;
-            background: #e3f2fd;
-            border-radius: 6px;
+            background: #eaf7fc;
+            border: 1px solid #c9eaf6;
+            border-radius: 7px;
             display: none;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
         .libro-info strong {
-            color: #1565c0;
+            color: #007caf;
         }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
 
         @media (max-width: 850px) {
 
@@ -361,6 +532,7 @@
             }
 
         }
+
 
         @media (max-width: 700px) {
 
@@ -374,9 +546,17 @@
             }
 
             .encabezado {
-                gap: 10px;
+                gap: 12px;
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
+            }
+
+            .encabezado-izquierda {
+                align-items: center;
+            }
+
+            .btn-volver {
+                text-align: center;
             }
 
             .datos-persona-libro {
@@ -414,13 +594,32 @@
 
 <header class="encabezado">
 
-    <h1>📚 Nuevo préstamo</h1>
+    <div class="encabezado-izquierda">
+
+        <div class="encabezado-logo">
+            📚
+        </div>
+
+        <div class="encabezado-textos">
+
+            <h1>
+                Préstamos
+            </h1>
+
+            <div class="encabezado-subtitulo">
+                Sistema de control de préstamos
+            </div>
+
+        </div>
+
+    </div>
+
 
     <a
         href="index.html"
         class="btn-volver"
     >
-        ← Volver
+        ← Volver al inicio
     </a>
 
 </header>
