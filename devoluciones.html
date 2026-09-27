@@ -18,12 +18,12 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
+            background: #f4f8fb;
             color: #263238;
         }
 
         header {
-            background: #263238;
+            background: #009ddc;
             color: white;
             padding: 16px 24px;
             display: flex;
@@ -39,6 +39,13 @@
 
         .encabezado-icono {
             font-size: 25px;
+            background: rgba(255, 255, 255, 0.16);
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .encabezado-titulo {
@@ -48,22 +55,23 @@
 
         .encabezado-subtitulo {
             font-size: 12px;
-            opacity: 0.85;
+            opacity: 0.9;
             margin-top: 2px;
         }
 
         .boton-volver {
-            background: #37474f;
+            background: rgba(255, 255, 255, 0.16);
             color: white;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.25);
             padding: 9px 14px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
+            font-weight: 600;
         }
 
         .boton-volver:hover {
-            background: #455a64;
+            background: rgba(255, 255, 255, 0.25);
         }
 
         main {
@@ -73,30 +81,39 @@
         }
 
         .titulo-seccion {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: white;
+            border: 1px solid #dfeaf0;
+            border-radius: 9px;
+            padding: 18px 20px;
             margin-bottom: 20px;
-            gap: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .titulo-seccion h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #009ddc;
+            text-align: center;
         }
 
         .resumen {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(180px, 260px));
+            justify-content: center;
             gap: 14px;
             margin-bottom: 20px;
         }
 
         .tarjeta {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
+            border: 1px solid #dfeaf0;
+            border-radius: 9px;
             padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
         }
 
         .tarjeta-titulo {
@@ -108,15 +125,16 @@
         .tarjeta-numero {
             font-size: 24px;
             font-weight: bold;
-            color: #263238;
+            color: #009ddc;
         }
 
         .contenedor-busqueda {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
+            border: 1px solid #dfeaf0;
+            border-radius: 9px;
             padding: 15px;
             margin-bottom: 18px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
         }
 
         .fila-busqueda {
@@ -129,20 +147,21 @@
             min-width: 250px;
             padding: 9px 11px;
             border: 1px solid #cfd8dc;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 13px;
         }
 
         .campo-busqueda:focus {
             outline: none;
-            border-color: #78909c;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
         }
 
         .filtro-select {
             width: 170px;
             padding: 9px 11px;
             border: 1px solid #cfd8dc;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 13px;
             background: white;
             color: #263238;
@@ -150,40 +169,43 @@
 
         .filtro-select:focus {
             outline: none;
-            border-color: #78909c;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
         }
 
         .boton {
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 9px 14px;
             cursor: pointer;
             font-size: 13px;
+            font-weight: 600;
         }
 
         .boton-buscar {
-            background: #37474f;
+            background: #009ddc;
             color: white;
         }
 
         .boton-buscar:hover {
-            background: #455a64;
+            background: #008bc4;
         }
 
         .boton-limpiar {
-            background: #eceff1;
-            color: #37474f;
+            background: #eaf3f7;
+            color: #455a64;
         }
 
         .boton-limpiar:hover {
-            background: #cfd8dc;
+            background: #d8e8ee;
         }
 
         .tabla-contenedor {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 7px;
+            border: 1px solid #dfeaf0;
+            border-radius: 9px;
             overflow-x: auto;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
         }
 
         table {
@@ -193,21 +215,21 @@
         }
 
         thead {
-            background: #eceff1;
+            background: #eaf7fc;
         }
 
         th {
             padding: 10px 9px;
             text-align: center;
             font-size: 12px;
-            color: #37474f;
-            border-bottom: 1px solid #d7dee2;
+            color: #455a64;
+            border-bottom: 1px solid #d5eaf2;
             white-space: nowrap;
         }
 
         td {
             padding: 9px;
-            border-bottom: 1px solid #eceff1;
+            border-bottom: 1px solid #edf2f4;
             font-size: 12px;
             text-align: center;
             vertical-align: middle;
@@ -219,7 +241,7 @@
         }
 
         tbody tr:hover {
-            background: #fafafa;
+            background: #f7fcfe;
         }
 
         .badge {
@@ -259,7 +281,7 @@
 
         .btn-accion {
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             padding: 6px 9px;
             font-size: 11px;
             cursor: pointer;
@@ -267,11 +289,11 @@
         }
 
         .btn-devolver {
-            background: #2e7d32;
+            background: #009ddc;
         }
 
         .btn-devolver:hover {
-            background: #1b5e20;
+            background: #008bc4;
         }
 
         .btn-eliminar {
@@ -296,17 +318,21 @@
             gap: 10px;
             padding: 15px;
             background: white;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid #e0edf2;
         }
 
         .boton-pagina {
-            background: #37474f;
+            background: #009ddc;
             color: white;
             border: none;
             padding: 7px 11px;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 11px;
+        }
+
+        .boton-pagina:hover:not(:disabled) {
+            background: #008bc4;
         }
 
         .boton-pagina:disabled {
@@ -324,6 +350,16 @@
             padding: 20px;
             color: #90a4ae;
             font-size: 11px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        footer .version,
+        footer .creditos {
+            color: #90a4ae;
         }
 
         /* ==============================
@@ -351,12 +387,12 @@
             max-height: 88vh;
             overflow-y: auto;
             background: white;
-            border-radius: 8px;
+            border-radius: 9px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
         }
 
         .detalle-cabecera {
-            background: #263238;
+            background: #009ddc;
             color: white;
             padding: 11px 16px;
             display: flex;
@@ -396,9 +432,9 @@
         }
 
         .detalle-item {
-            background: #f7f9fa;
-            border: 1px solid #e5e9eb;
-            border-radius: 5px;
+            background: #f7fbfd;
+            border: 1px solid #e3edf1;
+            border-radius: 6px;
             padding: 8px 10px;
         }
 
@@ -431,7 +467,7 @@
         .campo-detalle textarea {
             width: 100%;
             border: 1px solid #cfd8dc;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 8px 9px;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 13px;
@@ -440,7 +476,8 @@
         .campo-detalle select:focus,
         .campo-detalle textarea:focus {
             outline: none;
-            border-color: #78909c;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
         }
 
         .campo-detalle textarea {
@@ -452,7 +489,7 @@
             background: #fff3cd;
             color: #856404;
             border: 1px solid #ffe69c;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 9px 10px;
             margin-top: 12px;
             font-size: 11px;
@@ -467,7 +504,7 @@
             background: #ffebee;
             color: #b71c1c;
             border: 1px solid #ffcdd2;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 9px 10px;
             margin-top: 12px;
             font-size: 11px;
@@ -484,33 +521,34 @@
             gap: 7px;
             margin-top: 15px;
             padding-top: 12px;
-            border-top: 1px solid #eceff1;
+            border-top: 1px solid #e7eef1;
         }
 
         .btn-modal {
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 8px 12px;
             font-size: 12px;
             cursor: pointer;
+            font-weight: 600;
         }
 
         .btn-cancelar {
-            background: #eceff1;
-            color: #37474f;
+            background: #eaf3f7;
+            color: #455a64;
         }
 
         .btn-cancelar:hover {
-            background: #cfd8dc;
+            background: #d8e8ee;
         }
 
         .btn-confirmar-devolucion {
-            background: #2e7d32;
+            background: #009ddc;
             color: white;
         }
 
         .btn-confirmar-devolucion:hover {
-            background: #1b5e20;
+            background: #008bc4;
         }
 
         .btn-confirmar-eliminar {
@@ -524,7 +562,7 @@
 
         .mensaje {
             padding: 10px 12px;
-            border-radius: 5px;
+            border-radius: 6px;
             margin-bottom: 15px;
             font-size: 12px;
             display: none;
@@ -555,11 +593,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .titulo-seccion {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
             .fila-busqueda {
                 flex-wrap: wrap;
             }
@@ -580,6 +613,34 @@
 
             .detalle {
                 max-height: 92vh;
+            }
+
+            header {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 14px 15px;
+            }
+
+            .encabezado-titulo {
+                font-size: 18px;
+            }
+
+            .encabezado-subtitulo {
+                font-size: 11px;
+            }
+
+            .boton-volver {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 5px;
             }
         }
     </style>
@@ -867,7 +928,17 @@
 
 
 <footer>
-    Sistema de Biblioteca
+    <span>
+        Sistema de Biblioteca
+    </span>
+
+    <span class="version">
+        Versión 1.0
+    </span>
+
+    <span class="creditos">
+        Desarrollado por Saúl Velásquez
+    </span>
 </footer>
 
 
