@@ -1,3 +1,4 @@
+```javascript
 (function () {
 
     // ============================================================
@@ -8,30 +9,21 @@
     window.perfilUsuario = null;
     window.rolUsuario = null;
     window.estadoUsuario = null;
-
-    // Nombre real del usuario autenticado.
-    // Se utiliza para:
-    // PrestadoPor
-    // DevueltoPor
     window.nombreUsuarioActual = "";
 
 
     // ============================================================
-    // CONFIGURACIÓN DE SESIÓN POR INACTIVIDAD
+    // CONFIGURACIÓN DE INACTIVIDAD
     // ============================================================
 
-    const TIEMPO_INACTIVIDAD = 30 * 60 * 1000; // 30 minutos
-
-    const CLAVE_ULTIMA_ACTIVIDAD =
-        "biblioteca_ultima_actividad";
+    const TIEMPO_INACTIVIDAD = 30 * 60 * 1000;
+    const CLAVE_ULTIMA_ACTIVIDAD = "biblioteca_ultima_actividad";
 
     let temporizadorInactividad = null;
     let intervaloActividad = null;
-
     let ultimaActualizacionActividad = 0;
 
-    const INTERVALO_ACTUALIZACION_ACTIVIDAD =
-        30 * 1000; // 30 segundos
+    const INTERVALO_ACTUALIZACION_ACTIVIDAD = 30 * 1000;
 
 
     // ============================================================
@@ -55,18 +47,13 @@
 
         try {
 
-            const valor =
-                localStorage.getItem(
-                    CLAVE_ULTIMA_ACTIVIDAD
-                );
+            const valor = localStorage.getItem(
+                CLAVE_ULTIMA_ACTIVIDAD
+            );
 
-            const numero =
-                Number(valor);
+            const numero = Number(valor);
 
-            if (
-                !numero ||
-                !Number.isFinite(numero)
-            ) {
+            if (!numero || !Number.isFinite(numero)) {
                 return 0;
             }
 
@@ -86,7 +73,7 @@
 
 
     // ============================================================
-    // GUARDAR ACTIVIDAD
+    // REGISTRAR ACTIVIDAD
     // ============================================================
 
     function registrarActividad(forzar = false) {
@@ -184,10 +171,10 @@
 
             if (
                 window.supabaseClient &&
-                supabaseClient.auth
+                window.supabaseClient.auth
             ) {
 
-                await supabaseClient.auth.signOut();
+                await window.supabaseClient.auth.signOut();
 
             }
 
@@ -200,7 +187,6 @@
 
         }
 
-        // Volver a index.html
         if (
             !window.location.pathname
                 .toLowerCase()
@@ -300,7 +286,7 @@
             return;
         }
 
-        let ultimaActividad =
+        const ultimaActividad =
             obtenerUltimaActividad();
 
         if (!ultimaActividad) {
@@ -364,7 +350,6 @@
     function configurarDeteccionActividad() {
 
         const eventosActividad = [
-
             "click",
             "keydown",
             "mousemove",
@@ -372,7 +357,6 @@
             "touchstart",
             "scroll",
             "pointerdown"
-
         ];
 
         eventosActividad.forEach(
@@ -399,7 +383,6 @@
             }
         );
 
-        // Evitar crear múltiples intervalos
         if (intervaloActividad) {
 
             clearInterval(
@@ -461,9 +444,7 @@
             // 1. VERIFICAR QUE SUPABASE ESTÉ DISPONIBLE
             // ----------------------------------------------------
 
-            if (
-                !window.supabaseClient
-            ) {
+            if (!window.supabaseClient) {
 
                 console.error(
                     "SUPABASECLIENT NO ESTÁ DISPONIBLE."
@@ -472,12 +453,10 @@
                 return false;
             }
 
-            if (
-                !supabaseClient.auth
-            ) {
+            if (!window.supabaseClient.auth) {
 
                 console.error(
-                    "EL CLIENTE DE SUPABASE AUTH NO ESTÁ DISPONIBLE."
+                    "SUPABASE AUTH NO ESTÁ DISPONIBLE."
                 );
 
                 return false;
@@ -493,11 +472,9 @@
             );
 
             const resultadoSesion =
-                await supabaseClient.auth.getSession();
+                await window.supabaseClient.auth.getSession();
 
-            if (
-                resultadoSesion.error
-            ) {
+            if (resultadoSesion.error) {
 
                 console.error(
                     "ERROR SESIÓN:",
@@ -508,13 +485,14 @@
             }
 
             const session =
-                resultadoSesion.data
+                resultadoSesion.data &&
+                resultadoSesion.data.session
                     ? resultadoSesion.data.session
                     : null;
 
 
             // ----------------------------------------------------
-            // 3. VERIFICAR QUE EXISTA SESIÓN
+            // 3. VERIFICAR SESIÓN
             // ----------------------------------------------------
 
             if (!session) {
@@ -533,8 +511,6 @@
                 session.user.email
             );
 
-
-            // Guardar usuario de Supabase Auth
             window.usuarioSesion =
                 session.user;
 
@@ -548,7 +524,7 @@
             );
 
             const resultadoPerfil =
-                await supabaseClient
+                await window.supabaseClient
                     .from("usuarios")
                     .select(
                         "id, correo, nombre, rol, estado, fechaRegistro"
@@ -559,9 +535,7 @@
                     )
                     .maybeSingle();
 
-            if (
-                resultadoPerfil.error
-            ) {
+            if (resultadoPerfil.error) {
 
                 console.error(
                     "ERROR PERFIL:",
@@ -594,8 +568,6 @@
                 perfil
             );
 
-
-            // Guardar perfil completo
             window.perfilUsuario =
                 perfil;
 
@@ -651,13 +623,12 @@
                 return false;
             }
 
-
             window.nombreUsuarioActual =
                 nombreReal;
 
 
             // ----------------------------------------------------
-            // 9. AHORA SÍ ACTIVAR INACTIVIDAD
+            // 9. ACTIVAR CONTROL DE INACTIVIDAD
             // ----------------------------------------------------
 
             iniciarControlInactividad();
