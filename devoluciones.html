@@ -39,28 +39,6 @@
             gap: 12px;
         }
 
-        .encabezado-icono {
-            font-size: 25px;
-            background: rgba(255, 255, 255, 0.16);
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .encabezado-titulo {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .encabezado-subtitulo {
-            font-size: 12px;
-            opacity: 0.9;
-            margin-top: 2px;
-        }
-
         .titulo-encabezado {
             position: absolute;
             left: 50%;
@@ -76,12 +54,6 @@
             margin: 0;
         }
 
-        .titulo-encabezado-subtitulo {
-            font-size: 12px;
-            opacity: 0.9;
-            margin-top: 3px;
-        }
-
         .boton-volver {
             background: rgba(255, 255, 255, 0.16);
             color: white;
@@ -93,6 +65,7 @@
             font-weight: 600;
             position: relative;
             z-index: 2;
+            margin-left: auto;
         }
 
         .boton-volver:hover {
@@ -638,19 +611,9 @@
                 font-size: 18px;
             }
 
-            .titulo-encabezado-subtitulo {
-                font-size: 10px;
-            }
-
             .boton-volver {
                 padding: 8px 10px;
                 font-size: 12px;
-            }
-
-            .encabezado-icono {
-                width: 38px;
-                height: 38px;
-                font-size: 22px;
             }
 
             footer {
@@ -666,14 +629,7 @@
 
 <header>
 
-    <div class="encabezado-izquierdo">
-
-        <div class="encabezado-icono">
-            📚
-        </div>
-
-    </div>
-
+    <div class="encabezado-izquierdo"></div>
 
     <div class="titulo-encabezado">
 
@@ -681,12 +637,7 @@
             Devoluciones
         </div>
 
-        <div class="titulo-encabezado-subtitulo">
-            Sistema de control de préstamos
-        </div>
-
     </div>
-
 
     <button
         type="button"
@@ -952,10 +903,6 @@
 
 </footer>
 
-
-<!-- ==============================
-     MODAL DE DETALLE
-============================== -->
 
 <div
     id="modalDetalle"
