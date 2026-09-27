@@ -18,10 +18,6 @@
 
     <style>
 
-        /* =====================================================
-           ESTILO GENERAL — MISMA IDENTIDAD DE INDEX
-        ====================================================== */
-
         * {
             box-sizing: border-box;
         }
@@ -32,11 +28,6 @@
             background: #f5f7fa;
             color: #1f2937;
         }
-
-
-        /* =====================================================
-           ENCABEZADO
-        ====================================================== */
 
         .encabezado {
             background: #009ddc;
@@ -84,21 +75,11 @@
             background: rgba(255, 255, 255, 0.26);
         }
 
-
-        /* =====================================================
-           CONTENEDOR
-        ====================================================== */
-
         .contenedor {
             max-width: 1100px;
             margin: 24px auto;
             padding: 0 18px;
         }
-
-
-        /* =====================================================
-           SECCIONES
-        ====================================================== */
 
         .seccion {
             background: #ffffff;
@@ -115,11 +96,6 @@
             color: #1f2937;
             font-weight: 700;
         }
-
-
-        /* =====================================================
-           BÚSQUEDA
-        ====================================================== */
 
         .fila-busqueda {
             display: flex;
@@ -176,11 +152,6 @@
             opacity: 0.9;
         }
 
-
-        /* =====================================================
-           MENSAJES
-        ====================================================== */
-
         .mensaje {
             margin-top: 12px;
             padding: 10px 12px;
@@ -202,11 +173,6 @@
             color: #c62828;
             border: 1px solid #ffcdd2;
         }
-
-
-        /* =====================================================
-           TABLAS
-        ====================================================== */
 
         .tabla-contenedor {
             overflow-x: auto;
@@ -248,11 +214,6 @@
             border-left: 4px solid #2e7d32;
         }
 
-
-        /* =====================================================
-           BOTÓN SELECCIONAR
-        ====================================================== */
-
         .btn-seleccionar {
             background: #009ddc;
             color: white;
@@ -268,11 +229,6 @@
         .btn-seleccionar.seleccionada {
             background: #2e7d32;
         }
-
-
-        /* =====================================================
-           TIPO DE SOLICITANTE
-        ====================================================== */
 
         .tipo-solicitante {
             display: flex;
@@ -302,11 +258,6 @@
             color: white;
             border-color: #009ddc;
         }
-
-
-        /* =====================================================
-           LIBROS SELECCIONADOS
-        ====================================================== */
 
         .libros-seleccionados {
             margin-top: 15px;
@@ -413,11 +364,6 @@
             color: #9ca3af;
         }
 
-
-        /* =====================================================
-           RESUMEN DEL PRÉSTAMO
-        ====================================================== */
-
         .resumen-prestamo {
             display: none;
         }
@@ -442,11 +388,6 @@
         .contenido-resumen {
             padding: 14px;
         }
-
-
-        /* =====================================================
-           DATOS DE PERSONA
-        ====================================================== */
 
         .datos-persona {
             display: grid;
@@ -527,11 +468,6 @@
             font-weight: 700;
             word-break: break-word;
         }
-
-
-        /* =====================================================
-           LIBROS EN RESUMEN
-        ====================================================== */
 
         .resumen-libros {
             margin-top: 15px;
@@ -619,11 +555,6 @@
             white-space: nowrap;
         }
 
-
-        /* =====================================================
-           FECHAS
-        ====================================================== */
-
         .fechas-prestamo {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -671,11 +602,6 @@
             margin-top: 1px;
             line-height: 1.3;
         }
-
-
-        /* =====================================================
-           CONFIRMACIÓN
-        ====================================================== */
 
         .confirmacion {
             background: #fff8e1;
@@ -726,11 +652,6 @@
             opacity: 0.9;
         }
 
-
-        /* =====================================================
-           INFORMACIÓN DEL LIBRO
-        ====================================================== */
-
         .libro-info {
             margin-top: 12px;
             padding: 12px;
@@ -745,11 +666,6 @@
         .libro-info strong {
             color: #007caf;
         }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
 
         @media (max-width: 850px) {
 
@@ -770,7 +686,6 @@
             }
 
         }
-
 
         @media (max-width: 700px) {
 
@@ -837,7 +752,6 @@
 
         }
 
-
         @media (max-width: 480px) {
 
             .datos-persona-grid {
@@ -858,8 +772,7 @@
 
 <header class="encabezado">
 
-    <div class="encabezado-izquierda">
-    </div>
+    <div class="encabezado-izquierda"></div>
 
     <div class="encabezado-textos">
 
@@ -868,7 +781,6 @@
         </h1>
 
     </div>
-
 
     <a
         href="index.html"
@@ -881,7 +793,6 @@
 
 
 <div class="contenedor">
-
 
     <!-- =====================================================
          PASO 1
@@ -925,6 +836,7 @@
                 >
 
                 <button
+                    type="button"
                     class="btn-buscar"
                     id="btnBuscarFamilia"
                 >
@@ -933,12 +845,10 @@
 
             </div>
 
-
             <div
                 id="mensajeFamilia"
                 class="mensaje"
             ></div>
-
 
             <div class="tabla-contenedor">
 
@@ -950,24 +860,16 @@
                     <thead>
 
                         <tr>
-
                             <th>PersonaId</th>
-
                             <th>FamiliaId</th>
-
                             <th>Nombre</th>
-
                             <th>Estado</th>
-
                             <th>Seleccionar</th>
-
                         </tr>
 
                     </thead>
 
-                    <tbody
-                        id="cuerpoFamilia"
-                    ></tbody>
+                    <tbody id="cuerpoFamilia"></tbody>
 
                 </table>
 
@@ -994,6 +896,7 @@
                 >
 
                 <button
+                    type="button"
                     class="btn-buscar"
                     id="btnBuscarColaborador"
                 >
@@ -1002,12 +905,10 @@
 
             </div>
 
-
             <div
                 id="mensajeColaborador"
                 class="mensaje"
             ></div>
-
 
             <div class="tabla-contenedor">
 
@@ -1019,24 +920,16 @@
                     <thead>
 
                         <tr>
-
                             <th>Código</th>
-
                             <th>Nombre</th>
-
                             <th>Área</th>
-
                             <th>Estado</th>
-
                             <th>Seleccionar</th>
-
                         </tr>
 
                     </thead>
 
-                    <tbody
-                        id="cuerpoColaborador"
-                    ></tbody>
+                    <tbody id="cuerpoColaborador"></tbody>
 
                 </table>
 
@@ -1063,9 +956,11 @@
                 placeholder="Ingrese código del libro..."
                 maxlength="8"
                 inputmode="numeric"
+                autocomplete="off"
             >
 
             <button
+                type="button"
                 class="btn-buscar"
                 id="btnBuscarLibro"
             >
@@ -1074,12 +969,10 @@
 
         </div>
 
-
         <div
             id="mensajeLibro"
             class="mensaje"
         ></div>
-
 
         <div
             id="libroInfo"
@@ -1109,12 +1002,10 @@
 
             </div>
 
-
             <div
                 id="listaLibrosSeleccionados"
                 class="lista-libros-seleccionados"
             ></div>
-
 
             <button
                 type="button"
@@ -1137,21 +1028,18 @@
 
         <h2>3. Confirmar préstamo</h2>
 
-
         <div
             id="resumenPrestamo"
             class="resumen-prestamo"
         >
 
-
-            <!-- PERSONA / COLABORADOR -->
+            <!-- DATOS PERSONA / COLABORADOR -->
 
             <div class="bloque-resumen">
 
                 <div class="titulo-bloque">
                     Datos del préstamo
                 </div>
-
 
                 <div class="contenido-resumen">
 
@@ -1179,7 +1067,6 @@
 
                             </div>
 
-
                             <div class="datos-persona-grid">
 
                                 <div class="dato-persona">
@@ -1192,7 +1079,6 @@
 
                                 </div>
 
-
                                 <div class="dato-persona">
 
                                     <span id="etiquetaPersonaId">
@@ -1203,7 +1089,6 @@
 
                                 </div>
 
-
                                 <div class="dato-persona etiqueta-completa">
 
                                     <span id="etiquetaNombre">
@@ -1213,7 +1098,6 @@
                                     <span id="resumenNombre"></span>
 
                                 </div>
-
 
                                 <div
                                     class="dato-persona"
@@ -1228,7 +1112,6 @@
                                     <span id="resumenArea"></span>
 
                                 </div>
-
 
                                 <div class="dato-persona">
 
@@ -1266,7 +1149,6 @@
 
                         </div>
 
-
                         <div
                             id="listaResumenLibros"
                             class="lista-resumen-libros"
@@ -1287,11 +1169,9 @@
                     Fechas del préstamo
                 </div>
 
-
                 <div class="contenido-resumen">
 
                     <div class="fechas-prestamo">
-
 
                         <div class="campo-fecha">
 
@@ -1310,7 +1190,6 @@
 
                         </div>
 
-
                         <div class="campo-fecha">
 
                             <label for="fechaDevolucion">
@@ -1328,7 +1207,6 @@
 
                         </div>
 
-
                         <div class="campo-fecha">
 
                             <label for="sitioPrestamo">
@@ -1337,25 +1215,11 @@
 
                             <select id="sitioPrestamo">
 
-                                <option value="F">
-                                    F
-                                </option>
-
-                                <option value="M">
-                                    M
-                                </option>
-
-                                <option value="R">
-                                    R
-                                </option>
-
-                                <option value="N">
-                                    N
-                                </option>
-
-                                <option value="Z">
-                                    Z
-                                </option>
+                                <option value="F">F</option>
+                                <option value="M">M</option>
+                                <option value="R">R</option>
+                                <option value="N">N</option>
+                                <option value="Z">Z</option>
 
                             </select>
 
@@ -1388,10 +1252,10 @@
                     Revise que la persona, los libros, el sitio y las fechas sean correctos antes de continuar.
                 </p>
 
-
                 <div class="acciones-confirmacion">
 
                     <button
+                        type="button"
                         class="btn-cancelar"
                         id="btnCancelar"
                     >
@@ -1399,6 +1263,7 @@
                     </button>
 
                     <button
+                        type="button"
                         class="btn-confirmar"
                         id="btnConfirmar"
                     >
@@ -1410,7 +1275,6 @@
             </div>
 
         </div>
-
 
         <div
             id="mensajeFinal"
@@ -1438,8 +1302,7 @@ let tipoSolicitante = "Afiliado";
 
 let fechaDevolucionModificada = false;
 
-const MAX_LIBROS =
-    3;
+const MAX_LIBROS = 3;
 
 
 /* =========================================================
@@ -1447,7 +1310,6 @@ const MAX_LIBROS =
 ========================================================= */
 
 let autenticacionLista = false;
-
 
 async function iniciarAutenticacion() {
 
@@ -1467,17 +1329,15 @@ async function iniciarAutenticacion() {
                 "error"
             );
 
-            document
-                .getElementById("btnConfirmar")
-                .disabled = true;
+            document.getElementById(
+                "btnConfirmar"
+            ).disabled = true;
 
             return false;
         }
 
-
         const autorizado =
             await window.protegerPagina();
-
 
         if (!autorizado) {
 
@@ -1491,13 +1351,12 @@ async function iniciarAutenticacion() {
                 "error"
             );
 
-            document
-                .getElementById("btnConfirmar")
-                .disabled = true;
+            document.getElementById(
+                "btnConfirmar"
+            ).disabled = true;
 
             return false;
         }
-
 
         if (
             !window.perfilUsuario ||
@@ -1515,22 +1374,19 @@ async function iniciarAutenticacion() {
                 "error"
             );
 
-            document
-                .getElementById("btnConfirmar")
-                .disabled = true;
+            document.getElementById(
+                "btnConfirmar"
+            ).disabled = true;
 
             return false;
         }
 
-
         autenticacionLista = true;
-
 
         console.log(
             "Usuario listo para registrar préstamos:",
             window.perfilUsuario.nombre
         );
-
 
         return true;
 
@@ -1547,9 +1403,9 @@ async function iniciarAutenticacion() {
             "error"
         );
 
-        document
-            .getElementById("btnConfirmar")
-            .disabled = true;
+        document.getElementById(
+            "btnConfirmar"
+        ).disabled = true;
 
         return false;
     }
@@ -1596,7 +1452,14 @@ const mensajeFinal =
 const libroInfo =
     document.getElementById("libroInfo");
 
-const librosSeleccionados =
+
+/*
+   IMPORTANTE:
+   Este elemento se llama diferente al arreglo
+   librosSeleccionados para evitar una colisión de variables.
+*/
+
+const contenedorLibrosSeleccionados =
     document.getElementById("librosSeleccionados");
 
 const listaLibrosSeleccionados =
@@ -1725,7 +1588,7 @@ function normalizarTexto(
 
 
 /* =========================================================
-   NORMALIZAR CÓDIGO
+   NORMALIZAR CÓDIGO LIBRO
 ========================================================= */
 
 function normalizarCodigo(
@@ -1972,7 +1835,6 @@ function obtenerSitio(
         }
     }
 
-
     if (
         persona &&
         persona.FamiliaId
@@ -1999,7 +1861,6 @@ function obtenerSitio(
             return sitio;
         }
     }
-
 
     return null;
 }
@@ -2071,7 +1932,6 @@ function prepararFechas() {
 
     }
 
-
     if (
         !fechaDevolucionModificada
     ) {
@@ -2097,7 +1957,6 @@ function validarFechas() {
     const fechaDevolucion =
         fechaDevolucionInput.value;
 
-
     if (!fechaPrestamo) {
 
         mostrarMensaje(
@@ -2110,7 +1969,6 @@ function validarFechas() {
 
         return false;
     }
-
 
     if (!fechaDevolucion) {
 
@@ -2125,7 +1983,6 @@ function validarFechas() {
         return false;
     }
 
-
     const fechaInicio =
         fechaLocalDesdeInput(
             fechaPrestamo
@@ -2135,7 +1992,6 @@ function validarFechas() {
         fechaLocalDesdeInput(
             fechaDevolucion
         );
-
 
     if (
         !fechaInicio ||
@@ -2151,7 +2007,6 @@ function validarFechas() {
         return false;
     }
 
-
     if (
         fechaFin < fechaInicio
     ) {
@@ -2166,7 +2021,6 @@ function validarFechas() {
 
         return false;
     }
-
 
     return true;
 }
@@ -2241,7 +2095,6 @@ function cambiarTipoSolicitante(
     buscarColaboradorInput.value =
         "";
 
-
     if (
         tipo === "Afiliado"
     ) {
@@ -2277,7 +2130,6 @@ function cambiarTipoSolicitante(
             "block";
     }
 
-
     actualizarDetalle();
 }
 
@@ -2306,7 +2158,6 @@ async function buscarFamilia() {
 
     actualizarDetalle();
 
-
     if (!familia) {
 
         mostrarMensaje(
@@ -2317,7 +2168,6 @@ async function buscarFamilia() {
 
         return;
     }
-
 
     try {
 
@@ -2343,11 +2193,9 @@ async function buscarFamilia() {
                     }
                 );
 
-
         if (error) {
             throw error;
         }
-
 
         if (
             !data ||
@@ -2363,27 +2211,23 @@ async function buscarFamilia() {
             return;
         }
 
-
         data.forEach(
             persona => {
 
                 const fila =
                     document.createElement("tr");
 
-
                 const tdPersona =
                     document.createElement("td");
 
                 tdPersona.textContent =
-                    persona.PersonaId;
-
+                    persona.PersonaId || "";
 
                 const tdFamilia =
                     document.createElement("td");
 
                 tdFamilia.textContent =
-                    persona.FamiliaId;
-
+                    persona.FamiliaId || "";
 
                 const tdNombre =
                     document.createElement("td");
@@ -2394,17 +2238,14 @@ async function buscarFamilia() {
                 tdNombre.textContent =
                     `${persona.Nombres || ""} ${persona.Apellidos || ""}`;
 
-
                 const tdEstado =
                     document.createElement("td");
 
                 tdEstado.textContent =
-                    persona.estado;
-
+                    persona.estado || "";
 
                 const tdAccion =
                     document.createElement("td");
-
 
                 const boton =
                     document.createElement("button");
@@ -2417,7 +2258,6 @@ async function buscarFamilia() {
 
                 boton.textContent =
                     "Seleccionar";
-
 
                 boton.addEventListener(
                     "click",
@@ -2432,11 +2272,9 @@ async function buscarFamilia() {
                     }
                 );
 
-
                 tdAccion.appendChild(
                     boton
                 );
-
 
                 fila.appendChild(
                     tdPersona
@@ -2458,7 +2296,6 @@ async function buscarFamilia() {
                     tdAccion
                 );
 
-
                 cuerpoFamilia.appendChild(
                     fila
                 );
@@ -2466,14 +2303,15 @@ async function buscarFamilia() {
             }
         );
 
-
         tablaFamilia.style.display =
             "table";
 
-
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "ERROR BUSCANDO FAMILIA:",
+            error
+        );
 
         mostrarMensaje(
             mensajeFamilia,
@@ -2505,12 +2343,10 @@ function seleccionarPersona(
                     "seleccionada"
                 );
 
-
                 const boton =
                     fila.querySelector(
                         ".btn-seleccionar"
                     );
-
 
                 if (boton) {
 
@@ -2525,7 +2361,6 @@ function seleccionarPersona(
             }
         );
 
-
     filaSeleccionada.classList.add(
         "seleccionada"
     );
@@ -2537,13 +2372,11 @@ function seleccionarPersona(
     botonSeleccionado.textContent =
         "✓ Seleccionada";
 
-
     personaSeleccionada =
         persona;
 
     colaboradorSeleccionado =
         null;
-
 
     actualizarDetalle();
 }
@@ -2573,7 +2406,6 @@ async function buscarColaborador() {
 
     actualizarDetalle();
 
-
     if (!codigoIngresado) {
 
         mostrarMensaje(
@@ -2585,12 +2417,10 @@ async function buscarColaborador() {
         return;
     }
 
-
     const codigoNormalizado =
         normalizarCodigoColaborador(
             codigoIngresado
         );
-
 
     if (!codigoNormalizado) {
 
@@ -2602,7 +2432,6 @@ async function buscarColaborador() {
 
         return;
     }
-
 
     try {
 
@@ -2618,11 +2447,9 @@ async function buscarColaborador() {
                     "Activo"
                 );
 
-
         if (error) {
             throw error;
         }
-
 
         const encontrados =
             (data || [])
@@ -2633,7 +2460,6 @@ async function buscarColaborador() {
                         ) ===
                         codigoNormalizado
                 );
-
 
         if (
             encontrados.length === 0
@@ -2648,20 +2474,17 @@ async function buscarColaborador() {
             return;
         }
 
-
         encontrados.forEach(
             colaborador => {
 
                 const fila =
                     document.createElement("tr");
 
-
                 const tdCodigo =
                     document.createElement("td");
 
                 tdCodigo.textContent =
-                    colaborador.CodigoColaborador;
-
+                    colaborador.CodigoColaborador || "";
 
                 const tdNombre =
                     document.createElement("td");
@@ -2672,24 +2495,20 @@ async function buscarColaborador() {
                 tdNombre.textContent =
                     colaborador.Nombre || "";
 
-
                 const tdArea =
                     document.createElement("td");
 
                 tdArea.textContent =
                     colaborador.Area || "";
 
-
                 const tdEstado =
                     document.createElement("td");
 
                 tdEstado.textContent =
-                    colaborador.estado;
-
+                    colaborador.estado || "";
 
                 const tdAccion =
                     document.createElement("td");
-
 
                 const boton =
                     document.createElement("button");
@@ -2702,7 +2521,6 @@ async function buscarColaborador() {
 
                 boton.textContent =
                     "Seleccionar";
-
 
                 boton.addEventListener(
                     "click",
@@ -2717,11 +2535,9 @@ async function buscarColaborador() {
                     }
                 );
 
-
                 tdAccion.appendChild(
                     boton
                 );
-
 
                 fila.appendChild(
                     tdCodigo
@@ -2743,7 +2559,6 @@ async function buscarColaborador() {
                     tdAccion
                 );
 
-
                 cuerpoColaborador.appendChild(
                     fila
                 );
@@ -2751,14 +2566,15 @@ async function buscarColaborador() {
             }
         );
 
-
         tablaColaborador.style.display =
             "table";
 
-
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "ERROR BUSCANDO COLABORADOR:",
+            error
+        );
 
         mostrarMensaje(
             mensajeColaborador,
@@ -2790,12 +2606,10 @@ function seleccionarColaborador(
                     "seleccionada"
                 );
 
-
                 const boton =
                     fila.querySelector(
                         ".btn-seleccionar"
                     );
-
 
                 if (boton) {
 
@@ -2810,7 +2624,6 @@ function seleccionarColaborador(
             }
         );
 
-
     filaSeleccionada.classList.add(
         "seleccionada"
     );
@@ -2822,13 +2635,11 @@ function seleccionarColaborador(
     botonSeleccionado.textContent =
         "✓ Seleccionado";
 
-
     colaboradorSeleccionado =
         colaborador;
 
     personaSeleccionada =
         null;
-
 
     actualizarDetalle();
 }
@@ -2850,7 +2661,6 @@ async function buscarLibro() {
     libroInfo.style.display =
         "none";
 
-
     if (!codigoIngresado) {
 
         mostrarMensaje(
@@ -2859,9 +2669,10 @@ async function buscarLibro() {
             "error"
         );
 
+        buscarLibroInput.focus();
+
         return;
     }
-
 
     if (
         librosSeleccionados.length >=
@@ -2877,12 +2688,10 @@ async function buscarLibro() {
         return;
     }
 
-
     const codigoNormalizado =
         normalizarCodigo(
             codigoIngresado
         );
-
 
     const yaSeleccionado =
         librosSeleccionados.some(
@@ -2893,7 +2702,6 @@ async function buscarLibro() {
                 codigoNormalizado
         );
 
-
     if (yaSeleccionado) {
 
         mostrarMensaje(
@@ -2902,9 +2710,10 @@ async function buscarLibro() {
             "error"
         );
 
+        buscarLibroInput.select();
+
         return;
     }
-
 
     try {
 
@@ -2916,11 +2725,9 @@ async function buscarLibro() {
                 .from("libros")
                 .select("*");
 
-
         if (error) {
             throw error;
         }
-
 
         const libro =
             (data || [])
@@ -2932,7 +2739,6 @@ async function buscarLibro() {
                         codigoNormalizado
                 );
 
-
         if (!libro) {
 
             mostrarMensaje(
@@ -2943,7 +2749,6 @@ async function buscarLibro() {
 
             return;
         }
-
 
         if (
             normalizarTexto(
@@ -2961,24 +2766,21 @@ async function buscarLibro() {
             return;
         }
 
-
         const {
             data: prestamosActivos,
             error: errorPrestamos
         } =
             await supabaseClient
                 .from("prestamos")
-                .select("*")
+                .select("codigoLibro, estado")
                 .eq(
                     "estado",
                     "Prestado"
                 );
 
-
         if (errorPrestamos) {
             throw errorPrestamos;
         }
-
 
         const yaPrestado =
             (prestamosActivos || [])
@@ -2989,7 +2791,6 @@ async function buscarLibro() {
                         ) ===
                         codigoNormalizado
                 );
-
 
         if (
             yaPrestado ||
@@ -3008,15 +2809,12 @@ async function buscarLibro() {
             return;
         }
 
-
         librosSeleccionados.push(
             libro
         );
 
-
         buscarLibroInput.value =
             "";
-
 
         mostrarMensaje(
             mensajeLibro,
@@ -3024,15 +2822,25 @@ async function buscarLibro() {
             "exito"
         );
 
-
         actualizarLibrosSeleccionados();
 
         actualizarDetalle();
 
+        if (
+            librosSeleccionados.length <
+            MAX_LIBROS
+        ) {
+
+            buscarLibroInput.focus();
+
+        }
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "ERROR BUSCANDO LIBRO:",
+            error
+        );
 
         mostrarMensaje(
             mensajeLibro,
@@ -3052,30 +2860,32 @@ function actualizarLibrosSeleccionados() {
     listaLibrosSeleccionados.innerHTML =
         "";
 
-
     if (
         librosSeleccionados.length === 0
     ) {
 
-        librosSeleccionados.classList.remove(
+        contenedorLibrosSeleccionados.classList.remove(
             "visible"
         );
 
         contadorLibros.textContent =
             "0 de 3";
 
+        btnAgregarLibro.disabled =
+            false;
+
+        btnAgregarLibro.textContent =
+            "+ Agregar libro";
+
         return;
     }
 
-
-    librosSeleccionados.classList.add(
+    contenedorLibrosSeleccionados.classList.add(
         "visible"
     );
 
-
     contadorLibros.textContent =
         `${librosSeleccionados.length} de ${MAX_LIBROS}`;
-
 
     librosSeleccionados.forEach(
         (
@@ -3089,7 +2899,6 @@ function actualizarLibrosSeleccionados() {
             tarjeta.className =
                 "libro-seleccionado";
 
-
             const numero =
                 document.createElement("div");
 
@@ -3098,7 +2907,6 @@ function actualizarLibrosSeleccionados() {
 
             numero.textContent =
                 `LIBRO ${indice + 1}`;
-
 
             const codigo =
                 document.createElement("div");
@@ -3109,7 +2917,6 @@ function actualizarLibrosSeleccionados() {
             codigo.textContent =
                 `Código: ${libro.codigoLibro}`;
 
-
             const nombre =
                 document.createElement("div");
 
@@ -3118,7 +2925,6 @@ function actualizarLibrosSeleccionados() {
 
             nombre.textContent =
                 libro.nombreLibro || "";
-
 
             const botonQuitar =
                 document.createElement("button");
@@ -3135,7 +2941,6 @@ function actualizarLibrosSeleccionados() {
             botonQuitar.textContent =
                 "×";
 
-
             botonQuitar.addEventListener(
                 "click",
                 function() {
@@ -3146,7 +2951,6 @@ function actualizarLibrosSeleccionados() {
 
                 }
             );
-
 
             tarjeta.appendChild(
                 numero
@@ -3164,14 +2968,12 @@ function actualizarLibrosSeleccionados() {
                 botonQuitar
             );
 
-
             listaLibrosSeleccionados.appendChild(
                 tarjeta
             );
 
         }
     );
-
 
     if (
         librosSeleccionados.length >=
@@ -3192,7 +2994,6 @@ function actualizarLibrosSeleccionados() {
         btnAgregarLibro.textContent =
             "+ Agregar libro";
     }
-
 }
 
 
@@ -3212,21 +3013,20 @@ function quitarLibro(
         return;
     }
 
-
     librosSeleccionados.splice(
         indice,
         1
     );
 
-
     limpiarMensaje(
         mensajeLibro
     );
 
-
     actualizarLibrosSeleccionados();
 
     actualizarDetalle();
+
+    buscarLibroInput.focus();
 }
 
 
@@ -3244,11 +3044,9 @@ function activarBusquedaNuevoLibro() {
         return;
     }
 
-
     buscarLibroInput.focus();
 
     buscarLibroInput.select();
-
 
     mostrarMensaje(
         mensajeLibro,
@@ -3267,7 +3065,6 @@ function actualizarResumenLibros() {
     listaResumenLibros.innerHTML =
         "";
 
-
     if (
         librosSeleccionados.length === 0
     ) {
@@ -3278,16 +3075,13 @@ function actualizarResumenLibros() {
         return;
     }
 
-
     const cantidad =
         librosSeleccionados.length;
-
 
     resumenLibrosContador.textContent =
         cantidad === 1
             ? "1 libro"
             : `${cantidad} libros`;
-
 
     librosSeleccionados.forEach(
         (
@@ -3301,7 +3095,6 @@ function actualizarResumenLibros() {
             tarjeta.className =
                 "tarjeta-resumen-libro";
 
-
             const numero =
                 document.createElement("div");
 
@@ -3311,13 +3104,11 @@ function actualizarResumenLibros() {
             numero.textContent =
                 indice + 1;
 
-
             const datos =
                 document.createElement("div");
 
             datos.className =
                 "datos-resumen-libro";
-
 
             const codigo =
                 document.createElement("div");
@@ -3328,7 +3119,6 @@ function actualizarResumenLibros() {
             codigo.textContent =
                 `Código: ${libro.codigoLibro}`;
 
-
             const nombre =
                 document.createElement("div");
 
@@ -3338,7 +3128,6 @@ function actualizarResumenLibros() {
             nombre.textContent =
                 libro.nombreLibro || "";
 
-
             datos.appendChild(
                 codigo
             );
@@ -3346,7 +3135,6 @@ function actualizarResumenLibros() {
             datos.appendChild(
                 nombre
             );
-
 
             const estado =
                 document.createElement("div");
@@ -3356,7 +3144,6 @@ function actualizarResumenLibros() {
 
             estado.textContent =
                 "Disponible";
-
 
             tarjeta.appendChild(
                 numero
@@ -3370,14 +3157,12 @@ function actualizarResumenLibros() {
                 estado
             );
 
-
             listaResumenLibros.appendChild(
                 tarjeta
             );
 
         }
     );
-
 }
 
 
@@ -3392,10 +3177,8 @@ function actualizarDetalle() {
             ? !!personaSeleccionada
             : !!colaboradorSeleccionado;
 
-
     const hayLibros =
         librosSeleccionados.length > 0;
-
 
     if (
         !haySolicitante ||
@@ -3411,9 +3194,7 @@ function actualizarDetalle() {
         return;
     }
 
-
     prepararFechas();
-
 
     if (
         tipoSolicitante === "Afiliado"
@@ -3434,18 +3215,14 @@ function actualizarDetalle() {
         etiquetaNombre.textContent =
             "Nombre";
 
-
         resumenFamilia.textContent =
             personaSeleccionada.FamiliaId || "";
-
 
         resumenPersonaId.textContent =
             personaSeleccionada.PersonaId || "";
 
-
         resumenNombre.textContent =
             `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
-
 
         resumenArea.textContent =
             "";
@@ -3453,13 +3230,11 @@ function actualizarDetalle() {
         filaAreaResumen.style.display =
             "none";
 
-
         resumenSitio.textContent =
             obtenerSitio(
                 personaSeleccionada
             ) ||
             "No definido";
-
 
     } else {
 
@@ -3478,40 +3253,31 @@ function actualizarDetalle() {
         etiquetaNombre.textContent =
             "Nombre";
 
-
         resumenFamilia.textContent =
             colaboradorSeleccionado.CodigoColaborador || "";
-
 
         resumenPersonaId.textContent =
             "Colaborador";
 
-
         resumenNombre.textContent =
             colaboradorSeleccionado.Nombre || "";
-
 
         resumenArea.textContent =
             colaboradorSeleccionado.Area ||
             "No definida";
 
-
         filaAreaResumen.style.display =
             "block";
-
 
         resumenSitio.textContent =
             sitioPrestamoInput.value ||
             "No definido";
     }
 
-
     actualizarResumenLibros();
-
 
     resumenPrestamo.style.display =
         "block";
-
 
     confirmacion.style.display =
         "block";
@@ -3539,7 +3305,6 @@ function crearDatosPrestamo(
             obtenerSitio(
                 personaSeleccionada
             );
-
 
         return {
 
@@ -3596,11 +3361,9 @@ function crearDatosPrestamo(
 
             DevueltoPor:
                 null
-
         };
 
     }
-
 
     return {
 
@@ -3657,9 +3420,7 @@ function crearDatosPrestamo(
 
         DevueltoPor:
             null
-
     };
-
 }
 
 
@@ -3673,30 +3434,18 @@ async function confirmarPrestamo() {
         mensajeFinal
     );
 
-
-    /* =====================================================
-       COMPROBAR AUTENTICACIÓN
-    ===================================================== */
-
     if (!autenticacionLista) {
 
         const autorizado =
             await iniciarAutenticacion();
 
         if (!autorizado) {
-
             return;
         }
     }
 
-
-    /* =====================================================
-       OBTENER USUARIO ACTUAL
-    ===================================================== */
-
     const usuarioActual =
         obtenerUsuarioActual();
-
 
     if (!usuarioActual) {
 
@@ -3709,20 +3458,12 @@ async function confirmarPrestamo() {
         return;
     }
 
-
-    /* =====================================================
-       VALIDACIONES
-    ===================================================== */
-
     const haySolicitante =
         tipoSolicitante === "Afiliado"
             ? !!personaSeleccionada
             : !!colaboradorSeleccionado;
 
-
-    if (
-        !haySolicitante
-    ) {
+    if (!haySolicitante) {
 
         mostrarMensaje(
             mensajeFinal,
@@ -3732,7 +3473,6 @@ async function confirmarPrestamo() {
 
         return;
     }
-
 
     if (
         librosSeleccionados.length === 0
@@ -3746,7 +3486,6 @@ async function confirmarPrestamo() {
 
         return;
     }
-
 
     if (
         librosSeleccionados.length >
@@ -3762,7 +3501,6 @@ async function confirmarPrestamo() {
         return;
     }
 
-
     if (
         !validarFechas()
     ) {
@@ -3770,14 +3508,12 @@ async function confirmarPrestamo() {
         return;
     }
 
-
     if (
         !validarSitioPrestamo()
     ) {
 
         return;
     }
-
 
     try {
 
@@ -3795,7 +3531,6 @@ async function confirmarPrestamo() {
                     personaSeleccionada
                 );
 
-
             if (!sitio) {
 
                 mostrarMensaje(
@@ -3806,7 +3541,6 @@ async function confirmarPrestamo() {
 
                 return;
             }
-
         }
 
 
@@ -3819,19 +3553,17 @@ async function confirmarPrestamo() {
                 fechaPrestamoInput.value
             );
 
-
         const fechaDevolucion =
             fechaInputAISO(
                 fechaDevolucionInput.value
             );
-
 
         const sitioPrestamo =
             obtenerSitioPrestamo();
 
 
         /* =================================================
-           VERIFICAR TODOS LOS LIBROS NUEVAMENTE
+           VERIFICAR TODOS LOS LIBROS
         ================================================= */
 
         const {
@@ -3840,21 +3572,18 @@ async function confirmarPrestamo() {
         } =
             await supabaseClient
                 .from("prestamos")
-                .select("*")
+                .select("codigoLibro, estado")
                 .eq(
                     "estado",
                     "Prestado"
                 );
 
-
         if (errorConsulta) {
             throw errorConsulta;
         }
 
-
         const librosYaPrestados =
             [];
-
 
         for (
             const libro
@@ -3865,7 +3594,6 @@ async function confirmarPrestamo() {
                 normalizarCodigo(
                     libro.codigoLibro
                 );
-
 
             const duplicado =
                 (
@@ -3880,7 +3608,6 @@ async function confirmarPrestamo() {
                         codigoNormalizado
                 );
 
-
             if (
                 duplicado ||
                 normalizarTexto(
@@ -3892,11 +3619,8 @@ async function confirmarPrestamo() {
                 librosYaPrestados.push(
                     libro.codigoLibro
                 );
-
             }
-
         }
-
 
         if (
             librosYaPrestados.length > 0
@@ -3930,7 +3654,6 @@ async function confirmarPrestamo() {
                     )
             );
 
-
         console.log(
             "PRÉSTAMOS A REGISTRAR:",
             prestamosParaGuardar
@@ -3952,11 +3675,9 @@ async function confirmarPrestamo() {
                 )
                 .select();
 
-
         if (errorInsertar) {
             throw errorInsertar;
         }
-
 
         console.log(
             "PRÉSTAMOS GUARDADOS:",
@@ -3967,10 +3688,6 @@ async function confirmarPrestamo() {
         /* =================================================
            ACTUALIZAR ESTADO DE CADA LIBRO
         ================================================= */
-
-        const librosActualizados =
-            [];
-
 
         for (
             const libro
@@ -3990,7 +3707,6 @@ async function confirmarPrestamo() {
                         libro.id
                     );
 
-
             if (errorLibro) {
 
                 console.error(
@@ -4001,12 +3717,6 @@ async function confirmarPrestamo() {
 
                 throw errorLibro;
             }
-
-
-            librosActualizados.push(
-                libro
-            );
-
         }
 
 
@@ -4015,8 +3725,7 @@ async function confirmarPrestamo() {
         ================================================= */
 
         const cantidadLibros =
-            librosActualizados.length;
-
+            librosSeleccionados.length;
 
         mostrarMensaje(
             mensajeFinal,
@@ -4043,10 +3752,8 @@ async function confirmarPrestamo() {
         fechaDevolucionModificada =
             false;
 
-
         tipoSolicitante =
             "Afiliado";
-
 
         btnTipoAfiliado.classList.add(
             "activa"
@@ -4056,13 +3763,11 @@ async function confirmarPrestamo() {
             "activa"
         );
 
-
         seccionAfiliado.style.display =
             "block";
 
         seccionColaborador.style.display =
             "none";
-
 
         buscarFamiliaInput.value =
             "";
@@ -4073,11 +3778,9 @@ async function confirmarPrestamo() {
         tablaFamilia.style.display =
             "none";
 
-
         limpiarMensaje(
             mensajeFamilia
         );
-
 
         buscarColaboradorInput.value =
             "";
@@ -4088,11 +3791,9 @@ async function confirmarPrestamo() {
         tablaColaborador.style.display =
             "none";
 
-
         limpiarMensaje(
             mensajeColaborador
         );
-
 
         buscarLibroInput.value =
             "";
@@ -4103,14 +3804,11 @@ async function confirmarPrestamo() {
         libroInfo.style.display =
             "none";
 
-
         limpiarMensaje(
             mensajeLibro
         );
 
-
         actualizarLibrosSeleccionados();
-
 
         listaResumenLibros.innerHTML =
             "";
@@ -4118,27 +3816,22 @@ async function confirmarPrestamo() {
         resumenLibrosContador.textContent =
             "0 libros";
 
-
         resumenPrestamo.style.display =
             "none";
 
         confirmacion.style.display =
             "none";
 
-
         fechaPrestamoInput.value =
             obtenerFechaLocalInput();
-
 
         fechaDevolucionInput.value =
             agregarUnMes(
                 fechaPrestamoInput.value
             );
 
-
         sitioPrestamoInput.value =
             "F";
-
 
     } catch (error) {
 
@@ -4241,40 +3934,6 @@ sitioPrestamoInput.addEventListener(
 
 
 /* =========================================================
-   ESCAPAR HTML
-========================================================= */
-
-function escapeHtml(
-    valor
-) {
-
-    return String(
-        valor ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-}
-
-
-/* =========================================================
    BOTONES TIPO
 ========================================================= */
 
@@ -4288,7 +3947,6 @@ btnTipoAfiliado.addEventListener(
 
     }
 );
-
 
 btnTipoColaborador.addEventListener(
     "click",
@@ -4315,7 +3973,6 @@ document
         buscarFamilia
     );
 
-
 document
     .getElementById(
         "btnBuscarColaborador"
@@ -4324,7 +3981,6 @@ document
         "click",
         buscarColaborador
     );
-
 
 document
     .getElementById(
@@ -4335,12 +3991,10 @@ document
         buscarLibro
     );
 
-
 btnAgregarLibro.addEventListener(
     "click",
     activarBusquedaNuevoLibro
 );
-
 
 document
     .getElementById(
@@ -4350,7 +4004,6 @@ document
         "click",
         confirmarPrestamo
     );
-
 
 document
     .getElementById(
@@ -4374,6 +4027,8 @@ buscarFamiliaInput.addEventListener(
             event.key === "Enter"
         ) {
 
+            event.preventDefault();
+
             buscarFamilia();
 
         }
@@ -4394,6 +4049,8 @@ buscarColaboradorInput.addEventListener(
             event.key === "Enter"
         ) {
 
+            event.preventDefault();
+
             buscarColaborador();
 
         }
@@ -4413,6 +4070,8 @@ buscarLibroInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
+
+            event.preventDefault();
 
             buscarLibro();
 
@@ -4451,7 +4110,6 @@ buscarLibroInput.addEventListener(
 
 fechaPrestamoInput.value =
     obtenerFechaLocalInput();
-
 
 fechaDevolucionInput.value =
     agregarUnMes(
