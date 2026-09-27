@@ -40,12 +40,6 @@
    CARGA INICIAL
 ========================================= */
 
-/*
-   Mientras se comprueba la sesión, la página
-   permanece oculta para evitar que aparezca
-   brevemente la pantalla de inicio de sesión.
-*/
-
 body.sistema-cargando {
     visibility: hidden;
 }
@@ -117,14 +111,39 @@ body {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
 }
 
+
+/*
+   Todo el contenido del encabezado
+   queda centrado.
+*/
+
 .encabezado-contenido {
-    min-height: 70px;
+    min-height: 90px;
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
 }
+
+
+/* =========================================
+   MARCA CENTRADA
+========================================= */
 
 .marca {
     display: flex;
+
     align-items: center;
+
+    justify-content: center;
+
     gap: 13px;
+
+    text-align: left;
 }
 
 
@@ -135,7 +154,9 @@ body {
     height: 47px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     background: rgba(255, 255, 255, 0.16);
@@ -181,7 +202,9 @@ body {
 }
 
 
-/* Botón cerrar sesión */
+/* =========================================
+   BOTÓN CERRAR SESIÓN
+========================================= */
 
 #botonCerrarSesion {
     color: white !important;
@@ -189,6 +212,10 @@ body {
     border-color: rgba(255,255,255,0.42) !important;
 
     transition: 0.2s ease;
+
+    position: absolute;
+
+    right: 18px;
 }
 
 #botonCerrarSesion:hover {
@@ -208,59 +235,6 @@ body {
     padding: 0 18px;
 
     box-sizing: border-box;
-}
-
-
-/* =========================================
-   BIENVENIDA
-========================================= */
-
-.bienvenida {
-    background: white;
-
-    border: 1px solid var(--borde);
-
-    border-left: 4px solid var(--celeste-fundacion);
-
-    border-radius: 10px;
-
-    padding: 15px 22px;
-
-    margin-bottom: 14px;
-
-    box-shadow: var(--sombra);
-
-    text-align: center;
-}
-
-
-.bienvenida .etiqueta {
-    display: inline-block;
-
-    color: var(--celeste-fundacion);
-
-    font-size: 18px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
-
-    line-height: 1.2;
-
-    margin-bottom: 5px;
-}
-
-
-.bienvenida p {
-    margin: 0 auto;
-
-    color: var(--texto-suave);
-
-    font-size: 13px;
-
-    line-height: 1.4;
-
-    max-width: 850px;
 }
 
 
@@ -292,10 +266,6 @@ body {
     border-radius: 9px;
 
     width: 100%;
-
-    /*
-       Menor altura
-    */
 
     min-height: 96px;
 
@@ -756,7 +726,18 @@ footer .creditos {
 
 
     .encabezado-contenido {
-        min-height: 62px;
+        min-height: 90px;
+
+        padding: 8px 12px;
+
+        box-sizing: border-box;
+    }
+
+
+    .marca {
+        gap: 8px;
+
+        text-align: left;
     }
 
 
@@ -781,26 +762,13 @@ footer .creditos {
 
 
     #botonCerrarSesion {
+        position: absolute;
+
+        right: 12px;
+
         padding: 8px 10px !important;
 
         font-size: 12px !important;
-    }
-
-
-    .bienvenida {
-        padding: 14px 16px;
-    }
-
-
-    .bienvenida .etiqueta {
-        font-size: 16px;
-
-        letter-spacing: 0.8px;
-    }
-
-
-    .bienvenida p {
-        font-size: 12px;
     }
 
 
@@ -878,7 +846,7 @@ footer .creditos {
 
 
     .marca {
-        gap: 8px;
+        gap: 6px;
     }
 
 
@@ -889,6 +857,11 @@ footer .creditos {
 
     .marca p {
         font-size: 9px;
+    }
+
+
+    .encabezado-contenido {
+        min-height: 88px;
     }
 
 }
@@ -1084,10 +1057,6 @@ footer .creditos {
 
         <div
             class="encabezado-contenido"
-            style="
-                display: flex;
-                align-items: center;
-            "
         >
 
             <div class="marca">
@@ -1146,24 +1115,6 @@ footer .creditos {
 ========================================== -->
 
     <main class="contenedor">
-
-
-        <!-- BIENVENIDA -->
-
-        <section class="bienvenida">
-
-            <span class="etiqueta">
-                SISTEMA DE BIBLIOTECA
-            </span>
-
-            <p>
-                Desde aquí puedes administrar los libros,
-                familias, préstamos, devoluciones y consultar
-                los reportes de la biblioteca.
-            </p>
-
-        </section>
-
 
 
         <!-- =====================================
