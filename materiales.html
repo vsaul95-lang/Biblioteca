@@ -1797,7 +1797,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
 
     const materialesPrueba = [
-
         {
             codigo:"M001",
             nombre:"Hojas tamaño carta",
@@ -1809,7 +1808,6 @@ window.materialesAuth = (async function protegerMateriales(){
             estado:"Activo",
             observaciones:""
         },
-
         {
             codigo:"M002",
             nombre:"Cuadernos",
@@ -1821,7 +1819,6 @@ window.materialesAuth = (async function protegerMateriales(){
             estado:"Activo",
             observaciones:""
         },
-
         {
             codigo:"M003",
             nombre:"Marcadores",
@@ -1833,12 +1830,10 @@ window.materialesAuth = (async function protegerMateriales(){
             estado:"Activo",
             observaciones:""
         }
-
     ];
 
 
     const entregasPrueba = [
-
         {
             fecha:"28/09/2026",
             materialCodigo:"M001",
@@ -1856,7 +1851,6 @@ window.materialesAuth = (async function protegerMateriales(){
             usuario:"Usuario actual",
             observaciones:""
         },
-
         {
             fecha:"27/09/2026",
             materialCodigo:"M002",
@@ -1874,7 +1868,6 @@ window.materialesAuth = (async function protegerMateriales(){
             usuario:"Usuario actual",
             observaciones:""
         }
-
     ];
 
 
@@ -2192,15 +2185,10 @@ window.materialesAuth = (async function protegerMateriales(){
             (data || []).map(m=>({
 
                 id:m.id,
-
                 codigo:m.codigo || "",
-
                 nombre:m.nombre || "",
-
                 categoria:m.categoria || "",
-
                 unidad:m.unidad || "",
-
                 biblioteca:m.biblioteca || "",
 
                 entradas:Number(
@@ -3211,9 +3199,7 @@ window.materialesAuth = (async function protegerMateriales(){
 
         tbody.innerHTML =
             filasPagina.length
-
             ?
-
             filasPagina.map(m=>{
 
                 const d =
@@ -3289,7 +3275,6 @@ window.materialesAuth = (async function protegerMateriales(){
                             ${
                                 administrador
                                 ?
-
                                 `
                                 <div class="mini-acciones">
 
@@ -3303,9 +3288,7 @@ window.materialesAuth = (async function protegerMateriales(){
 
                                 </div>
                                 `
-
                                 :
-
                                 "—"
                             }
 
@@ -3316,9 +3299,7 @@ window.materialesAuth = (async function protegerMateriales(){
                 `;
 
             }).join("")
-
             :
-
             `
 
             <tr>
@@ -3635,6 +3616,42 @@ window.materialesAuth = (async function protegerMateriales(){
 
 
         actualizarResumenMateriales();
+
+    }
+
+
+    function actualizarListaMaterialesEntrega(){
+
+        const selects =
+            document.querySelectorAll(
+                "#listaMaterialesEntrega .material-entrega-select"
+            );
+
+
+        selects.forEach(select=>{
+
+            const valorActual =
+                select.value;
+
+
+            select.innerHTML =
+                opcionesMateriales();
+
+
+            if(
+                [...select.options].some(
+                    option =>
+                        option.value ===
+                        valorActual
+                )
+            ){
+
+                select.value =
+                    valorActual;
+
+            }
+
+        });
 
     }
 
@@ -4687,10 +4704,7 @@ window.materialesAuth = (async function protegerMateriales(){
 
                 renderInventario();
 
-                cerrar(
-                    "modalMaterial"
-                );
-
+                cerrar("modalMaterial");
 
                 mostrarMensaje(
                     "Material registrado",
@@ -5094,7 +5108,10 @@ window.materialesAuth = (async function protegerMateriales(){
                     of movimientos
                 ){
 
-                    const {data:materialActual,error:errorMaterial} =
+                    const {
+                        data:materialActual,
+                        error:errorMaterial
+                    } =
                         await supabaseClient
                         .from("materiales")
                         .select("*")
@@ -5144,7 +5161,9 @@ window.materialesAuth = (async function protegerMateriales(){
                     }
 
 
-                    const {error:errorEntrega} =
+                    const {
+                        error:errorEntrega
+                    } =
                         await supabaseClient
                         .from("entregas_materiales")
                         .insert({
@@ -5214,7 +5233,9 @@ window.materialesAuth = (async function protegerMateriales(){
                         movimiento.cantidad;
 
 
-                    const {error:errorActualizar} =
+                    const {
+                        error:errorActualizar
+                    } =
                         await supabaseClient
                         .from("materiales")
                         .update({
@@ -5962,7 +5983,7 @@ window.materialesAuth = (async function protegerMateriales(){
                                 0
                             ).toISOString();
 
-                        }
+                    }
 
                 }else{
 
@@ -6197,10 +6218,12 @@ window.materialesAuth = (async function protegerMateriales(){
 
 
     /*
-     * CORRECCIÓN PRINCIPAL:
-     * El botón de registrar entrega comprueba que la información
-     * de materiales esté cargada antes de preparar la ventana.
-     * No modifica ni elimina ningún registro de Supabase.
+     * CORRECCIÓN:
+     * Cada vez que se abre "Registrar entrega",
+     * se vuelve a consultar Supabase.
+     *
+     * Esto evita que materialesDemo conserve solamente
+     * los materiales que tenía cargados anteriormente.
      */
 
     document.getElementById(
@@ -6211,25 +6234,9 @@ window.materialesAuth = (async function protegerMateriales(){
 
             try{
 
-                if(
-                    !Array.isArray(
-                        materialesDemo
-                    )
-                ){
+                await cargarMateriales();
 
-                    materialesDemo = [];
-
-                }
-
-
-                if(
-                    !materialesDemo.length
-                ){
-
-                    await cargarMateriales();
-
-                }
-
+                renderCategorias();
 
                 prepararNuevaEntrega();
 
@@ -6240,14 +6247,14 @@ window.materialesAuth = (async function protegerMateriales(){
             }catch(error){
 
                 console.error(
-                    "Error abriendo formulario de entrega:",
+                    "Error cargando materiales para la entrega:",
                     error
                 );
 
 
                 mostrarMensaje(
                     "No fue posible abrir",
-                    "No fue posible cargar los materiales disponibles para registrar la entrega.\n\n" +
+                    "No fue posible actualizar la lista de materiales desde Supabase.\n\n" +
                     (
                         error.message ||
                         "Revise la conexión con Supabase."
@@ -6374,7 +6381,6 @@ window.materialesAuth = (async function protegerMateriales(){
         document.getElementById(
             "seccionBorrarMateriales"
         ).style.display = "";
-
 
     }
 
