@@ -21,40 +21,50 @@
             color: #263238;
         }
 
+        /* =========================================
+           ENCABEZADO
+        ========================================= */
+
         header {
-            background: #263238;
+            background: #009ddc;
             color: white;
-            padding: 14px 20px;
+            padding: 16px 20px;
         }
 
         .encabezado-contenido {
             max-width: 1100px;
             margin: auto;
+            min-height: 48px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            position: relative;
             width: 100%;
         }
 
         .marca {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 9px;
+            text-align: center;
         }
 
         .marca-icono {
-            font-size: 25px;
+            font-size: 27px;
         }
 
         .marca-texto h1 {
             margin: 0;
-            font-size: 20px;
+            font-size: 23px;
+            line-height: 1.2;
+            font-weight: bold;
         }
 
         .marca-texto p {
-            margin: 2px 0 0;
+            margin: 3px 0 0;
             font-size: 12px;
-            color: #cfd8dc;
+            color: rgba(255, 255, 255, 0.92);
         }
 
         /* =========================================
@@ -65,47 +75,36 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 14px;
-            border-radius: 6px;
-            background: rgba(38, 50, 56, 0.55);
-            border: 1px solid rgba(255, 255, 255, 0.55);
+            padding: 8px 13px;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, 0.16);
+            border: none;
             color: #ffffff !important;
             text-decoration: none;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: bold;
             white-space: nowrap;
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: background 0.2s ease;
         }
 
         .volver:hover {
-            background: rgba(38, 50, 56, 0.72);
-            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.24);
             color: #ffffff !important;
             text-decoration: none;
         }
+
+        /* =========================================
+           CONTENIDO PRINCIPAL
+        ========================================= */
 
         main {
             max-width: 1100px;
             margin: 18px auto;
             padding: 0 15px;
-        }
-
-        .titulo-seccion {
-            margin-bottom: 13px;
-        }
-
-        .titulo-seccion h2 {
-            margin: 0;
-            font-size: 23px;
-            color: #263238;
-        }
-
-        .titulo-seccion p {
-            margin: 4px 0 0;
-            color: #607d8b;
-            font-size: 13px;
         }
 
         /* =========================================
@@ -116,9 +115,9 @@
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 17px 18px;
+            padding: 16px;
             margin-bottom: 14px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            box-shadow: none;
         }
 
         .tarjeta h3 {
@@ -128,7 +127,7 @@
         }
 
         .descripcion {
-            margin: 0 0 14px;
+            margin: 0 0 12px;
             color: #607d8b;
             font-size: 12px;
             line-height: 1.45;
@@ -141,24 +140,24 @@
         .datos {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 12px;
+            gap: 9px;
+            margin-top: 10px;
         }
 
         .dato {
             background: #f8fafb;
             border: 1px solid #dfe5e8;
             border-radius: 7px;
-            padding: 12px 8px;
+            padding: 10px 8px;
             text-align: center;
         }
 
         .dato-numero {
             display: block;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: #37474f;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .dato-label {
@@ -169,20 +168,20 @@
         }
 
         .dato-total {
-            margin-top: 10px;
+            margin-top: 9px;
             background: #f8fafb;
             border: 1px solid #cfd8dc;
             border-radius: 7px;
-            padding: 11px 16px;
+            padding: 9px 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 9px;
             text-align: center;
         }
 
         .dato-total-numero {
-            font-size: 23px;
+            font-size: 21px;
             font-weight: bold;
             color: #263238;
         }
@@ -194,21 +193,23 @@
         }
 
         /* =========================================
-           BOTONES
+           BOTONES PRINCIPALES
         ========================================= */
 
         .acciones-principales {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
 
         .boton {
-            width: 100%;
+            width: auto;
+            min-width: 190px;
             border: none;
             border-radius: 6px;
-            padding: 11px 14px;
-            font-size: 13px;
+            padding: 9px 16px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s ease;
@@ -263,14 +264,14 @@
         .mantenimiento-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .mantenimiento-item {
             border: 1px solid #e0e0e0;
             border-radius: 7px;
-            padding: 12px;
+            padding: 11px;
             background: #fafbfc;
         }
 
@@ -281,7 +282,12 @@
 
         .mantenimiento-item .zona-descripcion {
             min-height: 48px;
-            margin-bottom: 9px;
+            margin-bottom: 8px;
+        }
+
+        .mantenimiento-item .boton {
+            width: 100%;
+            min-width: 0;
         }
 
         /* Limpiar préstamos */
@@ -436,6 +442,10 @@
             background: #263238;
         }
 
+        /* =========================================
+           PIE DE PÁGINA
+        ========================================= */
+
         footer {
             text-align: center;
             color: #90a4ae;
@@ -454,7 +464,12 @@
             }
 
             .acciones-principales {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+            }
+
+            .boton {
+                width: 100%;
+                max-width: 300px;
             }
 
             .mantenimiento-grid {
@@ -469,15 +484,21 @@
         @media (max-width: 480px) {
 
             header {
-                padding: 12px 10px;
+                padding: 12px 15px;
             }
 
             .encabezado-contenido {
-                gap: 10px;
+                flex-direction: column;
+                gap: 8px;
+                padding: 2px 0;
+            }
+
+            .marca {
+                width: 100%;
             }
 
             .marca-texto h1 {
-                font-size: 17px;
+                font-size: 21px;
             }
 
             .marca-texto p {
@@ -485,12 +506,15 @@
             }
 
             .marca-icono {
-                font-size: 21px;
+                font-size: 24px;
             }
 
             .volver {
-                font-size: 11px;
-                padding: 7px 10px;
+                position: static;
+                transform: none;
+                margin: 0;
+                padding: 8px 13px;
+                font-size: 12px;
             }
 
             main {
@@ -527,8 +551,8 @@
             <div class="marca-icono">💾</div>
 
             <div class="marca-texto">
-                <h1>Biblioteca</h1>
-                <p>Respaldo y administración de datos</p>
+                <h1>Respaldo y restauración</h1>
+                <p>Administración de la información almacenada en la biblioteca.</p>
             </div>
 
         </div>
@@ -540,17 +564,6 @@
 
 
 <main>
-
-    <div class="titulo-seccion">
-
-        <h2>Respaldo y restauración</h2>
-
-        <p>
-            Administración de la información almacenada en la biblioteca.
-        </p>
-
-    </div>
-
 
     <div id="mensaje"></div>
 
@@ -793,7 +806,15 @@
 
 
 <footer>
-    Sistema de Biblioteca
+    <span>
+        Sistema de Biblioteca
+    </span>
+    <span class="version">
+        Versión 1.0
+    </span>
+    <span class="creditos">
+        Desarrollado por Saúl Velásquez
+    </span>
 </footer>
 
 
