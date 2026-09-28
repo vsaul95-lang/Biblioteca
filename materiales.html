@@ -56,20 +56,7 @@ body{
 .marca{
     display:flex;
     align-items:center;
-    justify-content:center;
-    gap:13px
-}
-
-.icono-marca{
-    width:47px;
-    height:47px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(255,255,255,.16);
-    border:1px solid rgba(255,255,255,.32);
-    border-radius:11px;
-    font-size:29px
+    justify-content:center
 }
 
 .marca h1{
@@ -77,30 +64,11 @@ body{
     color:#fff;
     font-size:24px;
     font-weight:750;
-    line-height:1.1
-}
-
-.marca p{
-    margin:3px 0 0;
-    color:#fff;
-    font-size:12px;
-    opacity:.96
+    line-height:1.1;
+    text-align:center
 }
 
 #botonVolver{
-    position:absolute;
-    left:18px;
-    color:#fff;
-    border:1px solid rgba(255,255,255,.42);
-    background:transparent;
-    border-radius:8px;
-    padding:9px 15px;
-    cursor:pointer;
-    font-size:14px;
-    font-weight:600
-}
-
-#botonCerrarSesion{
     position:absolute;
     right:18px;
     color:#fff;
@@ -113,8 +81,7 @@ body{
     font-weight:600
 }
 
-#botonVolver:hover,
-#botonCerrarSesion:hover{
+#botonVolver:hover{
     background:rgba(255,255,255,.15)
 }
 
@@ -620,6 +587,44 @@ body{
     display:block
 }
 
+/* Mensajes propios de la interfaz */
+.mensaje-interfaz{
+    max-width:500px
+}
+
+.mensaje-interfaz .modal-cuerpo{
+    padding:18px
+}
+
+.mensaje-icono{
+    width:42px;
+    height:42px;
+    border-radius:10px;
+    background:var(--celeste-suave);
+    color:var(--celeste-fundacion);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:21px;
+    margin-bottom:10px
+}
+
+.mensaje-texto{
+    color:var(--texto);
+    font-size:13px;
+    line-height:1.5;
+    white-space:pre-line
+}
+
+.mensaje-interfaz.peligro .mensaje-icono{
+    background:var(--rojo-suave);
+    color:var(--rojo)
+}
+
+.mensaje-interfaz.peligro .modal-cabecera h2{
+    color:var(--rojo)
+}
+
 @media(max-width:950px){
 
     .estadisticas{
@@ -643,33 +648,21 @@ body{
     }
 
     .encabezado-contenido{
-        min-height:auto;
+        min-height:70px;
         padding:12px;
-        flex-direction:column;
-        gap:8px
-    }
-
-    .marca{
-        gap:8px
+        display:flex;
+        flex-direction:row;
+        justify-content:center
     }
 
     .marca h1{
         font-size:19px
     }
 
-    .marca p{
-        font-size:10px
-    }
-
-    .icono-marca{
-        width:42px;
-        height:42px;
-        font-size:25px
-    }
-
-    #botonVolver,
-    #botonCerrarSesion{
-        position:static;
+    #botonVolver{
+        right:12px;
+        left:auto;
+        position:absolute;
         padding:8px 10px;
         font-size:12px
     }
@@ -785,36 +778,19 @@ window.materialesAuth = (async function protegerMateriales() {
 
     <div class="encabezado-contenido">
 
-        <button
-            id="botonVolver"
-            type="button"
-        >
-            ← Volver al inicio
-        </button>
-
         <div class="marca">
 
-            <div class="icono-marca">
-                📦
-            </div>
-
-            <div>
-
-                <h1>Biblioteca</h1>
-
-                <p>
-                    Módulo de materiales
-                </p>
-
-            </div>
+            <h1>
+                Materiales
+            </h1>
 
         </div>
 
         <button
-            id="botonCerrarSesion"
+            id="botonVolver"
             type="button"
         >
-            Cerrar sesión
+            Volver al inicio
         </button>
 
     </div>
@@ -919,7 +895,7 @@ window.materialesAuth = (async function protegerMateriales() {
     </section>
 
 
-    <!-- ENTREGAS: AHORA VA INMEDIATAMENTE DESPUÉS DE LAS ESTADÍSTICAS -->
+    <!-- ENTREGAS -->
 
     <section class="seccion">
 
@@ -978,7 +954,7 @@ window.materialesAuth = (async function protegerMateriales() {
     </section>
 
 
-    <!-- REGISTRO DE MATERIALES: AHORA ANTES DEL INVENTARIO -->
+    <!-- REGISTRO DE MATERIALES -->
 
     <section class="seccion">
 
@@ -1454,9 +1430,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
             <div class="modal-cuerpo">
 
-
-                <!-- MATERIALES -->
-
                 <div
                     id="listaMaterialesEntrega"
                     class="lista-materiales-entrega"
@@ -1496,10 +1469,7 @@ window.materialesAuth = (async function protegerMateriales() {
                 ></div>
 
 
-                <!-- RECEPTOR AUTOMÁTICO -->
-
                 <div class="form-grid">
-
 
                     <div class="campo">
 
@@ -1740,6 +1710,136 @@ window.materialesAuth = (async function protegerMateriales() {
 </div>
 
 
+<!-- MODAL: MENSAJE DEL SISTEMA -->
+
+<div
+    class="modal"
+    id="modalMensaje"
+>
+
+    <div
+        class="modal-contenido mensaje-interfaz"
+        id="modalMensajeContenido"
+    >
+
+        <div class="modal-cabecera">
+
+            <h2 id="mensajeTitulo">
+                Mensaje
+            </h2>
+
+            <button
+                class="modal-cerrar"
+                id="cerrarMensaje"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-cuerpo">
+
+            <div
+                class="mensaje-icono"
+                id="mensajeIcono"
+            >
+                ✓
+            </div>
+
+            <div
+                class="mensaje-texto"
+                id="mensajeTexto"
+            ></div>
+
+        </div>
+
+
+        <div class="modal-pie">
+
+            <button
+                class="btn btn-principal"
+                id="botonAceptarMensaje"
+                type="button"
+            >
+                Aceptar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL: CONFIRMACIÓN -->
+
+<div
+    class="modal"
+    id="modalConfirmacion"
+>
+
+    <div
+        class="modal-contenido mensaje-interfaz peligro"
+    >
+
+        <div class="modal-cabecera">
+
+            <h2 id="confirmacionTitulo">
+                Confirmar acción
+            </h2>
+
+            <button
+                class="modal-cerrar"
+                id="cerrarConfirmacion"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-cuerpo">
+
+            <div class="mensaje-icono">
+                ⚠
+            </div>
+
+            <div
+                class="mensaje-texto"
+                id="confirmacionTexto"
+            ></div>
+
+        </div>
+
+
+        <div class="modal-pie">
+
+            <button
+                class="btn"
+                id="botonCancelarConfirmacion"
+                type="button"
+            >
+                Cancelar
+            </button>
+
+            <button
+                class="btn btn-peligro"
+                id="botonAceptarConfirmacion"
+                type="button"
+            >
+                Confirmar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 (async function(){
 
@@ -1833,6 +1933,138 @@ window.materialesAuth = (async function protegerMateriales() {
                 '"':"&quot;"
             }[c])
         );
+
+
+    /*
+     * Mensaje visual integrado con la interfaz.
+     */
+    function mostrarMensaje(
+        titulo,
+        texto,
+        icono="✓",
+        peligro=false
+    ){
+
+        const modal =
+            document.getElementById(
+                "modalMensaje"
+            );
+
+        const contenido =
+            document.getElementById(
+                "modalMensajeContenido"
+            );
+
+        document.getElementById(
+            "mensajeTitulo"
+        ).textContent = titulo;
+
+        document.getElementById(
+            "mensajeTexto"
+        ).textContent = texto;
+
+        document.getElementById(
+            "mensajeIcono"
+        ).textContent = icono;
+
+        contenido.classList.toggle(
+            "peligro",
+            peligro
+        );
+
+        modal.classList.add("mostrar");
+
+    }
+
+
+    function cerrarMensaje(){
+
+        document
+            .getElementById("modalMensaje")
+            .classList.remove("mostrar");
+
+    }
+
+
+    /*
+     * Confirmación visual integrada con la interfaz.
+     */
+    function mostrarConfirmacion(
+        titulo,
+        texto,
+        callback
+    ){
+
+        const modal =
+            document.getElementById(
+                "modalConfirmacion"
+            );
+
+        const aceptar =
+            document.getElementById(
+                "botonAceptarConfirmacion"
+            );
+
+        const cancelar =
+            document.getElementById(
+                "botonCancelarConfirmacion"
+            );
+
+        document.getElementById(
+            "confirmacionTitulo"
+        ).textContent = titulo;
+
+        document.getElementById(
+            "confirmacionTexto"
+        ).textContent = texto;
+
+        modal.classList.add("mostrar");
+
+
+        const cerrar = ()=>{
+
+            modal.classList.remove(
+                "mostrar"
+            );
+
+            aceptar.onclick = null;
+            cancelar.onclick = null;
+
+        };
+
+
+        cancelar.onclick = cerrar;
+
+        document.getElementById(
+            "cerrarConfirmacion"
+        ).onclick = cerrar;
+
+
+        aceptar.onclick = ()=>{
+
+            cerrar();
+
+            callback();
+
+        };
+
+    }
+
+
+    document.getElementById(
+        "cerrarMensaje"
+    ).addEventListener(
+        "click",
+        cerrarMensaje
+    );
+
+
+    document.getElementById(
+        "botonAceptarMensaje"
+    ).addEventListener(
+        "click",
+        cerrarMensaje
+    );
 
 
     const disponible = m =>
@@ -2048,7 +2280,7 @@ window.materialesAuth = (async function protegerMateriales() {
                                     <button
                                         class="btn"
                                         type="button"
-                                        onclick="alert('La edición se conectará a Supabase en la siguiente etapa.')"
+                                        onclick="mostrarMensaje('Edición de material','La edición se conectará a Supabase en la siguiente etapa.','ℹ')"
                                     >
                                         Editar
                                     </button>
@@ -2383,9 +2615,6 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Limpia todos los datos automáticos del receptor.
-     */
     function limpiarReceptor(){
 
         document.getElementById(
@@ -2438,9 +2667,6 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Busca afiliados directamente en Supabase.
-     */
     async function buscarAfiliados(){
 
         const texto =
@@ -2618,9 +2844,6 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Busca colaboradores directamente en Supabase.
-     */
     async function buscarColaboradores(){
 
         const texto =
@@ -2790,9 +3013,6 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Selecciona automáticamente un afiliado.
-     */
     function seleccionarAfiliado(persona){
 
         document.getElementById(
@@ -2877,9 +3097,6 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Selecciona automáticamente un colaborador.
-     */
     function seleccionarColaborador(colaborador){
 
         document.getElementById(
@@ -2953,9 +3170,6 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Detecta el cambio entre Afiliado y Colaborador.
-     */
     document.getElementById(
         "tipoReceptor"
     ).addEventListener(
@@ -2981,9 +3195,6 @@ window.materialesAuth = (async function protegerMateriales() {
     );
 
 
-    /*
-     * Búsqueda automática mientras se escribe.
-     */
     let temporizadorBusqueda = null;
 
 
@@ -3025,9 +3236,6 @@ window.materialesAuth = (async function protegerMateriales() {
     );
 
 
-    /*
-     * Cerrar resultados al hacer clic fuera.
-     */
     document.addEventListener(
         "click",
         e=>{
@@ -3058,9 +3266,6 @@ window.materialesAuth = (async function protegerMateriales() {
     );
 
 
-    /*
-     * Preparar nueva entrega.
-     */
     function prepararNuevaEntrega(){
 
         const lista =
@@ -3072,9 +3277,6 @@ window.materialesAuth = (async function protegerMateriales() {
         lista.innerHTML = "";
 
 
-        /*
-         * Siempre inicia con MATERIAL 1.
-         */
         agregarFilaMaterialEntrega();
 
 
@@ -3130,9 +3332,6 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Permisos de administrador.
-     */
     document.getElementById(
         "seccionAdministracionMateriales"
     ).style.display =
@@ -3145,9 +3344,6 @@ window.materialesAuth = (async function protegerMateriales() {
         administrador ? "" : "none";
 
 
-    /*
-     * Cerrar modales.
-     */
     document
         .querySelectorAll("[data-cerrar]")
         .forEach(b=>{
@@ -3166,9 +3362,6 @@ window.materialesAuth = (async function protegerMateriales() {
         });
 
 
-    /*
-     * Nuevo material.
-     */
     document.getElementById(
         "btnNuevoMaterial"
     ).addEventListener(
@@ -3179,9 +3372,6 @@ window.materialesAuth = (async function protegerMateriales() {
     );
 
 
-    /*
-     * Registrar entrega.
-     */
     document.getElementById(
         "btnRegistrarEntrega"
     ).addEventListener(
@@ -3196,9 +3386,6 @@ window.materialesAuth = (async function protegerMateriales() {
     );
 
 
-    /*
-     * Agregar otro material.
-     */
     document.getElementById(
         "btnAgregarOtroMaterial"
     ).addEventListener(
@@ -3211,9 +3398,6 @@ window.materialesAuth = (async function protegerMateriales() {
     );
 
 
-    /*
-     * Filtros.
-     */
     document.getElementById(
         "btnLimpiarFiltros"
     ).addEventListener(
@@ -3278,8 +3462,10 @@ window.materialesAuth = (async function protegerMateriales() {
 
             e.preventDefault();
 
-            alert(
-                "Interfaz lista. El registro se conectará a Supabase en la siguiente etapa."
+            mostrarMensaje(
+                "Registro de material",
+                "Interfaz lista. El registro se conectará a Supabase en la siguiente etapa.",
+                "✓"
             );
 
             cerrar("modalMaterial");
@@ -3308,8 +3494,10 @@ window.materialesAuth = (async function protegerMateriales() {
 
             if(!filas.length){
 
-                alert(
-                    "Debe agregar al menos un material."
+                mostrarMensaje(
+                    "Material requerido",
+                    "Debe agregar al menos un material.",
+                    "!"
                 );
 
                 return;
@@ -3343,8 +3531,10 @@ window.materialesAuth = (async function protegerMateriales() {
 
                 if(!codigo){
 
-                    alert(
-                        "Debe seleccionar un material en todas las filas."
+                    mostrarMensaje(
+                        "Material requerido",
+                        "Debe seleccionar un material en todas las filas.",
+                        "!"
                     );
 
                     select.focus();
@@ -3358,8 +3548,10 @@ window.materialesAuth = (async function protegerMateriales() {
                     cantidad < 1
                 ){
 
-                    alert(
-                        "Todas las cantidades deben ser números enteros mayores que 0."
+                    mostrarMensaje(
+                        "Cantidad no válida",
+                        "Todas las cantidades deben ser números enteros mayores que 0.",
+                        "!"
                     );
 
                     input.focus();
@@ -3376,8 +3568,10 @@ window.materialesAuth = (async function protegerMateriales() {
 
                 if(!material){
 
-                    alert(
-                        "Uno de los materiales seleccionados no es válido."
+                    mostrarMensaje(
+                        "Material no válido",
+                        "Uno de los materiales seleccionados no es válido.",
+                        "!"
                     );
 
                     return;
@@ -3393,9 +3587,6 @@ window.materialesAuth = (async function protegerMateriales() {
             }
 
 
-            /*
-             * Verificar receptor.
-             */
             const nombres =
                 document.getElementById(
                     "entregaNombres"
@@ -3404,8 +3595,10 @@ window.materialesAuth = (async function protegerMateriales() {
 
             if(!nombres){
 
-                alert(
-                    "Debe seleccionar un afiliado o colaborador."
+                mostrarMensaje(
+                    "Receptor requerido",
+                    "Debe seleccionar un afiliado o colaborador.",
+                    "!"
                 );
 
                 document.getElementById(
@@ -3425,15 +3618,14 @@ window.materialesAuth = (async function protegerMateriales() {
                 .join("\n");
 
 
-            alert(
-                "Interfaz lista.\n\n" +
+            mostrarMensaje(
+                "Entrega preparada",
                 "Materiales de esta entrega:\n\n" +
                 detalle +
-                "\n\n" +
-                "Receptor:\n" +
+                "\n\nReceptor:\n" +
                 nombres +
-                "\n\n" +
-                "La entrega se conectará a Supabase en la siguiente etapa."
+                "\n\nLa entrega se conectará a Supabase en la siguiente etapa.",
+                "✓"
             );
 
 
@@ -3468,10 +3660,12 @@ window.materialesAuth = (async function protegerMateriales() {
 
             if(e.target.files[0]){
 
-                alert(
+                mostrarMensaje(
+                    "Archivo seleccionado",
                     "Archivo seleccionado: " +
                     e.target.files[0].name +
-                    "\nLa importación real se conectará después."
+                    "\n\nLa importación real se conectará después.",
+                    "📄"
                 );
 
             }
@@ -3486,8 +3680,10 @@ window.materialesAuth = (async function protegerMateriales() {
         "click",
         ()=>{
 
-            alert(
-                "La descarga real de MasterMateriales se conectará después."
+            mostrarMensaje(
+                "MasterMateriales",
+                "La descarga real de MasterMateriales se conectará después.",
+                "📤"
             );
 
         }
@@ -3503,17 +3699,19 @@ window.materialesAuth = (async function protegerMateriales() {
         "click",
         ()=>{
 
-            if(
-                confirm(
-                    "¿Estás seguro de que deseas borrar la base de datos de materiales? Esta acción será irreversible."
-                )
-            ){
+            mostrarConfirmacion(
+                "Borrar base de datos",
+                "¿Estás seguro de que deseas borrar la base de datos de materiales?\n\nEsta acción será irreversible.",
+                ()=>{
 
-                alert(
-                    "La eliminación real se conectará después."
-                );
+                    mostrarMensaje(
+                        "Base de datos",
+                        "La eliminación real se conectará después.",
+                        "✓"
+                    );
 
-            }
+                }
+            );
 
         }
     );
@@ -3529,32 +3727,6 @@ window.materialesAuth = (async function protegerMateriales() {
         ()=>{
             window.location.href =
                 "index.html";
-        }
-    );
-
-
-    /*
-     * Cerrar sesión.
-     */
-    document.getElementById(
-        "botonCerrarSesion"
-    ).addEventListener(
-        "click",
-        async ()=>{
-
-            try{
-
-                await supabaseClient
-                    .auth
-                    .signOut();
-
-            }finally{
-
-                window.location.href =
-                    "index.html";
-
-            }
-
         }
     );
 
