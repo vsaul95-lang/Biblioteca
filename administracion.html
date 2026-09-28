@@ -953,7 +953,8 @@
                     </div>
 
                     <div class="dato">
-                        <span class="dato-label">
+                        <span
+                            class="dato-label">
                             Usuario actual
                         </span>
 
@@ -1044,8 +1045,6 @@
 
             <div class="control-grid">
 
-
-                <!-- DIAGNÓSTICO -->
 
                 <div class="subseccion">
 
@@ -1176,8 +1175,6 @@
 
                 </div>
 
-
-                <!-- INTEGRIDAD -->
 
                 <div class="subseccion">
 
@@ -2073,33 +2070,51 @@ async function guardarNuevoUsuario(evento) {
         evento.preventDefault();
     }
 
+    const nombreElemento =
+        document.getElementById("nuevoUsuarioNombre");
+
+    const correoElemento =
+        document.getElementById("nuevoUsuarioCorreo");
+
+    const rolElemento =
+        document.getElementById("nuevoUsuarioRol");
+
+    const estadoElemento =
+        document.getElementById("nuevoUsuarioEstado");
+
+    const elementoError =
+        document.getElementById("errorFormularioUsuario");
+
+
+    if (
+        !nombreElemento ||
+        !correoElemento ||
+        !rolElemento ||
+        !estadoElemento
+    ) {
+
+        mostrarModal(
+            "Error",
+            "No fue posible encontrar los campos del formulario."
+        );
+
+        return;
+    }
+
+
     const nombre =
-        document
-            .getElementById("nuevoUsuarioNombre")
-            .value
-            .trim();
+        nombreElemento.value.trim();
 
     const correo =
-        document
-            .getElementById("nuevoUsuarioCorreo")
-            .value
+        correoElemento.value
             .trim()
             .toLowerCase();
 
     const rol =
-        document
-            .getElementById("nuevoUsuarioRol")
-            .value;
+        rolElemento.value;
 
     const estado =
-        document
-            .getElementById("nuevoUsuarioEstado")
-            .value;
-
-    const elementoError =
-        document.getElementById(
-            "errorFormularioUsuario"
-        );
+        estadoElemento.value;
 
 
     if (!nombre) {
@@ -2109,7 +2124,6 @@ async function guardarNuevoUsuario(evento) {
         );
 
         return;
-
     }
 
 
@@ -2120,7 +2134,6 @@ async function guardarNuevoUsuario(evento) {
         );
 
         return;
-
     }
 
 
@@ -2131,7 +2144,6 @@ async function guardarNuevoUsuario(evento) {
         );
 
         return;
-
     }
 
 
@@ -2145,7 +2157,6 @@ async function guardarNuevoUsuario(evento) {
         );
 
         return;
-
     }
 
 
@@ -2159,7 +2170,6 @@ async function guardarNuevoUsuario(evento) {
         );
 
         return;
-
     }
 
 
@@ -2170,9 +2180,9 @@ async function guardarNuevoUsuario(evento) {
 
 
     /*
-       La interfaz se mantiene intacta.
-       Como no agregamos un campo de contraseña al formulario,
-       la solicitamos mediante una ventana del navegador.
+       La interfaz permanece exactamente igual.
+       La contraseña se solicita mediante una ventana
+       del navegador para no agregar un nuevo campo visual.
     */
 
     const contraseña =
@@ -2193,7 +2203,6 @@ async function guardarNuevoUsuario(evento) {
         );
 
         return;
-
     }
 
 
@@ -2204,26 +2213,13 @@ async function guardarNuevoUsuario(evento) {
         );
 
         return;
-
     }
-
-
-    cerrarModalNuevoUsuario();
-
-
-    mostrarModal(
-        "Creando usuario",
-        "Espera un momento mientras se crea la cuenta de " +
-        nombre +
-        "..."
-    );
 
 
     try {
 
         /*
-           Obtener la sesión actual para enviar el token
-           del administrador autenticado a la Edge Function.
+           Comprobar que existe una sesión activa.
         */
 
         const resultadoSesion =
@@ -2231,7 +2227,15 @@ async function guardarNuevoUsuario(evento) {
 
 
         if (resultadoSesion.error) {
-            throw resultadoSesion.error;
+
+            console.error(
+                "Error obteniendo sesión:",
+                resultadoSesion.error
+            );
+
+            throw new Error(
+                "No fue posible comprobar la sesión actual."
+            );
         }
 
 
@@ -2242,79 +2246,133 @@ async function guardarNuevoUsuario(evento) {
         if (!session) {
 
             throw new Error(
-                "No existe una sesión activa."
+                "No existe una sesión activa. Cierra sesión y vuelve a ingresar."
             );
-
         }
 
 
         /*
-           URL de la Edge Function crear-usuario.
+           Cerramos el formulario y mostramos el proceso.
         */
 
-        const urlFuncion =
-            "https://ddlgygqdevtuztmrrajn.supabase.co/functions/v1/crear-usuario";
+        cerrarModalNuevoUsuario();
 
 
-        const respuesta =
-            await fetch(
-                urlFuncion,
+        mostrarModal(
+            "Creando usuario",
+            "Espera un momento mientras se crea la cuenta de " +
+            nombre +
+            "..."
+        );
+
+
+        /*
+           IMPORTANTE:
+           Se utiliza la función oficial de Supabase JS
+           para invocar la Edge Function.
+
+           No se utiliza fetch().
+           No se utiliza service_role.
+        */
+
+        const resultado =
+            await supabaseClient.functions.invoke(
+                "crear-usuario",
                 {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization":
-                            "Bearer " + session.access_token,
-                        "apikey":
-                            supabaseClient.supabaseKey
-                    },
-
-                    body: JSON.stringify({
+                    body: {
                         nombre: nombre,
                         correo: correo,
                         contraseña: contraseña,
                         rol: rol,
                         estado: estado
-                    })
+                    }
                 }
             );
 
 
-        let resultado;
+        const data =
+            resultado.data;
 
-        try {
+        const error =
+            resultado.error;
 
-            resultado =
-                await respuesta.json();
 
-        } catch {
+        if (error) {
 
-            resultado = {
-                ok: false,
-                mensaje:
-                    "La función respondió con un formato no válido."
-            };
+            console.error(
+                "Error de Edge Function:",
+                error
+            );
 
+
+            let mensajeError =
+                error.message ||
+                "No fue posible comunicarse con la función crear-usuario.";
+
+
+            /*
+               Intentar obtener el mensaje devuelto por la Edge Function
+               cuando Supabase proporciona la respuesta en context.
+            */
+
+            if (
+                error.context &&
+                typeof error.context.json === "function"
+            ) {
+
+                try {
+
+                    const respuestaError =
+                        await error.context.json();
+
+
+                    if (
+                        respuestaError &&
+                        respuestaError.mensaje
+                    ) {
+
+                        mensajeError =
+                            respuestaError.mensaje;
+
+                    }
+
+                } catch (errorLectura) {
+
+                    console.warn(
+                        "No fue posible leer el detalle del error de la función:",
+                        errorLectura
+                    );
+
+                }
+
+            }
+
+
+            throw new Error(
+                mensajeError
+            );
         }
 
 
         if (
-            !respuesta.ok ||
-            !resultado.ok
+            !data ||
+            data.ok !== true
         ) {
 
             throw new Error(
-                resultado.mensaje ||
-                "No fue posible crear el usuario."
+                data &&
+                data.mensaje
+                    ? data.mensaje
+                    : "No fue posible crear el usuario."
             );
-
         }
 
 
         /*
-           Actualizar inmediatamente la información
-           de usuarios en Administración.
+           La Edge Function confirmó que el usuario
+           fue creado correctamente.
+
+           Actualizar la información mostrada.
         */
 
         await cargarUsuarios();
