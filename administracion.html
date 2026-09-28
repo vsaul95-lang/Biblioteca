@@ -321,6 +321,12 @@
             border-color: #fca5a5;
         }
 
+        .boton-accion-eliminar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f9fafb;
+        }
+
         /* =====================================================
            DIAGNÓSTICO
         ===================================================== */
@@ -718,8 +724,7 @@
         }
 
         /* =====================================================
-           CAJA DE MENSAJE DE ALERTA
-           Diseño integrado con la interfaz de Administración
+           CAJA DE MENSAJE
         ===================================================== */
 
         #modalMensaje {
@@ -764,6 +769,96 @@
         #modalMensaje .modal-pie .boton-principal {
             min-width: 90px;
             padding: 8px 18px;
+        }
+
+        /* =====================================================
+           MODAL ELIMINAR
+        ===================================================== */
+
+        #modalEliminar {
+            background: rgba(38, 50, 56, 0.42);
+        }
+
+        #modalEliminar .modal {
+            width: min(430px, 100%);
+            border: 1px solid #dceaf0;
+            border-radius: 10px;
+            box-shadow: 0 16px 38px rgba(38, 50, 56, 0.22);
+        }
+
+        #modalEliminar .modal-cabecera {
+            background: #009ddc;
+            color: white;
+            padding: 13px 17px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        #modalEliminar .modal-cuerpo {
+            padding: 18px 20px;
+            background: white;
+            color: #374151;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        #modalEliminar .confirmacion-icono {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        #modalEliminar .confirmacion-titulo {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        #modalEliminar .confirmacion-texto {
+            color: #607d8b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        #modalEliminar .usuario-eliminar {
+            margin-top: 12px;
+            padding: 9px 11px;
+            background: #f7fbfd;
+            border: 1px solid #dceaf0;
+            border-radius: 7px;
+            color: #374151;
+            font-size: 12px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        #modalEliminar .modal-pie {
+            padding: 11px 16px 14px;
+            background: #f7fbfd;
+            border-top: 1px solid #dceaf0;
+            justify-content: center;
+        }
+
+        #modalEliminar .boton-cancelar {
+            background: #e5e7eb;
+            color: #374151;
+            min-width: 95px;
+        }
+
+        #modalEliminar .boton-cancelar:hover {
+            background: #d1d5db;
+        }
+
+        #modalEliminar .boton-confirmar-eliminar {
+            background: #009ddc;
+            color: white;
+            min-width: 95px;
+        }
+
+        #modalEliminar .boton-confirmar-eliminar:hover {
+            background: #008bc4;
         }
 
         .formulario {
@@ -1833,6 +1928,68 @@
 
 
 <!-- =====================================================
+     MODAL ELIMINAR USUARIO
+====================================================== -->
+
+<div
+    id="modalEliminar"
+    class="modal-fondo">
+
+    <div class="modal">
+
+        <div class="modal-cabecera">
+            Confirmar eliminación
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <div class="confirmacion-icono">
+                🗑️
+            </div>
+
+            <span class="confirmacion-titulo">
+                ¿Deseas eliminar este usuario?
+            </span>
+
+            <div class="confirmacion-texto">
+                Esta acción eliminará su cuenta de acceso
+                y su registro de usuario.
+                <br>
+                Esta acción no se puede deshacer.
+            </div>
+
+            <div
+                id="usuarioEliminarTexto"
+                class="usuario-eliminar">
+                Usuario seleccionado
+            </div>
+
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-cancelar"
+                onclick="cerrarModalEliminar()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-confirmar-eliminar"
+                onclick="confirmarEliminarUsuario()">
+                Eliminar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
      MODAL NUEVO USUARIO
 ====================================================== -->
 
@@ -2275,6 +2432,157 @@ function cerrarModal() {
     document
         .getElementById("modalMensaje")
         .classList.remove("visible");
+
+}
+
+
+/* =========================================================
+   MODAL ELIMINAR USUARIO
+========================================================= */
+
+let usuarioPendienteEliminar = null;
+
+
+function abrirModalEliminar(
+    usuarioId,
+    nombre,
+    correo
+) {
+
+    if (!usuarioId) {
+
+        mostrarModal(
+            "Error",
+            "No se encontró el identificador del usuario."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        String(usuarioId) ===
+        String(
+            usuarioSesionActual &&
+            usuarioSesionActual.id
+        )
+    ) {
+
+        mostrarModal(
+            "Operación no permitida",
+            "No puedes eliminar el usuario con el que estás conectado actualmente."
+        );
+
+        return;
+
+    }
+
+
+    usuarioPendienteEliminar = {
+        id: usuarioId,
+        nombre: nombre || "",
+        correo: correo || ""
+    };
+
+
+    const elemento =
+        document.getElementById(
+            "usuarioEliminarTexto"
+        );
+
+
+    if (elemento) {
+
+        elemento.textContent =
+            nombre +
+            (correo
+                ? " · " + correo
+                : "");
+
+    }
+
+
+    document
+        .getElementById("modalEliminar")
+        .classList.add("visible");
+
+}
+
+
+function cerrarModalEliminar() {
+
+    document
+        .getElementById("modalEliminar")
+        .classList.remove("visible");
+
+    usuarioPendienteEliminar = null;
+
+}
+
+
+async function confirmarEliminarUsuario() {
+
+    if (!usuarioPendienteEliminar) {
+
+        cerrarModalEliminar();
+
+        return;
+
+    }
+
+
+    const usuario =
+        usuarioPendienteEliminar;
+
+
+    cerrarModalEliminar();
+
+
+    mostrarModal(
+        "Eliminando usuario",
+        "Espera un momento mientras se elimina la cuenta de " +
+        usuario.nombre +
+        "..."
+    );
+
+
+    try {
+
+        await ejecutarGestionUsuario(
+            "eliminar",
+            {
+                usuarioId: usuario.id
+            }
+        );
+
+
+        await recargarInformacionUsuarios();
+
+
+        mostrarModal(
+            "Usuario eliminado",
+            "El usuario " +
+            usuario.nombre +
+            " fue eliminado correctamente."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error eliminando usuario:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible eliminar el usuario",
+            error.message ||
+            "Ocurrió un error al eliminar la cuenta."
+        );
+
+    }
 
 }
 
@@ -3142,97 +3450,11 @@ async function eliminarUsuario(
     correo
 ) {
 
-    if (!usuarioId) {
-
-        mostrarModal(
-            "Error",
-            "No se encontró el identificador del usuario."
-        );
-
-        return;
-    }
-
-
-    if (
-        String(usuarioId) ===
-        String(
-            usuarioSesionActual &&
-            usuarioSesionActual.id
-        )
-    ) {
-
-        mostrarModal(
-            "Operación no permitida",
-            "No puedes eliminar el usuario con el que estás conectado actualmente."
-        );
-
-        return;
-    }
-
-
-    const confirmar =
-        window.confirm(
-            "¿Deseas eliminar este usuario?\n\n" +
-            "Nombre: " +
-            nombre +
-            "\n" +
-            "Correo: " +
-            correo +
-            "\n\n" +
-            "Esta acción eliminará su cuenta de acceso y su registro de usuario.\n\n" +
-            "Esta acción no se puede deshacer."
-        );
-
-
-    if (!confirmar) {
-        return;
-    }
-
-
-    mostrarModal(
-        "Eliminando usuario",
-        "Espera un momento mientras se elimina la cuenta de " +
-        nombre +
-        "..."
+    abrirModalEliminar(
+        usuarioId,
+        nombre,
+        correo
     );
-
-
-    try {
-
-        await ejecutarGestionUsuario(
-            "eliminar",
-            {
-                usuarioId: usuarioId
-            }
-        );
-
-
-        await recargarInformacionUsuarios();
-
-
-        mostrarModal(
-            "Usuario eliminado",
-            "El usuario " +
-            nombre +
-            " fue eliminado correctamente."
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Error eliminando usuario:",
-            error
-        );
-
-
-        mostrarModal(
-            "No fue posible eliminar el usuario",
-            error.message ||
-            "Ocurrió un error al eliminar la cuenta."
-        );
-
-    }
 
 }
 
@@ -3379,7 +3601,7 @@ async function recargarInformacionUsuarios() {
 
     actualizarDiagnosticoBase();
 
-    await revisarIntegridad;
+    await revisarIntegridad();
 
 }
 
@@ -4481,6 +4703,23 @@ document
                 this
             ) {
                 cerrarModal();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("modalEliminar")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModalEliminar();
             }
 
         }
