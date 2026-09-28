@@ -10,6 +10,7 @@ html{visibility:hidden}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="supabase.js"></script>
 <script src="auth.js?v=1002"></script>
 
@@ -460,7 +461,6 @@ body{
     font-size:13px
 }
 
-/* Materiales de una entrega */
 .lista-materiales-entrega{
     display:flex;
     flex-direction:column;
@@ -515,7 +515,6 @@ body{
     color:#34434b
 }
 
-/* Resultados automáticos de afiliados y colaboradores */
 .resultados-receptor{
     display:none;
     margin-top:6px;
@@ -587,7 +586,6 @@ body{
     display:block
 }
 
-/* Mensajes propios de la interfaz */
 .mensaje-interfaz{
     max-width:500px
 }
@@ -809,8 +807,6 @@ window.materialesAuth = (async function protegerMateriales() {
     </p>
 
 
-    <!-- ESTADÍSTICAS -->
-
     <section class="estadisticas">
 
         <div class="tarjeta-estadistica">
@@ -895,8 +891,6 @@ window.materialesAuth = (async function protegerMateriales() {
     </section>
 
 
-    <!-- ENTREGAS -->
-
     <section class="seccion">
 
         <h2 class="seccion-titulo">
@@ -954,8 +948,6 @@ window.materialesAuth = (async function protegerMateriales() {
     </section>
 
 
-    <!-- REGISTRO DE MATERIALES -->
-
     <section class="seccion">
 
         <h2 class="seccion-titulo">
@@ -987,8 +979,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
     </section>
 
-
-    <!-- INVENTARIO -->
 
     <section class="seccion">
 
@@ -1129,8 +1119,6 @@ window.materialesAuth = (async function protegerMateriales() {
     </section>
 
 
-    <!-- ADMINISTRACIÓN -->
-
     <section
         class="seccion"
         id="seccionAdministracionMateriales"
@@ -1235,8 +1223,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </footer>
 
-
-<!-- MODAL: NUEVO MATERIAL -->
 
 <div
     class="modal"
@@ -1399,8 +1385,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </div>
 
-
-<!-- MODAL: ENTREGA -->
 
 <div
     class="modal"
@@ -1736,8 +1720,6 @@ window.materialesAuth = (async function protegerMateriales() {
 </div>
 
 
-<!-- MODAL: MENSAJE DEL SISTEMA -->
-
 <div
     class="modal"
     id="modalMensaje"
@@ -1798,8 +1780,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </div>
 
-
-<!-- MODAL: CONFIRMACIÓN -->
 
 <div
     class="modal"
@@ -1881,6 +1861,25 @@ window.materialesAuth = (async function protegerMateriales() {
         window.esAdministrador();
 
 
+    /*
+     * ============================================================
+     * DATOS DEL MÓDULO
+     * ============================================================
+     *
+     * Estos datos siguen siendo locales en esta etapa.
+     * Posteriormente se podrán conectar directamente con Supabase.
+     *
+     * El MasterMateriales trabaja sobre estos mismos datos:
+     *
+     * - Registrar material -> agrega al catálogo
+     * - Subir MasterMateriales -> agrega/actualiza catálogo
+     * - Descargar MasterMateriales -> exporta catálogo + entregas
+     * - Registrar entrega -> actualiza entregadas y disponibilidad
+     *
+     * ============================================================
+     */
+
+
     const materialesDemo = [
 
         {
@@ -1891,7 +1890,8 @@ window.materialesAuth = (async function protegerMateriales() {
             biblioteca:"F",
             entradas:200,
             entregadas:30,
-            estado:"Activo"
+            estado:"Activo",
+            observaciones:""
         },
 
         {
@@ -1902,7 +1902,8 @@ window.materialesAuth = (async function protegerMateriales() {
             biblioteca:"M",
             entradas:50,
             entregadas:12,
-            estado:"Activo"
+            estado:"Activo",
+            observaciones:""
         },
 
         {
@@ -1913,7 +1914,8 @@ window.materialesAuth = (async function protegerMateriales() {
             biblioteca:"NE",
             entradas:20,
             entregadas:5,
-            estado:"Activo"
+            estado:"Activo",
+            observaciones:""
         }
 
     ];
@@ -1923,26 +1925,38 @@ window.materialesAuth = (async function protegerMateriales() {
 
         {
             fecha:"28/09/2026",
+            materialCodigo:"M001",
             material:"Hojas tamaño carta",
             cantidad:5,
             nombres:"Maria Priscila",
             apellidos:"Pérez Hernández",
             receptor:"Afiliado",
+            personaId:"",
+            familiaId:"",
+            codigoColaborador:"",
+            areaColaborador:"",
             biblioteca:"F",
             sitio:"F",
-            usuario:"Usuario actual"
+            usuario:"Usuario actual",
+            observaciones:""
         },
 
         {
             fecha:"27/09/2026",
+            materialCodigo:"M002",
             material:"Cuadernos",
             cantidad:2,
             nombres:"Blanca Elizabeth",
             apellidos:"Aguirre Aguirre",
             receptor:"Colaborador",
+            personaId:"",
+            familiaId:"",
+            codigoColaborador:"",
+            areaColaborador:"",
             biblioteca:"M",
             sitio:"M",
-            usuario:"Usuario actual"
+            usuario:"Usuario actual",
+            observaciones:""
         }
 
     ];
@@ -2139,6 +2153,19 @@ window.materialesAuth = (async function protegerMateriales() {
             );
 
 
+        /*
+         * Se conservan las opciones que ya existan
+         * y solamente se agregan las categorías nuevas.
+         */
+
+        const categoriasExistentes =
+            new Set(
+                [...s.options].map(
+                    o=>o.value
+                )
+            );
+
+
         [
             ...new Set(
                 materialesDemo.map(
@@ -2146,8 +2173,16 @@ window.materialesAuth = (async function protegerMateriales() {
                 )
             )
         ]
+        .filter(Boolean)
         .sort()
         .forEach(c=>{
+
+            if(
+                categoriasExistentes.has(c)
+            ){
+                return;
+            }
+
 
             const o =
                 document.createElement(
@@ -2195,10 +2230,10 @@ window.materialesAuth = (async function protegerMateriales() {
         const filas =
             materialesDemo.filter(m=>
                 (!q ||
-                    m.codigo
+                    String(m.codigo || "")
                         .toLowerCase()
                         .includes(q) ||
-                    m.nombre
+                    String(m.nombre || "")
                         .toLowerCase()
                         .includes(q)
                 ) &&
@@ -2264,11 +2299,11 @@ window.materialesAuth = (async function protegerMateriales() {
                         </td>
 
                         <td>
-                            ${m.entradas}
+                            ${Number(m.entradas || 0)}
                         </td>
 
                         <td>
-                            ${m.entregadas}
+                            ${Number(m.entregadas || 0)}
                         </td>
 
                         <td class="${clase}">
@@ -2358,7 +2393,7 @@ window.materialesAuth = (async function protegerMateriales() {
                     </td>
 
                     <td>
-                        ${e.cantidad}
+                        ${Number(e.cantidad || 0)}
                     </td>
 
                     <td>
@@ -3415,6 +3450,1175 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
+    /*
+     * ============================================================
+     * FUNCIONES DEL MASTERMATERIALES
+     * ============================================================
+     */
+
+
+    function numeroSeguro(valor){
+
+        const numero =
+            Number(
+                String(
+                    valor ?? ""
+                )
+                .replace(/,/g,"")
+                .trim()
+            );
+
+        return Number.isFinite(numero)
+            ? numero
+            : 0;
+    }
+
+
+    function textoSeguro(valor){
+
+        return String(
+            valor ?? ""
+        ).trim();
+    }
+
+
+    function buscarMaterialPorCodigo(codigo){
+
+        const codigoNormalizado =
+            textoSeguro(codigo)
+            .toLowerCase();
+
+
+        return materialesDemo.find(
+            m=>
+                textoSeguro(m.codigo)
+                .toLowerCase() ===
+                codigoNormalizado
+        );
+    }
+
+
+    function normalizarMaterialImportado(fila){
+
+        const obtener = (
+            ...nombres
+        )=>{
+
+            for(
+                const nombre of nombres
+            ){
+
+                if(
+                    Object.prototype.hasOwnProperty.call(
+                        fila,
+                        nombre
+                    )
+                ){
+
+                    return fila[nombre];
+
+                }
+
+            }
+
+            return "";
+        };
+
+
+        const codigo =
+            textoSeguro(
+                obtener(
+                    "Código",
+                    "Codigo",
+                    "codigo",
+                    "Código del material",
+                    "Codigo del material"
+                )
+            );
+
+
+        if(!codigo){
+            return null;
+        }
+
+
+        const nombre =
+            textoSeguro(
+                obtener(
+                    "Material",
+                    "Nombre",
+                    "material",
+                    "nombre",
+                    "Nombre del material"
+                )
+            );
+
+
+        const categoria =
+            textoSeguro(
+                obtener(
+                    "Categoría",
+                    "Categoria",
+                    "categoría",
+                    "categoria",
+                    "Categoría / tipo"
+                )
+            );
+
+
+        const unidad =
+            textoSeguro(
+                obtener(
+                    "Unidad",
+                    "unidad"
+                )
+            );
+
+
+        const biblioteca =
+            textoSeguro(
+                obtener(
+                    "Biblioteca",
+                    "biblioteca"
+                )
+            );
+
+
+        const entradas =
+            numeroSeguro(
+                obtener(
+                    "Entradas",
+                    "entradas",
+                    "Unidades ingresadas"
+                )
+            );
+
+
+        const entregadas =
+            numeroSeguro(
+                obtener(
+                    "Entregadas",
+                    "entregadas",
+                    "Unidades entregadas"
+                )
+            );
+
+
+        const disponiblesImportados =
+            numeroSeguro(
+                obtener(
+                    "Disponibles",
+                    "disponibles",
+                    "Unidades disponibles"
+                )
+            );
+
+
+        const estado =
+            textoSeguro(
+                obtener(
+                    "Estado",
+                    "estado"
+                )
+            ) || "Activo";
+
+
+        const observaciones =
+            textoSeguro(
+                obtener(
+                    "Observaciones",
+                    "observaciones"
+                )
+            );
+
+
+        /*
+         * Si el Excel no trae Entradas pero sí trae
+         * Disponibles, se conserva la información
+         * disponible de forma razonable.
+         */
+
+        let entradasFinal =
+            entradas;
+
+
+        let entregadasFinal =
+            entregadas;
+
+
+        if(
+            !entradasFinal &&
+            disponiblesImportados
+        ){
+
+            entradasFinal =
+                disponiblesImportados +
+                entregadasFinal;
+
+        }
+
+
+        return {
+
+            codigo,
+            nombre,
+            categoria,
+            unidad,
+            biblioteca,
+            entradas:entradasFinal,
+            entregadas:entregadasFinal,
+            estado,
+            observaciones
+
+        };
+
+    }
+
+
+    function agregarOActualizarMaterial(
+        material
+    ){
+
+        const existente =
+            buscarMaterialPorCodigo(
+                material.codigo
+            );
+
+
+        if(existente){
+
+            /*
+             * No se borra información útil existente.
+             * Los campos que sí vienen en el Excel se actualizan.
+             */
+
+            if(material.nombre){
+                existente.nombre =
+                    material.nombre;
+            }
+
+            if(material.categoria){
+                existente.categoria =
+                    material.categoria;
+            }
+
+            if(material.unidad){
+                existente.unidad =
+                    material.unidad;
+            }
+
+            if(material.biblioteca){
+                existente.biblioteca =
+                    material.biblioteca;
+            }
+
+            if(
+                Number.isFinite(
+                    material.entradas
+                )
+            ){
+
+                existente.entradas =
+                    material.entradas;
+
+            }
+
+            if(
+                Number.isFinite(
+                    material.entregadas
+                )
+            ){
+
+                existente.entregadas =
+                    material.entregadas;
+
+            }
+
+            if(material.estado){
+                existente.estado =
+                    material.estado;
+            }
+
+            if(
+                Object.prototype.hasOwnProperty.call(
+                    material,
+                    "observaciones"
+                )
+            ){
+
+                existente.observaciones =
+                    material.observaciones;
+
+            }
+
+
+            return "actualizado";
+
+        }
+
+
+        materialesDemo.push({
+
+            codigo:material.codigo,
+            nombre:material.nombre,
+            categoria:material.categoria,
+            unidad:material.unidad,
+            biblioteca:material.biblioteca,
+            entradas:Number(
+                material.entradas || 0
+            ),
+            entregadas:Number(
+                material.entregadas || 0
+            ),
+            estado:
+                material.estado || "Activo",
+            observaciones:
+                material.observaciones || ""
+
+        });
+
+
+        return "nuevo";
+    }
+
+
+    function fechaActual(){
+
+        const ahora =
+            new Date();
+
+
+        const dia =
+            String(
+                ahora.getDate()
+            ).padStart(2,"0");
+
+
+        const mes =
+            String(
+                ahora.getMonth()+1
+            ).padStart(2,"0");
+
+
+        const anio =
+            ahora.getFullYear();
+
+
+        return (
+            dia +
+            "/" +
+            mes +
+            "/" +
+            anio
+        );
+
+    }
+
+
+    function obtenerUsuarioActual(){
+
+        try{
+
+            if(
+                window.usuarioActual
+            ){
+
+                return String(
+                    window.usuarioActual
+                );
+
+            }
+
+            if(
+                window.usuario
+            ){
+
+                return String(
+                    window.usuario
+                );
+
+            }
+
+        }catch(error){
+
+            console.warn(
+                "No fue posible obtener el usuario actual:",
+                error
+            );
+
+        }
+
+
+        return "Usuario actual";
+    }
+
+
+    function descargarExcel(
+        nombreArchivo,
+        hojas
+    ){
+
+        if(
+            typeof XLSX === "undefined"
+        ){
+
+            mostrarMensaje(
+                "Excel no disponible",
+                "No se pudo cargar la herramienta necesaria para generar archivos Excel.",
+                "!"
+            );
+
+            return;
+
+        }
+
+
+        const libro =
+            XLSX.utils.book_new();
+
+
+        hojas.forEach(
+            hoja=>{
+
+                const ws =
+                    XLSX.utils.json_to_sheet(
+                        hoja.datos
+                    );
+
+
+                if(
+                    hoja.ancho
+                ){
+
+                    ws["!cols"] =
+                        hoja.ancho.map(
+                            ancho=>({
+                                wch:ancho
+                            })
+                        );
+
+                }
+
+
+                XLSX.utils.book_append_sheet(
+                    libro,
+                    ws,
+                    hoja.nombre
+                );
+
+            }
+        );
+
+
+        XLSX.writeFile(
+            libro,
+            nombreArchivo
+        );
+
+    }
+
+
+    function generarDatosMaster(){
+
+        return materialesDemo.map(
+            m=>({
+
+                "Código":
+                    m.codigo,
+
+                "Material":
+                    m.nombre,
+
+                "Categoría":
+                    m.categoria,
+
+                "Unidad":
+                    m.unidad,
+
+                "Biblioteca":
+                    m.biblioteca,
+
+                "Entradas":
+                    Number(
+                        m.entradas || 0
+                    ),
+
+                "Entregadas":
+                    Number(
+                        m.entregadas || 0
+                    ),
+
+                "Disponibles":
+                    disponible(m),
+
+                "Estado":
+                    m.estado,
+
+                "Observaciones":
+                    m.observaciones || ""
+
+            })
+        );
+
+    }
+
+
+    function generarDatosEntregas(){
+
+        return entregasDemo.map(
+            e=>({
+
+                "Fecha":
+                    e.fecha,
+
+                "Código material":
+                    e.materialCodigo || "",
+
+                "Material":
+                    e.material,
+
+                "Cantidad":
+                    Number(
+                        e.cantidad || 0
+                    ),
+
+                "Tipo de receptor":
+                    e.receptor,
+
+                "Nombres":
+                    e.nombres,
+
+                "Apellidos":
+                    e.apellidos,
+
+                "PersonaId":
+                    e.personaId || "",
+
+                "FamiliaId":
+                    e.familiaId || "",
+
+                "Código colaborador":
+                    e.codigoColaborador || "",
+
+                "Área colaborador":
+                    e.areaColaborador || "",
+
+                "Biblioteca":
+                    e.biblioteca,
+
+                "Sitio":
+                    e.sitio,
+
+                "Entregado por":
+                    e.usuario,
+
+                "Observaciones":
+                    e.observaciones || ""
+
+            })
+        );
+
+    }
+
+
+    function descargarMasterMateriales(){
+
+        const fecha =
+            new Date();
+
+
+        const anio =
+            fecha.getFullYear();
+
+
+        const mes =
+            String(
+                fecha.getMonth()+1
+            ).padStart(2,"0");
+
+
+        const dia =
+            String(
+                fecha.getDate()
+            ).padStart(2,"0");
+
+
+        const nombreArchivo =
+            "MasterMateriales_" +
+            anio +
+            "-" +
+            mes +
+            "-" +
+            dia +
+            ".xlsx";
+
+
+        descargarExcel(
+            nombreArchivo,
+            [
+
+                {
+                    nombre:"MasterMateriales",
+
+                    datos:
+                        generarDatosMaster(),
+
+                    ancho:[
+                        18,
+                        32,
+                        24,
+                        15,
+                        14,
+                        13,
+                        13,
+                        14,
+                        13,
+                        35
+                    ]
+
+                },
+
+                {
+                    nombre:"Entregas",
+
+                    datos:
+                        generarDatosEntregas(),
+
+                    ancho:[
+                        14,
+                        18,
+                        32,
+                        12,
+                        18,
+                        25,
+                        25,
+                        18,
+                        18,
+                        22,
+                        25,
+                        14,
+                        14,
+                        25,
+                        35
+                    ]
+
+                }
+
+            ]
+        );
+
+
+        mostrarMensaje(
+            "MasterMateriales descargado",
+            "El archivo Excel contiene:\n\n" +
+            "• Hoja MasterMateriales: catálogo e inventario completo.\n" +
+            "• Hoja Entregas: reporte de materiales entregados o salidas.\n\n" +
+            "El archivo ya puede utilizarse como respaldo o para volver a cargar materiales.",
+            "📤"
+        );
+
+    }
+
+
+    async function procesarMasterMateriales(
+        archivo
+    ){
+
+        if(
+            typeof XLSX === "undefined"
+        ){
+
+            mostrarMensaje(
+                "Excel no disponible",
+                "No se pudo cargar la herramienta necesaria para leer archivos Excel.",
+                "!"
+            );
+
+            return;
+
+        }
+
+
+        try{
+
+            const datos =
+                await archivo.arrayBuffer();
+
+
+            const libro =
+                XLSX.read(
+                    datos,
+                    {
+                        type:"array"
+                    }
+                );
+
+
+            /*
+             * Primero intenta utilizar la hoja
+             * llamada MasterMateriales.
+             *
+             * Si no existe, utiliza la primera hoja.
+             */
+
+            let nombreHoja =
+                libro.SheetNames.find(
+                    nombre=>
+                        String(nombre)
+                        .trim()
+                        .toLowerCase()
+                        ===
+                        "mastermateriales"
+                );
+
+
+            if(!nombreHoja){
+
+                nombreHoja =
+                    libro.SheetNames[0];
+
+            }
+
+
+            if(!nombreHoja){
+
+                mostrarMensaje(
+                    "Excel vacío",
+                    "El archivo no contiene ninguna hoja de cálculo.",
+                    "!"
+                );
+
+                return;
+
+            }
+
+
+            const hoja =
+                libro.Sheets[
+                    nombreHoja
+                ];
+
+
+            const filas =
+                XLSX.utils.sheet_to_json(
+                    hoja,
+                    {
+                        defval:""
+                    }
+                );
+
+
+            if(!filas.length){
+
+                mostrarMensaje(
+                    "Sin datos",
+                    "La hoja seleccionada no contiene registros de materiales.",
+                    "!"
+                );
+
+                return;
+
+            }
+
+
+            let nuevos = 0;
+            let actualizados = 0;
+            let ignorados = 0;
+
+
+            filas.forEach(
+                fila=>{
+
+                    const material =
+                        normalizarMaterialImportado(
+                            fila
+                        );
+
+
+                    if(!material){
+
+                        ignorados++;
+
+                        return;
+
+                    }
+
+
+                    if(
+                        !material.nombre &&
+                        !material.categoria &&
+                        !material.unidad
+                    ){
+
+                        ignorados++;
+
+                        return;
+
+                    }
+
+
+                    const resultado =
+                        agregarOActualizarMaterial(
+                            material
+                        );
+
+
+                    if(
+                        resultado === "nuevo"
+                    ){
+
+                        nuevos++;
+
+                    }else{
+
+                        actualizados++;
+
+                    }
+
+                }
+            );
+
+
+            renderCategorias();
+
+            renderInventario();
+
+
+            /*
+             * Si el archivo también tiene una hoja Entregas,
+             * se intenta incorporar al historial.
+             */
+
+            const nombreHojaEntregas =
+                libro.SheetNames.find(
+                    nombre=>
+                        String(nombre)
+                        .trim()
+                        .toLowerCase()
+                        ===
+                        "entregas"
+                );
+
+
+            let entregasImportadas = 0;
+
+
+            if(
+                nombreHojaEntregas
+            ){
+
+                const hojaEntregas =
+                    libro.Sheets[
+                        nombreHojaEntregas
+                    ];
+
+
+                const filasEntregas =
+                    XLSX.utils.sheet_to_json(
+                        hojaEntregas,
+                        {
+                            defval:""
+                        }
+                    );
+
+
+                filasEntregas.forEach(
+                    fila=>{
+
+                        const obtener = (
+                            ...nombres
+                        )=>{
+
+                            for(
+                                const nombre of nombres
+                            ){
+
+                                if(
+                                    Object.prototype.hasOwnProperty.call(
+                                        fila,
+                                        nombre
+                                    )
+                                ){
+
+                                    return fila[nombre];
+
+                                }
+
+                            }
+
+                            return "";
+
+                        };
+
+
+                        const materialCodigo =
+                            textoSeguro(
+                                obtener(
+                                    "Código material",
+                                    "Codigo material",
+                                    "Código",
+                                    "Codigo"
+                                )
+                            );
+
+
+                        const material =
+                            textoSeguro(
+                                obtener(
+                                    "Material",
+                                    "material"
+                                )
+                            );
+
+
+                        const cantidad =
+                            numeroSeguro(
+                                obtener(
+                                    "Cantidad",
+                                    "cantidad"
+                                )
+                            );
+
+
+                        if(
+                            !material &&
+                            !materialCodigo
+                        ){
+
+                            return;
+
+                        }
+
+
+                        if(
+                            cantidad < 1
+                        ){
+
+                            return;
+
+                        }
+
+
+                        const entrega = {
+
+                            fecha:
+                                textoSeguro(
+                                    obtener(
+                                        "Fecha",
+                                        "fecha"
+                                    )
+                                ) ||
+                                fechaActual(),
+
+                            materialCodigo,
+
+                            material,
+
+                            cantidad,
+
+                            receptor:
+                                textoSeguro(
+                                    obtener(
+                                        "Tipo de receptor",
+                                        "Receptor",
+                                        "receptor"
+                                    )
+                                ),
+
+                            nombres:
+                                textoSeguro(
+                                    obtener(
+                                        "Nombres",
+                                        "nombres"
+                                    )
+                                ),
+
+                            apellidos:
+                                textoSeguro(
+                                    obtener(
+                                        "Apellidos",
+                                        "apellidos"
+                                    )
+                                ),
+
+                            personaId:
+                                textoSeguro(
+                                    obtener(
+                                        "PersonaId",
+                                        "personaId"
+                                    )
+                                ),
+
+                            familiaId:
+                                textoSeguro(
+                                    obtener(
+                                        "FamiliaId",
+                                        "familiaId"
+                                    )
+                                ),
+
+                            codigoColaborador:
+                                textoSeguro(
+                                    obtener(
+                                        "Código colaborador",
+                                        "Codigo colaborador",
+                                        "CodigoColaborador"
+                                    )
+                                ),
+
+                            areaColaborador:
+                                textoSeguro(
+                                    obtener(
+                                        "Área colaborador",
+                                        "Area colaborador",
+                                        "Area"
+                                    )
+                                ),
+
+                            biblioteca:
+                                textoSeguro(
+                                    obtener(
+                                        "Biblioteca",
+                                        "biblioteca"
+                                    )
+                                ),
+
+                            sitio:
+                                textoSeguro(
+                                    obtener(
+                                        "Sitio",
+                                        "sitio"
+                                    )
+                                ),
+
+                            usuario:
+                                textoSeguro(
+                                    obtener(
+                                        "Entregado por",
+                                        "Usuario",
+                                        "usuario"
+                                    )
+                                ),
+
+                            observaciones:
+                                textoSeguro(
+                                    obtener(
+                                        "Observaciones",
+                                        "observaciones"
+                                    )
+                                )
+
+                        };
+
+
+                        /*
+                         * Evita duplicar exactamente
+                         * el mismo movimiento si el mismo
+                         * archivo se vuelve a importar.
+                         */
+
+                        const existe =
+                            entregasDemo.some(
+                                e=>
+                                    String(
+                                        e.fecha
+                                    ) ===
+                                    String(
+                                        entrega.fecha
+                                    ) &&
+                                    String(
+                                        e.materialCodigo
+                                    ) ===
+                                    String(
+                                        entrega.materialCodigo
+                                    ) &&
+                                    Number(
+                                        e.cantidad
+                                    ) ===
+                                    Number(
+                                        entrega.cantidad
+                                    ) &&
+                                    String(
+                                        e.nombres
+                                    ) ===
+                                    String(
+                                        entrega.nombres
+                                    ) &&
+                                    String(
+                                        e.apellidos
+                                    ) ===
+                                    String(
+                                        entrega.apellidos
+                                    ) &&
+                                    String(
+                                        e.sitio
+                                    ) ===
+                                    String(
+                                        entrega.sitio
+                                    )
+                            );
+
+
+                        if(!existe){
+
+                            entregasDemo.push(
+                                entrega
+                            );
+
+                            entregasImportadas++;
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            renderEntregas();
+
+
+            mostrarMensaje(
+                "MasterMateriales cargado",
+                "Importación completada.\n\n" +
+                "Materiales nuevos: " +
+                nuevos +
+                "\n" +
+                "Materiales actualizados: " +
+                actualizados +
+                "\n" +
+                "Registros ignorados: " +
+                ignorados +
+                "\n" +
+                "Entregas incorporadas: " +
+                entregasImportadas +
+                "\n\n" +
+                "El catálogo y el historial ya fueron actualizados en este módulo.",
+                "📥"
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "Error importando MasterMateriales:",
+                error
+            );
+
+
+            mostrarMensaje(
+                "Error al importar",
+                "No fue posible leer el archivo MasterMateriales.\n\n" +
+                "Verifique que sea un archivo Excel válido y que contenga la hoja MasterMateriales.",
+                "!",
+                true
+            );
+
+        }
+
+    }
+
+
     document.getElementById(
         "seccionAdministracionMateriales"
     ).style.display =
@@ -3450,7 +4654,33 @@ window.materialesAuth = (async function protegerMateriales() {
     ).addEventListener(
         "click",
         ()=>{
+
+            document.getElementById(
+                "materialCodigo"
+            ).value = "";
+
+            document.getElementById(
+                "materialNombre"
+            ).value = "";
+
+            document.getElementById(
+                "materialCategoria"
+            ).value = "";
+
+            document.getElementById(
+                "materialUnidad"
+            ).value = "";
+
+            document.getElementById(
+                "materialBiblioteca"
+            ).value = "";
+
+            document.getElementById(
+                "materialObservaciones"
+            ).value = "";
+
             abrir("modalMaterial");
+
         }
     );
 
@@ -3534,6 +4764,12 @@ window.materialesAuth = (async function protegerMateriales() {
     });
 
 
+    /*
+     * ============================================================
+     * REGISTRAR NUEVO MATERIAL
+     * ============================================================
+     */
+
     document.getElementById(
         "formMaterial"
     ).addEventListener(
@@ -3542,17 +4778,127 @@ window.materialesAuth = (async function protegerMateriales() {
 
             e.preventDefault();
 
-            mostrarMensaje(
-                "Registro de material",
-                "Interfaz lista. El registro se conectará a Supabase en la siguiente etapa.",
-                "✓"
+
+            const codigo =
+                document.getElementById(
+                    "materialCodigo"
+                )
+                .value
+                .trim();
+
+
+            const nombre =
+                document.getElementById(
+                    "materialNombre"
+                )
+                .value
+                .trim();
+
+
+            const categoria =
+                document.getElementById(
+                    "materialCategoria"
+                )
+                .value
+                .trim();
+
+
+            const unidad =
+                document.getElementById(
+                    "materialUnidad"
+                )
+                .value
+                .trim();
+
+
+            const biblioteca =
+                document.getElementById(
+                    "materialBiblioteca"
+                ).value;
+
+
+            const observaciones =
+                document.getElementById(
+                    "materialObservaciones"
+                )
+                .value
+                .trim();
+
+
+            const existente =
+                buscarMaterialPorCodigo(
+                    codigo
+                );
+
+
+            if(existente){
+
+                mostrarMensaje(
+                    "Código existente",
+                    "Ya existe un material con el código " +
+                    codigo +
+                    ".\n\nUtilice otro código para registrar un material nuevo.",
+                    "!"
+                );
+
+                return;
+
+            }
+
+
+            materialesDemo.push({
+
+                codigo,
+
+                nombre,
+
+                categoria,
+
+                unidad,
+
+                biblioteca,
+
+                entradas:0,
+
+                entregadas:0,
+
+                estado:"Activo",
+
+                observaciones
+
+            });
+
+
+            renderCategorias();
+
+            renderInventario();
+
+
+            cerrar(
+                "modalMaterial"
             );
 
-            cerrar("modalMaterial");
+
+            mostrarMensaje(
+                "Material registrado",
+                "El material " +
+                codigo +
+                " - " +
+                nombre +
+                " fue agregado correctamente al catálogo.\n\n" +
+                "Al descargar MasterMateriales aparecerá automáticamente en el Excel.",
+                "✓"
+            );
 
         }
     );
 
+
+    /*
+     * ============================================================
+     * REGISTRAR ENTREGA
+     * ============================================================
+     */
 
     document.getElementById(
         "formEntrega"
@@ -3655,10 +5001,41 @@ window.materialesAuth = (async function protegerMateriales() {
                 }
 
 
+                const disponibleActual =
+                    disponible(material);
+
+
+                if(
+                    cantidad >
+                    disponibleActual
+                ){
+
+                    mostrarMensaje(
+                        "Cantidad no disponible",
+                        "El material " +
+                        material.nombre +
+                        " solamente tiene " +
+                        disponibleActual +
+                        " unidad(es) disponible(s).",
+                        "!"
+                    );
+
+                    input.focus();
+
+                    return;
+                }
+
+
                 materiales.push({
-                    codigo:material.codigo,
-                    nombre:material.nombre,
-                    cantidad:cantidad
+
+                    codigo:
+                        material.codigo,
+
+                    nombre:
+                        material.nombre,
+
+                    cantidad
+
                 });
 
             }
@@ -3708,6 +5085,137 @@ window.materialesAuth = (async function protegerMateriales() {
             }
 
 
+            const apellidos =
+                document.getElementById(
+                    "entregaApellidos"
+                ).value.trim();
+
+
+            const personaId =
+                document.getElementById(
+                    "entregaPersonaId"
+                ).value.trim();
+
+
+            const familiaId =
+                document.getElementById(
+                    "entregaFamiliaId"
+                ).value.trim();
+
+
+            const codigoColaborador =
+                document.getElementById(
+                    "entregaCodigoColaborador"
+                ).value.trim();
+
+
+            const areaColaborador =
+                document.getElementById(
+                    "entregaAreaColaborador"
+                ).value.trim();
+
+
+            const biblioteca =
+                document.getElementById(
+                    "entregaBiblioteca"
+                ).value;
+
+
+            const sitio =
+                document.getElementById(
+                    "entregaSitio"
+                ).value;
+
+
+            const observaciones =
+                document.getElementById(
+                    "entregaObservaciones"
+                ).value.trim();
+
+
+            const usuario =
+                obtenerUsuarioActual();
+
+
+            const fecha =
+                fechaActual();
+
+
+            /*
+             * Cada material de una misma entrega
+             * queda registrado como una salida individual
+             * en el reporte Excel.
+             */
+
+            materiales.forEach(
+                materialEntrega=>{
+
+                    const material =
+                        materialesDemo.find(
+                            m=>
+                                m.codigo ===
+                                materialEntrega.codigo
+                        );
+
+
+                    if(material){
+
+                        material.entregadas =
+                            Number(
+                                material.entregadas || 0
+                            ) +
+                            materialEntrega.cantidad;
+
+                    }
+
+
+                    entregasDemo.push({
+
+                        fecha,
+
+                        materialCodigo:
+                            materialEntrega.codigo,
+
+                        material:
+                            materialEntrega.nombre,
+
+                        cantidad:
+                            materialEntrega.cantidad,
+
+                        nombres,
+
+                        apellidos,
+
+                        receptor:
+                            tipo,
+
+                        personaId,
+
+                        familiaId,
+
+                        codigoColaborador,
+
+                        areaColaborador,
+
+                        biblioteca,
+
+                        sitio,
+
+                        usuario,
+
+                        observaciones
+
+                    });
+
+                }
+            );
+
+
+            renderInventario();
+
+            renderEntregas();
+
+
             const detalle =
                 materiales
                 .map(
@@ -3718,12 +5226,18 @@ window.materialesAuth = (async function protegerMateriales() {
 
 
             mostrarMensaje(
-                "Entrega preparada",
-                "Materiales de esta entrega:\n\n" +
+                "Entrega registrada",
+                "La entrega fue registrada correctamente.\n\n" +
+                "Materiales:\n" +
                 detalle +
                 "\n\nReceptor:\n" +
                 nombres +
-                "\n\nLa entrega se conectará a Supabase en la siguiente etapa.",
+                (
+                    apellidos
+                    ? " " + apellidos
+                    : ""
+                ) +
+                "\n\nLa salida ya forma parte del reporte Entregas de MasterMateriales.",
                 "✓"
             );
 
@@ -3734,15 +5248,27 @@ window.materialesAuth = (async function protegerMateriales() {
     );
 
 
+    /*
+     * ============================================================
+     * SUBIR MASTER
+     * ============================================================
+     */
+
     document.getElementById(
         "btnSubirMaster"
     ).addEventListener(
         "click",
         ()=>{
 
-            document.getElementById(
-                "archivoMaster"
-            ).click();
+            const archivo =
+                document.getElementById(
+                    "archivoMaster"
+                );
+
+
+            archivo.value = "";
+
+            archivo.click();
 
         }
     );
@@ -3752,23 +5278,33 @@ window.materialesAuth = (async function protegerMateriales() {
         "archivoMaster"
     ).addEventListener(
         "change",
-        e=>{
+        async e=>{
 
-            if(e.target.files[0]){
+            const archivo =
+                e.target.files[0];
 
-                mostrarMensaje(
-                    "Archivo seleccionado",
-                    "Archivo seleccionado: " +
-                    e.target.files[0].name +
-                    "\n\nLa importación real se conectará después.",
-                    "📄"
-                );
 
+            if(!archivo){
+                return;
             }
+
+
+            await procesarMasterMateriales(
+                archivo
+            );
+
+
+            e.target.value = "";
 
         }
     );
 
+
+    /*
+     * ============================================================
+     * DESCARGAR MASTER
+     * ============================================================
+     */
 
     document.getElementById(
         "btnDescargarMaster"
@@ -3776,15 +5312,17 @@ window.materialesAuth = (async function protegerMateriales() {
         "click",
         ()=>{
 
-            mostrarMensaje(
-                "MasterMateriales",
-                "La descarga real de MasterMateriales se conectará después.",
-                "📤"
-            );
+            descargarMasterMateriales();
 
         }
     );
 
+
+    /*
+     * ============================================================
+     * BORRAR BASE
+     * ============================================================
+     */
 
     document.getElementById(
         "btnBorrarBase"
