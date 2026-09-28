@@ -139,76 +139,78 @@
 
         .datos {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 9px;
-            margin-top: 10px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 7px;
+            margin-top: 9px;
         }
 
         .dato {
             background: #f8fafb;
             border: 1px solid #dfe5e8;
             border-radius: 7px;
-            padding: 10px 8px;
+            padding: 8px 5px;
             text-align: center;
+            min-width: 0;
         }
 
         .dato-numero {
             display: block;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #37474f;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .dato-label {
             display: block;
-            font-size: 11px;
+            font-size: 10px;
             color: #607d8b;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         .dato-total {
-            margin-top: 9px;
+            margin-top: 8px;
             background: #f8fafb;
             border: 1px solid #cfd8dc;
             border-radius: 7px;
-            padding: 9px 14px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 9px;
+            gap: 8px;
             text-align: center;
         }
 
         .dato-total-numero {
-            font-size: 21px;
+            font-size: 20px;
             font-weight: bold;
             color: #263238;
         }
 
         .dato-total-texto {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             color: #546e7a;
         }
 
         /* =========================================
-           BOTONES PRINCIPALES
+           BOTONES
         ========================================= */
 
         .acciones-principales {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 190px);
             justify-content: center;
-            align-items: center;
             gap: 10px;
         }
 
         .boton {
-            width: auto;
-            min-width: 190px;
+            width: 190px;
+            height: 38px;
             border: none;
             border-radius: 6px;
-            padding: 9px 16px;
+            padding: 8px 12px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
@@ -286,8 +288,9 @@
         }
 
         .mantenimiento-item .boton {
-            width: 100%;
-            min-width: 0;
+            width: 190px;
+            display: block;
+            margin: 0 auto;
         }
 
         /* Limpiar préstamos */
@@ -313,17 +316,18 @@
         }
 
         /* =========================================
-           INFORMACIÓN
+           INFORMACIÓN DEL RESPALDO
         ========================================= */
 
         .informacion {
             background: #f7f9fa;
             border-left: 4px solid #78909c;
-            padding: 10px 13px;
+            padding: 12px 18px;
             border-radius: 4px;
             font-size: 11px;
             color: #546e7a;
             line-height: 1.5;
+            text-align: center;
         }
 
         .informacion strong {
@@ -453,6 +457,11 @@
             padding: 16px 0 25px;
         }
 
+        footer .version,
+        footer .creditos {
+            margin-left: 12px;
+        }
+
         /* =========================================
            RESPONSIVE
         ========================================= */
@@ -464,12 +473,12 @@
             }
 
             .acciones-principales {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
 
             .boton {
-                width: 100%;
-                max-width: 300px;
+                width: 190px;
+                max-width: 100%;
             }
 
             .mantenimiento-grid {
@@ -528,6 +537,27 @@
             .dato-total {
                 flex-direction: column;
                 gap: 3px;
+            }
+
+            .acciones-principales {
+                grid-template-columns: 1fr;
+            }
+
+            .boton {
+                width: 190px;
+                max-width: 100%;
+            }
+
+            .mantenimiento-item .boton {
+                width: 190px;
+                max-width: 100%;
+            }
+
+            footer .version,
+            footer .creditos {
+                display: block;
+                margin-left: 0;
+                margin-top: 3px;
             }
 
             .modal-acciones {
@@ -809,9 +839,11 @@
     <span>
         Sistema de Biblioteca
     </span>
+
     <span class="version">
         Versión 1.0
     </span>
+
     <span class="creditos">
         Desarrollado por Saúl Velásquez
     </span>
