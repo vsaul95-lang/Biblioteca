@@ -1910,6 +1910,7 @@ function normalizar(valor) {
     return String(valor)
         .trim()
         .toUpperCase();
+
 }
 
 
@@ -1927,6 +1928,7 @@ function obtenerValor(objeto, campo, valorPredeterminado = "") {
     }
 
     return objeto[campo];
+
 }
 
 
@@ -2061,7 +2063,11 @@ function cerrarModalNuevoUsuario() {
 }
 
 
-function guardarNuevoUsuario(evento) {
+/* =========================================================
+   CREAR USUARIO
+========================================================= */
+
+async function guardarNuevoUsuario(evento) {
 
     if (evento) {
         evento.preventDefault();
@@ -2077,7 +2083,8 @@ function guardarNuevoUsuario(evento) {
         document
             .getElementById("nuevoUsuarioCorreo")
             .value
-            .trim();
+            .trim()
+            .toLowerCase();
 
     const rol =
         document
@@ -2162,18 +2169,194 @@ function guardarNuevoUsuario(evento) {
     }
 
 
+    /*
+       La interfaz se mantiene intacta.
+       Como no agregamos un campo de contraseña al formulario,
+       la solicitamos mediante una ventana del navegador.
+    */
+
+    const contraseña =
+        window.prompt(
+            "Escribe la contraseña inicial para el nuevo usuario.\n\nDebe tener al menos 6 caracteres."
+        );
+
+
+    if (contraseña === null) {
+        return;
+    }
+
+
+    if (!contraseña.trim()) {
+
+        mostrarErrorFormulario(
+            "Es necesario ingresar una contraseña."
+        );
+
+        return;
+
+    }
+
+
+    if (contraseña.length < 6) {
+
+        mostrarErrorFormulario(
+            "La contraseña debe tener al menos 6 caracteres."
+        );
+
+        return;
+
+    }
+
+
     cerrarModalNuevoUsuario();
 
+
     mostrarModal(
-        "Información del usuario",
-        "El formulario funciona correctamente. El usuario " +
+        "Creando usuario",
+        "Espera un momento mientras se crea la cuenta de " +
         nombre +
-        " está preparado para ser creado con el rol " +
-        rol +
-        " y estado " +
-        estado +
-        ". La creación de la cuenta de acceso se conectará en el siguiente paso."
+        "..."
     );
+
+
+    try {
+
+        /*
+           Obtener la sesión actual para enviar el token
+           del administrador autenticado a la Edge Function.
+        */
+
+        const resultadoSesion =
+            await supabaseClient.auth.getSession();
+
+
+        if (resultadoSesion.error) {
+            throw resultadoSesion.error;
+        }
+
+
+        const session =
+            resultadoSesion.data.session;
+
+
+        if (!session) {
+
+            throw new Error(
+                "No existe una sesión activa."
+            );
+
+        }
+
+
+        /*
+           URL de la Edge Function crear-usuario.
+        */
+
+        const urlFuncion =
+            "https://ddlgygqdevtuztmrrajn.supabase.co/functions/v1/crear-usuario";
+
+
+        const respuesta =
+            await fetch(
+                urlFuncion,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization":
+                            "Bearer " + session.access_token,
+                        "apikey":
+                            supabaseClient.supabaseKey
+                    },
+
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        correo: correo,
+                        contraseña: contraseña,
+                        rol: rol,
+                        estado: estado
+                    })
+                }
+            );
+
+
+        let resultado;
+
+        try {
+
+            resultado =
+                await respuesta.json();
+
+        } catch {
+
+            resultado = {
+                ok: false,
+                mensaje:
+                    "La función respondió con un formato no válido."
+            };
+
+        }
+
+
+        if (
+            !respuesta.ok ||
+            !resultado.ok
+        ) {
+
+            throw new Error(
+                resultado.mensaje ||
+                "No fue posible crear el usuario."
+            );
+
+        }
+
+
+        /*
+           Actualizar inmediatamente la información
+           de usuarios en Administración.
+        */
+
+        await cargarUsuarios();
+
+        actualizarUsuarios();
+
+        actualizarDiagnosticoBase();
+
+        await revisarIntegridad();
+
+
+        mostrarModal(
+            "Usuario creado",
+            "El usuario " +
+            nombre +
+            " fue creado correctamente.\n\n" +
+            "Correo: " +
+            correo +
+            "\n" +
+            "Rol: " +
+            rol +
+            "\n" +
+            "Estado: " +
+            estado
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error al crear usuario:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible crear el usuario",
+            error.message ||
+            "Ocurrió un error al intentar crear la cuenta."
+        );
+
+    }
 
 }
 
