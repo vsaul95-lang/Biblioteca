@@ -30,9 +30,7 @@ html{visibility:hidden}
     --verde-suave:#edf7ee
 }
 
-*{
-    box-sizing:border-box
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -289,7 +287,8 @@ body{
 .campo{
     display:flex;
     flex-direction:column;
-    gap:5px
+    gap:5px;
+    position:relative
 }
 
 .campo label{
@@ -494,7 +493,7 @@ body{
     font-size:13px
 }
 
-/* NUEVO: listado de materiales de una entrega */
+/* Materiales de una entrega */
 .lista-materiales-entrega{
     display:flex;
     flex-direction:column;
@@ -549,7 +548,80 @@ body{
     color:#34434b
 }
 
+/* Resultados automáticos de afiliados y colaboradores */
+.resultados-receptor{
+    display:none;
+    margin-top:6px;
+    border:1px solid var(--borde);
+    border-radius:8px;
+    background:#fff;
+    overflow:hidden;
+    max-height:210px;
+    overflow-y:auto;
+    box-shadow:0 4px 12px rgba(31,52,63,.08);
+    z-index:20
+}
+
+.resultados-receptor.mostrar{
+    display:block
+}
+
+.resultado-receptor{
+    width:100%;
+    border:0;
+    border-bottom:1px solid #edf1f3;
+    background:#fff;
+    text-align:left;
+    padding:9px 11px;
+    cursor:pointer;
+    font-size:12px;
+    color:var(--texto)
+}
+
+.resultado-receptor:last-child{
+    border-bottom:0
+}
+
+.resultado-receptor:hover{
+    background:var(--celeste-suave)
+}
+
+.resultado-receptor strong{
+    display:block;
+    color:#34434b;
+    margin-bottom:2px
+}
+
+.resultado-receptor span{
+    display:block;
+    color:var(--texto-suave);
+    font-size:11px
+}
+
+.resultado-vacio{
+    padding:11px;
+    color:var(--texto-suave);
+    font-size:12px;
+    text-align:center
+}
+
+.receptor-seleccionado{
+    margin-top:8px;
+    padding:9px 11px;
+    background:var(--verde-suave);
+    border:1px solid #cce6ce;
+    border-radius:7px;
+    color:var(--verde);
+    font-size:12px;
+    display:none
+}
+
+.receptor-seleccionado.mostrar{
+    display:block
+}
+
 @media(max-width:950px){
+
     .estadisticas{
         grid-template-columns:repeat(2,minmax(145px,175px))
     }
@@ -564,6 +636,7 @@ body{
 }
 
 @media(max-width:650px){
+
     .contenedor{
         margin-top:14px;
         padding:0 12px
@@ -659,188 +732,194 @@ footer .creditos{
 window.materialesAutorizado = false;
 
 window.materialesAuth = (async function protegerMateriales() {
-    try {
-        const autorizado = await window.protegerPagina();
 
-        if (!autorizado) {
+    try {
+
+        const autorizado =
+            await window.protegerPagina();
+
+        if(!autorizado){
+
             window.location.replace("index.html");
+
             return false;
         }
 
-        if (!window.esUsuario() && !window.esAdministrador()) {
+        if(
+            !window.esUsuario() &&
+            !window.esAdministrador()
+        ){
+
             window.location.replace("index.html");
+
             return false;
         }
 
         window.materialesAutorizado = true;
-        document.documentElement.style.visibility = "visible";
+
+        document.documentElement.style.visibility =
+            "visible";
+
         return true;
 
-    } catch (error) {
-        console.error("Error al comprobar permisos de materiales:", error);
+    } catch(error){
+
+        console.error(
+            "Error al comprobar permisos de materiales:",
+            error
+        );
+
         window.location.replace("index.html");
+
         return false;
     }
+
 })();
 </script>
+
 </head>
 
 <body>
 
-<!-- Módulo Materiales: usa la sesión existente de index.html/Biblioteca. No contiene login propio. -->
-
 <header class="encabezado">
+
     <div class="encabezado-contenido">
 
-        <button id="botonVolver" type="button">
+        <button
+            id="botonVolver"
+            type="button"
+        >
             ← Volver al inicio
         </button>
 
         <div class="marca">
-            <div class="icono-marca">📦</div>
-            <div>
-                <h1>Biblioteca</h1>
-                <p>Módulo de materiales</p>
+
+            <div class="icono-marca">
+                📦
             </div>
+
+            <div>
+
+                <h1>Biblioteca</h1>
+
+                <p>
+                    Módulo de materiales
+                </p>
+
+            </div>
+
         </div>
 
-        <button id="botonCerrarSesion" type="button">
+        <button
+            id="botonCerrarSesion"
+            type="button"
+        >
             Cerrar sesión
         </button>
 
     </div>
+
 </header>
+
 
 <main class="contenedor">
 
-    <h1 class="titulo-pagina">Materiales</h1>
+    <h1 class="titulo-pagina">
+        Materiales
+    </h1>
 
     <p class="subtitulo-pagina">
         Administración del inventario y entrega de materiales
     </p>
 
+
+    <!-- ESTADÍSTICAS -->
+
     <section class="estadisticas">
 
         <div class="tarjeta-estadistica">
-            <div class="estadistica-icono">📦</div>
-            <div class="estadistica-numero" id="totalTipos">0</div>
-            <div class="estadistica-texto">Tipos de materiales</div>
-        </div>
 
-        <div class="tarjeta-estadistica">
-            <div class="estadistica-icono">📥</div>
-            <div class="estadistica-numero" id="totalEntradas">0</div>
-            <div class="estadistica-texto">Unidades ingresadas</div>
-        </div>
-
-        <div class="tarjeta-estadistica">
-            <div class="estadistica-icono">🎁</div>
-            <div class="estadistica-numero" id="totalEntregadas">0</div>
-            <div class="estadistica-texto">Unidades entregadas</div>
-        </div>
-
-        <div class="tarjeta-estadistica">
-            <div class="estadistica-icono">📊</div>
-            <div class="estadistica-numero" id="totalDisponibles">0</div>
-            <div class="estadistica-texto">Unidades disponibles</div>
-        </div>
-
-    </section>
-
-    <section class="seccion">
-
-        <h2 class="seccion-titulo">
-            Inventario de materiales
-        </h2>
-
-        <div class="seccion-contenido">
-
-            <div class="filtros">
-
-                <div class="campo campo-busqueda">
-                    <label for="buscarMaterial">
-                        Buscar material
-                    </label>
-                    <input
-                        id="buscarMaterial"
-                        type="search"
-                        placeholder="Código o nombre"
-                    >
-                </div>
-
-                <div class="campo">
-                    <label for="filtroCategoria">
-                        Categoría
-                    </label>
-                    <select id="filtroCategoria">
-                        <option value="">Todas</option>
-                    </select>
-                </div>
-
-                <div class="campo">
-                    <label for="filtroBiblioteca">
-                        Biblioteca
-                    </label>
-                    <select id="filtroBiblioteca">
-                        <option value="">Todas</option>
-                        <option>F</option>
-                        <option>M</option>
-                        <option>N</option>
-                        <option>R</option>
-                        <option>Z</option>
-                        <option>NE</option>
-                    </select>
-                </div>
-
-                <div class="campo">
-                    <label for="filtroEstado">
-                        Estado
-                    </label>
-                    <select id="filtroEstado">
-                        <option value="">Todos</option>
-                        <option value="Activo">Activo</option>
-                        <option value="Baja">Baja</option>
-                    </select>
-                </div>
-
-                <button
-                    class="btn"
-                    id="btnLimpiarFiltros"
-                    type="button"
-                >
-                    Limpiar
-                </button>
-
+            <div class="estadistica-icono">
+                📦
             </div>
 
-            <div class="tabla-contenedor" style="margin-top:14px;">
+            <div
+                class="estadistica-numero"
+                id="totalTipos"
+            >
+                0
+            </div>
 
-                <table class="tabla">
+            <div class="estadistica-texto">
+                Tipos de materiales
+            </div>
 
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Material</th>
-                            <th>Categoría</th>
-                            <th>Unidad</th>
-                            <th>Biblioteca</th>
-                            <th>Entradas</th>
-                            <th>Entregadas</th>
-                            <th>Disponibles</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
+        </div>
 
-                    <tbody id="tablaInventario"></tbody>
 
-                </table>
+        <div class="tarjeta-estadistica">
 
+            <div class="estadistica-icono">
+                📥
+            </div>
+
+            <div
+                class="estadistica-numero"
+                id="totalEntradas"
+            >
+                0
+            </div>
+
+            <div class="estadistica-texto">
+                Unidades ingresadas
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta-estadistica">
+
+            <div class="estadistica-icono">
+                🎁
+            </div>
+
+            <div
+                class="estadistica-numero"
+                id="totalEntregadas"
+            >
+                0
+            </div>
+
+            <div class="estadistica-texto">
+                Unidades entregadas
+            </div>
+
+        </div>
+
+
+        <div class="tarjeta-estadistica">
+
+            <div class="estadistica-icono">
+                📊
+            </div>
+
+            <div
+                class="estadistica-numero"
+                id="totalDisponibles"
+            >
+                0
+            </div>
+
+            <div class="estadistica-texto">
+                Unidades disponibles
             </div>
 
         </div>
 
     </section>
+
+
+    <!-- ENTREGAS: AHORA VA INMEDIATAMENTE DESPUÉS DE LAS ESTADÍSTICAS -->
 
     <section class="seccion">
 
@@ -862,6 +941,7 @@ window.materialesAuth = (async function protegerMateriales() {
 
             </div>
 
+
             <div
                 class="tabla-contenedor"
                 style="margin-top:14px;"
@@ -870,7 +950,9 @@ window.materialesAuth = (async function protegerMateriales() {
                 <table class="tabla">
 
                     <thead>
+
                         <tr>
+
                             <th>Fecha</th>
                             <th>Material</th>
                             <th>Cantidad</th>
@@ -880,7 +962,9 @@ window.materialesAuth = (async function protegerMateriales() {
                             <th>Biblioteca</th>
                             <th>Sitio</th>
                             <th>Entregado por</th>
+
                         </tr>
+
                     </thead>
 
                     <tbody id="tablaEntregas"></tbody>
@@ -893,6 +977,9 @@ window.materialesAuth = (async function protegerMateriales() {
 
     </section>
 
+
+    <!-- REGISTRO DE MATERIALES: AHORA ANTES DEL INVENTARIO -->
+
     <section class="seccion">
 
         <h2 class="seccion-titulo">
@@ -901,7 +988,13 @@ window.materialesAuth = (async function protegerMateriales() {
 
         <div class="seccion-contenido">
 
-            <p style="margin:0 0 10px;font-size:12px;color:var(--texto-suave);">
+            <p
+                style="
+                    margin:0 0 10px;
+                    font-size:12px;
+                    color:var(--texto-suave);
+                "
+            >
                 Permite registrar un nuevo tipo de material en el catálogo.
                 Este registro también formará parte del MasterMateriales al descargarlo.
             </p>
@@ -917,6 +1010,150 @@ window.materialesAuth = (async function protegerMateriales() {
         </div>
 
     </section>
+
+
+    <!-- INVENTARIO -->
+
+    <section class="seccion">
+
+        <h2 class="seccion-titulo">
+            Inventario de materiales
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <div class="filtros">
+
+                <div class="campo campo-busqueda">
+
+                    <label for="buscarMaterial">
+                        Buscar material
+                    </label>
+
+                    <input
+                        id="buscarMaterial"
+                        type="search"
+                        placeholder="Código o nombre"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="filtroCategoria">
+                        Categoría
+                    </label>
+
+                    <select id="filtroCategoria">
+
+                        <option value="">
+                            Todas
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="filtroBiblioteca">
+                        Biblioteca
+                    </label>
+
+                    <select id="filtroBiblioteca">
+
+                        <option value="">
+                            Todas
+                        </option>
+
+                        <option>F</option>
+                        <option>M</option>
+                        <option>N</option>
+                        <option>R</option>
+                        <option>Z</option>
+                        <option>NE</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="filtroEstado">
+                        Estado
+                    </label>
+
+                    <select id="filtroEstado">
+
+                        <option value="">
+                            Todos
+                        </option>
+
+                        <option value="Activo">
+                            Activo
+                        </option>
+
+                        <option value="Baja">
+                            Baja
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="btn"
+                    id="btnLimpiarFiltros"
+                    type="button"
+                >
+                    Limpiar
+                </button>
+
+            </div>
+
+
+            <div
+                class="tabla-contenedor"
+                style="margin-top:14px;"
+            >
+
+                <table class="tabla">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Código</th>
+                            <th>Material</th>
+                            <th>Categoría</th>
+                            <th>Unidad</th>
+                            <th>Biblioteca</th>
+                            <th>Entradas</th>
+                            <th>Entregadas</th>
+                            <th>Disponibles</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaInventario"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ADMINISTRACIÓN -->
 
     <section
         class="seccion"
@@ -962,13 +1199,17 @@ window.materialesAuth = (async function protegerMateriales() {
             >
 
             <div class="nota">
-                El MasterMateriales se utilizará para importar y descargar la información
-                del sistema. Las entregas y movimientos se conservarán en sus respectivos historiales.
+
+                El MasterMateriales se utilizará para importar y descargar
+                la información del sistema. Las entregas y movimientos
+                se conservarán en sus respectivos historiales.
+
             </div>
 
         </div>
 
     </section>
+
 
     <section
         class="seccion"
@@ -1001,16 +1242,30 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </main>
 
+
 <footer>
-    <span>Sistema de Biblioteca</span>
-    <span class="version">Módulo Materiales</span>
-    <span class="creditos">Desarrollado por Saúl Velásquez</span>
+
+    <span>
+        Sistema de Biblioteca
+    </span>
+
+    <span class="version">
+        Módulo Materiales
+    </span>
+
+    <span class="creditos">
+        Desarrollado por Saúl Velásquez
+    </span>
+
 </footer>
 
 
 <!-- MODAL: NUEVO MATERIAL -->
 
-<div class="modal" id="modalMaterial">
+<div
+    class="modal"
+    id="modalMaterial"
+>
 
     <div class="modal-contenido">
 
@@ -1030,6 +1285,7 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
+
         <form id="formMaterial">
 
             <div class="modal-cuerpo">
@@ -1037,6 +1293,7 @@ window.materialesAuth = (async function protegerMateriales() {
                 <div class="form-grid">
 
                     <div class="campo">
+
                         <label>
                             Código del material
                         </label>
@@ -1046,9 +1303,12 @@ window.materialesAuth = (async function protegerMateriales() {
                             required
                             placeholder="Ej. M001"
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Nombre del material
                         </label>
@@ -1058,9 +1318,12 @@ window.materialesAuth = (async function protegerMateriales() {
                             required
                             placeholder="Ej. Hojas tamaño carta"
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Categoría / tipo
                         </label>
@@ -1070,9 +1333,12 @@ window.materialesAuth = (async function protegerMateriales() {
                             required
                             placeholder="Ej. Papelería"
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Unidad
                         </label>
@@ -1082,25 +1348,39 @@ window.materialesAuth = (async function protegerMateriales() {
                             required
                             placeholder="Ej. Paquete"
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Biblioteca
                         </label>
 
-                        <select id="materialBiblioteca" required>
-                            <option value="">Seleccionar</option>
+                        <select
+                            id="materialBiblioteca"
+                            required
+                        >
+
+                            <option value="">
+                                Seleccionar
+                            </option>
+
                             <option>F</option>
                             <option>M</option>
                             <option>N</option>
                             <option>R</option>
                             <option>Z</option>
                             <option>NE</option>
+
                         </select>
+
                     </div>
 
+
                     <div class="campo ancho-completo">
+
                         <label>
                             Observaciones
                         </label>
@@ -1110,11 +1390,13 @@ window.materialesAuth = (async function protegerMateriales() {
                             rows="3"
                             placeholder="Opcional"
                         ></textarea>
+
                     </div>
 
                 </div>
 
             </div>
+
 
             <div class="modal-pie">
 
@@ -1142,9 +1424,12 @@ window.materialesAuth = (async function protegerMateriales() {
 </div>
 
 
-<!-- MODAL: ENTREGA DE MATERIALES -->
+<!-- MODAL: ENTREGA -->
 
-<div class="modal" id="modalEntrega">
+<div
+    class="modal"
+    id="modalEntrega"
+>
 
     <div class="modal-contenido">
 
@@ -1164,19 +1449,19 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
+
         <form id="formEntrega">
 
             <div class="modal-cuerpo">
 
-                <!--
-                    AQUÍ SE PUEDEN AGREGAR TANTOS MATERIALES COMO SEA NECESARIO.
-                    NO EXISTE UN LÍMITE.
-                -->
+
+                <!-- MATERIALES -->
 
                 <div
                     id="listaMaterialesEntrega"
                     class="lista-materiales-entrega"
                 ></div>
+
 
                 <div class="acciones-materiales-entrega">
 
@@ -1190,22 +1475,34 @@ window.materialesAuth = (async function protegerMateriales() {
 
                 </div>
 
+
                 <div
                     id="resumenMaterialesEntrega"
                     class="resumen-materiales-entrega"
                 >
-                    <strong>Materiales seleccionados:</strong> 0
+                    <strong>
+                        Materiales seleccionados:
+                    </strong>
+                    0
                 </div>
 
+
                 <div
-                    style="height:1px;background:var(--borde);margin:16px 0;"
+                    style="
+                        height:1px;
+                        background:var(--borde);
+                        margin:16px 0;
+                    "
                 ></div>
 
-                <!-- DATOS DEL RECEPTOR -->
+
+                <!-- RECEPTOR AUTOMÁTICO -->
 
                 <div class="form-grid">
 
+
                     <div class="campo">
+
                         <label>
                             Tipo de receptor
                         </label>
@@ -1214,6 +1511,7 @@ window.materialesAuth = (async function protegerMateriales() {
                             id="tipoReceptor"
                             required
                         >
+
                             <option value="Afiliado">
                                 Afiliado
                             </option>
@@ -1221,82 +1519,123 @@ window.materialesAuth = (async function protegerMateriales() {
                             <option value="Colaborador">
                                 Colaborador
                             </option>
+
                         </select>
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
-                            Persona / colaborador
+                            Buscar persona / colaborador
                         </label>
 
                         <input
                             id="entregaPersona"
-                            placeholder="Buscar por nombre o código"
+                            placeholder="Escriba nombre, apellido o código"
+                            autocomplete="off"
                         >
+
+                        <div
+                            id="resultadosReceptor"
+                            class="resultados-receptor"
+                        ></div>
+
+                        <div
+                            id="receptorSeleccionado"
+                            class="receptor-seleccionado"
+                        ></div>
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Nombres
                         </label>
 
                         <input
                             id="entregaNombres"
-                            required
+                            readonly
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Apellidos
                         </label>
 
                         <input
                             id="entregaApellidos"
+                            readonly
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             PersonaId
                         </label>
 
                         <input
                             id="entregaPersonaId"
+                            readonly
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             FamiliaId
                         </label>
 
                         <input
                             id="entregaFamiliaId"
+                            readonly
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Código colaborador
                         </label>
 
                         <input
                             id="entregaCodigoColaborador"
+                            readonly
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Área colaborador
                         </label>
 
                         <input
                             id="entregaAreaColaborador"
+                            readonly
                         >
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Biblioteca
                         </label>
@@ -1305,6 +1644,7 @@ window.materialesAuth = (async function protegerMateriales() {
                             id="entregaBiblioteca"
                             required
                         >
+
                             <option value="">
                                 Seleccionar
                             </option>
@@ -1315,10 +1655,14 @@ window.materialesAuth = (async function protegerMateriales() {
                             <option>R</option>
                             <option>Z</option>
                             <option>NE</option>
+
                         </select>
+
                     </div>
 
+
                     <div class="campo">
+
                         <label>
                             Sitio que entrega
                         </label>
@@ -1327,6 +1671,7 @@ window.materialesAuth = (async function protegerMateriales() {
                             id="entregaSitio"
                             required
                         >
+
                             <option value="">
                                 Seleccionar
                             </option>
@@ -1336,10 +1681,14 @@ window.materialesAuth = (async function protegerMateriales() {
                             <option>N</option>
                             <option>R</option>
                             <option>Z</option>
+
                         </select>
+
                     </div>
 
+
                     <div class="campo ancho-completo">
+
                         <label>
                             Observaciones
                         </label>
@@ -1348,16 +1697,22 @@ window.materialesAuth = (async function protegerMateriales() {
                             id="entregaObservaciones"
                             rows="3"
                         ></textarea>
+
                     </div>
 
                 </div>
 
+
                 <div class="nota">
-                    La información de este módulo se conectará a Supabase en la siguiente etapa.
-                    Una entrega podrá incluir uno o varios materiales sin límite.
+
+                    La información de este módulo se conectará a Supabase
+                    en la siguiente etapa. Una entrega podrá incluir uno
+                    o varios materiales sin límite.
+
                 </div>
 
             </div>
+
 
             <div class="modal-pie">
 
@@ -1388,15 +1743,20 @@ window.materialesAuth = (async function protegerMateriales() {
 <script>
 (async function(){
 
-    const autorizado = await window.materialesAuth;
+    const autorizado =
+        await window.materialesAuth;
 
     if(!autorizado){
         return;
     }
 
-    const administrador = window.esAdministrador();
+
+    const administrador =
+        window.esAdministrador();
+
 
     const materialesDemo = [
+
         {
             codigo:"M001",
             nombre:"Hojas tamaño carta",
@@ -1407,6 +1767,7 @@ window.materialesAuth = (async function protegerMateriales() {
             entregadas:30,
             estado:"Activo"
         },
+
         {
             codigo:"M002",
             nombre:"Cuadernos",
@@ -1417,6 +1778,7 @@ window.materialesAuth = (async function protegerMateriales() {
             entregadas:12,
             estado:"Activo"
         },
+
         {
             codigo:"M003",
             nombre:"Marcadores",
@@ -1427,9 +1789,12 @@ window.materialesAuth = (async function protegerMateriales() {
             entregadas:5,
             estado:"Activo"
         }
+
     ];
 
+
     const entregasDemo = [
+
         {
             fecha:"28/09/2026",
             material:"Hojas tamaño carta",
@@ -1441,6 +1806,7 @@ window.materialesAuth = (async function protegerMateriales() {
             sitio:"F",
             usuario:"Usuario actual"
         },
+
         {
             fecha:"27/09/2026",
             material:"Cuadernos",
@@ -1452,41 +1818,62 @@ window.materialesAuth = (async function protegerMateriales() {
             sitio:"M",
             usuario:"Usuario actual"
         }
+
     ];
 
+
     const esc = v =>
-        String(v ?? "").replace(/[&<>'"]/g,c=>({
-            "&":"&amp;",
-            "<":"&lt;",
-            ">":"&gt;",
-            "'":"&#39;",
-            '"':"&quot;"
-        }[c]));
+        String(v ?? "").replace(
+            /[&<>'"]/g,
+            c=>({
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                "'":"&#39;",
+                '"':"&quot;"
+            }[c])
+        );
+
 
     const disponible = m =>
-        Number(m.entradas || 0) - Number(m.entregadas || 0);
+        Number(m.entradas || 0) -
+        Number(m.entregadas || 0);
 
 
     function actualizarEstadisticas(){
 
-        document.getElementById("totalTipos").textContent =
+        document.getElementById(
+            "totalTipos"
+        ).textContent =
             materialesDemo.length;
 
-        document.getElementById("totalEntradas").textContent =
+
+        document.getElementById(
+            "totalEntradas"
+        ).textContent =
             materialesDemo.reduce(
-                (a,m)=>a + Number(m.entradas || 0),
+                (a,m)=>
+                    a + Number(m.entradas || 0),
                 0
             );
 
-        document.getElementById("totalEntregadas").textContent =
+
+        document.getElementById(
+            "totalEntregadas"
+        ).textContent =
             materialesDemo.reduce(
-                (a,m)=>a + Number(m.entregadas || 0),
+                (a,m)=>
+                    a + Number(m.entregadas || 0),
                 0
             );
 
-        document.getElementById("totalDisponibles").textContent =
+
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent =
             materialesDemo.reduce(
-                (a,m)=>a + disponible(m),
+                (a,m)=>
+                    a + disponible(m),
                 0
             );
     }
@@ -1494,22 +1881,32 @@ window.materialesAuth = (async function protegerMateriales() {
 
     function renderCategorias(){
 
-        const s = document.getElementById("filtroCategoria");
+        const s =
+            document.getElementById(
+                "filtroCategoria"
+            );
+
 
         [
             ...new Set(
-                materialesDemo.map(m=>m.categoria)
+                materialesDemo.map(
+                    m=>m.categoria
+                )
             )
         ]
         .sort()
         .forEach(c=>{
 
-            const o = document.createElement("option");
+            const o =
+                document.createElement(
+                    "option"
+                );
 
             o.value = c;
             o.textContent = c;
 
             s.appendChild(o);
+
         });
     }
 
@@ -1517,40 +1914,68 @@ window.materialesAuth = (async function protegerMateriales() {
     function renderInventario(){
 
         const q =
-            document.getElementById("buscarMaterial")
+            document.getElementById(
+                "buscarMaterial"
+            )
             .value
             .trim()
             .toLowerCase();
 
+
         const cat =
-            document.getElementById("filtroCategoria").value;
+            document.getElementById(
+                "filtroCategoria"
+            ).value;
+
 
         const bib =
-            document.getElementById("filtroBiblioteca").value;
+            document.getElementById(
+                "filtroBiblioteca"
+            ).value;
+
 
         const est =
-            document.getElementById("filtroEstado").value;
+            document.getElementById(
+                "filtroEstado"
+            ).value;
+
 
         const filas =
             materialesDemo.filter(m=>
                 (!q ||
-                    m.codigo.toLowerCase().includes(q) ||
-                    m.nombre.toLowerCase().includes(q)
+                    m.codigo
+                        .toLowerCase()
+                        .includes(q) ||
+                    m.nombre
+                        .toLowerCase()
+                        .includes(q)
                 ) &&
-                (!cat || m.categoria === cat) &&
-                (!bib || m.biblioteca === bib) &&
-                (!est || m.estado === est)
+                (!cat ||
+                    m.categoria === cat
+                ) &&
+                (!bib ||
+                    m.biblioteca === bib
+                ) &&
+                (!est ||
+                    m.estado === est
+                )
             );
 
+
         const tbody =
-            document.getElementById("tablaInventario");
+            document.getElementById(
+                "tablaInventario"
+            );
+
 
         tbody.innerHTML =
             filas.length
             ?
             filas.map(m=>{
 
-                const d = disponible(m);
+                const d =
+                    disponible(m);
+
 
                 const clase =
                     d < 0
@@ -1559,37 +1984,57 @@ window.materialesAuth = (async function protegerMateriales() {
                     ? "cantidad-cero"
                     : "cantidad-disponible";
 
+
                 return `
+
                     <tr>
 
                         <td>
-                            <strong>${esc(m.codigo)}</strong>
+                            <strong>
+                                ${esc(m.codigo)}
+                            </strong>
                         </td>
 
-                        <td>${esc(m.nombre)}</td>
+                        <td>
+                            ${esc(m.nombre)}
+                        </td>
 
-                        <td>${esc(m.categoria)}</td>
+                        <td>
+                            ${esc(m.categoria)}
+                        </td>
 
-                        <td>${esc(m.unidad)}</td>
+                        <td>
+                            ${esc(m.unidad)}
+                        </td>
 
-                        <td>${esc(m.biblioteca)}</td>
+                        <td>
+                            ${esc(m.biblioteca)}
+                        </td>
 
-                        <td>${m.entradas}</td>
+                        <td>
+                            ${m.entradas}
+                        </td>
 
-                        <td>${m.entregadas}</td>
+                        <td>
+                            ${m.entregadas}
+                        </td>
 
                         <td class="${clase}">
                             ${d}
                         </td>
 
                         <td>
-                            <span class="estado ${
-                                m.estado === "Activo"
-                                ? "estado-activo"
-                                : "estado-baja"
-                            }">
+
+                            <span
+                                class="estado ${
+                                    m.estado === "Activo"
+                                    ? "estado-activo"
+                                    : "estado-baja"
+                                }"
+                            >
                                 ${esc(m.estado)}
                             </span>
+
                         </td>
 
                         <td>
@@ -1617,20 +2062,26 @@ window.materialesAuth = (async function protegerMateriales() {
                         </td>
 
                     </tr>
+
                 `;
 
             }).join("")
             :
             `
+
             <tr>
+
                 <td
                     colspan="10"
                     class="mensaje-vacio"
                 >
                     No hay materiales que coincidan con los filtros.
                 </td>
+
             </tr>
+
             `;
+
 
         actualizarEstadisticas();
     }
@@ -1638,28 +2089,49 @@ window.materialesAuth = (async function protegerMateriales() {
 
     function renderEntregas(){
 
-        document.getElementById("tablaEntregas").innerHTML =
+        document.getElementById(
+            "tablaEntregas"
+        ).innerHTML =
+
             entregasDemo.map(e=>`
 
                 <tr>
 
-                    <td>${esc(e.fecha)}</td>
+                    <td>
+                        ${esc(e.fecha)}
+                    </td>
 
-                    <td>${esc(e.material)}</td>
+                    <td>
+                        ${esc(e.material)}
+                    </td>
 
-                    <td>${e.cantidad}</td>
+                    <td>
+                        ${e.cantidad}
+                    </td>
 
-                    <td>${esc(e.nombres)}</td>
+                    <td>
+                        ${esc(e.nombres)}
+                    </td>
 
-                    <td>${esc(e.apellidos)}</td>
+                    <td>
+                        ${esc(e.apellidos)}
+                    </td>
 
-                    <td>${esc(e.receptor)}</td>
+                    <td>
+                        ${esc(e.receptor)}
+                    </td>
 
-                    <td>${esc(e.biblioteca)}</td>
+                    <td>
+                        ${esc(e.biblioteca)}
+                    </td>
 
-                    <td>${esc(e.sitio)}</td>
+                    <td>
+                        ${esc(e.sitio)}
+                    </td>
 
-                    <td>${esc(e.usuario)}</td>
+                    <td>
+                        ${esc(e.usuario)}
+                    </td>
 
                 </tr>
 
@@ -1667,34 +2139,37 @@ window.materialesAuth = (async function protegerMateriales() {
     }
 
 
-    /*
-     * Devuelve las opciones de materiales disponibles.
-     */
     function opcionesMateriales(){
 
         return `
+
             <option value="">
                 Seleccionar material
             </option>
 
             ${
                 materialesDemo
-                .filter(m=>m.estado === "Activo")
+                .filter(
+                    m=>m.estado === "Activo"
+                )
                 .map(m=>`
-                    <option value="${esc(m.codigo)}">
-                        ${esc(m.codigo)} - ${esc(m.nombre)}
+
+                    <option
+                        value="${esc(m.codigo)}"
+                    >
+                        ${esc(m.codigo)}
+                        -
+                        ${esc(m.nombre)}
                     </option>
+
                 `)
                 .join("")
             }
+
         `;
     }
 
 
-    /*
-     * Agrega una nueva fila de material.
-     * No existe límite de filas.
-     */
     function agregarFilaMaterialEntrega(){
 
         const lista =
@@ -1702,20 +2177,25 @@ window.materialesAuth = (async function protegerMateriales() {
                 "listaMaterialesEntrega"
             );
 
+
         const numero =
             lista.children.length + 1;
+
 
         const fila =
             document.createElement("div");
 
+
         fila.className =
             "material-entrega-fila";
+
 
         fila.innerHTML = `
 
             <div class="material-entrega-numero">
                 MATERIAL ${numero}
             </div>
+
 
             <div class="campo">
 
@@ -1731,6 +2211,7 @@ window.materialesAuth = (async function protegerMateriales() {
                 </select>
 
             </div>
+
 
             <div class="campo">
 
@@ -1749,6 +2230,7 @@ window.materialesAuth = (async function protegerMateriales() {
 
             </div>
 
+
             <button
                 class="btn-eliminar"
                 type="button"
@@ -1756,49 +2238,61 @@ window.materialesAuth = (async function protegerMateriales() {
             >
                 ✕ Quitar
             </button>
+
         `;
 
+
         const botonEliminar =
-            fila.querySelector(".btn-eliminar");
+            fila.querySelector(
+                ".btn-eliminar"
+            );
+
 
         botonEliminar.addEventListener(
             "click",
             ()=>{
+
                 fila.remove();
+
                 renumerarMateriales();
+
                 actualizarResumenMateriales();
+
             }
         );
 
+
         lista.appendChild(fila);
+
 
         const select =
             fila.querySelector(
                 ".material-entrega-select"
             );
 
+
         const cantidad =
             fila.querySelector(
                 ".material-entrega-cantidad"
             );
+
 
         select.addEventListener(
             "change",
             actualizarResumenMateriales
         );
 
+
         cantidad.addEventListener(
             "input",
             actualizarResumenMateriales
         );
 
+
         actualizarResumenMateriales();
     }
 
 
-    /*
-     * Renumera las filas después de quitar un material.
-     */
     function renumerarMateriales(){
 
         const filas =
@@ -1806,22 +2300,25 @@ window.materialesAuth = (async function protegerMateriales() {
                 "#listaMaterialesEntrega .material-entrega-fila"
             );
 
-        filas.forEach((fila,index)=>{
 
-            const numero =
-                fila.querySelector(
-                    ".material-entrega-numero"
-                );
+        filas.forEach(
+            (fila,index)=>{
 
-            numero.textContent =
-                "MATERIAL " + (index + 1);
-        });
+                const numero =
+                    fila.querySelector(
+                        ".material-entrega-numero"
+                    );
+
+
+                numero.textContent =
+                    "MATERIAL " +
+                    (index + 1);
+
+            }
+        );
     }
 
 
-    /*
-     * Actualiza el pequeño resumen inferior.
-     */
     function actualizarResumenMateriales(){
 
         const filas =
@@ -1829,8 +2326,10 @@ window.materialesAuth = (async function protegerMateriales() {
                 "#listaMaterialesEntrega .material-entrega-fila"
             );
 
+
         let cantidadMateriales = 0;
         let cantidadUnidades = 0;
+
 
         filas.forEach(fila=>{
 
@@ -1839,30 +2338,45 @@ window.materialesAuth = (async function protegerMateriales() {
                     ".material-entrega-select"
                 );
 
+
             const input =
                 fila.querySelector(
                     ".material-entrega-cantidad"
                 );
 
-            if(select && select.value){
+
+            if(
+                select &&
+                select.value
+            ){
 
                 cantidadMateriales++;
 
                 cantidadUnidades +=
-                    Number(input.value || 0);
+                    Number(
+                        input.value || 0
+                    );
             }
+
         });
+
 
         document.getElementById(
             "resumenMaterialesEntrega"
         ).innerHTML = `
 
-            <strong>Materiales seleccionados:</strong>
+            <strong>
+                Materiales seleccionados:
+            </strong>
+
             ${cantidadMateriales}
 
             &nbsp;&nbsp;|&nbsp;&nbsp;
 
-            <strong>Unidades totales:</strong>
+            <strong>
+                Unidades totales:
+            </strong>
+
             ${cantidadUnidades}
 
         `;
@@ -1870,27 +2384,9 @@ window.materialesAuth = (async function protegerMateriales() {
 
 
     /*
-     * Prepara el formulario para una nueva entrega.
+     * Limpia todos los datos automáticos del receptor.
      */
-    function prepararNuevaEntrega(){
-
-        const lista =
-            document.getElementById(
-                "listaMaterialesEntrega"
-            );
-
-        lista.innerHTML = "";
-
-        /*
-         * Siempre inicia con un material.
-         * El usuario puede agregar todos los demás
-         * que necesite mediante el botón.
-         */
-        agregarFilaMaterialEntrega();
-
-        document.getElementById(
-            "tipoReceptor"
-        ).value = "Afiliado";
+    function limpiarReceptor(){
 
         document.getElementById(
             "entregaPersona"
@@ -1921,16 +2417,696 @@ window.materialesAuth = (async function protegerMateriales() {
         ).value = "";
 
         document.getElementById(
+            "receptorSeleccionado"
+        ).textContent = "";
+
+        document.getElementById(
+            "receptorSeleccionado"
+        ).classList.remove(
+            "mostrar"
+        );
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).innerHTML = "";
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).classList.remove(
+            "mostrar"
+        );
+    }
+
+
+    /*
+     * Busca afiliados directamente en Supabase.
+     */
+    async function buscarAfiliados(){
+
+        const texto =
+            document.getElementById(
+                "entregaPersona"
+            )
+            .value
+            .trim();
+
+
+        const resultados =
+            document.getElementById(
+                "resultadosReceptor"
+            );
+
+
+        if(texto.length < 2){
+
+            resultados.innerHTML = "";
+
+            resultados.classList.remove(
+                "mostrar"
+            );
+
+            return;
+        }
+
+
+        resultados.innerHTML = `
+            <div class="resultado-vacio">
+                Buscando...
+            </div>
+        `;
+
+        resultados.classList.add(
+            "mostrar"
+        );
+
+
+        try{
+
+            const {data,error} =
+                await supabaseClient
+                .from("afiliados")
+                .select("*")
+                .eq("estado","Activo")
+                .or(
+                    "Nombres.ilike.%" +
+                    texto +
+                    "%,Apellidos.ilike.%" +
+                    texto +
+                    "%,PersonaId.ilike.%" +
+                    texto +
+                    "%,FamiliaId.ilike.%" +
+                    texto +
+                    "%"
+                )
+                .order(
+                    "Apellidos",
+                    {
+                        ascending:true
+                    }
+                )
+                .limit(20);
+
+
+            if(error){
+                throw error;
+            }
+
+
+            if(!data || !data.length){
+
+                resultados.innerHTML = `
+                    <div class="resultado-vacio">
+                        No se encontraron afiliados activos.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            resultados.innerHTML =
+                data.map(
+                    persona=>`
+
+                        <button
+                            type="button"
+                            class="resultado-receptor"
+                            data-tipo="Afiliado"
+                            data-persona-id="${esc(
+                                persona.PersonaId
+                            )}"
+                        >
+
+                            <strong>
+                                ${esc(
+                                    (
+                                        persona.Nombres || ""
+                                    ) +
+                                    " " +
+                                    (
+                                        persona.Apellidos || ""
+                                    )
+                                )}
+                            </strong>
+
+                            <span>
+                                Familia:
+                                ${esc(
+                                    persona.FamiliaId
+                                )}
+                                &nbsp; | &nbsp;
+                                Persona:
+                                ${esc(
+                                    persona.PersonaId
+                                )}
+                            </span>
+
+                        </button>
+
+                    `
+                )
+                .join("");
+
+
+            resultados
+            .querySelectorAll(
+                ".resultado-receptor"
+            )
+            .forEach(boton=>{
+
+                boton.addEventListener(
+                    "click",
+                    ()=>{
+
+                        const persona =
+                            data.find(
+                                p=>
+                                    String(
+                                        p.PersonaId
+                                    ) ===
+                                    String(
+                                        boton.dataset.personaId
+                                    )
+                            );
+
+
+                        if(persona){
+
+                            seleccionarAfiliado(
+                                persona
+                            );
+                        }
+
+                    }
+                );
+
+            });
+
+        }catch(error){
+
+            console.error(
+                "Error buscando afiliados:",
+                error
+            );
+
+            resultados.innerHTML = `
+                <div class="resultado-vacio">
+                    No fue posible realizar la búsqueda.
+                </div>
+            `;
+        }
+    }
+
+
+    /*
+     * Busca colaboradores directamente en Supabase.
+     */
+    async function buscarColaboradores(){
+
+        const texto =
+            document.getElementById(
+                "entregaPersona"
+            )
+            .value
+            .trim();
+
+
+        const resultados =
+            document.getElementById(
+                "resultadosReceptor"
+            );
+
+
+        if(texto.length < 2){
+
+            resultados.innerHTML = "";
+
+            resultados.classList.remove(
+                "mostrar"
+            );
+
+            return;
+        }
+
+
+        resultados.innerHTML = `
+            <div class="resultado-vacio">
+                Buscando...
+            </div>
+        `;
+
+        resultados.classList.add(
+            "mostrar"
+        );
+
+
+        try{
+
+            const {data,error} =
+                await supabaseClient
+                .from("colaboradores")
+                .select("*")
+                .eq("estado","Activo")
+                .or(
+                    "Nombre.ilike.%" +
+                    texto +
+                    "%,CodigoColaborador.ilike.%" +
+                    texto +
+                    "%,Area.ilike.%" +
+                    texto +
+                    "%"
+                )
+                .order(
+                    "Nombre",
+                    {
+                        ascending:true
+                    }
+                )
+                .limit(20);
+
+
+            if(error){
+                throw error;
+            }
+
+
+            if(!data || !data.length){
+
+                resultados.innerHTML = `
+                    <div class="resultado-vacio">
+                        No se encontraron colaboradores activos.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            resultados.innerHTML =
+                data.map(
+                    colaborador=>`
+
+                        <button
+                            type="button"
+                            class="resultado-receptor"
+                            data-tipo="Colaborador"
+                            data-codigo="${esc(
+                                colaborador.CodigoColaborador
+                            )}"
+                        >
+
+                            <strong>
+                                ${esc(
+                                    colaborador.Nombre
+                                )}
+                            </strong>
+
+                            <span>
+                                Código:
+                                ${esc(
+                                    colaborador.CodigoColaborador
+                                )}
+                                &nbsp; | &nbsp;
+                                Área:
+                                ${esc(
+                                    colaborador.Area || ""
+                                )}
+                            </span>
+
+                        </button>
+
+                    `
+                )
+                .join("");
+
+
+            resultados
+            .querySelectorAll(
+                ".resultado-receptor"
+            )
+            .forEach(boton=>{
+
+                boton.addEventListener(
+                    "click",
+                    ()=>{
+
+                        const colaborador =
+                            data.find(
+                                c=>
+                                    String(
+                                        c.CodigoColaborador
+                                    ) ===
+                                    String(
+                                        boton.dataset.codigo
+                                    )
+                            );
+
+
+                        if(colaborador){
+
+                            seleccionarColaborador(
+                                colaborador
+                            );
+                        }
+
+                    }
+                );
+
+            });
+
+        }catch(error){
+
+            console.error(
+                "Error buscando colaboradores:",
+                error
+            );
+
+            resultados.innerHTML = `
+                <div class="resultado-vacio">
+                    No fue posible realizar la búsqueda.
+                </div>
+            `;
+        }
+    }
+
+
+    /*
+     * Selecciona automáticamente un afiliado.
+     */
+    function seleccionarAfiliado(persona){
+
+        document.getElementById(
+            "entregaPersona"
+        ).value =
+            (
+                persona.Nombres || ""
+            ) +
+            " " +
+            (
+                persona.Apellidos || ""
+            );
+
+
+        document.getElementById(
+            "entregaNombres"
+        ).value =
+            persona.Nombres || "";
+
+
+        document.getElementById(
+            "entregaApellidos"
+        ).value =
+            persona.Apellidos || "";
+
+
+        document.getElementById(
+            "entregaPersonaId"
+        ).value =
+            persona.PersonaId || "";
+
+
+        document.getElementById(
+            "entregaFamiliaId"
+        ).value =
+            persona.FamiliaId || "";
+
+
+        document.getElementById(
+            "entregaCodigoColaborador"
+        ).value = "";
+
+
+        document.getElementById(
+            "entregaAreaColaborador"
+        ).value = "";
+
+
+        const seleccionado =
+            document.getElementById(
+                "receptorSeleccionado"
+            );
+
+
+        seleccionado.textContent =
+            "✓ Afiliado seleccionado: " +
+            (
+                persona.Nombres || ""
+            ) +
+            " " +
+            (
+                persona.Apellidos || ""
+            );
+
+
+        seleccionado.classList.add(
+            "mostrar"
+        );
+
+
+        const resultados =
+            document.getElementById(
+                "resultadosReceptor"
+            );
+
+
+        resultados.classList.remove(
+            "mostrar"
+        );
+
+        resultados.innerHTML = "";
+    }
+
+
+    /*
+     * Selecciona automáticamente un colaborador.
+     */
+    function seleccionarColaborador(colaborador){
+
+        document.getElementById(
+            "entregaPersona"
+        ).value =
+            colaborador.Nombre || "";
+
+
+        document.getElementById(
+            "entregaNombres"
+        ).value =
+            colaborador.Nombre || "";
+
+
+        document.getElementById(
+            "entregaApellidos"
+        ).value = "";
+
+
+        document.getElementById(
+            "entregaPersonaId"
+        ).value = "";
+
+
+        document.getElementById(
+            "entregaFamiliaId"
+        ).value = "";
+
+
+        document.getElementById(
+            "entregaCodigoColaborador"
+        ).value =
+            colaborador.CodigoColaborador || "";
+
+
+        document.getElementById(
+            "entregaAreaColaborador"
+        ).value =
+            colaborador.Area || "";
+
+
+        const seleccionado =
+            document.getElementById(
+                "receptorSeleccionado"
+            );
+
+
+        seleccionado.textContent =
+            "✓ Colaborador seleccionado: " +
+            (
+                colaborador.Nombre || ""
+            );
+
+
+        seleccionado.classList.add(
+            "mostrar"
+        );
+
+
+        const resultados =
+            document.getElementById(
+                "resultadosReceptor"
+            );
+
+
+        resultados.classList.remove(
+            "mostrar"
+        );
+
+        resultados.innerHTML = "";
+    }
+
+
+    /*
+     * Detecta el cambio entre Afiliado y Colaborador.
+     */
+    document.getElementById(
+        "tipoReceptor"
+    ).addEventListener(
+        "change",
+        ()=>{
+
+            limpiarReceptor();
+
+            const input =
+                document.getElementById(
+                    "entregaPersona"
+                );
+
+            input.placeholder =
+                document.getElementById(
+                    "tipoReceptor"
+                ).value === "Afiliado"
+
+                ? "Escriba nombre, apellido, PersonaId o FamiliaId"
+
+                : "Escriba nombre, código o área";
+        }
+    );
+
+
+    /*
+     * Búsqueda automática mientras se escribe.
+     */
+    let temporizadorBusqueda = null;
+
+
+    document.getElementById(
+        "entregaPersona"
+    ).addEventListener(
+        "input",
+        ()=>{
+
+            clearTimeout(
+                temporizadorBusqueda
+            );
+
+
+            temporizadorBusqueda =
+                setTimeout(
+                    ()=>{
+
+                        const tipo =
+                            document.getElementById(
+                                "tipoReceptor"
+                            ).value;
+
+
+                        if(tipo === "Afiliado"){
+
+                            buscarAfiliados();
+
+                        }else{
+
+                            buscarColaboradores();
+
+                        }
+
+                    },
+                    300
+                );
+        }
+    );
+
+
+    /*
+     * Cerrar resultados al hacer clic fuera.
+     */
+    document.addEventListener(
+        "click",
+        e=>{
+
+            const campo =
+                document.getElementById(
+                    "entregaPersona"
+                );
+
+            const resultados =
+                document.getElementById(
+                    "resultadosReceptor"
+                );
+
+
+            if(
+                e.target !== campo &&
+                !resultados.contains(
+                    e.target
+                )
+            ){
+
+                resultados.classList.remove(
+                    "mostrar"
+                );
+            }
+        }
+    );
+
+
+    /*
+     * Preparar nueva entrega.
+     */
+    function prepararNuevaEntrega(){
+
+        const lista =
+            document.getElementById(
+                "listaMaterialesEntrega"
+            );
+
+
+        lista.innerHTML = "";
+
+
+        /*
+         * Siempre inicia con MATERIAL 1.
+         */
+        agregarFilaMaterialEntrega();
+
+
+        document.getElementById(
+            "tipoReceptor"
+        ).value =
+            "Afiliado";
+
+
+        document.getElementById(
+            "entregaPersona"
+        ).placeholder =
+            "Escriba nombre, apellido, PersonaId o FamiliaId";
+
+
+        limpiarReceptor();
+
+
+        document.getElementById(
             "entregaBiblioteca"
         ).value = "";
+
 
         document.getElementById(
             "entregaSitio"
         ).value = "";
 
+
         document.getElementById(
             "entregaObservaciones"
         ).value = "";
+
 
         actualizarResumenMateriales();
     }
@@ -1955,13 +3131,13 @@ window.materialesAuth = (async function protegerMateriales() {
 
 
     /*
-     * Mostrar las secciones administrativas
-     * solamente para administradores.
+     * Permisos de administrador.
      */
     document.getElementById(
         "seccionAdministracionMateriales"
     ).style.display =
         administrador ? "" : "none";
+
 
     document.getElementById(
         "seccionBorrarMateriales"
@@ -1979,9 +3155,11 @@ window.materialesAuth = (async function protegerMateriales() {
             b.addEventListener(
                 "click",
                 ()=>{
+
                     cerrar(
                         b.dataset.cerrar
                     );
+
                 }
             );
 
@@ -1991,71 +3169,77 @@ window.materialesAuth = (async function protegerMateriales() {
     /*
      * Nuevo material.
      */
-    document
-        .getElementById("btnNuevoMaterial")
-        .addEventListener(
-            "click",
-            ()=>{
-                abrir("modalMaterial");
-            }
-        );
+    document.getElementById(
+        "btnNuevoMaterial"
+    ).addEventListener(
+        "click",
+        ()=>{
+            abrir("modalMaterial");
+        }
+    );
 
 
     /*
      * Registrar entrega.
      */
-    document
-        .getElementById("btnRegistrarEntrega")
-        .addEventListener(
-            "click",
-            ()=>{
-                prepararNuevaEntrega();
-                abrir("modalEntrega");
-            }
-        );
+    document.getElementById(
+        "btnRegistrarEntrega"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            prepararNuevaEntrega();
+
+            abrir("modalEntrega");
+
+        }
+    );
 
 
     /*
-     * AGREGAR OTRO MATERIAL
+     * Agregar otro material.
      */
-    document
-        .getElementById("btnAgregarOtroMaterial")
-        .addEventListener(
-            "click",
-            ()=>{
-                agregarFilaMaterialEntrega();
-            }
-        );
+    document.getElementById(
+        "btnAgregarOtroMaterial"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            agregarFilaMaterialEntrega();
+
+        }
+    );
 
 
     /*
      * Filtros.
      */
-    document
-        .getElementById("btnLimpiarFiltros")
-        .addEventListener(
-            "click",
-            ()=>{
+    document.getElementById(
+        "btnLimpiarFiltros"
+    ).addEventListener(
+        "click",
+        ()=>{
 
-                document.getElementById(
-                    "buscarMaterial"
-                ).value = "";
+            document.getElementById(
+                "buscarMaterial"
+            ).value = "";
 
-                document.getElementById(
-                    "filtroCategoria"
-                ).value = "";
+            document.getElementById(
+                "filtroCategoria"
+            ).value = "";
 
-                document.getElementById(
-                    "filtroBiblioteca"
-                ).value = "";
+            document.getElementById(
+                "filtroBiblioteca"
+            ).value = "";
 
-                document.getElementById(
-                    "filtroEstado"
-                ).value = "";
+            document.getElementById(
+                "filtroEstado"
+            ).value = "";
 
-                renderInventario();
-            }
-        );
+            renderInventario();
+
+        }
+    );
 
 
     [
@@ -2079,258 +3263,309 @@ window.materialesAuth = (async function protegerMateriales() {
                 "change",
                 renderInventario
             );
+
     });
 
 
     /*
      * Registro de material.
      */
-    document
-        .getElementById("formMaterial")
-        .addEventListener(
-            "submit",
-            e=>{
+    document.getElementById(
+        "formMaterial"
+    ).addEventListener(
+        "submit",
+        e=>{
 
-                e.preventDefault();
+            e.preventDefault();
 
-                alert(
-                    "Interfaz lista. El registro se conectará a Supabase en la siguiente etapa."
-                );
+            alert(
+                "Interfaz lista. El registro se conectará a Supabase en la siguiente etapa."
+            );
 
-                cerrar("modalMaterial");
-            }
-        );
+            cerrar("modalMaterial");
+
+        }
+    );
 
 
     /*
      * Registro de entrega.
-     *
-     * Aquí se validan TODOS los materiales agregados.
      */
-    document
-        .getElementById("formEntrega")
-        .addEventListener(
-            "submit",
-            e=>{
+    document.getElementById(
+        "formEntrega"
+    ).addEventListener(
+        "submit",
+        e=>{
 
-                e.preventDefault();
+            e.preventDefault();
 
-                const filas =
-                    document.querySelectorAll(
-                        "#listaMaterialesEntrega .material-entrega-fila"
+
+            const filas =
+                document.querySelectorAll(
+                    "#listaMaterialesEntrega .material-entrega-fila"
+                );
+
+
+            if(!filas.length){
+
+                alert(
+                    "Debe agregar al menos un material."
+                );
+
+                return;
+            }
+
+
+            const materiales = [];
+
+
+            for(const fila of filas){
+
+                const select =
+                    fila.querySelector(
+                        ".material-entrega-select"
                     );
 
-                if(!filas.length){
+
+                const input =
+                    fila.querySelector(
+                        ".material-entrega-cantidad"
+                    );
+
+
+                const codigo =
+                    select.value;
+
+
+                const cantidad =
+                    Number(input.value);
+
+
+                if(!codigo){
 
                     alert(
-                        "Debe agregar al menos un material."
+                        "Debe seleccionar un material en todas las filas."
+                    );
+
+                    select.focus();
+
+                    return;
+                }
+
+
+                if(
+                    !Number.isInteger(cantidad) ||
+                    cantidad < 1
+                ){
+
+                    alert(
+                        "Todas las cantidades deben ser números enteros mayores que 0."
+                    );
+
+                    input.focus();
+
+                    return;
+                }
+
+
+                const material =
+                    materialesDemo.find(
+                        m=>m.codigo === codigo
+                    );
+
+
+                if(!material){
+
+                    alert(
+                        "Uno de los materiales seleccionados no es válido."
                     );
 
                     return;
                 }
 
-                const materiales = [];
 
-                for(const fila of filas){
+                materiales.push({
+                    codigo:material.codigo,
+                    nombre:material.nombre,
+                    cantidad:cantidad
+                });
 
-                    const select =
-                        fila.querySelector(
-                            ".material-entrega-select"
-                        );
-
-                    const input =
-                        fila.querySelector(
-                            ".material-entrega-cantidad"
-                        );
-
-                    const codigo =
-                        select.value;
-
-                    const cantidad =
-                        Number(input.value);
-
-                    if(!codigo){
-
-                        alert(
-                            "Debe seleccionar un material en todas las filas."
-                        );
-
-                        select.focus();
-
-                        return;
-                    }
-
-                    if(!Number.isInteger(cantidad) || cantidad < 1){
-
-                        alert(
-                            "Todas las cantidades deben ser números enteros mayores que 0."
-                        );
-
-                        input.focus();
-
-                        return;
-                    }
-
-                    const material =
-                        materialesDemo.find(
-                            m=>m.codigo === codigo
-                        );
-
-                    if(!material){
-
-                        alert(
-                            "Uno de los materiales seleccionados no es válido."
-                        );
-
-                        return;
-                    }
-
-                    materiales.push({
-                        codigo:material.codigo,
-                        nombre:material.nombre,
-                        cantidad:cantidad
-                    });
-                }
+            }
 
 
-                /*
-                 * En esta etapa solamente mostramos
-                 * la información que será enviada después
-                 * a Supabase.
-                 */
-                const detalle =
-                    materiales
-                    .map(
-                        m =>
-                            `${m.codigo} - ${m.nombre} (${m.cantidad})`
-                    )
-                    .join("\n");
+            /*
+             * Verificar receptor.
+             */
+            const nombres =
+                document.getElementById(
+                    "entregaNombres"
+                ).value.trim();
 
+
+            if(!nombres){
 
                 alert(
-                    "Interfaz lista.\n\n" +
-                    "Materiales de esta entrega:\n\n" +
-                    detalle +
-                    "\n\n" +
-                    "La entrega se conectará a Supabase en la siguiente etapa."
+                    "Debe seleccionar un afiliado o colaborador."
                 );
 
-                cerrar("modalEntrega");
+                document.getElementById(
+                    "entregaPersona"
+                ).focus();
+
+                return;
             }
-        );
+
+
+            const detalle =
+                materiales
+                .map(
+                    m=>
+                        `${m.codigo} - ${m.nombre} (${m.cantidad})`
+                )
+                .join("\n");
+
+
+            alert(
+                "Interfaz lista.\n\n" +
+                "Materiales de esta entrega:\n\n" +
+                detalle +
+                "\n\n" +
+                "Receptor:\n" +
+                nombres +
+                "\n\n" +
+                "La entrega se conectará a Supabase en la siguiente etapa."
+            );
+
+
+            cerrar("modalEntrega");
+
+        }
+    );
 
 
     /*
      * MasterMateriales.
      */
-    document
-        .getElementById("btnSubirMaster")
-        .addEventListener(
-            "click",
-            ()=>{
-                document
-                    .getElementById("archivoMaster")
-                    .click();
-            }
-        );
+    document.getElementById(
+        "btnSubirMaster"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            document.getElementById(
+                "archivoMaster"
+            ).click();
+
+        }
+    );
 
 
-    document
-        .getElementById("archivoMaster")
-        .addEventListener(
-            "change",
-            e=>{
+    document.getElementById(
+        "archivoMaster"
+    ).addEventListener(
+        "change",
+        e=>{
 
-                if(e.target.files[0]){
+            if(e.target.files[0]){
 
-                    alert(
-                        "Archivo seleccionado: " +
-                        e.target.files[0].name +
-                        "\nLa importación real se conectará después."
-                    );
-                }
-
-            }
-        );
-
-
-    document
-        .getElementById("btnDescargarMaster")
-        .addEventListener(
-            "click",
-            ()=>{
                 alert(
-                    "La descarga real de MasterMateriales se conectará después."
+                    "Archivo seleccionado: " +
+                    e.target.files[0].name +
+                    "\nLa importación real se conectará después."
                 );
+
             }
-        );
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnDescargarMaster"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            alert(
+                "La descarga real de MasterMateriales se conectará después."
+            );
+
+        }
+    );
 
 
     /*
-     * Borrar base de materiales.
+     * Borrar base.
      */
-    document
-        .getElementById("btnBorrarBase")
-        .addEventListener(
-            "click",
-            ()=>{
+    document.getElementById(
+        "btnBorrarBase"
+    ).addEventListener(
+        "click",
+        ()=>{
 
-                if(
-                    confirm(
-                        "¿Estás seguro de que deseas borrar la base de datos de materiales? Esta acción será irreversible."
-                    )
-                ){
+            if(
+                confirm(
+                    "¿Estás seguro de que deseas borrar la base de datos de materiales? Esta acción será irreversible."
+                )
+            ){
 
-                    alert(
-                        "La eliminación real se conectará después."
-                    );
-                }
+                alert(
+                    "La eliminación real se conectará después."
+                );
 
             }
-        );
+
+        }
+    );
 
 
     /*
      * Volver al inicio.
      */
-    document
-        .getElementById("botonVolver")
-        .addEventListener(
-            "click",
-            ()=>{
-                window.location.href = "index.html";
-            }
-        );
+    document.getElementById(
+        "botonVolver"
+    ).addEventListener(
+        "click",
+        ()=>{
+            window.location.href =
+                "index.html";
+        }
+    );
 
 
     /*
      * Cerrar sesión.
      */
-    document
-        .getElementById("botonCerrarSesion")
-        .addEventListener(
-            "click",
-            async ()=>{
+    document.getElementById(
+        "botonCerrarSesion"
+    ).addEventListener(
+        "click",
+        async ()=>{
 
-                try{
+            try{
 
-                    await supabaseClient.auth.signOut();
+                await supabaseClient
+                    .auth
+                    .signOut();
 
-                }finally{
+            }finally{
 
-                    window.location.href =
-                        "index.html";
-                }
+                window.location.href =
+                    "index.html";
 
             }
-        );
+
+        }
+    );
 
 
     /*
      * Inicialización.
      */
     renderCategorias();
+
     renderInventario();
+
     renderEntregas();
 
 })();
