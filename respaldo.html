@@ -139,8 +139,8 @@
 
         .datos {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 7px;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 8px;
             margin-top: 9px;
         }
 
@@ -148,9 +148,14 @@
             background: #f8fafb;
             border: 1px solid #dfe5e8;
             border-radius: 7px;
-            padding: 8px 5px;
+            padding: 10px 5px;
             text-align: center;
             min-width: 0;
+            min-height: 63px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .dato-numero {
@@ -158,7 +163,8 @@
             font-size: 18px;
             font-weight: bold;
             color: #37474f;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
+            line-height: 1.1;
         }
 
         .dato-label {
@@ -167,43 +173,41 @@
             color: #607d8b;
             font-weight: bold;
             white-space: nowrap;
+            line-height: 1.2;
         }
 
-        .dato-total {
-            margin-top: 8px;
-            background: #f8fafb;
-            border: 1px solid #cfd8dc;
+        /* =========================================
+           ADMINISTRACIÓN DE DATOS
+        ========================================= */
+
+        .acciones-principales {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .accion-item {
+            border: 1px solid #e0e0e0;
             border-radius: 7px;
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            padding: 11px;
+            background: #fafbfc;
             text-align: center;
         }
 
-        .dato-total-numero {
-            font-size: 20px;
-            font-weight: bold;
-            color: #263238;
+        .accion-item .zona-titulo {
+            font-size: 12px;
+            margin-bottom: 4px;
         }
 
-        .dato-total-texto {
-            font-size: 11px;
-            font-weight: bold;
-            color: #546e7a;
+        .accion-item .zona-descripcion {
+            min-height: 48px;
+            margin-bottom: 8px;
         }
 
         /* =========================================
            BOTONES
         ========================================= */
-
-        .acciones-principales {
-            display: grid;
-            grid-template-columns: repeat(2, 190px);
-            justify-content: center;
-            gap: 10px;
-        }
 
         .boton {
             width: 190px;
@@ -215,6 +219,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s ease;
+            display: block;
+            margin: 0 auto;
         }
 
         /* Crear respaldo */
@@ -275,6 +281,7 @@
             border-radius: 7px;
             padding: 11px;
             background: #fafbfc;
+            text-align: center;
         }
 
         .mantenimiento-item .zona-titulo {
@@ -318,6 +325,10 @@
         /* =========================================
            INFORMACIÓN DEL RESPALDO
         ========================================= */
+
+        .tarjeta-informacion-respaldo h3 {
+            text-align: center;
+        }
 
         .informacion {
             background: #f7f9fa;
@@ -476,15 +487,16 @@
                 grid-template-columns: 1fr;
             }
 
+            .mantenimiento-grid {
+                grid-template-columns: 1fr;
+            }
+
             .boton {
                 width: 190px;
                 max-width: 100%;
             }
 
-            .mantenimiento-grid {
-                grid-template-columns: 1fr;
-            }
-
+            .accion-item .zona-descripcion,
             .mantenimiento-item .zona-descripcion {
                 min-height: auto;
             }
@@ -534,12 +546,11 @@
                 grid-template-columns: 1fr;
             }
 
-            .dato-total {
-                flex-direction: column;
-                gap: 3px;
+            .acciones-principales {
+                grid-template-columns: 1fr;
             }
 
-            .acciones-principales {
+            .mantenimiento-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -548,9 +559,9 @@
                 max-width: 100%;
             }
 
-            .mantenimiento-item .boton {
-                width: 190px;
-                max-width: 100%;
+            .accion-item .zona-descripcion,
+            .mantenimiento-item .zona-descripcion {
+                min-height: auto;
             }
 
             footer .version,
@@ -671,20 +682,20 @@
 
             </div>
 
-        </div>
 
+            <div class="dato">
 
-        <div class="dato-total">
+                <span
+                    class="dato-numero"
+                    id="totalDatos">
+                    0
+                </span>
 
-            <span
-                class="dato-total-numero"
-                id="totalDatos">
-                0
-            </span>
+                <span class="dato-label">
+                    Registros respaldables
+                </span>
 
-            <span class="dato-total-texto">
-                Registros respaldables
-            </span>
+            </div>
 
         </div>
 
@@ -706,20 +717,48 @@
 
         <div class="acciones-principales">
 
-            <button
-                type="button"
-                class="boton boton-respaldo"
-                onclick="crearRespaldo()">
-                Crear respaldo
-            </button>
+            <!-- CREAR RESPALDO -->
+
+            <div class="accion-item">
+
+                <div class="zona-titulo">
+                    Crear respaldo
+                </div>
+
+                <p class="zona-descripcion">
+                    Guarda una copia completa de la información actual de la biblioteca.
+                </p>
+
+                <button
+                    type="button"
+                    class="boton boton-respaldo"
+                    onclick="crearRespaldo()">
+                    Crear respaldo
+                </button>
+
+            </div>
 
 
-            <button
-                type="button"
-                class="boton boton-restaurar"
-                onclick="seleccionarRespaldo()">
-                Restaurar respaldo
-            </button>
+            <!-- RESTAURAR RESPALDO -->
+
+            <div class="accion-item">
+
+                <div class="zona-titulo">
+                    Restaurar respaldo
+                </div>
+
+                <p class="zona-descripcion">
+                    Carga nuevamente la información desde un archivo de respaldo anterior.
+                </p>
+
+                <button
+                    type="button"
+                    class="boton boton-restaurar"
+                    onclick="seleccionarRespaldo()">
+                    Restaurar respaldo
+                </button>
+
+            </div>
 
         </div>
 
@@ -803,7 +842,7 @@
          INFORMACIÓN IMPORTANTE
     ========================================== -->
 
-    <section class="tarjeta">
+    <section class="tarjeta tarjeta-informacion-respaldo">
 
         <h3>Información del respaldo</h3>
 
