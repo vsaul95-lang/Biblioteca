@@ -275,6 +275,53 @@
         }
 
         /* =====================================================
+           ACCIONES DE USUARIOS
+        ===================================================== */
+
+        .acciones-usuario {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            min-width: 235px;
+        }
+
+        .boton-accion {
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            border-radius: 6px;
+            padding: 5px 7px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .boton-accion:hover {
+            background: #f3f4f6;
+            border-color: #b9c0c8;
+        }
+
+        .boton-accion-rol {
+            color: #3730a3;
+        }
+
+        .boton-accion-password {
+            color: #0369a1;
+        }
+
+        .boton-accion-eliminar {
+            color: #991b1b;
+            border-color: #fecaca;
+        }
+
+        .boton-accion-eliminar:hover {
+            background: #fff1f2;
+            border-color: #fca5a5;
+        }
+
+        /* =====================================================
            DIAGNÓSTICO
         ===================================================== */
 
@@ -1468,6 +1515,7 @@
                             <th>Rol</th>
                             <th>Estado</th>
                             <th>Fecha de registro</th>
+                            <th>Acciones</th>
                         </tr>
 
                     </thead>
@@ -1476,7 +1524,7 @@
 
                         <tr>
                             <td
-                                colspan="5"
+                                colspan="6"
                                 class="usuarios-cargando">
                                 Cargando usuarios...
                             </td>
@@ -1493,8 +1541,8 @@
 
                 <strong>Estado:</strong>
                 La gestión de usuarios está conectada con Supabase.
-                Los usuarios mostrados corresponden a los registros existentes
-                en la tabla de usuarios del sistema.
+                Las acciones de rol, contraseña y eliminación se procesan
+                mediante funciones seguras del sistema.
 
             </div>
 
@@ -1832,9 +1880,9 @@
 
                 <div class="formulario-nota">
 
-                    En esta etapa estamos preparando la información del usuario.
-                    La creación de la cuenta de acceso se conectará posteriormente
-                    con Supabase Auth para evitar crear registros que no puedan iniciar sesión.
+                    La cuenta de acceso se crea mediante Supabase Auth.
+                    La contraseña inicial se solicitará de forma segura
+                    al continuar con la creación del usuario.
 
                 </div>
 
@@ -1871,6 +1919,174 @@
 
 
 <!-- =====================================================
+     MODAL CAMBIAR ROL
+====================================================== -->
+
+<div
+    id="modalCambiarRol"
+    class="modal-fondo">
+
+    <div class="modal">
+
+        <div class="modal-cabecera">
+            Cambiar rol
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <div class="formulario">
+
+                <div
+                    id="nombreUsuarioRol"
+                    class="formulario-nota">
+                    Usuario seleccionado
+                </div>
+
+                <div class="campo">
+
+                    <label for="nuevoRolUsuario">
+                        Nuevo rol
+                    </label>
+
+                    <select id="nuevoRolUsuario">
+
+                        <option value="Usuario">
+                            Usuario
+                        </option>
+
+                        <option value="Administrador">
+                            Administrador
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div
+                    id="errorCambiarRol"
+                    class="error-formulario">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-secundario"
+                onclick="cerrarModalCambiarRol()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-principal"
+                onclick="guardarCambioRol()">
+                Guardar cambio
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL CAMBIAR CONTRASEÑA
+====================================================== -->
+
+<div
+    id="modalCambiarContrasena"
+    class="modal-fondo">
+
+    <div class="modal">
+
+        <div class="modal-cabecera">
+            Cambiar contraseña
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <div class="formulario">
+
+                <div
+                    id="nombreUsuarioContrasena"
+                    class="formulario-nota">
+                    Usuario seleccionado
+                </div>
+
+                <div class="campo">
+
+                    <label for="nuevaContrasena">
+                        Nueva contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="nuevaContrasena"
+                        placeholder="Mínimo 6 caracteres"
+                        autocomplete="new-password">
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="confirmarContrasena">
+                        Confirmar contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmarContrasena"
+                        placeholder="Repite la contraseña"
+                        autocomplete="new-password">
+
+                </div>
+
+                <div class="formulario-nota">
+
+                    La contraseña se actualiza directamente en
+                    Supabase Auth. No se almacena en la tabla
+                    de usuarios.
+
+                </div>
+
+                <div
+                    id="errorCambiarContrasena"
+                    class="error-formulario">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-secundario"
+                onclick="cerrarModalCambiarContrasena()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-principal"
+                onclick="guardarCambioContrasena()">
+                Cambiar contraseña
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
      SUPABASE
 ====================================================== -->
 
@@ -1884,6 +2100,8 @@ let usuarioSesionActual = null;
 let perfilUsuarioActual = null;
 
 window.administracionAutorizado = false;
+
+let usuarioGestionActual = null;
 
 let datosAdministracion = {
     afiliados: [],
@@ -2179,12 +2397,6 @@ async function guardarNuevoUsuario(evento) {
     }
 
 
-    /*
-       La interfaz permanece exactamente igual.
-       La contraseña se solicita mediante una ventana
-       del navegador para no agregar un nuevo campo visual.
-    */
-
     const contraseña =
         window.prompt(
             "Escribe la contraseña inicial para el nuevo usuario.\n\nDebe tener al menos 6 caracteres."
@@ -2218,10 +2430,6 @@ async function guardarNuevoUsuario(evento) {
 
     try {
 
-        /*
-           Comprobar que existe una sesión activa.
-        */
-
         const resultadoSesion =
             await supabaseClient.auth.getSession();
 
@@ -2251,10 +2459,6 @@ async function guardarNuevoUsuario(evento) {
         }
 
 
-        /*
-           Cerramos el formulario y mostramos el proceso.
-        */
-
         cerrarModalNuevoUsuario();
 
 
@@ -2265,15 +2469,6 @@ async function guardarNuevoUsuario(evento) {
             "..."
         );
 
-
-        /*
-           IMPORTANTE:
-           Se utiliza la función oficial de Supabase JS
-           para invocar la Edge Function.
-
-           No se utiliza fetch().
-           No se utiliza service_role.
-        */
 
         const resultado =
             await supabaseClient.functions.invoke(
@@ -2310,11 +2505,6 @@ async function guardarNuevoUsuario(evento) {
                 "No fue posible comunicarse con la función crear-usuario.";
 
 
-            /*
-               Intentar obtener el mensaje devuelto por la Edge Function
-               cuando Supabase proporciona la respuesta en context.
-            */
-
             if (
                 error.context &&
                 typeof error.context.json === "function"
@@ -2339,7 +2529,7 @@ async function guardarNuevoUsuario(evento) {
                 } catch (errorLectura) {
 
                     console.warn(
-                        "No fue posible leer el detalle del error de la función:",
+                        "No fue posible leer el detalle del error:",
                         errorLectura
                     );
 
@@ -2367,13 +2557,6 @@ async function guardarNuevoUsuario(evento) {
             );
         }
 
-
-        /*
-           La Edge Function confirmó que el usuario
-           fue creado correctamente.
-
-           Actualizar la información mostrada.
-        */
 
         await cargarUsuarios();
 
@@ -2438,6 +2621,721 @@ function mostrarErrorFormulario(mensaje) {
 
 
 /* =========================================================
+   GESTIÓN DE USUARIOS
+========================================================= */
+
+function obtenerUsuarioPorId(usuarioId) {
+
+    return datosAdministracion.usuarios.find(
+        function(usuario) {
+            return String(usuario.id) ===
+                String(usuarioId);
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CAMBIAR ROL
+========================================================= */
+
+function abrirModalCambiarRol(
+    usuarioId,
+    nombre,
+    rolActual
+) {
+
+    usuarioGestionActual = {
+        id: usuarioId,
+        nombre: nombre,
+        rol: rolActual
+    };
+
+
+    const nombreElemento =
+        document.getElementById(
+            "nombreUsuarioRol"
+        );
+
+
+    const rolElemento =
+        document.getElementById(
+            "nuevoRolUsuario"
+        );
+
+
+    const errorElemento =
+        document.getElementById(
+            "errorCambiarRol"
+        );
+
+
+    if (nombreElemento) {
+
+        nombreElemento.textContent =
+            "Usuario: " +
+            nombre;
+
+    }
+
+
+    if (rolElemento) {
+
+        rolElemento.value =
+            normalizar(rolActual) ===
+            "ADMINISTRADOR"
+                ? "Administrador"
+                : "Usuario";
+
+    }
+
+
+    if (errorElemento) {
+
+        errorElemento.textContent = "";
+
+        errorElemento.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    document
+        .getElementById("modalCambiarRol")
+        .classList.add("visible");
+
+}
+
+
+function cerrarModalCambiarRol() {
+
+    document
+        .getElementById("modalCambiarRol")
+        .classList.remove("visible");
+
+    usuarioGestionActual = null;
+
+}
+
+
+async function guardarCambioRol() {
+
+    if (!usuarioGestionActual) {
+
+        mostrarModal(
+            "Error",
+            "No se encontró el usuario seleccionado."
+        );
+
+        return;
+    }
+
+
+    const rolElemento =
+        document.getElementById(
+            "nuevoRolUsuario"
+        );
+
+
+    const errorElemento =
+        document.getElementById(
+            "errorCambiarRol"
+        );
+
+
+    const nuevoRol =
+        rolElemento
+            ? rolElemento.value
+            : "";
+
+
+    if (
+        nuevoRol !== "Usuario" &&
+        nuevoRol !== "Administrador"
+    ) {
+
+        if (errorElemento) {
+
+            errorElemento.textContent =
+                "Selecciona un rol válido.";
+
+            errorElemento.classList.add(
+                "visible"
+            );
+
+        }
+
+        return;
+    }
+
+
+    const usuarioId =
+        usuarioGestionActual.id;
+
+    const nombre =
+        usuarioGestionActual.nombre;
+
+
+    cerrarModalCambiarRol();
+
+
+    mostrarModal(
+        "Actualizando rol",
+        "Espera un momento mientras se actualiza el rol de " +
+        nombre +
+        "..."
+    );
+
+
+    try {
+
+        await ejecutarGestionUsuario(
+            "cambiar_rol",
+            {
+                usuarioId: usuarioId,
+                rol: nuevoRol
+            }
+        );
+
+
+        await recargarInformacionUsuarios();
+
+
+        mostrarModal(
+            "Rol actualizado",
+            "El rol de " +
+            nombre +
+            " fue cambiado correctamente a " +
+            nuevoRol +
+            "."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cambiando rol:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible cambiar el rol",
+            error.message ||
+            "Ocurrió un error al cambiar el rol."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CAMBIAR CONTRASEÑA
+========================================================= */
+
+function abrirModalCambiarContrasena(
+    usuarioId,
+    nombre
+) {
+
+    usuarioGestionActual = {
+        id: usuarioId,
+        nombre: nombre
+    };
+
+
+    const nombreElemento =
+        document.getElementById(
+            "nombreUsuarioContrasena"
+        );
+
+
+    const nueva =
+        document.getElementById(
+            "nuevaContrasena"
+        );
+
+
+    const confirmar =
+        document.getElementById(
+            "confirmarContrasena"
+        );
+
+
+    const error =
+        document.getElementById(
+            "errorCambiarContrasena"
+        );
+
+
+    if (nombreElemento) {
+
+        nombreElemento.textContent =
+            "Usuario: " +
+            nombre;
+
+    }
+
+
+    if (nueva) {
+        nueva.value = "";
+    }
+
+
+    if (confirmar) {
+        confirmar.value = "";
+    }
+
+
+    if (error) {
+
+        error.textContent = "";
+
+        error.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    document
+        .getElementById("modalCambiarContrasena")
+        .classList.add("visible");
+
+
+    setTimeout(function() {
+
+        if (nueva) {
+            nueva.focus();
+        }
+
+    }, 100);
+
+}
+
+
+function cerrarModalCambiarContrasena() {
+
+    document
+        .getElementById("modalCambiarContrasena")
+        .classList.remove("visible");
+
+    usuarioGestionActual = null;
+
+}
+
+
+async function guardarCambioContrasena() {
+
+    if (!usuarioGestionActual) {
+
+        mostrarModal(
+            "Error",
+            "No se encontró el usuario seleccionado."
+        );
+
+        return;
+    }
+
+
+    const nueva =
+        document.getElementById(
+            "nuevaContrasena"
+        );
+
+
+    const confirmar =
+        document.getElementById(
+            "confirmarContrasena"
+        );
+
+
+    const errorElemento =
+        document.getElementById(
+            "errorCambiarContrasena"
+        );
+
+
+    const contraseña =
+        nueva
+            ? nueva.value
+            : "";
+
+
+    const confirmacion =
+        confirmar
+            ? confirmar.value
+            : "";
+
+
+    if (!contraseña) {
+
+        mostrarErrorGestionContrasena(
+            "Es necesario ingresar una nueva contraseña."
+        );
+
+        return;
+    }
+
+
+    if (contraseña.length < 6) {
+
+        mostrarErrorGestionContrasena(
+            "La contraseña debe tener al menos 6 caracteres."
+        );
+
+        return;
+    }
+
+
+    if (contraseña !== confirmacion) {
+
+        mostrarErrorGestionContrasena(
+            "Las contraseñas no coinciden."
+        );
+
+        return;
+    }
+
+
+    const usuarioId =
+        usuarioGestionActual.id;
+
+    const nombre =
+        usuarioGestionActual.nombre;
+
+
+    cerrarModalCambiarContrasena();
+
+
+    mostrarModal(
+        "Actualizando contraseña",
+        "Espera un momento mientras se actualiza la contraseña de " +
+        nombre +
+        "..."
+    );
+
+
+    try {
+
+        await ejecutarGestionUsuario(
+            "cambiar_contrasena",
+            {
+                usuarioId: usuarioId,
+                contraseña: contraseña
+            }
+        );
+
+
+        mostrarModal(
+            "Contraseña actualizada",
+            "La contraseña de " +
+            nombre +
+            " fue actualizada correctamente."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cambiando contraseña:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible cambiar la contraseña",
+            error.message ||
+            "Ocurrió un error al cambiar la contraseña."
+        );
+
+    }
+
+}
+
+
+function mostrarErrorGestionContrasena(
+    mensaje
+) {
+
+    const elemento =
+        document.getElementById(
+            "errorCambiarContrasena"
+        );
+
+
+    if (!elemento) {
+        return;
+    }
+
+
+    elemento.textContent =
+        mensaje;
+
+
+    elemento.classList.add(
+        "visible"
+    );
+
+}
+
+
+/* =========================================================
+   ELIMINAR USUARIO
+========================================================= */
+
+async function eliminarUsuario(
+    usuarioId,
+    nombre,
+    correo
+) {
+
+    if (!usuarioId) {
+
+        mostrarModal(
+            "Error",
+            "No se encontró el identificador del usuario."
+        );
+
+        return;
+    }
+
+
+    if (
+        String(usuarioId) ===
+        String(
+            usuarioSesionActual &&
+            usuarioSesionActual.id
+        )
+    ) {
+
+        mostrarModal(
+            "Operación no permitida",
+            "No puedes eliminar el usuario con el que estás conectado actualmente."
+        );
+
+        return;
+    }
+
+
+    const confirmar =
+        window.confirm(
+            "¿Deseas eliminar este usuario?\n\n" +
+            "Nombre: " +
+            nombre +
+            "\n" +
+            "Correo: " +
+            correo +
+            "\n\n" +
+            "Esta acción eliminará su cuenta de acceso y su registro de usuario.\n\n" +
+            "Esta acción no se puede deshacer."
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    mostrarModal(
+        "Eliminando usuario",
+        "Espera un momento mientras se elimina la cuenta de " +
+        nombre +
+        "..."
+    );
+
+
+    try {
+
+        await ejecutarGestionUsuario(
+            "eliminar",
+            {
+                usuarioId: usuarioId
+            }
+        );
+
+
+        await recargarInformacionUsuarios();
+
+
+        mostrarModal(
+            "Usuario eliminado",
+            "El usuario " +
+            nombre +
+            " fue eliminado correctamente."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error eliminando usuario:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible eliminar el usuario",
+            error.message ||
+            "Ocurrió un error al eliminar la cuenta."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LLAMAR EDGE FUNCTION gestionar-usuario
+========================================================= */
+
+async function ejecutarGestionUsuario(
+    accion,
+    datos = {}
+) {
+
+    const resultadoSesion =
+        await supabaseClient.auth.getSession();
+
+
+    if (resultadoSesion.error) {
+
+        throw new Error(
+            "No fue posible comprobar la sesión actual."
+        );
+
+    }
+
+
+    const session =
+        resultadoSesion.data.session;
+
+
+    if (!session) {
+
+        throw new Error(
+            "No existe una sesión activa."
+        );
+
+    }
+
+
+    const cuerpo = {
+        accion: accion,
+        ...datos
+    };
+
+
+    const resultado =
+        await supabaseClient.functions.invoke(
+            "gestionar-usuario",
+            {
+                body: cuerpo
+            }
+        );
+
+
+    const data =
+        resultado.data;
+
+    const error =
+        resultado.error;
+
+
+    if (error) {
+
+        console.error(
+            "Error de gestionar-usuario:",
+            error
+        );
+
+
+        let mensajeError =
+            error.message ||
+            "No fue posible comunicarse con la función gestionar-usuario.";
+
+
+        if (
+            error.context &&
+            typeof error.context.json === "function"
+        ) {
+
+            try {
+
+                const respuestaError =
+                    await error.context.json();
+
+
+                if (
+                    respuestaError &&
+                    respuestaError.mensaje
+                ) {
+
+                    mensajeError =
+                        respuestaError.mensaje;
+
+                }
+
+            } catch (errorLectura) {
+
+                console.warn(
+                    "No fue posible leer el detalle del error:",
+                    errorLectura
+                );
+
+            }
+
+        }
+
+
+        throw new Error(
+            mensajeError
+        );
+
+    }
+
+
+    if (
+        !data ||
+        data.ok !== true
+    ) {
+
+        throw new Error(
+            data &&
+            data.mensaje
+                ? data.mensaje
+                : "La operación no pudo completarse."
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+/* =========================================================
+   RECARGAR INFORMACIÓN DE USUARIOS
+========================================================= */
+
+async function recargarInformacionUsuarios() {
+
+    await cargarUsuarios();
+
+    actualizarUsuarios();
+
+    actualizarDiagnosticoBase();
+
+    await revisarIntegridad();
+
+}
+
+
+/* =========================================================
    NAVEGACIÓN
 ========================================================= */
 
@@ -2482,6 +3380,7 @@ function actualizarInformacion() {
 
     const rolActual =
         document.getElementById("rolActual");
+
 
     if (rolActual) {
         rolActual.textContent = "Administrador";
@@ -2939,7 +3838,7 @@ function actualizarUsuarios() {
 
         tabla.innerHTML = `
             <tr>
-                <td colspan="5" class="usuarios-vacio">
+                <td colspan="6" class="usuarios-vacio">
                     No hay usuarios registrados.
                 </td>
             </tr>
@@ -2969,6 +3868,30 @@ function actualizarUsuarios() {
                 );
 
 
+            const nombre =
+                obtenerValor(
+                    usuario,
+                    "nombre",
+                    "-"
+                );
+
+
+            const correo =
+                obtenerValor(
+                    usuario,
+                    "correo",
+                    "-"
+                );
+
+
+            const id =
+                obtenerValor(
+                    usuario,
+                    "id",
+                    ""
+                );
+
+
             const claseRol =
                 normalizar(rol) ===
                 "ADMINISTRADOR"
@@ -2983,27 +3906,48 @@ function actualizarUsuarios() {
                     : "estado-inactivo";
 
 
+            const esUsuarioActual =
+                String(id) ===
+                String(
+                    usuarioSesionActual &&
+                    usuarioSesionActual.id
+                );
+
+
+            const botonEliminar =
+                esUsuarioActual
+                    ? `
+                        <button
+                            type="button"
+                            class="boton-accion boton-accion-eliminar"
+                            disabled
+                            title="No puedes eliminar tu propia cuenta">
+                            🗑️ Eliminar
+                        </button>
+                    `
+                    : `
+                        <button
+                            type="button"
+                            class="boton-accion boton-accion-eliminar"
+                            onclick="eliminarUsuario(
+                                '${escapeHtml(String(id))}',
+                                '${escapeHtml(String(nombre))}',
+                                '${escapeHtml(String(correo))}'
+                            )">
+                            🗑️ Eliminar
+                        </button>
+                    `;
+
+
             return `
                 <tr>
 
                     <td>
-                        ${escapeHtml(
-                            obtenerValor(
-                                usuario,
-                                "nombre",
-                                "-"
-                            )
-                        )}
+                        ${escapeHtml(nombre)}
                     </td>
 
                     <td>
-                        ${escapeHtml(
-                            obtenerValor(
-                                usuario,
-                                "correo",
-                                "-"
-                            )
-                        )}
+                        ${escapeHtml(correo)}
                     </td>
 
                     <td>
@@ -3024,6 +3968,37 @@ function actualizarUsuarios() {
                                 usuario.fechaRegistro
                             )
                         )}
+                    </td>
+
+                    <td>
+
+                        <div class="acciones-usuario">
+
+                            <button
+                                type="button"
+                                class="boton-accion boton-accion-rol"
+                                onclick="abrirModalCambiarRol(
+                                    '${escapeHtml(String(id))}',
+                                    '${escapeHtml(String(nombre))}',
+                                    '${escapeHtml(String(rol))}'
+                                )">
+                                🔄 Rol
+                            </button>
+
+                            <button
+                                type="button"
+                                class="boton-accion boton-accion-password"
+                                onclick="abrirModalCambiarContrasena(
+                                    '${escapeHtml(String(id))}',
+                                    '${escapeHtml(String(nombre))}'
+                                )">
+                                🔑 Contraseña
+                            </button>
+
+                            ${botonEliminar}
+
+                        </div>
+
                     </td>
 
                 </tr>
@@ -3473,6 +4448,40 @@ document
                 this
             ) {
                 cerrarModalNuevoUsuario();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("modalCambiarRol")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModalCambiarRol();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("modalCambiarContrasena")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModalCambiarContrasena();
             }
 
         }
