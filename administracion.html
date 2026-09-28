@@ -672,7 +672,7 @@
             position: fixed;
             z-index: 1000;
             inset: 0;
-            background: rgba(0, 0, 0, 0.55);
+            background: rgba(38, 50, 56, 0.48);
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -715,6 +715,55 @@
             display: flex;
             justify-content: flex-end;
             gap: 8px;
+        }
+
+        /* =====================================================
+           CAJA DE MENSAJE DE ALERTA
+           Diseño integrado con la interfaz de Administración
+        ===================================================== */
+
+        #modalMensaje {
+            background: rgba(38, 50, 56, 0.42);
+        }
+
+        #modalMensaje .modal {
+            width: min(430px, 100%);
+            border: 1px solid #dceaf0;
+            border-radius: 10px;
+            box-shadow: 0 16px 38px rgba(38, 50, 56, 0.22);
+        }
+
+        #modalMensaje .modal-cabecera {
+            background: #009ddc;
+            padding: 13px 17px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        #modalMensaje .modal-cuerpo {
+            padding: 18px 20px;
+            background: white;
+            color: #374151;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.55;
+            white-space: pre-line;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalMensaje .modal-pie {
+            padding: 11px 16px 14px;
+            background: #f7fbfd;
+            border-top: 1px solid #dceaf0;
+            justify-content: center;
+        }
+
+        #modalMensaje .modal-pie .boton-principal {
+            min-width: 90px;
+            padding: 8px 18px;
         }
 
         .formulario {
@@ -3330,7 +3379,7 @@ async function recargarInformacionUsuarios() {
 
     actualizarDiagnosticoBase();
 
-    await revisarIntegridad();
+    await revisarIntegridad;
 
 }
 
@@ -3385,6 +3434,7 @@ function actualizarInformacion() {
     if (rolActual) {
         rolActual.textContent = "Administrador";
     }
+
 
 }
 
