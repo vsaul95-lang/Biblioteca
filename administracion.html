@@ -17,8 +17,8 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #f3f4f6;
-            color: #1f2937;
+            background: #f4f6f8;
+            color: #263238;
         }
 
         /* =====================================================
@@ -26,89 +26,110 @@
         ===================================================== */
 
         header {
-            background: #374151;
+            background: #009ddc;
             color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
+            padding: 16px 20px;
         }
 
         .encabezado-contenido {
+            max-width: 1100px;
+            margin: auto;
+            min-height: 48px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            justify-content: center;
+            position: relative;
+        }
+
+        .encabezado-marca {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            text-align: center;
         }
 
         .encabezado-icono {
-            font-size: 30px;
+            font-size: 27px;
         }
 
         .encabezado-texto {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            align-items: center;
+            gap: 2px;
         }
 
         .encabezado-texto strong {
-            font-size: 21px;
+            font-size: 23px;
+            line-height: 1.2;
         }
 
         .encabezado-texto span {
-            font-size: 14px;
-            color: #d1d5db;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.88);
         }
 
         .boton-volver {
-            background: white;
-            color: #374151;
+            display: inline-block;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.16);
+            color: white;
             border: none;
             border-radius: 7px;
-            padding: 10px 18px;
+            padding: 8px 13px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .boton-volver:hover {
-            background: #e5e7eb;
+            background: rgba(255, 255, 255, 0.25);
         }
 
         /* =====================================================
-           CONTENEDOR PRINCIPAL
+           CONTENEDOR
         ===================================================== */
 
         .contenedor {
-            width: min(1200px, calc(100% - 40px));
-            margin: 24px auto 45px;
+            width: min(1100px, calc(100% - 30px));
+            margin: 18px auto 35px;
         }
+
+        /* =====================================================
+           SECCIONES
+        ===================================================== */
 
         .seccion {
             background: white;
-            border-radius: 10px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 14px;
             overflow: hidden;
         }
 
         .seccion-titulo {
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 13px 18px;
-            font-size: 17px;
+            background: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 11px 15px;
+            font-size: 16px;
             font-weight: bold;
             color: #374151;
         }
 
         .seccion-contenido {
-            padding: 17px 18px;
+            padding: 14px;
         }
 
         .descripcion-seccion {
-            margin: 0 0 14px;
-            color: #6b7280;
-            line-height: 1.45;
-            font-size: 14px;
+            margin: 0 0 11px;
+            color: #607d8b;
+            line-height: 1.4;
+            font-size: 12px;
         }
 
         /* =====================================================
@@ -117,8 +138,8 @@
 
         .resumen-superior {
             display: grid;
-            grid-template-columns: 1fr 1.55fr;
-            gap: 18px;
+            grid-template-columns: 1fr 1.45fr;
+            gap: 14px;
         }
 
         .resumen-superior .seccion {
@@ -127,56 +148,61 @@
 
         .grid-informacion {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
         }
 
         .dato {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 7px;
-            padding: 11px 13px;
+            padding: 9px 10px;
             background: #fafafa;
+            min-width: 0;
         }
 
         .dato-label {
             display: block;
-            font-size: 12px;
-            color: #6b7280;
-            margin-bottom: 4px;
+            font-size: 11px;
+            color: #78909c;
+            margin-bottom: 3px;
         }
 
         .dato-valor {
             display: block;
             font-weight: bold;
-            color: #111827;
-            font-size: 14px;
+            color: #263238;
+            font-size: 13px;
             word-break: break-word;
         }
 
+        /* =====================================================
+           ESTADÍSTICAS
+        ===================================================== */
+
         .estadisticas {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
         }
 
         .tarjeta-estadistica {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 7px;
-            padding: 17px 8px;
+            padding: 12px 6px;
             text-align: center;
             background: #fafafa;
         }
 
         .tarjeta-estadistica strong {
             display: block;
-            font-size: 25px;
+            font-size: 22px;
             color: #374151;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .tarjeta-estadistica span {
-            font-size: 13px;
-            color: #6b7280;
+            font-size: 11px;
+            color: #607d8b;
         }
 
         /* =====================================================
@@ -185,64 +211,72 @@
 
         .control-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
-            gap: 18px;
+            grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+            gap: 12px;
             align-items: start;
         }
 
         .subseccion {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             overflow: hidden;
             min-width: 0;
         }
 
         .subseccion-titulo {
-            background: #f9fafb;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 11px 14px;
-            font-size: 14px;
+            background: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 10px 13px;
+            font-size: 13px;
             font-weight: bold;
             color: #374151;
         }
 
         .subseccion-contenido {
-            padding: 13px;
+            padding: 11px;
         }
+
+        /* =====================================================
+           TABLAS
+        ===================================================== */
 
         .tabla-contenedor {
             width: 100%;
             overflow-x: auto;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 7px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 650px;
+            min-width: 620px;
         }
 
         th {
             background: #f3f4f6;
             color: #374151;
-            font-size: 12px;
+            font-size: 11px;
             text-align: left;
-            padding: 9px 10px;
+            padding: 8px 9px;
             border-bottom: 1px solid #d1d5db;
             white-space: nowrap;
         }
 
         td {
-            padding: 9px 10px;
+            padding: 8px 9px;
             border-bottom: 1px solid #e5e7eb;
-            font-size: 13px;
+            font-size: 12px;
             vertical-align: middle;
         }
 
         tr:last-child td {
             border-bottom: none;
         }
+
+        /* =====================================================
+           DIAGNÓSTICO
+        ===================================================== */
 
         .diagnostico-ok {
             color: #166534;
@@ -255,31 +289,35 @@
         }
 
         .diagnostico-cargando {
-            color: #6b7280;
+            color: #607d8b;
         }
+
+        /* =====================================================
+           INTEGRIDAD
+        ===================================================== */
 
         .integridad-lista {
             display: grid;
-            gap: 7px;
+            gap: 6px;
         }
 
         .integridad-item {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 7px;
-            padding: 10px 11px;
+            padding: 8px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .integridad-item strong {
-            font-size: 12.5px;
-            line-height: 1.35;
+            font-size: 11.5px;
+            line-height: 1.3;
         }
 
         .integridad-estado {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             white-space: nowrap;
             text-align: right;
@@ -300,29 +338,29 @@
         .sitios {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 10px;
+            gap: 8px;
         }
 
         .sitio {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 7px;
-            padding: 13px 9px;
+            padding: 10px 7px;
             text-align: center;
             background: #fafafa;
             min-width: 0;
         }
 
         .sitio-codigo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: #374151;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .sitio-nombre {
-            font-size: 12px;
-            color: #6b7280;
-            line-height: 1.35;
+            font-size: 10.5px;
+            color: #607d8b;
+            line-height: 1.3;
         }
 
         /* =====================================================
@@ -332,71 +370,71 @@
         .usuarios-preparacion {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
         .tarjeta-rol {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 14px 15px;
+            padding: 11px 12px;
             background: #fafafa;
         }
 
         .tarjeta-rol h3 {
-            margin: 0 0 6px;
+            margin: 0 0 5px;
             color: #374151;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .tarjeta-rol p {
-            margin: 0 0 9px;
-            color: #6b7280;
-            line-height: 1.4;
-            font-size: 13px;
+            margin: 0 0 7px;
+            color: #607d8b;
+            line-height: 1.35;
+            font-size: 11.5px;
         }
 
         .tarjeta-rol ul {
             margin: 0;
-            padding-left: 18px;
+            padding-left: 17px;
             color: #4b5563;
-            line-height: 1.5;
-            font-size: 13px;
+            line-height: 1.4;
+            font-size: 11.5px;
         }
 
         .usuarios-barra {
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
-            margin-bottom: 13px;
+            margin-bottom: 11px;
         }
 
         .usuarios-resumen {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
             min-width: 0;
         }
 
         .usuario-resumen {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #e0e0e0;
             border-radius: 7px;
-            padding: 11px 8px;
+            padding: 9px 6px;
             text-align: center;
             background: #fafafa;
         }
 
         .usuario-resumen strong {
             display: block;
-            font-size: 21px;
+            font-size: 19px;
             color: #374151;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .usuario-resumen span {
-            color: #6b7280;
-            font-size: 12px;
+            color: #607d8b;
+            font-size: 10.5px;
         }
 
         .acciones-usuarios {
@@ -407,18 +445,78 @@
         .usuarios-cargando,
         .usuarios-vacio {
             text-align: center;
-            color: #6b7280;
-            padding: 20px;
+            color: #607d8b;
+            padding: 17px;
         }
 
         .estado-preparacion {
-            margin-top: 12px;
-            padding: 10px 12px;
+            margin-top: 10px;
+            padding: 9px 10px;
             border-radius: 7px;
             background: #f3f4f6;
-            color: #4b5563;
+            color: #607d8b;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* =====================================================
+           DATOS DE LA APLICACIÓN
+        ===================================================== */
+
+        .aplicacion-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .aplicacion-dato {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 10px;
+            background: #fafafa;
+        }
+
+        .aplicacion-dato .dato-label {
+            margin-bottom: 3px;
+        }
+
+        .aplicacion-dato .dato-valor {
             font-size: 12px;
-            line-height: 1.45;
+        }
+
+        .credito-desarrollador {
+            margin-top: 10px;
+            border: 1px solid #dceaf0;
+            border-radius: 8px;
+            background: #f7fbfd;
+            padding: 11px 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .credito-texto {
+            min-width: 0;
+        }
+
+        .credito-texto strong {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .credito-texto span {
+            display: block;
+            color: #607d8b;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .credito-icono {
+            font-size: 28px;
+            flex-shrink: 0;
         }
 
         /* =====================================================
@@ -428,19 +526,19 @@
         .boton {
             border: none;
             border-radius: 7px;
-            padding: 9px 15px;
+            padding: 8px 14px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .boton-principal {
-            background: #374151;
+            background: #009ddc;
             color: white;
         }
 
         .boton-principal:hover {
-            background: #1f2937;
+            background: #008bc4;
         }
 
         .boton-secundario {
@@ -468,52 +566,43 @@
         .sesion-acciones {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            margin-top: 14px;
+            gap: 8px;
+            margin-top: 11px;
         }
 
         /* =====================================================
            ESTADOS
         ===================================================== */
 
-        .estado-activo {
+        .estado-activo,
+        .estado-inactivo,
+        .rol-administrador,
+        .rol-usuario {
             display: inline-block;
-            padding: 4px 8px;
+            padding: 3px 7px;
             border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .estado-activo {
             background: #dcfce7;
             color: #166534;
-            font-size: 11px;
-            font-weight: bold;
         }
 
         .estado-inactivo {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 20px;
             background: #fee2e2;
             color: #991b1b;
-            font-size: 11px;
-            font-weight: bold;
         }
 
         .rol-administrador {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 20px;
             background: #e0e7ff;
             color: #3730a3;
-            font-size: 11px;
-            font-weight: bold;
         }
 
         .rol-usuario {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 20px;
             background: #e5e7eb;
             color: #374151;
-            font-size: 11px;
-            font-weight: bold;
         }
 
         /* =====================================================
@@ -522,9 +611,9 @@
 
         .pie {
             text-align: center;
-            color: #6b7280;
-            font-size: 13px;
-            padding: 18px;
+            color: #607d8b;
+            font-size: 11px;
+            padding: 15px;
         }
 
         /* =====================================================
@@ -559,40 +648,41 @@
         }
 
         .modal-cabecera {
-            background: #374151;
+            background: #009ddc;
             color: white;
-            padding: 16px 20px;
-            font-size: 18px;
+            padding: 14px 18px;
+            font-size: 16px;
             font-weight: bold;
         }
 
         .modal-cuerpo {
-            padding: 22px 20px;
+            padding: 19px 18px;
             color: #374151;
             line-height: 1.5;
+            font-size: 13px;
         }
 
         .modal-pie {
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-top: 1px solid #e5e7eb;
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 8px;
         }
 
         .formulario {
             display: grid;
-            gap: 16px;
+            gap: 13px;
         }
 
         .campo {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .campo label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             color: #374151;
         }
@@ -602,8 +692,8 @@
             width: 100%;
             border: 1px solid #d1d5db;
             border-radius: 7px;
-            padding: 11px 12px;
-            font-size: 14px;
+            padding: 9px 10px;
+            font-size: 13px;
             color: #1f2937;
             background: white;
             outline: none;
@@ -611,17 +701,17 @@
 
         .campo input:focus,
         .campo select:focus {
-            border-color: #6b7280;
-            box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.12);
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.12);
         }
 
         .formulario-nota {
             background: #f3f4f6;
             border-radius: 7px;
-            padding: 12px;
+            padding: 10px;
             color: #4b5563;
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 11px;
+            line-height: 1.45;
         }
 
         .error-formulario {
@@ -629,8 +719,8 @@
             background: #fee2e2;
             color: #991b1b;
             border-radius: 7px;
-            padding: 11px 12px;
-            font-size: 13px;
+            padding: 10px;
+            font-size: 12px;
         }
 
         .error-formulario.visible {
@@ -641,14 +731,14 @@
            RESPONSIVE
         ===================================================== */
 
-        @media (max-width: 1000px) {
+        @media (max-width: 950px) {
 
             .resumen-superior {
                 grid-template-columns: 1fr;
             }
 
             .resumen-superior .seccion {
-                margin-bottom: 18px;
+                margin-bottom: 14px;
             }
 
             .control-grid {
@@ -658,21 +748,49 @@
             .sitios {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .aplicacion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 750px) {
 
             header {
-                padding: 15px;
+                padding: 12px 15px;
+            }
+
+            .encabezado-contenido {
+                flex-direction: column;
+                gap: 8px;
+                padding: 2px 0;
+            }
+
+            .encabezado-marca {
+                width: 100%;
+            }
+
+            .encabezado-icono {
+                font-size: 24px;
+            }
+
+            .encabezado-texto strong {
+                font-size: 21px;
+            }
+
+            .encabezado-texto span {
+                font-size: 11px;
+            }
+
+            .boton-volver {
+                position: static;
+                transform: none;
+                margin: 0;
             }
 
             .contenedor {
-                width: min(100% - 20px, 1200px);
-                margin-top: 15px;
-            }
-
-            .grid-informacion {
-                grid-template-columns: 1fr 1fr;
+                width: min(100% - 20px, 1100px);
+                margin-top: 14px;
             }
 
             .estadisticas {
@@ -688,27 +806,19 @@
             }
 
             .acciones-usuarios {
-                justify-content: flex-end;
+                justify-content: flex-start;
+            }
+
+            .acciones-usuarios .boton {
+                width: 100%;
             }
 
             .sitios {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .encabezado-icono {
-                display: none;
-            }
-
-            .encabezado-texto strong {
-                font-size: 18px;
-            }
-
-            .encabezado-texto span {
-                font-size: 12px;
-            }
-
-            .boton-volver {
-                padding: 9px 12px;
+            .credito-desarrollador {
+                align-items: flex-start;
             }
 
             .sesion-acciones {
@@ -725,37 +835,40 @@
             .grid-informacion,
             .estadisticas,
             .usuarios-resumen,
-            .sitios {
+            .sitios,
+            .aplicacion-grid {
                 grid-template-columns: 1fr 1fr;
             }
 
             .seccion-contenido {
-                padding: 14px;
+                padding: 12px;
             }
 
             .seccion-titulo {
-                padding: 12px 14px;
-                font-size: 16px;
+                padding: 11px 13px;
+                font-size: 15px;
             }
 
             .sitio-nombre {
-                font-size: 11px;
-            }
-
-            .usuarios-resumen {
-                gap: 7px;
+                font-size: 10px;
             }
 
             .usuario-resumen {
-                padding: 9px 5px;
+                padding: 8px 5px;
             }
 
             .usuario-resumen strong {
-                font-size: 19px;
+                font-size: 18px;
             }
 
             .usuario-resumen span {
-                font-size: 11px;
+                font-size: 10px;
+            }
+
+            .credito-desarrollador {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
             }
         }
     </style>
@@ -766,21 +879,27 @@
 <header>
     <div class="encabezado-contenido">
 
-        <div class="encabezado-icono">⚙️</div>
+        <div class="encabezado-marca">
 
-        <div class="encabezado-texto">
-            <strong>Biblioteca</strong>
-            <span>Administración del sistema</span>
+            <div class="encabezado-icono">
+                ⚙️
+            </div>
+
+            <div class="encabezado-texto">
+                <strong>Administración</strong>
+                <span>Configuración y control del sistema</span>
+            </div>
+
         </div>
 
-    </div>
+        <button
+            type="button"
+            class="boton-volver"
+            onclick="volverAtras()">
+            Volver al inicio
+        </button>
 
-    <button
-        type="button"
-        class="boton-volver"
-        onclick="volverAtras()">
-        Volver atrás
-    </button>
+    </div>
 </header>
 
 
@@ -1198,50 +1317,35 @@
             <div class="sitios">
 
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        F
-                    </div>
-
+                    <div class="sitio-codigo">F</div>
                     <div class="sitio-nombre">
                         Antigua Guatemala
                     </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        M
-                    </div>
-
+                    <div class="sitio-codigo">M</div>
                     <div class="sitio-nombre">
                         San Miguel Milpas Altas
                     </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        R
-                    </div>
-
+                    <div class="sitio-codigo">R</div>
                     <div class="sitio-nombre">
                         San Rafael el Arado
                     </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        N
-                    </div>
-
+                    <div class="sitio-codigo">N</div>
                     <div class="sitio-nombre">
                         Nueva Esperanza
                     </div>
                 </div>
 
                 <div class="sitio">
-                    <div class="sitio-codigo">
-                        Z
-                    </div>
-
+                    <div class="sitio-codigo">Z</div>
                     <div class="sitio-nombre">
                         Zapote
                     </div>
@@ -1271,18 +1375,16 @@
             </p>
 
 
-            <!-- ROLES -->
-
             <div class="usuarios-preparacion">
 
                 <div class="tarjeta-rol">
 
                     <h3>
-                        Usuario
+                        👤 Usuario
                     </h3>
 
                     <p>
-                        Perfil pensado para las personas que realizarán las tareas cotidianas de la biblioteca.
+                        Perfil para las tareas cotidianas de la biblioteca.
                     </p>
 
                     <ul>
@@ -1290,7 +1392,7 @@
                         <li>Registrar préstamos</li>
                         <li>Registrar devoluciones</li>
                         <li>Buscar información</li>
-                        <li>Consultar información necesaria para su trabajo</li>
+                        <li>Consultar información necesaria</li>
                     </ul>
 
                 </div>
@@ -1299,11 +1401,11 @@
                 <div class="tarjeta-rol">
 
                     <h3>
-                        Administrador
+                        🛠️ Administrador
                     </h3>
 
                     <p>
-                        Perfil con acceso completo para administrar la información y el funcionamiento del sistema.
+                        Perfil con acceso completo para administrar el sistema.
                     </p>
 
                     <ul>
@@ -1321,40 +1423,23 @@
             </div>
 
 
-            <!-- RESUMEN DE USUARIOS + BOTÓN -->
-
             <div class="usuarios-barra">
 
                 <div class="usuarios-resumen">
 
                     <div class="usuario-resumen">
-                        <strong id="totalUsuarios">
-                            0
-                        </strong>
-
-                        <span>
-                            Usuarios registrados
-                        </span>
+                        <strong id="totalUsuarios">0</strong>
+                        <span>Usuarios registrados</span>
                     </div>
 
                     <div class="usuario-resumen">
-                        <strong id="usuariosAdministradores">
-                            0
-                        </strong>
-
-                        <span>
-                            Administradores
-                        </span>
+                        <strong id="usuariosAdministradores">0</strong>
+                        <span>Administradores</span>
                     </div>
 
                     <div class="usuario-resumen">
-                        <strong id="usuariosActivos">
-                            0
-                        </strong>
-
-                        <span>
-                            Usuarios activos
-                        </span>
+                        <strong id="usuariosActivos">0</strong>
+                        <span>Usuarios activos</span>
                     </div>
 
                 </div>
@@ -1366,15 +1451,13 @@
                         type="button"
                         class="boton boton-principal"
                         onclick="abrirModalNuevoUsuario()">
-                        Nuevo usuario
+                        + Nuevo usuario
                     </button>
 
                 </div>
 
             </div>
 
-
-            <!-- TABLA DE USUARIOS -->
 
             <div class="tabla-contenedor">
 
@@ -1424,6 +1507,101 @@
 
 
     <!-- =====================================================
+         DATOS DE LA APLICACIÓN Y CRÉDITOS
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Información de la aplicación
+        </div>
+
+        <div class="seccion-contenido">
+
+            <div class="aplicacion-grid">
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Aplicación
+                    </span>
+
+                    <span class="dato-valor">
+                        Sistema de Biblioteca
+                    </span>
+
+                </div>
+
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Versión
+                    </span>
+
+                    <span class="dato-valor">
+                        1.0
+                    </span>
+
+                </div>
+
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Base de datos
+                    </span>
+
+                    <span class="dato-valor">
+                        Supabase
+                    </span>
+
+                </div>
+
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Tecnologías
+                    </span>
+
+                    <span class="dato-valor">
+                        HTML, CSS y JavaScript
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="credito-desarrollador">
+
+                <div class="credito-texto">
+
+                    <strong>
+                        👨‍💻 Desarrollado por Saúl Velásquez
+                    </strong>
+
+                    <span>
+                        Sistema desarrollado para facilitar el control,
+                        administración y seguimiento de los préstamos
+                        de la biblioteca.
+                    </span>
+
+                </div>
+
+                <div class="credito-icono">
+                    📚
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
          SESIÓN ACTUAL
     ====================================================== -->
 
@@ -1438,6 +1616,7 @@
             <div class="grid-informacion">
 
                 <div class="dato">
+
                     <span class="dato-label">
                         Usuario
                     </span>
@@ -1447,9 +1626,11 @@
                         class="dato-valor">
                         Comprobando...
                     </span>
+
                 </div>
 
                 <div class="dato">
+
                     <span class="dato-label">
                         Estado
                     </span>
@@ -1457,9 +1638,11 @@
                     <span class="dato-valor">
                         Sesión activa
                     </span>
+
                 </div>
 
                 <div class="dato">
+
                     <span class="dato-label">
                         Acceso
                     </span>
@@ -1469,9 +1652,11 @@
                         class="dato-valor">
                         Comprobando...
                     </span>
+
                 </div>
 
                 <div class="dato">
+
                     <span class="dato-label">
                         Base de datos
                     </span>
@@ -1479,6 +1664,7 @@
                     <span class="dato-valor">
                         Conectada
                     </span>
+
                 </div>
 
             </div>
@@ -1510,7 +1696,7 @@
 
 
 <div class="pie">
-    Sistema de Biblioteca
+    Sistema de Biblioteca · Versión 1.0 · Desarrollado por Saúl Velásquez
 </div>
 
 
