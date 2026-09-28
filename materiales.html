@@ -722,9 +722,9 @@ footer .creditos{
 <script>
 window.materialesAutorizado = false;
 
-window.materialesAuth = (async function protegerMateriales() {
+window.materialesAuth = (async function protegerMateriales(){
 
-    try {
+    try{
 
         const autorizado =
             await window.protegerPagina();
@@ -732,8 +732,8 @@ window.materialesAuth = (async function protegerMateriales() {
         if(!autorizado){
 
             window.location.replace("index.html");
-
             return false;
+
         }
 
         if(
@@ -742,8 +742,8 @@ window.materialesAuth = (async function protegerMateriales() {
         ){
 
             window.location.replace("index.html");
-
             return false;
+
         }
 
         window.materialesAutorizado = true;
@@ -753,7 +753,7 @@ window.materialesAuth = (async function protegerMateriales() {
 
         return true;
 
-    } catch(error){
+    }catch(error){
 
         console.error(
             "Error al comprobar permisos de materiales:",
@@ -763,6 +763,7 @@ window.materialesAuth = (async function protegerMateriales() {
         window.location.replace("index.html");
 
         return false;
+
     }
 
 })();
@@ -777,11 +778,7 @@ window.materialesAuth = (async function protegerMateriales() {
     <div class="encabezado-contenido">
 
         <div class="marca">
-
-            <h1>
-                Materiales
-            </h1>
-
+            <h1>Materiales</h1>
         </div>
 
         <button
@@ -795,7 +792,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </header>
 
-
 <main class="contenedor">
 
     <h1 class="titulo-pagina">
@@ -806,21 +802,16 @@ window.materialesAuth = (async function protegerMateriales() {
         Administración del inventario y entrega de materiales
     </p>
 
-
     <section class="estadisticas">
 
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">
-                📦
-            </div>
+            <div class="estadistica-icono">📦</div>
 
             <div
                 class="estadistica-numero"
                 id="totalTipos"
-            >
-                0
-            </div>
+            >0</div>
 
             <div class="estadistica-texto">
                 Tipos de materiales
@@ -828,19 +819,14 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">
-                📥
-            </div>
+            <div class="estadistica-icono">📥</div>
 
             <div
                 class="estadistica-numero"
                 id="totalEntradas"
-            >
-                0
-            </div>
+            >0</div>
 
             <div class="estadistica-texto">
                 Unidades ingresadas
@@ -848,19 +834,14 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">
-                🎁
-            </div>
+            <div class="estadistica-icono">🎁</div>
 
             <div
                 class="estadistica-numero"
                 id="totalEntregadas"
-            >
-                0
-            </div>
+            >0</div>
 
             <div class="estadistica-texto">
                 Unidades entregadas
@@ -868,19 +849,14 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <div class="tarjeta-estadistica">
 
-            <div class="estadistica-icono">
-                📊
-            </div>
+            <div class="estadistica-icono">📊</div>
 
             <div
                 class="estadistica-numero"
                 id="totalDisponibles"
-            >
-                0
-            </div>
+            >0</div>
 
             <div class="estadistica-texto">
                 Unidades disponibles
@@ -889,7 +865,6 @@ window.materialesAuth = (async function protegerMateriales() {
         </div>
 
     </section>
-
 
     <section class="seccion">
 
@@ -911,7 +886,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
             </div>
 
-
             <div
                 class="tabla-contenedor"
                 style="margin-top:14px;"
@@ -922,7 +896,6 @@ window.materialesAuth = (async function protegerMateriales() {
                     <thead>
 
                         <tr>
-
                             <th>Fecha</th>
                             <th>Material</th>
                             <th>Cantidad</th>
@@ -932,7 +905,6 @@ window.materialesAuth = (async function protegerMateriales() {
                             <th>Biblioteca</th>
                             <th>Sitio</th>
                             <th>Entregado por</th>
-
                         </tr>
 
                     </thead>
@@ -946,7 +918,6 @@ window.materialesAuth = (async function protegerMateriales() {
         </div>
 
     </section>
-
 
     <section class="seccion">
 
@@ -979,7 +950,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
     </section>
 
-
     <section class="seccion">
 
         <h2 class="seccion-titulo">
@@ -1004,7 +974,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                 </div>
 
-
                 <div class="campo">
 
                     <label for="filtroCategoria">
@@ -1020,7 +989,6 @@ window.materialesAuth = (async function protegerMateriales() {
                     </select>
 
                 </div>
-
 
                 <div class="campo">
 
@@ -1044,7 +1012,6 @@ window.materialesAuth = (async function protegerMateriales() {
                     </select>
 
                 </div>
-
 
                 <div class="campo">
 
@@ -1070,7 +1037,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                 </div>
 
-
                 <button
                     class="btn"
                     id="btnLimpiarFiltros"
@@ -1080,7 +1046,6 @@ window.materialesAuth = (async function protegerMateriales() {
                 </button>
 
             </div>
-
 
             <div
                 class="tabla-contenedor"
@@ -1092,7 +1057,6 @@ window.materialesAuth = (async function protegerMateriales() {
                     <thead>
 
                         <tr>
-
                             <th>Código</th>
                             <th>Material</th>
                             <th>Categoría</th>
@@ -1103,7 +1067,6 @@ window.materialesAuth = (async function protegerMateriales() {
                             <th>Disponibles</th>
                             <th>Estado</th>
                             <th>Acciones</th>
-
                         </tr>
 
                     </thead>
@@ -1117,7 +1080,6 @@ window.materialesAuth = (async function protegerMateriales() {
         </div>
 
     </section>
-
 
     <section
         class="seccion"
@@ -1174,7 +1136,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
     </section>
 
-
     <section
         class="seccion"
         id="seccionBorrarMateriales"
@@ -1206,7 +1167,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </main>
 
-
 <footer>
 
     <span>
@@ -1222,7 +1182,6 @@ window.materialesAuth = (async function protegerMateriales() {
     </span>
 
 </footer>
-
 
 <div
     class="modal"
@@ -1247,7 +1206,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <form id="formMaterial">
 
             <div class="modal-cuerpo">
@@ -1268,7 +1226,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div class="campo">
 
                         <label>
@@ -1282,7 +1239,6 @@ window.materialesAuth = (async function protegerMateriales() {
                         >
 
                     </div>
-
 
                     <div class="campo">
 
@@ -1298,7 +1254,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div class="campo">
 
                         <label>
@@ -1312,7 +1267,6 @@ window.materialesAuth = (async function protegerMateriales() {
                         >
 
                     </div>
-
 
                     <div class="campo">
 
@@ -1340,7 +1294,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div class="campo ancho-completo">
 
                         <label>
@@ -1358,7 +1311,6 @@ window.materialesAuth = (async function protegerMateriales() {
                 </div>
 
             </div>
-
 
             <div class="modal-pie">
 
@@ -1385,7 +1337,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </div>
 
-
 <div
     class="modal"
     id="modalEntrega"
@@ -1409,7 +1360,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <form id="formEntrega">
 
             <div class="modal-cuerpo">
@@ -1418,7 +1368,6 @@ window.materialesAuth = (async function protegerMateriales() {
                     id="listaMaterialesEntrega"
                     class="lista-materiales-entrega"
                 ></div>
-
 
                 <div class="acciones-materiales-entrega">
 
@@ -1432,7 +1381,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                 </div>
 
-
                 <div
                     id="resumenMaterialesEntrega"
                     class="resumen-materiales-entrega"
@@ -1443,7 +1391,6 @@ window.materialesAuth = (async function protegerMateriales() {
                     0
                 </div>
 
-
                 <div
                     style="
                         height:1px;
@@ -1451,7 +1398,6 @@ window.materialesAuth = (async function protegerMateriales() {
                         margin:16px 0;
                     "
                 ></div>
-
 
                 <div class="form-grid">
 
@@ -1482,7 +1428,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div
                         class="campo campo-receptor"
                         id="campoBuscarReceptor"
@@ -1511,7 +1456,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div
                         class="campo campo-receptor campo-afiliado"
                         style="display:none;"
@@ -1527,7 +1471,6 @@ window.materialesAuth = (async function protegerMateriales() {
                         >
 
                     </div>
-
 
                     <div
                         class="campo campo-receptor campo-afiliado"
@@ -1545,7 +1488,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div
                         class="campo campo-receptor campo-afiliado"
                         style="display:none;"
@@ -1561,7 +1503,6 @@ window.materialesAuth = (async function protegerMateriales() {
                         >
 
                     </div>
-
 
                     <div
                         class="campo campo-receptor campo-afiliado"
@@ -1579,7 +1520,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div
                         class="campo campo-receptor campo-colaborador"
                         style="display:none;"
@@ -1596,7 +1536,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div
                         class="campo campo-receptor campo-colaborador"
                         style="display:none;"
@@ -1612,7 +1551,6 @@ window.materialesAuth = (async function protegerMateriales() {
                         >
 
                     </div>
-
 
                     <div class="campo">
 
@@ -1640,7 +1578,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div class="campo">
 
                         <label>
@@ -1666,7 +1603,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
                     </div>
 
-
                     <div class="campo ancho-completo">
 
                         <label>
@@ -1682,17 +1618,14 @@ window.materialesAuth = (async function protegerMateriales() {
 
                 </div>
 
-
                 <div class="nota">
 
-                    La información de este módulo se conectará a Supabase
-                    en la siguiente etapa. Una entrega podrá incluir uno
-                    o varios materiales sin límite.
+                    La información de este módulo se encuentra conectada a Supabase.
+                    Una entrega podrá incluir uno o varios materiales sin límite.
 
                 </div>
 
             </div>
-
 
             <div class="modal-pie">
 
@@ -1718,7 +1651,6 @@ window.materialesAuth = (async function protegerMateriales() {
     </div>
 
 </div>
-
 
 <div
     class="modal"
@@ -1746,7 +1678,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <div class="modal-cuerpo">
 
             <div
@@ -1763,7 +1694,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <div class="modal-pie">
 
             <button
@@ -1779,7 +1709,6 @@ window.materialesAuth = (async function protegerMateriales() {
     </div>
 
 </div>
-
 
 <div
     class="modal"
@@ -1806,7 +1735,6 @@ window.materialesAuth = (async function protegerMateriales() {
 
         </div>
 
-
         <div class="modal-cuerpo">
 
             <div class="mensaje-icono">
@@ -1819,7 +1747,6 @@ window.materialesAuth = (async function protegerMateriales() {
             ></div>
 
         </div>
-
 
         <div class="modal-pie">
 
@@ -1845,662 +1772,4806 @@ window.materialesAuth = (async function protegerMateriales() {
 
 </div>
 
-
 <script>
 (async function(){
 
-    const autorizado = await window.materialesAuth;
-    if(!autorizado){ return; }
+    const autorizado =
+        await window.materialesAuth;
 
-    const administrador = window.esAdministrador();
-    const REGISTROS_POR_PAGINA = 25;
+    if(!autorizado){
+        return;
+    }
+
+    const administrador =
+        window.esAdministrador();
 
     let materialesDemo = [];
+
     let entregasDemo = [];
+
+    const REGISTROS_POR_PAGINA = 25;
+
     let paginaEntregas = 1;
+
     let paginaInventario = 1;
 
-    const esc = v => String(v ?? "").replace(/[&<>'"]/g, c => ({
-        "&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"
-    }[c]));
 
-    const disponible = m => Number(m.entradas || 0) - Number(m.entregadas || 0);
+    const materialesPrueba = [
+
+        {
+            codigo:"M001",
+            nombre:"Hojas tamaño carta",
+            categoria:"Papelería",
+            unidad:"Paquete",
+            biblioteca:"F",
+            entradas:200,
+            entregadas:30,
+            estado:"Activo",
+            observaciones:""
+        },
+
+        {
+            codigo:"M002",
+            nombre:"Cuadernos",
+            categoria:"Papelería",
+            unidad:"Unidad",
+            biblioteca:"M",
+            entradas:50,
+            entregadas:12,
+            estado:"Activo",
+            observaciones:""
+        },
+
+        {
+            codigo:"M003",
+            nombre:"Marcadores",
+            categoria:"Material educativo",
+            unidad:"Caja",
+            biblioteca:"NE",
+            entradas:20,
+            entregadas:5,
+            estado:"Activo",
+            observaciones:""
+        }
+
+    ];
+
+
+    const entregasPrueba = [
+
+        {
+            fecha:"28/09/2026",
+            materialCodigo:"M001",
+            material:"Hojas tamaño carta",
+            cantidad:5,
+            nombres:"Maria Priscila",
+            apellidos:"Pérez Hernández",
+            receptor:"Afiliado",
+            personaId:"",
+            familiaId:"",
+            codigoColaborador:"",
+            areaColaborador:"",
+            biblioteca:"F",
+            sitio:"F",
+            usuario:"Usuario actual",
+            observaciones:""
+        },
+
+        {
+            fecha:"27/09/2026",
+            materialCodigo:"M002",
+            material:"Cuadernos",
+            cantidad:2,
+            nombres:"Blanca Elizabeth",
+            apellidos:"Aguirre Aguirre",
+            receptor:"Colaborador",
+            personaId:"",
+            familiaId:"",
+            codigoColaborador:"",
+            areaColaborador:"",
+            biblioteca:"M",
+            sitio:"M",
+            usuario:"Usuario actual",
+            observaciones:""
+        }
+
+    ];
+
+
+    const esc = v =>
+        String(v ?? "").replace(
+            /[&<>'"]/g,
+            c=>({
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                "'":"&#39;",
+                '"':"&quot;"
+            }[c])
+        );
+
+
+    function mostrarMensaje(
+        titulo,
+        texto,
+        icono="✓",
+        peligro=false
+    ){
+
+        const modal =
+            document.getElementById("modalMensaje");
+
+        const contenido =
+            document.getElementById("modalMensajeContenido");
+
+        document.getElementById("mensajeTitulo")
+            .textContent = titulo;
+
+        document.getElementById("mensajeTexto")
+            .textContent = texto;
+
+        document.getElementById("mensajeIcono")
+            .textContent = icono;
+
+        contenido.classList.toggle(
+            "peligro",
+            peligro
+        );
+
+        modal.classList.add("mostrar");
+    }
+
+
+    function cerrarMensaje(){
+
+        document
+            .getElementById("modalMensaje")
+            .classList.remove("mostrar");
+
+    }
+
+
+    function mostrarConfirmacion(
+        titulo,
+        texto,
+        callback
+    ){
+
+        const modal =
+            document.getElementById("modalConfirmacion");
+
+        const aceptar =
+            document.getElementById(
+                "botonAceptarConfirmacion"
+            );
+
+        const cancelar =
+            document.getElementById(
+                "botonCancelarConfirmacion"
+            );
+
+        document.getElementById(
+            "confirmacionTitulo"
+        ).textContent = titulo;
+
+        document.getElementById(
+            "confirmacionTexto"
+        ).textContent = texto;
+
+        modal.classList.add("mostrar");
+
+
+        const cerrar = ()=>{
+
+            modal.classList.remove("mostrar");
+
+            aceptar.onclick = null;
+            cancelar.onclick = null;
+
+        };
+
+
+        cancelar.onclick = cerrar;
+
+        document.getElementById(
+            "cerrarConfirmacion"
+        ).onclick = cerrar;
+
+
+        aceptar.onclick = ()=>{
+
+            cerrar();
+
+            callback();
+
+        };
+
+    }
+
+
+    document.getElementById(
+        "cerrarMensaje"
+    ).addEventListener(
+        "click",
+        cerrarMensaje
+    );
+
+
+    document.getElementById(
+        "botonAceptarMensaje"
+    ).addEventListener(
+        "click",
+        cerrarMensaje
+    );
+
+
+    const disponible = m =>
+        Number(m.entradas || 0) -
+        Number(m.entregadas || 0);
+
 
     function numeroSeguro(valor){
-        const n = Number(String(valor ?? "").replace(/,/g,"").trim());
-        return Number.isFinite(n) ? n : 0;
+
+        const numero =
+            Number(
+                String(valor ?? "")
+                    .replace(/,/g,"")
+                    .trim()
+            );
+
+        return Number.isFinite(numero)
+            ? numero
+            : 0;
     }
 
-    function textoSeguro(valor){ return String(valor ?? "").trim(); }
+
+    function textoSeguro(valor){
+
+        return String(
+            valor ?? ""
+        ).trim();
+
+    }
+
 
     function fechaActual(){
-        const d = new Date();
-        return String(d.getDate()).padStart(2,"0") + "/" +
-               String(d.getMonth()+1).padStart(2,"0") + "/" +
-               d.getFullYear();
+
+        const ahora =
+            new Date();
+
+        const dia =
+            String(
+                ahora.getDate()
+            ).padStart(2,"0");
+
+        const mes =
+            String(
+                ahora.getMonth()+1
+            ).padStart(2,"0");
+
+        const anio =
+            ahora.getFullYear();
+
+        return (
+            dia +
+            "/" +
+            mes +
+            "/" +
+            anio
+        );
+
     }
 
-    function fechaParaMostrar(valor){
-        if(!valor) return "";
-        const t = String(valor);
-        if(/^\d{2}\/\d{2}\/\d{4}$/.test(t)) return t;
-        const f = new Date(valor);
-        if(Number.isNaN(f.getTime())) return t;
-        return String(f.getDate()).padStart(2,"0") + "/" +
-               String(f.getMonth()+1).padStart(2,"0") + "/" +
-               f.getFullYear();
-    }
-
-    function fechaParaSupabase(valor){
-        const t = textoSeguro(valor);
-        if(/^\d{2}\/\d{2}\/\d{4}$/.test(t)){
-            const [dia,mes,anio] = t.split("/");
-            return `${anio}-${mes}-${dia}T12:00:00`;
-        }
-        return new Date().toISOString();
-    }
 
     function obtenerUsuarioActual(){
+
         try{
-            if(typeof window.obtenerNombreUsuarioActual === "function"){
-                const n = window.obtenerNombreUsuarioActual();
-                if(n && String(n).trim()) return String(n).trim();
+
+            if(
+                typeof window.obtenerNombreUsuarioActual ===
+                "function"
+            ){
+
+                const nombre =
+                    window.obtenerNombreUsuarioActual();
+
+                if(
+                    nombre &&
+                    String(nombre).trim()
+                ){
+
+                    return String(
+                        nombre
+                    ).trim();
+
+                }
+
             }
-            if(window.usuarioActual) return String(window.usuarioActual).trim();
-            if(window.usuario) return String(window.usuario).trim();
-        }catch(e){ console.warn("No fue posible obtener el usuario actual:",e); }
+
+            if(window.usuarioActual){
+
+                return String(
+                    window.usuarioActual
+                ).trim();
+
+            }
+
+            if(window.usuario){
+
+                return String(
+                    window.usuario
+                ).trim();
+
+            }
+
+        }catch(error){
+
+            console.warn(
+                "No fue posible obtener el usuario actual:",
+                error
+            );
+
+        }
+
         return "Usuario actual";
     }
 
-    function mostrarMensaje(titulo,texto,icono="✓",peligro=false){
-        const modal=document.getElementById("modalMensaje");
-        const contenido=document.getElementById("modalMensajeContenido");
-        document.getElementById("mensajeTitulo").textContent=titulo;
-        document.getElementById("mensajeTexto").textContent=texto;
-        document.getElementById("mensajeIcono").textContent=icono;
-        contenido.classList.toggle("peligro",peligro);
-        modal.classList.add("mostrar");
+
+    function fechaParaMostrar(valor){
+
+        if(!valor){
+            return "";
+        }
+
+        const texto =
+            String(valor);
+
+        if(
+            /^\d{2}\/\d{2}\/\d{4}$/.test(texto)
+        ){
+
+            return texto;
+
+        }
+
+        const fecha =
+            new Date(valor);
+
+        if(
+            Number.isNaN(
+                fecha.getTime()
+            )
+        ){
+
+            return texto;
+
+        }
+
+        return (
+            String(
+                fecha.getDate()
+            ).padStart(2,"0") +
+            "/" +
+            String(
+                fecha.getMonth()+1
+            ).padStart(2,"0") +
+            "/" +
+            fecha.getFullYear()
+        );
+
     }
 
-    function cerrarMensaje(){ document.getElementById("modalMensaje").classList.remove("mostrar"); }
-
-    function mostrarConfirmacion(titulo,texto,callback){
-        const modal=document.getElementById("modalConfirmacion");
-        const aceptar=document.getElementById("botonAceptarConfirmacion");
-        const cancelar=document.getElementById("botonCancelarConfirmacion");
-        document.getElementById("confirmacionTitulo").textContent=titulo;
-        document.getElementById("confirmacionTexto").textContent=texto;
-        modal.classList.add("mostrar");
-        const cerrar=()=>{
-            modal.classList.remove("mostrar");
-            aceptar.onclick=null;
-            cancelar.onclick=null;
-        };
-        cancelar.onclick=cerrar;
-        document.getElementById("cerrarConfirmacion").onclick=cerrar;
-        aceptar.onclick=()=>{ cerrar(); callback(); };
-    }
-
-    function abrir(id){ const e=document.getElementById(id); if(e) e.classList.add("mostrar"); }
-    function cerrar(id){ const e=document.getElementById(id); if(e) e.classList.remove("mostrar"); }
-
-    document.getElementById("cerrarMensaje").addEventListener("click",cerrarMensaje);
-    document.getElementById("botonAceptarMensaje").addEventListener("click",cerrarMensaje);
 
     async function cargarMateriales(){
-        const {data,error}=await supabaseClient
+
+        const {data,error} =
+            await supabaseClient
             .from("materiales")
             .select("*")
-            .order("codigo",{ascending:true});
-        if(error) throw error;
-        materialesDemo=(data||[]).map(m=>({
-            id:m.id,
-            codigo:m.codigo||"",
-            nombre:m.nombre||"",
-            categoria:m.categoria||"",
-            unidad:m.unidad||"",
-            biblioteca:m.biblioteca||"",
-            entradas:Number(m.entradas||0),
-            entregadas:Number(m.entregadas||0),
-            estado:m.estado||"Activo",
-            observaciones:m.observaciones||""
-        }));
+            .order(
+                "codigo",
+                {
+                    ascending:true
+                }
+            );
+
+
+        if(error){
+
+            console.error(
+                "Error cargando materiales:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        materialesDemo =
+            (data || []).map(m=>({
+
+                id:m.id,
+
+                codigo:m.codigo || "",
+
+                nombre:m.nombre || "",
+
+                categoria:m.categoria || "",
+
+                unidad:m.unidad || "",
+
+                biblioteca:m.biblioteca || "",
+
+                entradas:Number(
+                    m.entradas || 0
+                ),
+
+                entregadas:Number(
+                    m.entregadas || 0
+                ),
+
+                estado:m.estado || "Activo",
+
+                observaciones:
+                    m.observaciones || ""
+
+            }));
+
     }
+
 
     async function cargarEntregas(){
-        const {data,error}=await supabaseClient
+
+        const {data,error} =
+            await supabaseClient
             .from("entregas_materiales")
             .select("*")
-            .order("fecha",{ascending:false})
-            .order("id",{ascending:false});
-        if(error) throw error;
-        entregasDemo=(data||[]).map(e=>({
-            id:e.id,
-            fecha:fechaParaMostrar(e.fecha),
-            materialCodigo:e.codigo_material||"",
-            material:e.material||"",
-            cantidad:Number(e.cantidad||0),
-            nombres:e.nombres||"",
-            apellidos:e.apellidos||"",
-            receptor:e.receptor||"",
-            personaId:e.persona_id||"",
-            familiaId:e.familia_id||"",
-            codigoColaborador:e.codigo_colaborador||"",
-            areaColaborador:e.area_colaborador||"",
-            biblioteca:e.biblioteca||"",
-            sitio:e.sitio||"",
-            usuario:e.usuario||"",
-            observaciones:e.observaciones||""
-        }));
+            .order(
+                "fecha",
+                {
+                    ascending:false
+                }
+            )
+            .order(
+                "id",
+                {
+                    ascending:false
+                }
+            );
+
+
+        if(error){
+
+            console.error(
+                "Error cargando entregas:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        entregasDemo =
+            (data || []).map(e=>({
+
+                id:e.id,
+
+                fecha:
+                    fechaParaMostrar(
+                        e.fecha
+                    ),
+
+                materialCodigo:
+                    e.codigo_material || "",
+
+                material:
+                    e.material || "",
+
+                cantidad:
+                    Number(
+                        e.cantidad || 0
+                    ),
+
+                nombres:
+                    e.nombres || "",
+
+                apellidos:
+                    e.apellidos || "",
+
+                receptor:
+                    e.receptor || "",
+
+                personaId:
+                    e.persona_id || "",
+
+                familiaId:
+                    e.familia_id || "",
+
+                codigoColaborador:
+                    e.codigo_colaborador || "",
+
+                areaColaborador:
+                    e.area_colaborador || "",
+
+                biblioteca:
+                    e.biblioteca || "",
+
+                sitio:
+                    e.sitio || "",
+
+                usuario:
+                    e.usuario || "",
+
+                observaciones:
+                    e.observaciones || ""
+
+            }));
+
     }
+
+
+    async function asegurarDatosPrueba(){
+
+        const {
+            data:materialesExistentes,
+            error:errorMateriales
+        } =
+            await supabaseClient
+            .from("materiales")
+            .select("codigo")
+            .in(
+                "codigo",
+                materialesPrueba.map(
+                    m=>m.codigo
+                )
+            );
+
+
+        if(errorMateriales){
+
+            console.error(
+                "Error comprobando materiales de prueba:",
+                errorMateriales
+            );
+
+            throw errorMateriales;
+
+        }
+
+
+        const codigosExistentes =
+            new Set(
+                (materialesExistentes || [])
+                .map(
+                    m=>String(m.codigo)
+                )
+            );
+
+
+        const faltantes =
+            materialesPrueba.filter(
+                m=>
+                    !codigosExistentes.has(
+                        String(m.codigo)
+                    )
+            );
+
+
+        if(faltantes.length){
+
+            const {error} =
+                await supabaseClient
+                .from("materiales")
+                .insert(
+                    faltantes.map(m=>({
+
+                        codigo:m.codigo,
+                        nombre:m.nombre,
+                        categoria:m.categoria,
+                        unidad:m.unidad,
+                        biblioteca:m.biblioteca,
+                        entradas:m.entradas,
+                        entregadas:m.entregadas,
+                        estado:m.estado,
+                        observaciones:m.observaciones
+
+                    }))
+                );
+
+
+            if(error){
+
+                console.warn(
+                    "No fue posible crear todos los materiales de prueba:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        const {
+            data:entregasExistentes,
+            error:errorEntregas
+        } =
+            await supabaseClient
+            .from("entregas_materiales")
+            .select(
+                "fecha,codigo_material,cantidad,nombres,apellidos,sitio"
+            )
+            .in(
+                "codigo_material",
+                entregasPrueba.map(
+                    e=>e.materialCodigo
+                )
+            );
+
+
+        if(errorEntregas){
+
+            console.error(
+                "Error comprobando entregas de prueba:",
+                errorEntregas
+            );
+
+            throw errorEntregas;
+
+        }
+
+
+        const existeEntrega =
+            entrega=>{
+
+                const fecha =
+                    entrega.fecha;
+
+                return (
+                    entregasExistentes || []
+                ).some(e=>
+                    String(
+                        fechaParaMostrar(
+                            e.fecha
+                        )
+                    ) ===
+                    String(fecha) &&
+                    String(
+                        e.codigo_material
+                    ) ===
+                    String(
+                        entrega.materialCodigo
+                    ) &&
+                    Number(
+                        e.cantidad
+                    ) ===
+                    Number(
+                        entrega.cantidad
+                    ) &&
+                    String(
+                        e.nombres || ""
+                    ) ===
+                    String(
+                        entrega.nombres || ""
+                    ) &&
+                    String(
+                        e.apellidos || ""
+                    ) ===
+                    String(
+                        entrega.apellidos || ""
+                    ) &&
+                    String(
+                        e.sitio || ""
+                    ) ===
+                    String(
+                        entrega.sitio || ""
+                    )
+                );
+
+            };
+
+
+        const entregasFaltantes =
+            entregasPrueba.filter(
+                e=>
+                    !existeEntrega(e)
+            );
+
+
+        if(entregasFaltantes.length){
+
+            const registros =
+                entregasFaltantes.map(e=>{
+
+                    const partes =
+                        String(
+                            e.fecha
+                        ).split("/");
+
+
+                    let fechaISO;
+
+
+                    if(
+                        partes.length === 3
+                    ){
+
+                        fechaISO =
+                            partes[2] +
+                            "-" +
+                            partes[1] +
+                            "-" +
+                            partes[0] +
+                            "T12:00:00";
+
+                    }else{
+
+                        fechaISO =
+                            new Date().toISOString();
+
+                    }
+
+
+                    return {
+
+                        fecha:fechaISO,
+
+                        codigo_material:
+                            e.materialCodigo,
+
+                        material:
+                            e.material,
+
+                        cantidad:
+                            e.cantidad,
+
+                        receptor:
+                            e.receptor,
+
+                        nombres:
+                            e.nombres,
+
+                        apellidos:
+                            e.apellidos,
+
+                        persona_id:
+                            e.personaId || null,
+
+                        familia_id:
+                            e.familiaId || null,
+
+                        codigo_colaborador:
+                            e.codigoColaborador || null,
+
+                        area_colaborador:
+                            e.areaColaborador || null,
+
+                        biblioteca:
+                            e.biblioteca,
+
+                        sitio:
+                            e.sitio,
+
+                        observaciones:
+                            e.observaciones || null,
+
+                        usuario:
+                            e.usuario || "Usuario actual"
+
+                    };
+
+                });
+
+
+            const {error} =
+                await supabaseClient
+                .from("entregas_materiales")
+                .insert(registros);
+
+
+            if(error){
+
+                console.warn(
+                    "No fue posible crear las entregas de prueba:",
+                    error
+                );
+
+            }
+
+        }
+
+    }
+
 
     async function cargarTodo(){
+
         try{
-            await Promise.all([cargarMateriales(),cargarEntregas()]);
+
+            await asegurarDatosPrueba();
+
+            await cargarMateriales();
+
+            await cargarEntregas();
+
             renderCategorias();
+
             renderInventario();
+
             renderEntregas();
+
         }catch(error){
-            console.error("Error inicializando Materiales:",error);
-            mostrarMensaje("Error al cargar Materiales",
-                "No fue posible cargar la información desde Supabase.\n\n"+
-                "Revise la conexión y las tablas materiales y entregas_materiales.","!",true);
+
+            console.error(
+                "Error inicializando Materiales:",
+                error
+            );
+
+            mostrarMensaje(
+                "Error al cargar Materiales",
+                "No fue posible cargar la información desde Supabase.\n\n" +
+                "Revise la conexión y las tablas materiales y entregas_materiales.",
+                "!",
+                true
+            );
+
         }
+
     }
+
 
     function actualizarEstadisticas(){
-        document.getElementById("totalTipos").textContent=materialesDemo.length;
-        document.getElementById("totalEntradas").textContent=materialesDemo.reduce((a,m)=>a+Number(m.entradas||0),0);
-        document.getElementById("totalEntregadas").textContent=materialesDemo.reduce((a,m)=>a+Number(m.entregadas||0),0);
-        document.getElementById("totalDisponibles").textContent=materialesDemo.reduce((a,m)=>a+disponible(m),0);
+
+        document.getElementById(
+            "totalTipos"
+        ).textContent =
+            materialesDemo.length;
+
+
+        document.getElementById(
+            "totalEntradas"
+        ).textContent =
+            materialesDemo.reduce(
+                (a,m)=>
+                    a +
+                    Number(
+                        m.entradas || 0
+                    ),
+                0
+            );
+
+
+        document.getElementById(
+            "totalEntregadas"
+        ).textContent =
+            materialesDemo.reduce(
+                (a,m)=>
+                    a +
+                    Number(
+                        m.entregadas || 0
+                    ),
+                0
+            );
+
+
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent =
+            materialesDemo.reduce(
+                (a,m)=>
+                    a +
+                    disponible(m),
+                0
+            );
+
     }
+
 
     function renderCategorias(){
-        const s=document.getElementById("filtroCategoria");
-        const valor=s.value;
-        s.innerHTML='<option value="">Todas</option>';
-        [...new Set(materialesDemo.map(m=>m.categoria).filter(Boolean))]
-            .sort((a,b)=>String(a).localeCompare(String(b),"es"))
-            .forEach(c=>{
-                const o=document.createElement("option");
-                o.value=c; o.textContent=c; s.appendChild(o);
-            });
-        if([...s.options].some(o=>o.value===valor)) s.value=valor;
-    }
 
-    function obtenerContenedorPaginacion(tablaId,id){
-        const tabla=document.getElementById(tablaId);
-        if(!tabla) return null;
-        let c=document.getElementById(id);
-        if(!c){
-            c=document.createElement("div");
-            c.id=id;
-            c.style.cssText="display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 2px;flex-wrap:wrap;";
-            tabla.insertAdjacentElement("afterend",c);
+        const s =
+            document.getElementById(
+                "filtroCategoria"
+            );
+
+
+        const valorActual =
+            s.value;
+
+
+        s.innerHTML = `
+            <option value="">Todas</option>
+        `;
+
+
+        [
+            ...new Set(
+                materialesDemo
+                .map(
+                    m=>
+                        m.categoria
+                )
+            )
+        ]
+        .filter(Boolean)
+        .sort(
+            (a,b)=>
+                String(a).localeCompare(
+                    String(b),
+                    "es"
+                )
+        )
+        .forEach(c=>{
+
+            const o =
+                document.createElement(
+                    "option"
+                );
+
+            o.value = c;
+            o.textContent = c;
+
+            s.appendChild(o);
+
+        });
+
+
+        if(
+            [...s.options].some(
+                o=>
+                    o.value ===
+                    valorActual
+            )
+        ){
+
+            s.value =
+                valorActual;
+
         }
-        return c;
+
     }
 
-    function desplazarAlInicioApartado(tablaId){
-        const tabla=document.getElementById(tablaId);
-        if(!tabla) return;
-        const seccion=tabla.closest(".seccion")||tabla;
-        const top=seccion.getBoundingClientRect().top+window.scrollY-10;
-        window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
+
+    function obtenerContenedorPaginacion(
+        tablaId,
+        contenedorId
+    ){
+
+        const tabla =
+            document.getElementById(
+                tablaId
+            );
+
+        if(!tabla){
+            return null;
+        }
+
+
+        let contenedor =
+            document.getElementById(
+                contenedorId
+            );
+
+
+        if(!contenedor){
+
+            contenedor =
+                document.createElement(
+                    "div"
+                );
+
+            contenedor.id =
+                contenedorId;
+
+            contenedor.style.cssText =
+                "display:flex;" +
+                "align-items:center;" +
+                "justify-content:center;" +
+                "gap:10px;" +
+                "margin:14px 0 2px;" +
+                "flex-wrap:wrap;";
+
+            tabla.insertAdjacentElement(
+                "afterend",
+                contenedor
+            );
+
+        }
+
+
+        return contenedor;
+
     }
 
-    function renderPaginacionEntregas(totalPaginas){
-        const c=obtenerContenedorPaginacion("tablaEntregas","paginacionEntregas");
-        if(!c) return;
-        c.style.display="flex";
-        c.innerHTML=`
-            <button class="btn" id="btnAnteriorEntregas" type="button" ${paginaEntregas<=1?"disabled":""}>Anterior</button>
-            <span style="font-size:12px;color:var(--texto-suave);font-weight:600;">Página ${paginaEntregas} de ${totalPaginas}</span>
-            <button class="btn" id="btnSiguienteEntregas" type="button" ${paginaEntregas>=totalPaginas?"disabled":""}>Siguiente</button>`;
-        const a=document.getElementById("btnAnteriorEntregas");
-        const s=document.getElementById("btnSiguienteEntregas");
-        a.addEventListener("click",()=>{
-            if(paginaEntregas<=1)return;
-            paginaEntregas--; renderEntregas(); desplazarAlInicioApartado("tablaEntregas");
+
+    function desplazarAlInicioApartado(
+        tablaId
+    ){
+
+        const tabla =
+            document.getElementById(
+                tablaId
+            );
+
+        if(!tabla){
+            return;
+        }
+
+
+        const seccion =
+            tabla.closest(
+                ".seccion"
+            );
+
+
+        const objetivo =
+            seccion || tabla;
+
+
+        const posicion =
+            objetivo.getBoundingClientRect().top +
+            window.scrollY -
+            10;
+
+
+        window.scrollTo({
+
+            top:
+                Math.max(
+                    0,
+                    posicion
+                ),
+
+            behavior:"smooth"
+
         });
-        s.addEventListener("click",()=>{
-            if(paginaEntregas>=totalPaginas)return;
-            paginaEntregas++; renderEntregas(); desplazarAlInicioApartado("tablaEntregas");
-        });
+
     }
 
-    function renderPaginacionInventario(totalPaginas){
-        const c=obtenerContenedorPaginacion("tablaInventario","paginacionInventario");
-        if(!c) return;
-        c.style.display="flex";
-        c.innerHTML=`
-            <button class="btn" id="btnAnteriorInventario" type="button" ${paginaInventario<=1?"disabled":""}>Anterior</button>
-            <span style="font-size:12px;color:var(--texto-suave);font-weight:600;">Página ${paginaInventario} de ${totalPaginas}</span>
-            <button class="btn" id="btnSiguienteInventario" type="button" ${paginaInventario>=totalPaginas?"disabled":""}>Siguiente</button>`;
-        document.getElementById("btnAnteriorInventario").addEventListener("click",()=>{
-            if(paginaInventario<=1)return;
-            paginaInventario--; renderInventario(); desplazarAlInicioApartado("tablaInventario");
-        });
-        document.getElementById("btnSiguienteInventario").addEventListener("click",()=>{
-            if(paginaInventario>=totalPaginas)return;
-            paginaInventario++; renderInventario(); desplazarAlInicioApartado("tablaInventario");
-        });
+
+    function renderPaginacionEntregas(
+        totalPaginas
+    ){
+
+        const contenedor =
+            obtenerContenedorPaginacion(
+                "tablaEntregas",
+                "paginacionEntregas"
+            );
+
+
+        if(!contenedor){
+            return;
+        }
+
+
+        if(totalPaginas <= 1){
+
+            contenedor.innerHTML = "";
+
+            contenedor.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        contenedor.style.display =
+            "flex";
+
+
+        contenedor.innerHTML = `
+
+            <button
+                class="btn"
+                id="btnAnteriorEntregas"
+                type="button"
+                ${paginaEntregas <= 1 ? "disabled" : ""}
+                style="${
+                    paginaEntregas <= 1
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Anterior
+            </button>
+
+            <span
+                style="
+                    font-size:12px;
+                    color:var(--texto-suave);
+                    font-weight:600;
+                "
+            >
+                Página ${paginaEntregas} de ${totalPaginas}
+            </span>
+
+            <button
+                class="btn"
+                id="btnSiguienteEntregas"
+                type="button"
+                ${
+                    paginaEntregas >= totalPaginas
+                    ? "disabled"
+                    : ""
+                }
+                style="${
+                    paginaEntregas >= totalPaginas
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Siguiente
+            </button>
+
+        `;
+
+
+        document.getElementById(
+            "btnAnteriorEntregas"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaEntregas <= 1
+                ){
+                    return;
+                }
+
+                paginaEntregas--;
+
+                renderEntregas();
+
+                desplazarAlInicioApartado(
+                    "tablaEntregas"
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "btnSiguienteEntregas"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaEntregas >= totalPaginas
+                ){
+                    return;
+                }
+
+                paginaEntregas++;
+
+                renderEntregas();
+
+                desplazarAlInicioApartado(
+                    "tablaEntregas"
+                );
+
+            }
+        );
+
     }
+
+
+    function renderPaginacionInventario(
+        totalPaginas
+    ){
+
+        const contenedor =
+            obtenerContenedorPaginacion(
+                "tablaInventario",
+                "paginacionInventario"
+            );
+
+
+        if(!contenedor){
+            return;
+        }
+
+
+        if(totalPaginas <= 1){
+
+            contenedor.innerHTML = "";
+
+            contenedor.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        contenedor.style.display =
+            "flex";
+
+
+        contenedor.innerHTML = `
+
+            <button
+                class="btn"
+                id="btnAnteriorInventario"
+                type="button"
+                ${paginaInventario <= 1 ? "disabled" : ""}
+                style="${
+                    paginaInventario <= 1
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Anterior
+            </button>
+
+            <span
+                style="
+                    font-size:12px;
+                    color:var(--texto-suave);
+                    font-weight:600;
+                "
+            >
+                Página ${paginaInventario} de ${totalPaginas}
+            </span>
+
+            <button
+                class="btn"
+                id="btnSiguienteInventario"
+                type="button"
+                ${
+                    paginaInventario >= totalPaginas
+                    ? "disabled"
+                    : ""
+                }
+                style="${
+                    paginaInventario >= totalPaginas
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Siguiente
+            </button>
+
+        `;
+
+
+        document.getElementById(
+            "btnAnteriorInventario"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaInventario <= 1
+                ){
+                    return;
+                }
+
+                paginaInventario--;
+
+                renderInventario();
+
+                desplazarAlInicioApartado(
+                    "tablaInventario"
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "btnSiguienteInventario"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaInventario >= totalPaginas
+                ){
+                    return;
+                }
+
+                paginaInventario++;
+
+                renderInventario();
+
+                desplazarAlInicioApartado(
+                    "tablaInventario"
+                );
+
+            }
+        );
+
+    }
+
 
     function renderInventario(){
-        const q=document.getElementById("buscarMaterial").value.trim().toLowerCase();
-        const cat=document.getElementById("filtroCategoria").value;
-        const bib=document.getElementById("filtroBiblioteca").value;
-        const est=document.getElementById("filtroEstado").value;
-        const filas=materialesDemo.filter(m=>
-            (!q || String(m.codigo||"").toLowerCase().includes(q) || String(m.nombre||"").toLowerCase().includes(q)) &&
-            (!cat || m.categoria===cat) && (!bib || m.biblioteca===bib) && (!est || m.estado===est));
-        const totalPaginas=Math.max(1,Math.ceil(filas.length/REGISTROS_POR_PAGINA));
-        paginaInventario=Math.min(Math.max(1,paginaInventario),totalPaginas);
-        const inicio=(paginaInventario-1)*REGISTROS_POR_PAGINA;
-        const pagina=filas.slice(inicio,inicio+REGISTROS_POR_PAGINA);
-        const tbody=document.getElementById("tablaInventario");
-        tbody.innerHTML=pagina.length ? pagina.map(m=>{
-            const d=disponible(m);
-            const clase=d<0?"cantidad-negativa":d===0?"cantidad-cero":"cantidad-disponible";
-            return `<tr>
-                <td><strong>${esc(m.codigo)}</strong></td>
-                <td>${esc(m.nombre)}</td>
-                <td>${esc(m.categoria)}</td>
-                <td>${esc(m.unidad)}</td>
-                <td>${esc(m.biblioteca)}</td>
-                <td>${Number(m.entradas||0)}</td>
-                <td>${Number(m.entregadas||0)}</td>
-                <td class="${clase}">${d}</td>
-                <td><span class="estado ${m.estado==="Activo"?"estado-activo":"estado-baja"}">${esc(m.estado)}</span></td>
-                <td>${administrador?`<div class="mini-acciones"><button class="btn" type="button" onclick="window.editarMaterial('${esc(m.codigo)}')">Editar</button></div>`:"—"}</td>
-            </tr>`;
-        }).join(""):`<tr><td colspan="10" class="mensaje-vacio">No hay materiales que coincidan con los filtros.</td></tr>`;
-        renderPaginacionInventario(totalPaginas);
+
+        const q =
+            document.getElementById(
+                "buscarMaterial"
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        const cat =
+            document.getElementById(
+                "filtroCategoria"
+            ).value;
+
+
+        const bib =
+            document.getElementById(
+                "filtroBiblioteca"
+            ).value;
+
+
+        const est =
+            document.getElementById(
+                "filtroEstado"
+            ).value;
+
+
+        const filas =
+            materialesDemo.filter(m=>
+
+                (!q ||
+
+                    String(
+                        m.codigo || ""
+                    )
+                    .toLowerCase()
+                    .includes(q)
+
+                    ||
+
+                    String(
+                        m.nombre || ""
+                    )
+                    .toLowerCase()
+                    .includes(q)
+
+                )
+
+                &&
+
+                (!cat ||
+                    m.categoria === cat
+                )
+
+                &&
+
+                (!bib ||
+                    m.biblioteca === bib
+                )
+
+                &&
+
+                (!est ||
+                    m.estado === est
+                )
+
+            );
+
+
+        const totalPaginas =
+            Math.max(
+                1,
+                Math.ceil(
+                    filas.length /
+                    REGISTROS_POR_PAGINA
+                )
+            );
+
+
+        if(
+            paginaInventario >
+            totalPaginas
+        ){
+
+            paginaInventario =
+                totalPaginas;
+
+        }
+
+
+        if(
+            paginaInventario < 1
+        ){
+
+            paginaInventario = 1;
+
+        }
+
+
+        const inicio =
+            (
+                paginaInventario - 1
+            ) *
+            REGISTROS_POR_PAGINA;
+
+
+        const filasPagina =
+            filas.slice(
+                inicio,
+                inicio +
+                REGISTROS_POR_PAGINA
+            );
+
+
+        const tbody =
+            document.getElementById(
+                "tablaInventario"
+            );
+
+
+        tbody.innerHTML =
+            filasPagina.length
+
+            ?
+
+            filasPagina.map(m=>{
+
+                const d =
+                    disponible(m);
+
+
+                const clase =
+                    d < 0
+                    ? "cantidad-negativa"
+                    : d === 0
+                    ? "cantidad-cero"
+                    : "cantidad-disponible";
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${esc(m.codigo)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${esc(m.nombre)}
+                        </td>
+
+                        <td>
+                            ${esc(m.categoria)}
+                        </td>
+
+                        <td>
+                            ${esc(m.unidad)}
+                        </td>
+
+                        <td>
+                            ${esc(m.biblioteca)}
+                        </td>
+
+                        <td>
+                            ${Number(
+                                m.entradas || 0
+                            )}
+                        </td>
+
+                        <td>
+                            ${Number(
+                                m.entregadas || 0
+                            )}
+                        </td>
+
+                        <td class="${clase}">
+                            ${d}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="estado ${
+                                    m.estado === "Activo"
+                                    ? "estado-activo"
+                                    : "estado-baja"
+                                }"
+                            >
+                                ${esc(m.estado)}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            ${
+                                administrador
+                                ?
+
+                                `
+                                <div class="mini-acciones">
+
+                                    <button
+                                        class="btn"
+                                        type="button"
+                                        onclick="window.editarMaterial('${esc(m.codigo)}')"
+                                    >
+                                        Editar
+                                    </button>
+
+                                </div>
+                                `
+
+                                :
+
+                                "—"
+                            }
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }).join("")
+
+            :
+
+            `
+
+            <tr>
+
+                <td
+                    colspan="10"
+                    class="mensaje-vacio"
+                >
+                    No hay materiales que coincidan con los filtros.
+                </td>
+
+            </tr>
+
+            `;
+
+
+        renderPaginacionInventario(
+            totalPaginas
+        );
+
+
         actualizarEstadisticas();
+
     }
+
 
     function renderEntregas(){
-        const tbody=document.getElementById("tablaEntregas");
-        const totalPaginas=Math.max(1,Math.ceil(entregasDemo.length/REGISTROS_POR_PAGINA));
-        paginaEntregas=Math.min(Math.max(1,paginaEntregas),totalPaginas);
-        const inicio=(paginaEntregas-1)*REGISTROS_POR_PAGINA;
-        const pagina=entregasDemo.slice(inicio,inicio+REGISTROS_POR_PAGINA);
-        tbody.innerHTML=pagina.length ? pagina.map(e=>`<tr>
-            <td>${esc(e.fecha)}</td><td>${esc(e.material)}</td><td>${Number(e.cantidad||0)}</td>
-            <td>${esc(e.nombres)}</td><td>${esc(e.apellidos)}</td><td>${esc(e.receptor)}</td>
-            <td>${esc(e.biblioteca)}</td><td>${esc(e.sitio)}</td><td>${esc(e.usuario)}</td>
-        </tr>`).join(""):`<tr><td colspan="9" class="mensaje-vacio">No hay entregas registradas.</td></tr>`;
-        renderPaginacionEntregas(totalPaginas);
+
+        const tbody =
+            document.getElementById(
+                "tablaEntregas"
+            );
+
+
+        const totalPaginas =
+            Math.max(
+                1,
+                Math.ceil(
+                    entregasDemo.length /
+                    REGISTROS_POR_PAGINA
+                )
+            );
+
+
+        if(
+            paginaEntregas >
+            totalPaginas
+        ){
+
+            paginaEntregas =
+                totalPaginas;
+
+        }
+
+
+        if(
+            paginaEntregas < 1
+        ){
+
+            paginaEntregas = 1;
+
+        }
+
+
+        if(!entregasDemo.length){
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="9"
+                        class="mensaje-vacio"
+                    >
+                        No hay entregas registradas.
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            renderPaginacionEntregas(
+                totalPaginas
+            );
+
+            return;
+
+        }
+
+
+        const inicio =
+            (
+                paginaEntregas - 1
+            ) *
+            REGISTROS_POR_PAGINA;
+
+
+        const filasPagina =
+            entregasDemo.slice(
+                inicio,
+                inicio +
+                REGISTROS_POR_PAGINA
+            );
+
+
+        tbody.innerHTML =
+            filasPagina.map(e=>`
+
+                <tr>
+
+                    <td>
+                        ${esc(e.fecha)}
+                    </td>
+
+                    <td>
+                        ${esc(e.material)}
+                    </td>
+
+                    <td>
+                        ${Number(
+                            e.cantidad || 0
+                        )}
+                    </td>
+
+                    <td>
+                        ${esc(e.nombres)}
+                    </td>
+
+                    <td>
+                        ${esc(e.apellidos)}
+                    </td>
+
+                    <td>
+                        ${esc(e.receptor)}
+                    </td>
+
+                    <td>
+                        ${esc(e.biblioteca)}
+                    </td>
+
+                    <td>
+                        ${esc(e.sitio)}
+                    </td>
+
+                    <td>
+                        ${esc(e.usuario)}
+                    </td>
+
+                </tr>
+
+            `).join("");
+
+
+        renderPaginacionEntregas(
+            totalPaginas
+        );
+
     }
 
-    function buscarMaterialPorCodigo(codigo){
-        const c=String(codigo||"").trim();
-        return materialesDemo.find(m=>String(m.codigo).trim()===c)||null;
-    }
 
     function opcionesMateriales(){
-        return `<option value="">Seleccionar material</option>` +
-            materialesDemo.filter(m=>m.estado==="Activo" && disponible(m)>0).map(m=>
-                `<option value="${esc(m.codigo)}">${esc(m.codigo)} - ${esc(m.nombre)}</option>`).join("");
+
+        return `
+
+            <option value="">
+                Seleccionar material
+            </option>
+
+            ${
+                materialesDemo
+                .filter(
+                    m=>
+                        m.estado === "Activo" &&
+                        disponible(m) > 0
+                )
+                .map(m=>`
+
+                    <option
+                        value="${esc(m.codigo)}"
+                    >
+                        ${esc(m.codigo)}
+                        -
+                        ${esc(m.nombre)}
+                    </option>
+
+                `)
+                .join("")
+            }
+
+        `;
+
     }
 
-    function actualizarResumenMateriales(){
-        const filas=document.querySelectorAll("#listaMaterialesEntrega .material-entrega-fila");
-        let materiales=0, unidades=0;
-        filas.forEach(f=>{
-            const s=f.querySelector(".material-entrega-select"), q=f.querySelector(".material-entrega-cantidad");
-            if(s && s.value){ materiales++; unidades+=Number(q.value||0); }
-        });
-        document.getElementById("resumenMaterialesEntrega").innerHTML=`<strong>Materiales seleccionados:</strong> ${materiales} &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Unidades totales:</strong> ${unidades}`;
-    }
-
-    function renumerarMateriales(){
-        document.querySelectorAll("#listaMaterialesEntrega .material-entrega-fila").forEach((f,i)=>{
-            f.querySelector(".material-entrega-numero").textContent="MATERIAL "+(i+1);
-        });
-    }
 
     function agregarFilaMaterialEntrega(){
-        const lista=document.getElementById("listaMaterialesEntrega");
-        const fila=document.createElement("div");
-        fila.className="material-entrega-fila";
-        fila.innerHTML=`
-            <div class="material-entrega-numero">MATERIAL ${lista.children.length+1}</div>
-            <div class="campo"><label>Material</label><select class="material-entrega-select" required>${opcionesMateriales()}</select></div>
-            <div class="campo"><label>Cantidad</label><input class="material-entrega-cantidad" type="number" min="1" step="1" value="1" required></div>
-            <button class="btn-eliminar" type="button" title="Eliminar este material">✕ Quitar</button>`;
-        fila.querySelector(".btn-eliminar").addEventListener("click",()=>{ fila.remove(); renumerarMateriales(); actualizarResumenMateriales(); });
-        fila.querySelector(".material-entrega-select").addEventListener("change",actualizarResumenMateriales);
-        fila.querySelector(".material-entrega-cantidad").addEventListener("input",actualizarResumenMateriales);
+
+        const lista =
+            document.getElementById(
+                "listaMaterialesEntrega"
+            );
+
+        if(!lista){
+            return;
+        }
+
+
+        const numero =
+            lista.children.length + 1;
+
+
+        const fila =
+            document.createElement("div");
+
+
+        fila.className =
+            "material-entrega-fila";
+
+
+        fila.innerHTML = `
+
+            <div class="material-entrega-numero">
+                MATERIAL ${numero}
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    Material
+                </label>
+
+                <select
+                    class="material-entrega-select"
+                    required
+                >
+                    ${opcionesMateriales()}
+                </select>
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+                    Cantidad
+                </label>
+
+                <input
+                    class="material-entrega-cantidad"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value="1"
+                    required
+                >
+
+            </div>
+
+            <button
+                class="btn-eliminar"
+                type="button"
+                title="Eliminar este material"
+            >
+                ✕ Quitar
+            </button>
+
+        `;
+
+
+        const botonEliminar =
+            fila.querySelector(
+                ".btn-eliminar"
+            );
+
+
+        botonEliminar.addEventListener(
+            "click",
+            ()=>{
+
+                fila.remove();
+
+                renumerarMateriales();
+
+                actualizarResumenMateriales();
+
+            }
+        );
+
+
         lista.appendChild(fila);
+
+
+        const select =
+            fila.querySelector(
+                ".material-entrega-select"
+            );
+
+
+        const cantidad =
+            fila.querySelector(
+                ".material-entrega-cantidad"
+            );
+
+
+        select.addEventListener(
+            "change",
+            actualizarResumenMateriales
+        );
+
+
+        cantidad.addEventListener(
+            "input",
+            actualizarResumenMateriales
+        );
+
+
         actualizarResumenMateriales();
+
     }
+
+
+    function renumerarMateriales(){
+
+        const filas =
+            document.querySelectorAll(
+                "#listaMaterialesEntrega .material-entrega-fila"
+            );
+
+
+        filas.forEach(
+            (fila,index)=>{
+
+                const numero =
+                    fila.querySelector(
+                        ".material-entrega-numero"
+                    );
+
+
+                numero.textContent =
+                    "MATERIAL " +
+                    (index + 1);
+
+            }
+        );
+
+    }
+
+
+    function actualizarResumenMateriales(){
+
+        const filas =
+            document.querySelectorAll(
+                "#listaMaterialesEntrega .material-entrega-fila"
+            );
+
+
+        let cantidadMateriales = 0;
+        let cantidadUnidades = 0;
+
+
+        filas.forEach(fila=>{
+
+            const select =
+                fila.querySelector(
+                    ".material-entrega-select"
+                );
+
+
+            const input =
+                fila.querySelector(
+                    ".material-entrega-cantidad"
+                );
+
+
+            if(
+                select &&
+                select.value
+            ){
+
+                cantidadMateriales++;
+
+                cantidadUnidades +=
+                    Number(
+                        input.value || 0
+                    );
+
+            }
+
+        });
+
+
+        document.getElementById(
+            "resumenMaterialesEntrega"
+        ).innerHTML = `
+
+            <strong>
+                Materiales seleccionados:
+            </strong>
+
+            ${cantidadMateriales}
+
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+
+            <strong>
+                Unidades totales:
+            </strong>
+
+            ${cantidadUnidades}
+
+        `;
+
+    }
+
 
     function limpiarReceptor(){
-        ["entregaPersona","entregaNombres","entregaApellidos","entregaPersonaId","entregaFamiliaId","entregaCodigoColaborador","entregaAreaColaborador"].forEach(id=>document.getElementById(id).value="");
-        document.getElementById("receptorSeleccionado").textContent="";
-        document.getElementById("receptorSeleccionado").classList.remove("mostrar");
-        document.getElementById("resultadosReceptor").innerHTML="";
-        document.getElementById("resultadosReceptor").classList.remove("mostrar");
+
+        document.getElementById(
+            "entregaPersona"
+        ).value = "";
+
+        document.getElementById(
+            "entregaNombres"
+        ).value = "";
+
+        document.getElementById(
+            "entregaApellidos"
+        ).value = "";
+
+        document.getElementById(
+            "entregaPersonaId"
+        ).value = "";
+
+        document.getElementById(
+            "entregaFamiliaId"
+        ).value = "";
+
+        document.getElementById(
+            "entregaCodigoColaborador"
+        ).value = "";
+
+        document.getElementById(
+            "entregaAreaColaborador"
+        ).value = "";
+
+        document.getElementById(
+            "receptorSeleccionado"
+        ).textContent = "";
+
+        document.getElementById(
+            "receptorSeleccionado"
+        ).classList.remove(
+            "mostrar"
+        );
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).innerHTML = "";
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).classList.remove(
+            "mostrar"
+        );
+
     }
+
 
     function actualizarCamposReceptor(){
-        const tipo=document.getElementById("tipoReceptor").value;
-        document.getElementById("campoBuscarReceptor").style.display=tipo?"":"none";
-        document.querySelectorAll(".campo-afiliado").forEach(e=>e.style.display=tipo==="Afiliado"?"":"none");
-        document.querySelectorAll(".campo-colaborador").forEach(e=>e.style.display=tipo==="Colaborador"?"":"none");
-        const input=document.getElementById("entregaPersona");
-        input.placeholder=tipo==="Afiliado"?"Escriba nombre, apellido, PersonaId o FamiliaId":tipo==="Colaborador"?"Escriba nombre, código o área":"Escriba nombre, apellido o código";
+
+        const tipo =
+            document.getElementById(
+                "tipoReceptor"
+            ).value;
+
+
+        const campoBuscar =
+            document.getElementById(
+                "campoBuscarReceptor"
+            );
+
+
+        const camposAfiliado =
+            document.querySelectorAll(
+                ".campo-afiliado"
+            );
+
+
+        const camposColaborador =
+            document.querySelectorAll(
+                ".campo-colaborador"
+            );
+
+
+        campoBuscar.style.display =
+            tipo
+            ? ""
+            : "none";
+
+
+        camposAfiliado.forEach(campo=>{
+
+            campo.style.display =
+                tipo === "Afiliado"
+                ? ""
+                : "none";
+
+        });
+
+
+        camposColaborador.forEach(campo=>{
+
+            campo.style.display =
+                tipo === "Colaborador"
+                ? ""
+                : "none";
+
+        });
+
+
+        const input =
+            document.getElementById(
+                "entregaPersona"
+            );
+
+
+        if(tipo === "Afiliado"){
+
+            input.placeholder =
+                "Escriba nombre, apellido, PersonaId o FamiliaId";
+
+        }else if(tipo === "Colaborador"){
+
+            input.placeholder =
+                "Escriba nombre, código o área";
+
+        }else{
+
+            input.placeholder =
+                "Escriba nombre, apellido o código";
+
+        }
+
     }
+
 
     async function buscarAfiliados(){
-        const texto=document.getElementById("entregaPersona").value.trim();
-        const resultados=document.getElementById("resultadosReceptor");
-        if(texto.length<2){resultados.innerHTML="";resultados.classList.remove("mostrar");return;}
-        resultados.innerHTML='<div class="resultado-vacio">Buscando...</div>'; resultados.classList.add("mostrar");
+
+        const input =
+            document.getElementById(
+                "entregaPersona"
+            );
+
+
+        const texto =
+            input.value.trim();
+
+
+        const resultados =
+            document.getElementById(
+                "resultadosReceptor"
+            );
+
+
+        if(texto.length < 2){
+
+            resultados.innerHTML = "";
+
+            resultados.classList.remove(
+                "mostrar"
+            );
+
+            return;
+
+        }
+
+
+        resultados.innerHTML =
+            `<div class="resultado-vacio">Buscando...</div>`;
+
+        resultados.classList.add(
+            "mostrar"
+        );
+
+
         try{
-            const {data,error}=await supabaseClient.from("afiliados").select("*").eq("estado","Activo")
-                .or(`Nombres.ilike.%${texto}%,Apellidos.ilike.%${texto}%,PersonaId.ilike.%${texto}%,FamiliaId.ilike.%${texto}%`)
-                .order("Apellidos",{ascending:true}).limit(20);
-            if(error) throw error;
-            if(!data?.length){resultados.innerHTML='<div class="resultado-vacio">No se encontraron afiliados activos.</div>';return;}
-            resultados.innerHTML=data.map((p,i)=>`<button type="button" class="resultado-receptor" data-indice="${i}"><strong>${esc((p.Nombres||"")+" "+(p.Apellidos||""))}</strong><span>Familia: ${esc(p.FamiliaId)} &nbsp;|&nbsp; Persona: ${esc(p.PersonaId)}</span></button>`).join("");
-            resultados.querySelectorAll(".resultado-receptor").forEach(b=>b.addEventListener("click",()=>seleccionarAfiliado(data[Number(b.dataset.indice)])));
-        }catch(error){console.error(error);resultados.innerHTML='<div class="resultado-vacio">No fue posible realizar la búsqueda.</div>';}
+
+            const {data,error} =
+                await supabaseClient
+                .from("afiliados")
+                .select("*")
+                .eq(
+                    "estado",
+                    "Activo"
+                )
+                .or(
+                    "Nombres.ilike.%" +
+                    texto +
+                    "%,Apellidos.ilike.%" +
+                    texto +
+                    "%,PersonaId.ilike.%" +
+                    texto +
+                    "%,FamiliaId.ilike.%" +
+                    texto +
+                    "%"
+                )
+                .order(
+                    "Apellidos",
+                    {
+                        ascending:true
+                    }
+                )
+                .limit(20);
+
+
+            if(error){
+                throw error;
+            }
+
+
+            if(!data || !data.length){
+
+                resultados.innerHTML =
+                    `<div class="resultado-vacio">No se encontraron afiliados.</div>`;
+
+                return;
+
+            }
+
+
+            resultados.innerHTML =
+                data.map(persona=>`
+
+                    <button
+                        type="button"
+                        class="resultado-receptor"
+                    >
+
+                        <strong>
+                            ${esc(
+                                String(
+                                    persona.Nombres || ""
+                                ) +
+                                " " +
+                                String(
+                                    persona.Apellidos || ""
+                                )
+                            )}
+                        </strong>
+
+                        <span>
+                            PersonaId:
+                            ${esc(persona.PersonaId || "")}
+                            &nbsp; | &nbsp;
+                            FamiliaId:
+                            ${esc(persona.FamiliaId || "")}
+                        </span>
+
+                    </button>
+
+                `).join("");
+
+
+            const botones =
+                resultados.querySelectorAll(
+                    ".resultado-receptor"
+                );
+
+
+            botones.forEach(
+                (boton,index)=>{
+
+                    boton.addEventListener(
+                        "click",
+                        ()=>{
+
+                            seleccionarAfiliado(
+                                data[index]
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "Error buscando afiliados:",
+                error
+            );
+
+            resultados.innerHTML =
+                `<div class="resultado-vacio">No fue posible realizar la búsqueda.</div>`;
+
+        }
+
     }
+
 
     async function buscarColaboradores(){
-        const texto=document.getElementById("entregaPersona").value.trim();
-        const resultados=document.getElementById("resultadosReceptor");
-        if(texto.length<2){resultados.innerHTML="";resultados.classList.remove("mostrar");return;}
-        resultados.innerHTML='<div class="resultado-vacio">Buscando...</div>'; resultados.classList.add("mostrar");
+
+        const input =
+            document.getElementById(
+                "entregaPersona"
+            );
+
+
+        const texto =
+            input.value.trim();
+
+
+        const resultados =
+            document.getElementById(
+                "resultadosReceptor"
+            );
+
+
+        if(texto.length < 2){
+
+            resultados.innerHTML = "";
+
+            resultados.classList.remove(
+                "mostrar"
+            );
+
+            return;
+
+        }
+
+
+        resultados.innerHTML =
+            `<div class="resultado-vacio">Buscando...</div>`;
+
+        resultados.classList.add(
+            "mostrar"
+        );
+
+
         try{
-            const {data,error}=await supabaseClient.from("colaboradores").select("*").eq("estado","Activo")
-                .or(`Nombre.ilike.%${texto}%,CodigoColaborador.ilike.%${texto}%,Area.ilike.%${texto}%`)
-                .order("Nombre",{ascending:true}).limit(20);
-            if(error) throw error;
-            if(!data?.length){resultados.innerHTML='<div class="resultado-vacio">No se encontraron colaboradores activos.</div>';return;}
-            resultados.innerHTML=data.map((c,i)=>`<button type="button" class="resultado-receptor" data-indice="${i}"><strong>${esc(c.Nombre)}</strong><span>Código: ${esc(c.CodigoColaborador)} &nbsp;|&nbsp; Área: ${esc(c.Area||"")}</span></button>`).join("");
-            resultados.querySelectorAll(".resultado-receptor").forEach(b=>b.addEventListener("click",()=>seleccionarColaborador(data[Number(b.dataset.indice)])));
-        }catch(error){console.error(error);resultados.innerHTML='<div class="resultado-vacio">No fue posible realizar la búsqueda.</div>';}
+
+            const {data,error} =
+                await supabaseClient
+                .from("colaboradores")
+                .select("*")
+                .eq(
+                    "estado",
+                    "Activo"
+                )
+                .or(
+                    "Nombre.ilike.%" +
+                    texto +
+                    "%,CodigoColaborador.ilike.%" +
+                    texto +
+                    "%,Area.ilike.%" +
+                    texto +
+                    "%"
+                )
+                .order(
+                    "Nombre",
+                    {
+                        ascending:true
+                    }
+                )
+                .limit(20);
+
+
+            if(error){
+                throw error;
+            }
+
+
+            if(!data || !data.length){
+
+                resultados.innerHTML =
+                    `<div class="resultado-vacio">No se encontraron colaboradores.</div>`;
+
+                return;
+
+            }
+
+
+            resultados.innerHTML =
+                data.map(colaborador=>`
+
+                    <button
+                        type="button"
+                        class="resultado-receptor"
+                    >
+
+                        <strong>
+                            ${esc(
+                                colaborador.Nombre || ""
+                            )}
+                        </strong>
+
+                        <span>
+                            Código:
+                            ${esc(
+                                colaborador.CodigoColaborador || ""
+                            )}
+                            &nbsp; | &nbsp;
+                            Área:
+                            ${esc(
+                                colaborador.Area || ""
+                            )}
+                        </span>
+
+                    </button>
+
+                `).join("");
+
+
+            const botones =
+                resultados.querySelectorAll(
+                    ".resultado-receptor"
+                );
+
+
+            botones.forEach(
+                (boton,index)=>{
+
+                    boton.addEventListener(
+                        "click",
+                        ()=>{
+
+                            seleccionarColaborador(
+                                data[index]
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "Error buscando colaboradores:",
+                error
+            );
+
+            resultados.innerHTML =
+                `<div class="resultado-vacio">No fue posible realizar la búsqueda.</div>`;
+
+        }
+
     }
 
-    function seleccionarAfiliado(p){
-        document.getElementById("entregaPersona").value=((p.Nombres||"")+" "+(p.Apellidos||"")).trim();
-        document.getElementById("entregaNombres").value=p.Nombres||"";
-        document.getElementById("entregaApellidos").value=p.Apellidos||"";
-        document.getElementById("entregaPersonaId").value=p.PersonaId||"";
-        document.getElementById("entregaFamiliaId").value=p.FamiliaId||"";
-        document.getElementById("entregaCodigoColaborador").value="";
-        document.getElementById("entregaAreaColaborador").value="";
-        document.getElementById("receptorSeleccionado").textContent="✓ Afiliado seleccionado: "+((p.Nombres||"")+" "+(p.Apellidos||"")).trim();
-        document.getElementById("receptorSeleccionado").classList.add("mostrar");
-        document.getElementById("resultadosReceptor").classList.remove("mostrar");
-        document.getElementById("resultadosReceptor").innerHTML="";
+
+    function seleccionarAfiliado(persona){
+
+        const nombres =
+            textoSeguro(
+                persona.Nombres
+            );
+
+
+        const apellidos =
+            textoSeguro(
+                persona.Apellidos
+            );
+
+
+        document.getElementById(
+            "entregaPersona"
+        ).value =
+            (
+                nombres +
+                " " +
+                apellidos
+            ).trim();
+
+
+        document.getElementById(
+            "entregaNombres"
+        ).value =
+            nombres;
+
+
+        document.getElementById(
+            "entregaApellidos"
+        ).value =
+            apellidos;
+
+
+        document.getElementById(
+            "entregaPersonaId"
+        ).value =
+            persona.PersonaId || "";
+
+
+        document.getElementById(
+            "entregaFamiliaId"
+        ).value =
+            persona.FamiliaId || "";
+
+
+        document.getElementById(
+            "entregaCodigoColaborador"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "entregaAreaColaborador"
+        ).value =
+            "";
+
+
+        const seleccionado =
+            document.getElementById(
+                "receptorSeleccionado"
+            );
+
+
+        seleccionado.textContent =
+            "✓ Afiliado seleccionado: " +
+            (
+                nombres +
+                " " +
+                apellidos
+            ).trim();
+
+
+        seleccionado.classList.add(
+            "mostrar"
+        );
+
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).innerHTML = "";
+
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).classList.remove(
+            "mostrar"
+        );
+
     }
 
-    function seleccionarColaborador(c){
-        document.getElementById("entregaPersona").value=c.Nombre||"";
-        document.getElementById("entregaNombres").value=c.Nombre||"";
-        document.getElementById("entregaApellidos").value="";
-        document.getElementById("entregaPersonaId").value="";
-        document.getElementById("entregaFamiliaId").value="";
-        document.getElementById("entregaCodigoColaborador").value=c.CodigoColaborador||"";
-        document.getElementById("entregaAreaColaborador").value=c.Area||"";
-        document.getElementById("receptorSeleccionado").textContent="✓ Colaborador seleccionado: "+(c.Nombre||"");
-        document.getElementById("receptorSeleccionado").classList.add("mostrar");
-        document.getElementById("resultadosReceptor").classList.remove("mostrar");
-        document.getElementById("resultadosReceptor").innerHTML="";
+
+    function seleccionarColaborador(
+        colaborador
+    ){
+
+        const nombre =
+            textoSeguro(
+                colaborador.Nombre
+            );
+
+
+        document.getElementById(
+            "entregaPersona"
+        ).value =
+            nombre;
+
+
+        document.getElementById(
+            "entregaNombres"
+        ).value =
+            nombre;
+
+
+        document.getElementById(
+            "entregaApellidos"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "entregaPersonaId"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "entregaFamiliaId"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "entregaCodigoColaborador"
+        ).value =
+            colaborador.CodigoColaborador || "";
+
+
+        document.getElementById(
+            "entregaAreaColaborador"
+        ).value =
+            colaborador.Area || "";
+
+
+        const seleccionado =
+            document.getElementById(
+                "receptorSeleccionado"
+            );
+
+
+        seleccionado.textContent =
+            "✓ Colaborador seleccionado: " +
+            nombre;
+
+
+        seleccionado.classList.add(
+            "mostrar"
+        );
+
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).innerHTML = "";
+
+
+        document.getElementById(
+            "resultadosReceptor"
+        ).classList.remove(
+            "mostrar"
+        );
+
     }
+
+
+    let temporizadorBusqueda = null;
+
+
+    document.getElementById(
+        "tipoReceptor"
+    ).addEventListener(
+        "change",
+        ()=>{
+
+            limpiarReceptor();
+
+            actualizarCamposReceptor();
+
+        }
+    );
+
+
+    document.getElementById(
+        "entregaPersona"
+    ).addEventListener(
+        "input",
+        ()=>{
+
+            clearTimeout(
+                temporizadorBusqueda
+            );
+
+
+            temporizadorBusqueda =
+                setTimeout(
+                    ()=>{
+
+                        const tipo =
+                            document.getElementById(
+                                "tipoReceptor"
+                            ).value;
+
+
+                        if(
+                            tipo === "Afiliado"
+                        ){
+
+                            buscarAfiliados();
+
+                        }else if(
+                            tipo === "Colaborador"
+                        ){
+
+                            buscarColaboradores();
+
+                        }
+
+                    },
+                    300
+                );
+
+        }
+    );
+
+
+    document.addEventListener(
+        "click",
+        evento=>{
+
+            const campo =
+                document.getElementById(
+                    "campoBuscarReceptor"
+                );
+
+
+            const resultados =
+                document.getElementById(
+                    "resultadosReceptor"
+                );
+
+
+            if(
+                campo &&
+                resultados &&
+                !campo.contains(
+                    evento.target
+                )
+            ){
+
+                resultados.classList.remove(
+                    "mostrar"
+                );
+
+            }
+
+        }
+    );
+
 
     function prepararNuevaEntrega(){
-        document.getElementById("listaMaterialesEntrega").innerHTML="";
+
+        const lista =
+            document.getElementById(
+                "listaMaterialesEntrega"
+            );
+
+
+        if(!lista){
+            return;
+        }
+
+
+        lista.innerHTML = "";
+
+
         agregarFilaMaterialEntrega();
-        document.getElementById("tipoReceptor").value="";
+
+
+        document.getElementById(
+            "tipoReceptor"
+        ).value = "";
+
+
         limpiarReceptor();
+
+
+        document.getElementById(
+            "entregaBiblioteca"
+        ).value = "";
+
+
+        document.getElementById(
+            "entregaSitio"
+        ).value = "";
+
+
+        document.getElementById(
+            "entregaObservaciones"
+        ).value = "";
+
+
         actualizarCamposReceptor();
-        document.getElementById("entregaBiblioteca").value="";
-        document.getElementById("entregaSitio").value="";
-        document.getElementById("entregaObservaciones").value="";
+
         actualizarResumenMateriales();
+
     }
 
-    document.getElementById("tipoReceptor").addEventListener("change",()=>{limpiarReceptor();actualizarCamposReceptor();});
-    let temporizadorBusqueda=null;
-    document.getElementById("entregaPersona").addEventListener("input",()=>{
-        clearTimeout(temporizadorBusqueda);
-        temporizadorBusqueda=setTimeout(()=>{
-            const tipo=document.getElementById("tipoReceptor").value;
-            if(tipo==="Afiliado") buscarAfiliados();
-            if(tipo==="Colaborador") buscarColaboradores();
-        },300);
-    });
-    document.addEventListener("click",e=>{
-        const campo=document.getElementById("entregaPersona"), resultados=document.getElementById("resultadosReceptor");
-        if(e.target!==campo && !resultados.contains(e.target)) resultados.classList.remove("mostrar");
-    });
 
-    document.querySelectorAll("[data-cerrar]").forEach(b=>b.addEventListener("click",()=>cerrar(b.dataset.cerrar)));
+    function abrir(id){
 
-    document.getElementById("btnNuevoMaterial").addEventListener("click",()=>{
-        ["materialCodigo","materialNombre","materialCategoria","materialUnidad","materialObservaciones"].forEach(id=>document.getElementById(id).value="");
-        document.getElementById("materialBiblioteca").value="";
-        abrir("modalMaterial");
-    });
+        const elemento =
+            document.getElementById(id);
 
-    document.getElementById("btnRegistrarEntrega").addEventListener("click",async()=>{
-        try{
-            await cargarMateriales();
-            prepararNuevaEntrega();
-            abrir("modalEntrega");
-        }catch(error){
-            console.error("Error preparando entrega:",error);
-            mostrarMensaje("No se pudo abrir la entrega","No fue posible cargar los materiales disponibles desde Supabase.","!",true);
+        if(!elemento){
+            return;
         }
-    });
 
-    document.getElementById("btnAgregarOtroMaterial").addEventListener("click",()=>agregarFilaMaterialEntrega());
+        elemento.classList.add(
+            "mostrar"
+        );
 
-    document.getElementById("btnLimpiarFiltros").addEventListener("click",()=>{
-        ["buscarMaterial","filtroCategoria","filtroBiblioteca","filtroEstado"].forEach(id=>document.getElementById(id).value="");
-        paginaInventario=1; renderInventario();
-    });
-    ["buscarMaterial","filtroCategoria","filtroBiblioteca","filtroEstado"].forEach(id=>{
-        document.getElementById(id).addEventListener("input",()=>{paginaInventario=1;renderInventario();});
-        document.getElementById(id).addEventListener("change",()=>{paginaInventario=1;renderInventario();});
-    });
-
-    document.getElementById("formMaterial").addEventListener("submit",async e=>{
-        e.preventDefault();
-        const codigo=textoSeguro(document.getElementById("materialCodigo").value);
-        const nombre=textoSeguro(document.getElementById("materialNombre").value);
-        const categoria=textoSeguro(document.getElementById("materialCategoria").value);
-        const unidad=textoSeguro(document.getElementById("materialUnidad").value);
-        const biblioteca=document.getElementById("materialBiblioteca").value;
-        const observaciones=textoSeguro(document.getElementById("materialObservaciones").value);
-        if(buscarMaterialPorCodigo(codigo)){
-            mostrarMensaje("Código existente",`Ya existe un material con el código ${codigo}.\n\nUtilice otro código para registrar un material nuevo.`,"!"); return;
-        }
-        try{
-            const {data,error}=await supabaseClient.from("materiales").insert({codigo,nombre,categoria,unidad,biblioteca,entradas:0,entregadas:0,estado:"Activo",observaciones}).select("*").single();
-            if(error) throw error;
-            if(data) materialesDemo.push({id:data.id,codigo:data.codigo,nombre:data.nombre,categoria:data.categoria,unidad:data.unidad,biblioteca:data.biblioteca,entradas:Number(data.entradas||0),entregadas:Number(data.entregadas||0),estado:data.estado||"Activo",observaciones:data.observaciones||""});
-            renderCategorias(); renderInventario(); cerrar("modalMaterial");
-            mostrarMensaje("Material registrado",`El material ${codigo} - ${nombre} fue agregado correctamente al catálogo.\n\nEl registro quedó guardado en Supabase.`,"✓");
-        }catch(error){
-            console.error("Error registrando material:",error);
-            mostrarMensaje("Error al registrar",`No fue posible guardar el material en Supabase.\n\n${error.message||"Revise la conexión y los datos ingresados."}`,"!",true);
-        }
-    });
-
-    document.getElementById("formEntrega").addEventListener("submit",async e=>{
-        e.preventDefault();
-        const filas=[...document.querySelectorAll("#listaMaterialesEntrega .material-entrega-fila")];
-        if(!filas.length){mostrarMensaje("Material requerido","Debe agregar al menos un material.","!");return;}
-        const materiales=[];
-        for(const fila of filas){
-            const select=fila.querySelector(".material-entrega-select");
-            const input=fila.querySelector(".material-entrega-cantidad");
-            const codigo=select.value, cantidad=Number(input.value);
-            const material=buscarMaterialPorCodigo(codigo);
-            if(!codigo){mostrarMensaje("Material requerido","Debe seleccionar un material en todas las filas.","!");select.focus();return;}
-            if(!Number.isInteger(cantidad)||cantidad<1){mostrarMensaje("Cantidad no válida","Todas las cantidades deben ser números enteros mayores que 0.","!");input.focus();return;}
-            if(!material){mostrarMensaje("Material no válido","Uno de los materiales seleccionados no es válido.","!",true);return;}
-            if(cantidad>disponible(material)){mostrarMensaje("Cantidad no disponible",`El material ${material.nombre} solamente tiene ${disponible(material)} unidad(es) disponible(s).`,"!");input.focus();return;}
-            materiales.push({material,cantidad});
-        }
-        // Evita que dos filas del mismo material permitan salir por encima del inventario.
-        const porCodigo=new Map();
-        materiales.forEach(x=>porCodigo.set(x.material.codigo,(porCodigo.get(x.material.codigo)||0)+x.cantidad));
-        for(const [codigo,cantidad] of porCodigo){
-            const m=buscarMaterialPorCodigo(codigo);
-            if(cantidad>disponible(m)){mostrarMensaje("Cantidad no disponible",`La cantidad total solicitada para ${m.nombre} supera las unidades disponibles (${disponible(m)}).`,"!");return;}
-        }
-        const tipo=document.getElementById("tipoReceptor").value;
-        if(!tipo){mostrarMensaje("Receptor requerido","Debe seleccionar si quien recibe es un Afiliado o un Colaborador.","!");return;}
-        const nombres=document.getElementById("entregaNombres").value.trim();
-        if(!nombres){mostrarMensaje("Receptor requerido","Debe seleccionar un afiliado o colaborador.","!");document.getElementById("entregaPersona").focus();return;}
-        const apellidos=document.getElementById("entregaApellidos").value.trim();
-        const personaId=document.getElementById("entregaPersonaId").value.trim();
-        const familiaId=document.getElementById("entregaFamiliaId").value.trim();
-        const codigoColaborador=document.getElementById("entregaCodigoColaborador").value.trim();
-        const areaColaborador=document.getElementById("entregaAreaColaborador").value.trim();
-        const biblioteca=document.getElementById("entregaBiblioteca").value;
-        const sitio=document.getElementById("entregaSitio").value;
-        const observaciones=document.getElementById("entregaObservaciones").value.trim();
-        if(!biblioteca){mostrarMensaje("Biblioteca requerida","Debe seleccionar la biblioteca.","!");return;}
-        if(!sitio){mostrarMensaje("Sitio requerido","Debe seleccionar el sitio que entrega.","!");return;}
-        const usuario=obtenerUsuarioActual();
-        const fecha=fechaActual();
-        try{
-            // Primero registra cada salida y después actualiza el total entregado del material.
-            // Si algo falla, se detiene y no continúa con los siguientes registros.
-            const insertados=[];
-            for(const item of materiales){
-                const payload={
-                    fecha:fechaParaSupabase(fecha),
-                    codigo_material:item.material.codigo,
-                    material:item.material.nombre,
-                    cantidad:item.cantidad,
-                    receptor:tipo,
-                    nombres,apellidos,
-                    persona_id:personaId||null,
-                    familia_id:familiaId||null,
-                    codigo_colaborador:codigoColaborador||null,
-                    area_colaborador:areaColaborador||null,
-                    biblioteca,
-                    sitio,
-                    observaciones:observaciones||null,
-                    usuario:usuario||"Usuario actual"
-                };
-                const {data,error}=await supabaseClient.from("entregas_materiales").insert(payload).select("*").single();
-                if(error) throw error;
-                insertados.push(data);
-            }
-            for(const item of materiales){
-                const nuevoTotal=Number(item.material.entregadas||0)+item.cantidad;
-                const {data,error}=await supabaseClient.from("materiales").update({entregadas:nuevoTotal,updated_at:new Date().toISOString()}).eq("id",item.material.id).select("*").single();
-                if(error) throw error;
-                item.material.entregadas=Number(data?.entregadas??nuevoTotal);
-            }
-            await cargarMateriales();
-            await cargarEntregas();
-            paginaEntregas=1;
-            renderInventario(); renderEntregas();
-            cerrar("modalEntrega");
-            const detalle=materiales.map(x=>`${x.material.codigo} - ${x.material.nombre} (${x.cantidad})`).join("\n");
-            mostrarMensaje("Entrega registrada","La entrega fue registrada correctamente.\n\nMateriales:\n"+detalle+"\n\nReceptor:\n"+nombres+(apellidos?" "+apellidos:"")+"\n\nLa información quedó guardada en Supabase.","✓");
-        }catch(error){
-            console.error("Error registrando entrega:",error);
-            mostrarMensaje("Error al registrar entrega","No fue posible completar la entrega en Supabase.\n\n"+(error.message||"Revise la conexión y los datos ingresados."),"!",true);
-            // Se recarga para mostrar el estado real que quedó en la base de datos.
-            try{await cargarMateriales();await cargarEntregas();renderInventario();renderEntregas();}catch(recarga){console.error(recarga);}
-        }
-    });
-
-    // MasterMateriales: importación persistente en Supabase.
-    function normalizarMaterialImportado(fila){
-        const obtener=(...nombres)=>{for(const n of nombres){if(Object.prototype.hasOwnProperty.call(fila,n))return fila[n];}return "";};
-        const codigo=textoSeguro(obtener("Código","Codigo","codigo","Código del material","Codigo del material"));
-        if(!codigo)return null;
-        const nombre=textoSeguro(obtener("Material","Nombre","material","nombre","Nombre del material"));
-        const categoria=textoSeguro(obtener("Categoría","Categoria","categoría","categoria","Categoría / tipo"));
-        const unidad=textoSeguro(obtener("Unidad","unidad"));
-        const biblioteca=textoSeguro(obtener("Biblioteca","biblioteca"));
-        const entradas=numeroSeguro(obtener("Entradas","entradas","Unidades ingresadas"));
-        const entregadas=numeroSeguro(obtener("Entregadas","entregadas","Unidades entregadas"));
-        const disponibles=numeroSeguro(obtener("Disponibles","disponibles","Unidades disponibles"));
-        const estado=textoSeguro(obtener("Estado","estado"))||"Activo";
-        const observaciones=textoSeguro(obtener("Observaciones","observaciones"));
-        return {codigo,nombre,categoria,unidad,biblioteca,entradas:(!entradas&&disponibles?disponibles+entregadas:entradas),entregadas,estado,observaciones};
     }
 
-    async function procesarMasterMateriales(archivo){
-        if(typeof XLSX==="undefined"){mostrarMensaje("Excel no disponible","No se pudo cargar la herramienta necesaria para leer archivos Excel.","!",true);return;}
-        try{
-            const libro=XLSX.read(await archivo.arrayBuffer(),{type:"array"});
-            const nombreHoja=libro.SheetNames.find(n=>String(n).trim().toLowerCase()==="mastermateriales")||libro.SheetNames[0];
-            if(!nombreHoja){mostrarMensaje("Excel vacío","El archivo no contiene ninguna hoja de cálculo.","!");return;}
-            const filas=XLSX.utils.sheet_to_json(libro.Sheets[nombreHoja],{defval:""});
-            if(!filas.length){mostrarMensaje("Sin datos","La hoja seleccionada no contiene registros.","!");return;}
-            let nuevos=0,actualizados=0,ignorados=0;
-            for(const fila of filas){
-                const m=normalizarMaterialImportado(fila);
-                if(!m || (!m.nombre&&!m.categoria&&!m.unidad)){ignorados++;continue;}
-                const existente=buscarMaterialPorCodigo(m.codigo);
-                if(existente){
-                    const {error}=await supabaseClient.from("materiales").update({nombre:m.nombre||existente.nombre,categoria:m.categoria||existente.categoria,unidad:m.unidad||existente.unidad,biblioteca:m.biblioteca||existente.biblioteca,entradas:m.entradas,entregadas:m.entregadas,estado:m.estado||existente.estado,observaciones:m.observaciones,updated_at:new Date().toISOString()}).eq("id",existente.id);
-                    if(error)throw error; actualizados++;
-                }else{
-                    const {error}=await supabaseClient.from("materiales").insert({...m});
-                    if(error)throw error; nuevos++;
+
+    function cerrar(id){
+
+        const elemento =
+            document.getElementById(id);
+
+        if(!elemento){
+            return;
+        }
+
+        elemento.classList.remove(
+            "mostrar"
+        );
+
+    }
+
+
+    document.querySelectorAll(
+        "[data-cerrar]"
+    ).forEach(
+        boton=>{
+
+            boton.addEventListener(
+                "click",
+                ()=>{
+
+                    cerrar(
+                        boton.dataset.cerrar
+                    );
+
                 }
-            }
-            await cargarMateriales(); renderCategorias(); renderInventario();
-            mostrarMensaje("MasterMateriales cargado",`Importación completada.\n\nMateriales nuevos: ${nuevos}\nMateriales actualizados: ${actualizados}\nRegistros ignorados: ${ignorados}\n\nEl catálogo quedó guardado en Supabase.`,"📥");
-        }catch(error){
-            console.error("Error importando MasterMateriales:",error);
-            mostrarMensaje("Error al importar","No fue posible guardar el archivo MasterMateriales en Supabase.\n\n"+(error.message||"Verifique el archivo y la conexión."),"!",true);
+            );
+
         }
+    );
+
+
+    document.getElementById(
+        "formMaterial"
+    ).addEventListener(
+        "submit",
+        async evento=>{
+
+            evento.preventDefault();
+
+
+            const boton =
+                evento.submitter;
+
+
+            const codigo =
+                textoSeguro(
+                    document.getElementById(
+                        "materialCodigo"
+                    ).value
+                );
+
+
+            const nombre =
+                textoSeguro(
+                    document.getElementById(
+                        "materialNombre"
+                    ).value
+                );
+
+
+            const categoria =
+                textoSeguro(
+                    document.getElementById(
+                        "materialCategoria"
+                    ).value
+                );
+
+
+            const unidad =
+                textoSeguro(
+                    document.getElementById(
+                        "materialUnidad"
+                    ).value
+                );
+
+
+            const biblioteca =
+                textoSeguro(
+                    document.getElementById(
+                        "materialBiblioteca"
+                    ).value
+                );
+
+
+            const observaciones =
+                textoSeguro(
+                    document.getElementById(
+                        "materialObservaciones"
+                    ).value
+                );
+
+
+            if(
+                !codigo ||
+                !nombre ||
+                !categoria ||
+                !unidad ||
+                !biblioteca
+            ){
+
+                mostrarMensaje(
+                    "Datos incompletos",
+                    "Complete todos los campos obligatorios.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            const duplicado =
+                materialesDemo.some(
+                    m=>
+                        String(
+                            m.codigo
+                        ).toLowerCase() ===
+                        codigo.toLowerCase()
+                );
+
+
+            if(duplicado){
+
+                mostrarMensaje(
+                    "Código duplicado",
+                    "Ya existe un material con el código " +
+                    codigo +
+                    ".",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(boton){
+                boton.disabled = true;
+            }
+
+
+            try{
+
+                const {error} =
+                    await supabaseClient
+                    .from("materiales")
+                    .insert({
+
+                        codigo,
+                        nombre,
+                        categoria,
+                        unidad,
+                        biblioteca,
+                        entradas:0,
+                        entregadas:0,
+                        estado:"Activo",
+                        observaciones
+
+                    });
+
+
+                if(error){
+                    throw error;
+                }
+
+
+                await cargarMateriales();
+
+                renderCategorias();
+
+                paginaInventario = 1;
+
+                renderInventario();
+
+                cerrar(
+                    "modalMaterial"
+                );
+
+
+                mostrarMensaje(
+                    "Material registrado",
+                    "El material fue registrado correctamente.",
+                    "✓"
+                );
+
+
+            }catch(error){
+
+                console.error(
+                    "Error registrando material:",
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No fue posible registrar",
+                    error.message ||
+                    "Ocurrió un error al registrar el material.",
+                    "!",
+                    true
+                );
+
+
+            }finally{
+
+                if(boton){
+                    boton.disabled = false;
+                }
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "formEntrega"
+    ).addEventListener(
+        "submit",
+        async evento=>{
+
+            evento.preventDefault();
+
+
+            const boton =
+                evento.submitter;
+
+
+            const filas =
+                [
+                    ...document.querySelectorAll(
+                        "#listaMaterialesEntrega .material-entrega-fila"
+                    )
+                ];
+
+
+            if(!filas.length){
+
+                mostrarMensaje(
+                    "Sin materiales",
+                    "Agregue al menos un material para registrar la entrega.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            const movimientos = [];
+
+
+            for(
+                const fila
+                of filas
+            ){
+
+                const select =
+                    fila.querySelector(
+                        ".material-entrega-select"
+                    );
+
+
+                const input =
+                    fila.querySelector(
+                        ".material-entrega-cantidad"
+                    );
+
+
+                const codigo =
+                    select
+                    ? select.value
+                    : "";
+
+
+                const cantidad =
+                    input
+                    ? numeroSeguro(
+                        input.value
+                    )
+                    : 0;
+
+
+                if(!codigo){
+
+                    mostrarMensaje(
+                        "Material pendiente",
+                        "Seleccione un material en todas las filas.",
+                        "!",
+                        true
+                    );
+
+                    return;
+
+                }
+
+
+                if(
+                    !Number.isInteger(
+                        cantidad
+                    ) ||
+                    cantidad <= 0
+                ){
+
+                    mostrarMensaje(
+                        "Cantidad incorrecta",
+                        "La cantidad debe ser un número entero mayor que cero.",
+                        "!",
+                        true
+                    );
+
+                    return;
+
+                }
+
+
+                const material =
+                    materialesDemo.find(
+                        m=>
+                            String(
+                                m.codigo
+                            ) ===
+                            String(
+                                codigo
+                            )
+                    );
+
+
+                if(!material){
+
+                    mostrarMensaje(
+                        "Material no encontrado",
+                        "No fue posible encontrar el material " +
+                        codigo +
+                        ".",
+                        "!",
+                        true
+                    );
+
+                    return;
+
+                }
+
+
+                const disponibleActual =
+                    disponible(
+                        material
+                    );
+
+
+                if(
+                    cantidad >
+                    disponibleActual
+                ){
+
+                    mostrarMensaje(
+                        "Cantidad no disponible",
+                        "El material " +
+                        codigo +
+                        " solamente tiene " +
+                        disponibleActual +
+                        " unidades disponibles.",
+                        "!",
+                        true
+                    );
+
+                    return;
+
+                }
+
+
+                movimientos.push({
+
+                    codigo,
+                    cantidad,
+                    material
+
+                });
+
+            }
+
+
+            const tipoReceptor =
+                textoSeguro(
+                    document.getElementById(
+                        "tipoReceptor"
+                    ).value
+                );
+
+
+            if(!tipoReceptor){
+
+                mostrarMensaje(
+                    "Falta el receptor",
+                    "Seleccione quién recibe el material.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            const persona =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaPersona"
+                    ).value
+                );
+
+
+            const nombres =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaNombres"
+                    ).value
+                );
+
+
+            const apellidos =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaApellidos"
+                    ).value
+                );
+
+
+            const personaId =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaPersonaId"
+                    ).value
+                );
+
+
+            const familiaId =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaFamiliaId"
+                    ).value
+                );
+
+
+            const codigoColaborador =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaCodigoColaborador"
+                    ).value
+                );
+
+
+            const areaColaborador =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaAreaColaborador"
+                    ).value
+                );
+
+
+            if(!persona){
+
+                mostrarMensaje(
+                    "Falta el receptor",
+                    "Busque y seleccione la persona o colaborador que recibe el material.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(
+                tipoReceptor === "Afiliado" &&
+                !personaId &&
+                !familiaId
+            ){
+
+                mostrarMensaje(
+                    "Afiliado no seleccionado",
+                    "Seleccione un afiliado de la lista de resultados antes de registrar la entrega.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(
+                tipoReceptor === "Colaborador" &&
+                !codigoColaborador
+            ){
+
+                mostrarMensaje(
+                    "Colaborador no seleccionado",
+                    "Seleccione un colaborador de la lista de resultados antes de registrar la entrega.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            const biblioteca =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaBiblioteca"
+                    ).value
+                );
+
+
+            const sitio =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaSitio"
+                    ).value
+                );
+
+
+            const observaciones =
+                textoSeguro(
+                    document.getElementById(
+                        "entregaObservaciones"
+                    ).value
+                );
+
+
+            if(!biblioteca){
+
+                mostrarMensaje(
+                    "Falta la biblioteca",
+                    "Seleccione la biblioteca que recibe el material.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            if(!sitio){
+
+                mostrarMensaje(
+                    "Falta el sitio",
+                    "Seleccione el sitio que entrega el material.",
+                    "!",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            const usuario =
+                obtenerUsuarioActual();
+
+
+            if(boton){
+                boton.disabled = true;
+            }
+
+
+            let movimientosRegistrados = 0;
+
+
+            try{
+
+                for(
+                    const movimiento
+                    of movimientos
+                ){
+
+                    const {data:materialActual,error:errorMaterial} =
+                        await supabaseClient
+                        .from("materiales")
+                        .select("*")
+                        .eq(
+                            "codigo",
+                            movimiento.codigo
+                        )
+                        .maybeSingle();
+
+
+                    if(errorMaterial){
+                        throw errorMaterial;
+                    }
+
+
+                    if(!materialActual){
+
+                        throw new Error(
+                            "No se encontró el material " +
+                            movimiento.codigo +
+                            " en Supabase."
+                        );
+
+                    }
+
+
+                    const disponibleActual =
+                        Number(
+                            materialActual.entradas || 0
+                        ) -
+                        Number(
+                            materialActual.entregadas || 0
+                        );
+
+
+                    if(
+                        movimiento.cantidad >
+                        disponibleActual
+                    ){
+
+                        throw new Error(
+                            "El material " +
+                            movimiento.codigo +
+                            " ya no tiene suficientes unidades disponibles."
+                        );
+
+                    }
+
+
+                    const {error:errorEntrega} =
+                        await supabaseClient
+                        .from("entregas_materiales")
+                        .insert({
+
+                            fecha:
+                                new Date().toISOString(),
+
+                            codigo_material:
+                                movimiento.codigo,
+
+                            material:
+                                materialActual.nombre ||
+                                movimiento.material.nombre,
+
+                            cantidad:
+                                movimiento.cantidad,
+
+                            receptor:
+                                tipoReceptor,
+
+                            nombres:
+                                nombres ||
+                                persona,
+
+                            apellidos:
+                                apellidos,
+
+                            persona_id:
+                                personaId ||
+                                null,
+
+                            familia_id:
+                                familiaId ||
+                                null,
+
+                            codigo_colaborador:
+                                codigoColaborador ||
+                                null,
+
+                            area_colaborador:
+                                areaColaborador ||
+                                null,
+
+                            biblioteca,
+
+                            sitio,
+
+                            observaciones:
+                                observaciones ||
+                                null,
+
+                            usuario:
+                                usuario
+
+                        });
+
+
+                    if(errorEntrega){
+                        throw errorEntrega;
+                    }
+
+
+                    const nuevaCantidadEntregada =
+                        Number(
+                            materialActual.entregadas || 0
+                        ) +
+                        movimiento.cantidad;
+
+
+                    const {error:errorActualizar} =
+                        await supabaseClient
+                        .from("materiales")
+                        .update({
+
+                            entregadas:
+                                nuevaCantidadEntregada
+
+                        })
+                        .eq(
+                            "id",
+                            materialActual.id
+                        );
+
+
+                    if(errorActualizar){
+                        throw errorActualizar;
+                    }
+
+
+                    movimientosRegistrados++;
+
+                }
+
+
+                await cargarMateriales();
+
+                await cargarEntregas();
+
+                paginaEntregas = 1;
+
+                renderCategorias();
+
+                renderInventario();
+
+                renderEntregas();
+
+                cerrar(
+                    "modalEntrega"
+                );
+
+
+                mostrarMensaje(
+                    "Entrega registrada",
+                    movimientos.length === 1
+                    ? "La entrega de material fue registrada correctamente."
+                    : "Las " +
+                      movimientos.length +
+                      " entregas de materiales fueron registradas correctamente.",
+                    "✓"
+                );
+
+
+            }catch(error){
+
+                console.error(
+                    "Error registrando entrega:",
+                    error
+                );
+
+
+                try{
+
+                    await cargarMateriales();
+
+                    await cargarEntregas();
+
+                    renderCategorias();
+
+                    renderInventario();
+
+                    renderEntregas();
+
+                }catch(errorRecarga){
+
+                    console.error(
+                        "Error recargando información después del error:",
+                        errorRecarga
+                    );
+
+                }
+
+
+                if(
+                    movimientosRegistrados > 0
+                ){
+
+                    mostrarMensaje(
+                        "Entrega parcialmente registrada",
+                        "Se registraron " +
+                        movimientosRegistrados +
+                        " movimiento(s) antes de producirse el error.\n\n" +
+                        (
+                            error.message ||
+                            "Revise la información en el historial."
+                        ),
+                        "!",
+                        true
+                    );
+
+                }else{
+
+                    mostrarMensaje(
+                        "No fue posible registrar",
+                        error.message ||
+                        "Ocurrió un error al registrar la entrega.",
+                        "!",
+                        true
+                    );
+
+                }
+
+            }finally{
+
+                if(boton){
+                    boton.disabled = false;
+                }
+
+            }
+
+        }
+    );
+
+
+    function descargarExcel(
+        nombreArchivo,
+        hojas
+    ){
+
+        const libro =
+            XLSX.utils.book_new();
+
+
+        Object.entries(
+            hojas
+        ).forEach(
+            ([nombreHoja,datos])=>{
+
+                const hoja =
+                    XLSX.utils.json_to_sheet(
+                        datos
+                    );
+
+
+                XLSX.utils.book_append_sheet(
+                    libro,
+                    hoja,
+                    nombreHoja
+                );
+
+            }
+        );
+
+
+        XLSX.writeFile(
+            libro,
+            nombreArchivo
+        );
+
     }
+
+
+    function generarDatosMaster(){
+
+        return materialesDemo.map(
+            m=>({
+
+                "Código":
+                    m.codigo,
+
+                "Material":
+                    m.nombre,
+
+                "Categoría":
+                    m.categoria,
+
+                "Unidad":
+                    m.unidad,
+
+                "Biblioteca":
+                    m.biblioteca,
+
+                "Entradas":
+                    Number(
+                        m.entradas || 0
+                    ),
+
+                "Entregadas":
+                    Number(
+                        m.entregadas || 0
+                    ),
+
+                "Disponibles":
+                    disponible(m),
+
+                "Estado":
+                    m.estado,
+
+                "Observaciones":
+                    m.observaciones
+
+            })
+        );
+
+    }
+
+
+    function generarDatosEntregas(){
+
+        return entregasDemo.map(
+            e=>({
+
+                "Fecha":
+                    e.fecha,
+
+                "Código material":
+                    e.materialCodigo,
+
+                "Material":
+                    e.material,
+
+                "Cantidad":
+                    Number(
+                        e.cantidad || 0
+                    ),
+
+                "Tipo de receptor":
+                    e.receptor,
+
+                "Nombres":
+                    e.nombres,
+
+                "Apellidos":
+                    e.apellidos,
+
+                "PersonaId":
+                    e.personaId,
+
+                "FamiliaId":
+                    e.familiaId,
+
+                "Código colaborador":
+                    e.codigoColaborador,
+
+                "Área colaborador":
+                    e.areaColaborador,
+
+                "Biblioteca":
+                    e.biblioteca,
+
+                "Sitio":
+                    e.sitio,
+
+                "Entregado por":
+                    e.usuario,
+
+                "Observaciones":
+                    e.observaciones
+
+            })
+        );
+
+    }
+
 
     function descargarMasterMateriales(){
-        if(typeof XLSX==="undefined"){mostrarMensaje("Excel no disponible","No se pudo cargar la herramienta necesaria para generar el archivo Excel.","!",true);return;}
-        const materiales=materialesDemo.map(m=>({
-            "Código":m.codigo,"Material":m.nombre,"Categoría":m.categoria,"Unidad":m.unidad,"Biblioteca":m.biblioteca,
-            "Entradas":Number(m.entradas||0),"Entregadas":Number(m.entregadas||0),"Disponibles":disponible(m),"Estado":m.estado,"Observaciones":m.observaciones||""
-        }));
-        const entregas=entregasDemo.map(e=>({
-            "Fecha":e.fecha,"Código material":e.materialCodigo,"Material":e.material,"Cantidad":e.cantidad,"Tipo de receptor":e.receptor,
-            "Nombres":e.nombres,"Apellidos":e.apellidos,"PersonaId":e.personaId,"FamiliaId":e.familiaId,"Código colaborador":e.codigoColaborador,
-            "Área colaborador":e.areaColaborador,"Biblioteca":e.biblioteca,"Sitio":e.sitio,"Entregado por":e.usuario,"Observaciones":e.observaciones
-        }));
-        const wb=XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(materiales),"MasterMateriales");
-        XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(entregas),"Entregas");
-        XLSX.writeFile(wb,"MasterMateriales.xlsx");
+
+        const hoy =
+            new Date();
+
+
+        const nombreArchivo =
+            "MasterMateriales_" +
+            hoy.getFullYear() +
+            "-" +
+            String(
+                hoy.getMonth()+1
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                hoy.getDate()
+            ).padStart(2,"0") +
+            ".xlsx";
+
+
+        descargarExcel(
+            nombreArchivo,
+            {
+                "MasterMateriales":
+                    generarDatosMaster(),
+
+                "Entregas":
+                    generarDatosEntregas()
+
+            }
+        );
+
     }
 
-    window.editarMaterial=function(codigo){
-        const m=buscarMaterialPorCodigo(codigo);
-        if(!m){mostrarMensaje("Material no encontrado","No se encontró el material seleccionado.","!",true);return;}
-        mostrarMensaje("Edición de material","La edición detallada del catálogo se conserva pendiente de la siguiente etapa.\n\nMaterial seleccionado:\n"+m.codigo+" - "+m.nombre,"ℹ");
-    };
 
-    document.getElementById("btnSubirMaster").addEventListener("click",()=>{const a=document.getElementById("archivoMaster");a.value="";a.click();});
-    document.getElementById("archivoMaster").addEventListener("change",async e=>{const a=e.target.files[0];if(a)await procesarMasterMateriales(a);e.target.value="";});
-    document.getElementById("btnDescargarMaster").addEventListener("click",descargarMasterMateriales);
-    document.getElementById("btnBorrarBase").addEventListener("click",()=>mostrarConfirmacion("Borrar base de datos","¿Estás seguro de que deseas borrar la base de datos de materiales?\n\nEsta acción será irreversible.",()=>mostrarMensaje("Base de datos","La eliminación real se mantiene desactivada para proteger los registros de Supabase.","!")));
-    document.getElementById("botonVolver").addEventListener("click",()=>{window.location.href="index.html";});
+    function normalizarMaterialImportado(
+        fila
+    ){
 
-    document.getElementById("seccionAdministracionMateriales").style.display=administrador?"":"none";
-    document.getElementById("seccionBorrarMateriales").style.display=administrador?"":"none";
+        const obtener = (
+            posibles
+        )=>{
+
+            for(
+                const clave
+                of posibles
+            ){
+
+                if(
+                    Object.prototype.hasOwnProperty.call(
+                        fila,
+                        clave
+                    )
+                ){
+
+                    return fila[clave];
+
+                }
+
+            }
+
+            return "";
+
+        };
+
+
+        return {
+
+            codigo:
+                textoSeguro(
+                    obtener([
+                        "Código",
+                        "Codigo",
+                        "codigo",
+                        "Código material",
+                        "Codigo material"
+                    ])
+                ),
+
+            nombre:
+                textoSeguro(
+                    obtener([
+                        "Material",
+                        "Nombre",
+                        "material",
+                        "nombre"
+                    ])
+                ),
+
+            categoria:
+                textoSeguro(
+                    obtener([
+                        "Categoría",
+                        "Categoria",
+                        "categoría",
+                        "categoria"
+                    ])
+                ),
+
+            unidad:
+                textoSeguro(
+                    obtener([
+                        "Unidad",
+                        "unidad"
+                    ])
+                ),
+
+            biblioteca:
+                textoSeguro(
+                    obtener([
+                        "Biblioteca",
+                        "biblioteca"
+                    ])
+                ),
+
+            entradas:
+                numeroSeguro(
+                    obtener([
+                        "Entradas",
+                        "entradas"
+                    ])
+                ),
+
+            entregadas:
+                numeroSeguro(
+                    obtener([
+                        "Entregadas",
+                        "entregadas"
+                    ])
+                ),
+
+            estado:
+                textoSeguro(
+                    obtener([
+                        "Estado",
+                        "estado"
+                    ])
+                ) ||
+                "Activo",
+
+            observaciones:
+                textoSeguro(
+                    obtener([
+                        "Observaciones",
+                        "observaciones"
+                    ])
+                )
+
+        };
+
+    }
+
+
+    async function guardarMaterialImportado(
+        material
+    ){
+
+        if(!material.codigo){
+            return false;
+        }
+
+
+        const {
+            data:existente,
+            error:errorBusqueda
+        } =
+            await supabaseClient
+            .from("materiales")
+            .select("id")
+            .eq(
+                "codigo",
+                material.codigo
+            )
+            .maybeSingle();
+
+
+        if(errorBusqueda){
+            throw errorBusqueda;
+        }
+
+
+        const datos = {
+
+            codigo:
+                material.codigo,
+
+            nombre:
+                material.nombre,
+
+            categoria:
+                material.categoria,
+
+            unidad:
+                material.unidad,
+
+            biblioteca:
+                material.biblioteca,
+
+            entradas:
+                material.entradas,
+
+            entregadas:
+                material.entregadas,
+
+            estado:
+                material.estado,
+
+            observaciones:
+                material.observaciones
+
+        };
+
+
+        if(existente){
+
+            const {error} =
+                await supabaseClient
+                .from("materiales")
+                .update(
+                    datos
+                )
+                .eq(
+                    "id",
+                    existente.id
+                );
+
+
+            if(error){
+                throw error;
+            }
+
+        }else{
+
+            const {error} =
+                await supabaseClient
+                .from("materiales")
+                .insert(
+                    datos
+                );
+
+
+            if(error){
+                throw error;
+            }
+
+        }
+
+
+        return true;
+
+    }
+
+
+    async function procesarMasterMateriales(
+        archivo
+    ){
+
+        const datos =
+            await archivo.arrayBuffer();
+
+
+        const libro =
+            XLSX.read(
+                datos,
+                {
+                    type:"array",
+                    cellDates:true
+                }
+            );
+
+
+        const nombreHojaMaster =
+            libro.SheetNames.find(
+                nombre=>
+                    String(
+                        nombre
+                    ).toLowerCase() ===
+                    "mastermateriales"
+            );
+
+
+        const hojaMaster =
+            nombreHojaMaster
+            ?
+            libro.Sheets[
+                nombreHojaMaster
+            ]
+            :
+            libro.Sheets[
+                libro.SheetNames[0]
+            ];
+
+
+        const materiales =
+            XLSX.utils.sheet_to_json(
+                hojaMaster,
+                {
+                    defval:""
+                }
+            );
+
+
+        let materialesImportados = 0;
+
+
+        for(
+            const fila
+            of materiales
+        ){
+
+            const material =
+                normalizarMaterialImportado(
+                    fila
+                );
+
+
+            if(!material.codigo){
+                continue;
+            }
+
+
+            await guardarMaterialImportado(
+                material
+            );
+
+
+            materialesImportados++;
+
+        }
+
+
+        let entregasImportadas = 0;
+
+
+        const nombreHojaEntregas =
+            libro.SheetNames.find(
+                nombre=>
+                    String(
+                        nombre
+                    ).toLowerCase() ===
+                    "entregas"
+            );
+
+
+        if(nombreHojaEntregas){
+
+            const hojaEntregas =
+                libro.Sheets[
+                    nombreHojaEntregas
+                ];
+
+
+            const filasEntregas =
+                XLSX.utils.sheet_to_json(
+                    hojaEntregas,
+                    {
+                        defval:""
+                    }
+                );
+
+
+            const {
+                data:entregasExistentes,
+                error:errorExistentes
+            } =
+                await supabaseClient
+                .from("entregas_materiales")
+                .select(
+                    "fecha,codigo_material,cantidad,nombres,apellidos,sitio"
+                );
+
+
+            if(errorExistentes){
+                throw errorExistentes;
+            }
+
+
+            const existeImportada =
+                entrega=>{
+
+                    return (
+                        entregasExistentes || []
+                    ).some(e=>
+                        String(
+                            fechaParaMostrar(
+                                e.fecha
+                            )
+                        ) ===
+                        String(
+                            fechaParaMostrar(
+                                entrega.fecha
+                            )
+                        ) &&
+                        String(
+                            e.codigo_material || ""
+                        ) ===
+                        String(
+                            entrega.codigo_material || ""
+                        ) &&
+                        Number(
+                            e.cantidad || 0
+                        ) ===
+                        Number(
+                            entrega.cantidad || 0
+                        ) &&
+                        String(
+                            e.nombres || ""
+                        ) ===
+                        String(
+                            entrega.nombres || ""
+                        ) &&
+                        String(
+                            e.apellidos || ""
+                        ) ===
+                        String(
+                            entrega.apellidos || ""
+                        ) &&
+                        String(
+                            e.sitio || ""
+                        ) ===
+                        String(
+                            entrega.sitio || ""
+                        )
+                    );
+
+                };
+
+
+            for(
+                const fila
+                of filasEntregas
+            ){
+
+                const codigo =
+                    textoSeguro(
+                        fila["Código material"] ??
+                        fila["Codigo material"] ??
+                        fila["codigo_material"] ??
+                        fila["Código"] ??
+                        fila["Codigo"]
+                    );
+
+
+                if(!codigo){
+                    continue;
+                }
+
+
+                let fecha =
+                    fila["Fecha"] ??
+                    fila["fecha"] ??
+                    "";
+
+
+                if(
+                    fecha instanceof Date
+                ){
+
+                    fecha =
+                        fecha.toISOString();
+
+                }else if(
+                    typeof fecha === "number"
+                ){
+
+                    const fechaExcel =
+                        XLSX.SSF.parse_date_code(
+                            fecha
+                        );
+
+
+                    if(fechaExcel){
+
+                        fecha =
+                            new Date(
+                                fechaExcel.y,
+                                fechaExcel.m - 1,
+                                fechaExcel.d,
+                                12,
+                                0,
+                                0
+                            ).toISOString();
+
+                        }
+
+                }else{
+
+                    const textoFecha =
+                        textoSeguro(
+                            fecha
+                        );
+
+
+                    if(
+                        /^\d{2}\/\d{2}\/\d{4}$/.test(
+                            textoFecha
+                        )
+                    ){
+
+                        const partes =
+                            textoFecha.split("/");
+
+
+                        fecha =
+                            partes[2] +
+                            "-" +
+                            partes[1] +
+                            "-" +
+                            partes[0] +
+                            "T12:00:00";
+
+                    }else{
+
+                        const posibleFecha =
+                            new Date(
+                                textoFecha
+                            );
+
+
+                        fecha =
+                            Number.isNaN(
+                                posibleFecha.getTime()
+                            )
+                            ?
+                            new Date().toISOString()
+                            :
+                            posibleFecha.toISOString();
+
+                    }
+
+                }
+
+
+                const registro = {
+
+                    fecha,
+
+                    codigo_material:
+                        codigo,
+
+                    material:
+                        textoSeguro(
+                            fila["Material"] ??
+                            fila["material"]
+                        ),
+
+                    cantidad:
+                        numeroSeguro(
+                            fila["Cantidad"] ??
+                            fila["cantidad"]
+                        ),
+
+                    receptor:
+                        textoSeguro(
+                            fila["Tipo de receptor"] ??
+                            fila["Receptor"] ??
+                            fila["receptor"]
+                        ),
+
+                    nombres:
+                        textoSeguro(
+                            fila["Nombres"] ??
+                            fila["nombres"]
+                        ),
+
+                    apellidos:
+                        textoSeguro(
+                            fila["Apellidos"] ??
+                            fila["apellidos"]
+                        ),
+
+                    persona_id:
+                        textoSeguro(
+                            fila["PersonaId"] ??
+                            fila["PersonaID"] ??
+                            fila["persona_id"]
+                        ) || null,
+
+                    familia_id:
+                        textoSeguro(
+                            fila["FamiliaId"] ??
+                            fila["FamiliaID"] ??
+                            fila["familia_id"]
+                        ) || null,
+
+                    codigo_colaborador:
+                        textoSeguro(
+                            fila["Código colaborador"] ??
+                            fila["Codigo colaborador"] ??
+                            fila["codigo_colaborador"]
+                        ) || null,
+
+                    area_colaborador:
+                        textoSeguro(
+                            fila["Área colaborador"] ??
+                            fila["Area colaborador"] ??
+                            fila["area_colaborador"]
+                        ) || null,
+
+                    biblioteca:
+                        textoSeguro(
+                            fila["Biblioteca"] ??
+                            fila["biblioteca"]
+                        ),
+
+                    sitio:
+                        textoSeguro(
+                            fila["Sitio"] ??
+                            fila["sitio"]
+                        ),
+
+                    observaciones:
+                        textoSeguro(
+                            fila["Observaciones"] ??
+                            fila["observaciones"]
+                        ) || null,
+
+                    usuario:
+                        textoSeguro(
+                            fila["Entregado por"] ??
+                            fila["Usuario"] ??
+                            fila["usuario"]
+                        ) ||
+                        "Usuario actual"
+
+                };
+
+
+                if(
+                    existeImportada(
+                        registro
+                    )
+                ){
+
+                    continue;
+
+                }
+
+
+                const {error} =
+                    await supabaseClient
+                    .from("entregas_materiales")
+                    .insert(
+                        registro
+                    );
+
+
+                if(error){
+                    throw error;
+                }
+
+
+                entregasImportadas++;
+
+            }
+
+        }
+
+
+        await cargarMateriales();
+
+        await cargarEntregas();
+
+        renderCategorias();
+
+        paginaInventario = 1;
+        paginaEntregas = 1;
+
+        renderInventario();
+
+        renderEntregas();
+
+
+        mostrarMensaje(
+            "Importación completada",
+            "Materiales importados o actualizados: " +
+            materialesImportados +
+            "\nEntregas nuevas importadas: " +
+            entregasImportadas,
+            "✓"
+        );
+
+    }
+
+
+    window.editarMaterial =
+        function(codigo){
+
+            mostrarMensaje(
+                "Edición de material",
+                "La edición del material " +
+                codigo +
+                " todavía no está habilitada en este módulo.",
+                "ℹ"
+            );
+
+        };
+
+
+    document.getElementById(
+        "btnNuevoMaterial"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            document.getElementById(
+                "formMaterial"
+            ).reset();
+
+            abrir(
+                "modalMaterial"
+            );
+
+        }
+    );
+
+
+    /*
+     * CORRECCIÓN PRINCIPAL:
+     * El botón de registrar entrega comprueba que la información
+     * de materiales esté cargada antes de preparar la ventana.
+     * No modifica ni elimina ningún registro de Supabase.
+     */
+
+    document.getElementById(
+        "btnRegistrarEntrega"
+    ).addEventListener(
+        "click",
+        async ()=>{
+
+            try{
+
+                if(
+                    !Array.isArray(
+                        materialesDemo
+                    )
+                ){
+
+                    materialesDemo = [];
+
+                }
+
+
+                if(
+                    !materialesDemo.length
+                ){
+
+                    await cargarMateriales();
+
+                }
+
+
+                prepararNuevaEntrega();
+
+                abrir(
+                    "modalEntrega"
+                );
+
+            }catch(error){
+
+                console.error(
+                    "Error abriendo formulario de entrega:",
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "No fue posible abrir",
+                    "No fue posible cargar los materiales disponibles para registrar la entrega.\n\n" +
+                    (
+                        error.message ||
+                        "Revise la conexión con Supabase."
+                    ),
+                    "!",
+                    true
+                );
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnAgregarOtroMaterial"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            agregarFilaMaterialEntrega();
+
+        }
+    );
+
+
+    document.getElementById(
+        "buscarMaterial"
+    ).addEventListener(
+        "input",
+        ()=>{
+
+            paginaInventario = 1;
+
+            renderInventario();
+
+        }
+    );
+
+
+    document.getElementById(
+        "filtroCategoria"
+    ).addEventListener(
+        "change",
+        ()=>{
+
+            paginaInventario = 1;
+
+            renderInventario();
+
+        }
+    );
+
+
+    document.getElementById(
+        "filtroBiblioteca"
+    ).addEventListener(
+        "change",
+        ()=>{
+
+            paginaInventario = 1;
+
+            renderInventario();
+
+        }
+    );
+
+
+    document.getElementById(
+        "filtroEstado"
+    ).addEventListener(
+        "change",
+        ()=>{
+
+            paginaInventario = 1;
+
+            renderInventario();
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnLimpiarFiltros"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            document.getElementById(
+                "buscarMaterial"
+            ).value = "";
+
+
+            document.getElementById(
+                "filtroCategoria"
+            ).value = "";
+
+
+            document.getElementById(
+                "filtroBiblioteca"
+            ).value = "";
+
+
+            document.getElementById(
+                "filtroEstado"
+            ).value = "";
+
+
+            paginaInventario = 1;
+
+            renderInventario();
+
+        }
+    );
+
+
+    if(administrador){
+
+        document.getElementById(
+            "seccionAdministracionMateriales"
+        ).style.display = "";
+
+
+        document.getElementById(
+            "seccionBorrarMateriales"
+        ).style.display = "";
+
+
+    }
+
+
+    document.getElementById(
+        "btnDescargarMaster"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            descargarMasterMateriales();
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnSubirMaster"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            document.getElementById(
+                "archivoMaster"
+            ).click();
+
+        }
+    );
+
+
+    document.getElementById(
+        "archivoMaster"
+    ).addEventListener(
+        "change",
+        async evento=>{
+
+            const archivo =
+                evento.target.files &&
+                evento.target.files[0];
+
+
+            if(!archivo){
+                return;
+            }
+
+
+            try{
+
+                await procesarMasterMateriales(
+                    archivo
+                );
+
+            }catch(error){
+
+                console.error(
+                    "Error importando MasterMateriales:",
+                    error
+                );
+
+
+                mostrarMensaje(
+                    "Error en la importación",
+                    error.message ||
+                    "No fue posible importar el archivo.",
+                    "!",
+                    true
+                );
+
+            }finally{
+
+                evento.target.value = "";
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnBorrarBase"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            mostrarConfirmacion(
+                "Borrar base de datos",
+                "Esta acción eliminará todos los registros de materiales y todas las entregas de materiales de Supabase.\n\n¿Desea continuar?",
+                async ()=>{
+
+                    try{
+
+                        const {
+                            error:errorEntregas
+                        } =
+                            await supabaseClient
+                            .from(
+                                "entregas_materiales"
+                            )
+                            .delete()
+                            .not(
+                                "id",
+                                "is",
+                                null
+                            );
+
+
+                        if(errorEntregas){
+                            throw errorEntregas;
+                        }
+
+
+                        const {
+                            error:errorMateriales
+                        } =
+                            await supabaseClient
+                            .from(
+                                "materiales"
+                            )
+                            .delete()
+                            .not(
+                                "id",
+                                "is",
+                                null
+                            );
+
+
+                        if(errorMateriales){
+                            throw errorMateriales;
+                        }
+
+
+                        materialesDemo = [];
+
+                        entregasDemo = [];
+
+                        paginaEntregas = 1;
+
+                        paginaInventario = 1;
+
+                        renderCategorias();
+
+                        renderInventario();
+
+                        renderEntregas();
+
+
+                        mostrarMensaje(
+                            "Base eliminada",
+                            "La información de materiales y entregas fue eliminada correctamente.",
+                            "✓"
+                        );
+
+
+                    }catch(error){
+
+                        console.error(
+                            "Error borrando base:",
+                            error
+                        );
+
+
+                        mostrarMensaje(
+                            "No fue posible borrar",
+                            error.message ||
+                            "Ocurrió un error al eliminar la información.",
+                            "!",
+                            true
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "botonVolver"
+    ).addEventListener(
+        "click",
+        ()=>{
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
 
     actualizarCamposReceptor();
+
     await cargarTodo();
 
 })();
 </script>
+
 </body>
 </html>
