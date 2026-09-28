@@ -33,119 +33,147 @@
             overflow: hidden;
         }
 
+        /* =========================
+           ENCABEZADO
+        ========================= */
+
         header {
-            background: #263238;
+            background: #009ddc;
             color: white;
-            padding: 18px 30px;
+            padding: 16px 20px;
         }
 
         .encabezado {
-            max-width: 1400px;
+            max-width: 1100px;
             margin: auto;
+            min-height: 48px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .encabezado-icono {
-            font-size: 34px;
-        }
-
-        .encabezado-texto h1 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .encabezado-texto p {
-            margin: 4px 0 0;
-            font-size: 13px;
-            color: #cfd8dc;
+            justify-content: center;
+            position: relative;
         }
 
         .encabezado-marca {
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            gap: 9px;
+            text-align: center;
         }
 
-        main {
-            max-width: 1400px;
-            margin: 25px auto;
-            padding: 0 20px;
+        .encabezado-icono {
+            font-size: 27px;
         }
 
-        .barra-superior {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 15px;
-        }
-
-        .barra-superior h2 {
+        .encabezado-texto h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 23px;
+            line-height: 1.2;
+        }
+
+        .encabezado-texto p {
+            display: none;
         }
 
         .volver {
             display: inline-block;
-            background: #37474f;
+            background: rgba(255, 255, 255, 0.16);
             color: white;
             text-decoration: none;
-            padding: 9px 16px;
-            border-radius: 6px;
+            padding: 8px 13px;
+            border-radius: 7px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: bold;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .volver:hover {
-            background: #263238;
+            background: rgba(255, 255, 255, 0.24);
         }
+
+        /* =========================
+           CONTENIDO
+        ========================= */
+
+        main {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /*
+         * Se mantiene en el HTML para no alterar
+         * la estructura funcional, pero ya no se muestra.
+         */
+        .barra-superior {
+            display: none;
+        }
+
+        /* =========================
+           ESTADISTICAS
+        ========================= */
 
         .estadisticas {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .tarjeta-estadistica {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 18px;
+            padding: 11px 10px;
+            text-align: center;
+        }
+
+        .tarjeta-estadistica .icono {
+            font-size: 19px;
+            margin-bottom: 3px;
+            line-height: 1;
         }
 
         .tarjeta-estadistica .titulo {
-            font-size: 13px;
+            font-size: 12px;
             color: #607d8b;
-            margin-bottom: 8px;
+            margin-bottom: 2px;
         }
 
         .tarjeta-estadistica .numero {
-            font-size: 26px;
+            font-size: 20px;
             font-weight: bold;
             color: #263238;
         }
+
+        /* =========================
+           SECCIONES
+        ========================= */
 
         .seccion {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
         }
 
         .seccion h3 {
-            margin: 0 0 15px;
-            font-size: 17px;
+            margin: 0 0 12px;
+            font-size: 16px;
         }
+
+        /* =========================
+           IMPORTACION
+        ========================= */
 
         .importacion {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -160,23 +188,27 @@
         }
 
         .boton-principal {
-            background: #37474f;
+            background: #009ddc;
             color: white;
-            padding: 9px 15px;
+            padding: 8px 13px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
         }
 
         .boton-principal:hover {
-            background: #263238;
+            background: #008bc4;
         }
 
         .mensaje-importacion {
-            margin-top: 12px;
+            margin-top: 10px;
             font-size: 13px;
             color: #455a64;
         }
+
+        /* =========================
+           FORMULARIO
+        ========================= */
 
         .formulario-colaborador {
             display: grid;
@@ -187,14 +219,14 @@
                 1.3fr
                 2fr
                 1fr;
-            gap: 12px;
+            gap: 10px;
             align-items: end;
         }
 
         .campo {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .campo label {
@@ -206,7 +238,7 @@
         .campo input,
         .campo select {
             width: 100%;
-            padding: 9px 10px;
+            padding: 8px 9px;
             border: 1px solid #cfd8dc;
             border-radius: 5px;
             font-size: 13px;
@@ -217,13 +249,14 @@
         .campo input:focus,
         .campo select:focus {
             outline: none;
-            border-color: #78909c;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.12);
         }
 
         .boton-registrar {
-            background: #37474f;
+            background: #009ddc;
             color: white;
-            padding: 9px 15px;
+            padding: 8px 13px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
@@ -231,13 +264,13 @@
         }
 
         .boton-registrar:hover {
-            background: #263238;
+            background: #008bc4;
         }
 
         .boton-limpiar {
             background: #eceff1;
             color: #37474f;
-            padding: 9px 15px;
+            padding: 8px 13px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
@@ -248,9 +281,13 @@
             background: #cfd8dc;
         }
 
+        /* =========================
+           BUSQUEDA
+        ========================= */
+
         .busqueda {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -258,19 +295,30 @@
         .busqueda input {
             flex: 1;
             min-width: 260px;
-            padding: 10px 12px;
+            padding: 9px 11px;
             border: 1px solid #cfd8dc;
             border-radius: 6px;
             font-size: 13px;
         }
 
+        .busqueda input:focus,
+        .busqueda select:focus {
+            outline: none;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.12);
+        }
+
         .busqueda select {
-            padding: 10px 12px;
+            padding: 9px 11px;
             border: 1px solid #cfd8dc;
             border-radius: 6px;
             font-size: 13px;
             background: white;
         }
+
+        /* =========================
+           TABLA
+        ========================= */
 
         .tabla-contenedor {
             overflow-x: auto;
@@ -285,14 +333,14 @@
         thead th {
             background: #eceff1;
             color: #37474f;
-            padding: 11px 10px;
+            padding: 10px 9px;
             text-align: center;
             border-bottom: 1px solid #cfd8dc;
             white-space: nowrap;
         }
 
         tbody td {
-            padding: 10px;
+            padding: 9px;
             border-bottom: 1px solid #eceff1;
             text-align: center;
             vertical-align: middle;
@@ -317,9 +365,19 @@
             font-family: inherit;
         }
 
+        .filtro-tabla:focus {
+            outline: none;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
+        }
+
         .filtro-estado {
             background: white;
         }
+
+        /* =========================
+           ESTADOS
+        ========================= */
 
         .estado {
             display: inline-block;
@@ -338,6 +396,10 @@
             background: #eceff1;
             color: #546e7a;
         }
+
+        /* =========================
+           ACCIONES
+        ========================= */
 
         .acciones {
             display: flex;
@@ -373,6 +435,10 @@
             background: #b71c1c;
         }
 
+        /* =========================
+           RESULTADOS Y PAGINACION
+        ========================= */
+
         .sin-resultados {
             text-align: center;
             padding: 30px;
@@ -384,12 +450,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
-            margin-top: 18px;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .paginacion button {
-            background: #37474f;
+            background: #009ddc;
             color: white;
             border: none;
             padding: 7px 12px;
@@ -398,7 +464,7 @@
         }
 
         .paginacion button:hover:not(:disabled) {
-            background: #263238;
+            background: #008bc4;
         }
 
         .paginacion button:disabled {
@@ -411,13 +477,17 @@
             color: #607d8b;
         }
 
+        /* =========================
+           MENSAJES
+        ========================= */
+
         .mensaje-exito {
             background: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
-            padding: 10px 12px;
+            padding: 9px 11px;
             border-radius: 6px;
-            margin-bottom: 15px;
+            margin-bottom: 14px;
             display: none;
             font-size: 13px;
         }
@@ -426,12 +496,16 @@
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
-            padding: 10px 12px;
+            padding: 9px 11px;
             border-radius: 6px;
-            margin-bottom: 15px;
+            margin-bottom: 14px;
             display: none;
             font-size: 13px;
         }
+
+        /* =========================
+           MODAL EDICION
+        ========================= */
 
         .modal-fondo {
             position: fixed;
@@ -461,9 +535,9 @@
         }
 
         .modal-encabezado {
-            background: #263238;
+            background: #009ddc;
             color: white;
-            padding: 15px 20px;
+            padding: 13px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -471,7 +545,7 @@
 
         .modal-encabezado h3 {
             margin: 0;
-            font-size: 17px;
+            font-size: 16px;
         }
 
         .boton-cerrar-modal {
@@ -484,23 +558,23 @@
         }
 
         .boton-cerrar-modal:hover {
-            color: #cfd8dc;
+            color: #e0f7ff;
         }
 
         .modal-contenido {
-            padding: 20px;
+            padding: 18px;
         }
 
         .formulario-edicion {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 13px;
         }
 
         .campo-edicion {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }
 
         .campo-edicion.campo-completo {
@@ -516,7 +590,7 @@
         .campo-edicion input,
         .campo-edicion select {
             width: 100%;
-            padding: 10px 11px;
+            padding: 9px 10px;
             border: 1px solid #cfd8dc;
             border-radius: 5px;
             font-size: 13px;
@@ -527,11 +601,12 @@
         .campo-edicion input:focus,
         .campo-edicion select:focus {
             outline: none;
-            border-color: #78909c;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.12);
         }
 
         .modal-pie {
-            padding: 15px 20px;
+            padding: 13px 18px;
             border-top: 1px solid #eceff1;
             display: flex;
             justify-content: flex-end;
@@ -541,7 +616,7 @@
         .boton-cancelar {
             background: #eceff1;
             color: #37474f;
-            padding: 9px 16px;
+            padding: 8px 15px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
@@ -552,17 +627,21 @@
         }
 
         .boton-guardar {
-            background: #37474f;
+            background: #009ddc;
             color: white;
-            padding: 9px 16px;
+            padding: 8px 15px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
         }
 
         .boton-guardar:hover {
-            background: #263238;
+            background: #008bc4;
         }
+
+        /* =========================
+           ALERTAS
+        ========================= */
 
         .alerta-fondo {
             position: fixed;
@@ -592,9 +671,9 @@
         }
 
         .alerta-encabezado {
-            background: #263238;
+            background: #009ddc;
             color: white;
-            padding: 13px 18px;
+            padding: 12px 17px;
         }
 
         .alerta-encabezado h3 {
@@ -604,7 +683,7 @@
         }
 
         .alerta-contenido {
-            padding: 18px;
+            padding: 17px;
         }
 
         .alerta-mensaje {
@@ -616,7 +695,7 @@
         }
 
         .alerta-pie {
-            padding: 12px 18px;
+            padding: 11px 17px;
             border-top: 1px solid #eceff1;
             display: flex;
             justify-content: flex-end;
@@ -624,7 +703,7 @@
         }
 
         .boton-alerta {
-            background: #37474f;
+            background: #009ddc;
             color: white;
             padding: 8px 15px;
             border-radius: 5px;
@@ -633,7 +712,7 @@
         }
 
         .boton-alerta:hover {
-            background: #263238;
+            background: #008bc4;
         }
 
         .boton-alerta-cancelar {
@@ -649,12 +728,33 @@
             background: #cfd8dc;
         }
 
+        /* =========================
+           FOOTER
+        ========================= */
+
         footer {
             text-align: center;
             color: #90a4ae;
             font-size: 12px;
-            padding: 25px;
+            padding: 20px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
         }
+
+        footer .version {
+            color: #90a4ae;
+        }
+
+        footer .creditos {
+            color: #90a4ae;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
         @media (max-width: 1100px) {
 
@@ -670,21 +770,61 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .barra-superior {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
             .formulario-colaborador {
                 grid-template-columns: repeat(2, 1fr);
             }
 
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
+
+            header {
+                padding: 12px 15px;
+            }
+
+            .encabezado {
+                flex-direction: column;
+                gap: 8px;
+                padding: 2px 0;
+            }
+
+            .encabezado-marca {
+                width: 100%;
+            }
+
+            .encabezado-texto h1 {
+                font-size: 21px;
+            }
+
+            .encabezado-icono {
+                font-size: 24px;
+            }
+
+            .volver {
+                position: static;
+                transform: none;
+                margin: 0;
+            }
 
             .estadisticas {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .tarjeta-estadistica {
+                padding: 10px 8px;
+            }
+
+            .tarjeta-estadistica .icono {
+                font-size: 18px;
+            }
+
+            .tarjeta-estadistica .numero {
+                font-size: 19px;
+            }
+
+            .tarjeta-estadistica .titulo {
+                font-size: 11px;
             }
 
             main {
@@ -692,7 +832,7 @@
             }
 
             .seccion {
-                padding: 15px;
+                padding: 14px;
             }
 
             .formulario-colaborador {
@@ -714,6 +854,11 @@
 
             .modal-contenido {
                 padding: 15px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 5px;
             }
 
         }
@@ -739,12 +884,8 @@
             <div class="encabezado-texto">
 
                 <h1>
-                    Biblioteca
+                    Colaboradores
                 </h1>
-
-                <p>
-                    Base de colaboradores
-                </p>
 
             </div>
 
@@ -791,6 +932,10 @@
 
         <div class="tarjeta-estadistica">
 
+            <div class="icono">
+                👥
+            </div>
+
             <div class="titulo">
                 Colaboradores
             </div>
@@ -806,6 +951,10 @@
 
 
         <div class="tarjeta-estadistica">
+
+            <div class="icono">
+                ✅
+            </div>
 
             <div class="titulo">
                 Activos
@@ -823,6 +972,10 @@
 
         <div class="tarjeta-estadistica">
 
+            <div class="icono">
+                ⛔
+            </div>
+
             <div class="titulo">
                 Inactivos
             </div>
@@ -838,6 +991,10 @@
 
 
         <div class="tarjeta-estadistica">
+
+            <div class="icono">
+                🏷️
+            </div>
 
             <div class="titulo">
                 Áreas
@@ -1275,7 +1432,19 @@
 
 
 <footer>
-    Sistema de Biblioteca
+
+    <span>
+        Sistema de Biblioteca
+    </span>
+
+    <span class="version">
+        Versión 1.0
+    </span>
+
+    <span class="creditos">
+        Desarrollado por Saúl Velásquez
+    </span>
+
 </footer>
 
 
@@ -2996,13 +3165,6 @@
 
     /*
      * DESCARGAR MASTER COLABORADORES
-     *
-     * GENERA EL EXCEL A PARTIR
-     * DE LA BASE ACTUAL DE SUPABASE.
-     *
-     * DE ESTA FORMA SE CONSERVAN
-     * LOS CAMBIOS REALIZADOS
-     * DESDE LA APLICACION.
      */
 
     document.getElementById(
