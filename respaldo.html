@@ -346,30 +346,38 @@
         }
 
         /* =========================================
-           MENSAJES
+           MENSAJES DEL SISTEMA
         ========================================= */
 
         #mensaje {
             display: none;
             margin-bottom: 13px;
-            padding: 10px 13px;
-            border-radius: 5px;
+            padding: 11px 14px;
+            border-radius: 7px;
             font-size: 12px;
             font-weight: bold;
+            line-height: 1.4;
+            text-align: center;
+            border: 1px solid transparent;
+            box-shadow: 0 1px 3px rgba(38, 50, 56, 0.08);
         }
+
+        /* Mensaje de éxito */
 
         #mensaje.exito {
             display: block;
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #e6f7fc;
+            color: #006b96;
+            border: 1px solid #b7e6f5;
         }
+
+        /* Mensaje de error */
 
         #mensaje.error {
             display: block;
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #fff1f1;
+            color: #a93232;
+            border: 1px solid #f0c5c5;
         }
 
         /* =========================================
@@ -395,33 +403,41 @@
             width: 100%;
             max-width: 420px;
             background: white;
-            border-radius: 8px;
+            border: 1px solid #dfe5e8;
+            border-radius: 9px;
             overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
         }
 
+        /* Encabezado del modal */
+
         .modal-cabecera {
-            background: #263238;
+            background: #009ddc;
             color: white;
-            padding: 12px 16px;
+            padding: 13px 16px;
         }
 
         .modal-cabecera h3 {
             margin: 0;
             font-size: 15px;
+            line-height: 1.3;
         }
 
+        /* Contenido */
+
         .modal-contenido {
-            padding: 15px 16px 5px;
+            padding: 16px 17px 7px;
         }
 
         .modal-contenido p {
             margin: 0;
             color: #455a64;
             font-size: 12px;
-            line-height: 1.5;
+            line-height: 1.55;
             white-space: pre-line;
         }
+
+        /* Botones del modal */
 
         .modal-acciones {
             display: flex;
@@ -431,12 +447,14 @@
         }
 
         .modal-boton {
+            min-width: 100px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             padding: 8px 13px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
+            transition: background 0.2s ease;
         }
 
         .modal-cancelar {
@@ -449,12 +467,12 @@
         }
 
         .modal-confirmar {
-            background: #37474f;
+            background: #009ddc;
             color: white;
         }
 
         .modal-confirmar:hover {
-            background: #263238;
+            background: #008bc4;
         }
 
         /* =========================================
