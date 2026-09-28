@@ -1795,12 +1795,6 @@ window.materialesAuth = (async function protegerMateriales(){
     let entregasDemo = [];
 
 
-    /*
-     * Estos son los registros de prueba originales.
-     * Se utilizan únicamente para restaurarlos en Supabase
-     * si todavía no existen.
-     */
-
     const materialesPrueba = [
 
         {
@@ -2076,15 +2070,42 @@ window.materialesAuth = (async function protegerMateriales(){
     }
 
 
+    /*
+     * CORRECCIÓN:
+     * Se obtiene el nombre real del usuario desde auth.js.
+     * El resto del módulo permanece sin cambios.
+     */
+
     function obtenerUsuarioActual(){
 
         try{
+
+            if(
+                typeof window.obtenerNombreUsuarioActual ===
+                "function"
+            ){
+
+                const nombre =
+                    window.obtenerNombreUsuarioActual();
+
+                if(
+                    nombre &&
+                    String(nombre).trim()
+                ){
+
+                    return String(
+                        nombre
+                    ).trim();
+
+                }
+
+            }
 
             if(window.usuarioActual){
 
                 return String(
                     window.usuarioActual
-                );
+                ).trim();
 
             }
 
@@ -2092,7 +2113,7 @@ window.materialesAuth = (async function protegerMateriales(){
 
                 return String(
                     window.usuario
-                );
+                ).trim();
 
             }
 
@@ -2117,10 +2138,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
         const texto =
             String(valor);
-
-        /*
-         * Si ya viene como dd/mm/yyyy
-         */
 
         if(
             /^\d{2}\/\d{2}\/\d{4}$/.test(texto)
@@ -2318,11 +2335,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
     async function asegurarDatosPrueba(){
 
-        /*
-         * Solo se crean los materiales de prueba que
-         * todavía no existan.
-         */
-
         const {
             data:materialesExistentes,
             error:errorMateriales
@@ -2392,11 +2404,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
             if(error){
 
-                /*
-                 * Si otro proceso creó los registros
-                 * simultáneamente, se vuelve a cargar.
-                 */
-
                 console.warn(
                     "No fue posible crear todos los materiales de prueba:",
                     error
@@ -2406,13 +2413,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
         }
 
-
-        /*
-         * Ahora comprobamos las entregas.
-         *
-         * Se utiliza una combinación de datos suficientemente
-         * específica para evitar duplicados.
-         */
 
         const {
             data:entregasExistentes,
@@ -2501,11 +2501,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
 
         if(entregasFaltantes.length){
-
-            /*
-             * Para estas entregas de prueba usamos
-             * una fecha ISO equivalente a la fecha mostrada.
-             */
 
             const registros =
                 entregasFaltantes.map(e=>{
@@ -4469,11 +4464,6 @@ window.materialesAuth = (async function protegerMateriales(){
             }
 
 
-            /*
-             * Si el mismo material fue seleccionado varias veces,
-             * se suma antes de comprobar disponibilidad.
-             */
-
             const cantidadesPorCodigo =
                 new Map();
 
@@ -4662,6 +4652,10 @@ window.materialesAuth = (async function protegerMateriales(){
             }
 
 
+            /*
+             * AQUÍ SE OBTIENE EL NOMBRE REAL DEL USUARIO.
+             */
+
             const usuario =
                 obtenerUsuarioActual();
 
@@ -4679,10 +4673,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
 
             try{
-
-                /*
-                 * Se procesa cada material de la entrega.
-                 */
 
                 for(
                     const materialEntrega
@@ -4710,12 +4700,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
                     }
 
-
-                    /*
-                     * Volvemos a consultar el inventario directamente
-                     * antes de modificarlo para evitar usar un dato
-                     * antiguo del navegador.
-                     */
 
                     const {
                         data:materialActual,
@@ -4774,11 +4758,10 @@ window.materialesAuth = (async function protegerMateriales(){
                     }
 
 
-                    /*
-                     * Primero se registra la salida.
-                     */
-
-                    const {data:entregaCreada,error:errorEntrega} =
+                    const {
+                        data:entregaCreada,
+                        error:errorEntrega
+                    } =
                         await supabaseClient
                         .from("entregas_materiales")
                         .insert({
@@ -4851,10 +4834,6 @@ window.materialesAuth = (async function protegerMateriales(){
                     });
 
 
-                    /*
-                     * Actualizamos entregadas.
-                     */
-
                     const nuevasEntregadas =
                         Number(
                             materialActual.entregadas || 0
@@ -4885,10 +4864,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
                 }
 
-
-                /*
-                 * Todo salió correctamente.
-                 */
 
                 await cargarMateriales();
 
@@ -4939,11 +4914,6 @@ window.materialesAuth = (async function protegerMateriales(){
                     error
                 );
 
-
-                /*
-                 * Se recarga desde Supabase para que la pantalla
-                 * siempre refleje el estado real.
-                 */
 
                 try{
 
@@ -5473,11 +5443,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
         if(existente){
 
-            /*
-             * Se actualizan los datos del catálogo y las
-             * cantidades que vienen expresamente del Master.
-             */
-
             const {error} =
                 await supabaseClient
                 .from("materiales")
@@ -5744,12 +5709,6 @@ window.materialesAuth = (async function protegerMateriales(){
             }
 
 
-            /*
-             * Las entregas del Excel son opcionales.
-             *
-             * Se importan solamente si existe la hoja Entregas.
-             */
-
             const nombreHojaEntregas =
                 libro.SheetNames.find(
                     nombre=>
@@ -5892,20 +5851,6 @@ window.materialesAuth = (async function protegerMateriales(){
                             )
                         );
 
-
-                    /*
-                     * Comprobación para evitar duplicar exactamente
-                     * el mismo movimiento.
-                     */
-
-                    let consultaFecha = null;
-
-
-                    /*
-                     * Cuando el Excel trae dd/mm/yyyy se busca por
-                     * los datos del movimiento y no se depende de
-                     * comparar directamente el timestamp.
-                     */
 
                     const {
                         data:existentes,
@@ -6462,10 +6407,6 @@ window.materialesAuth = (async function protegerMateriales(){
 
                     try{
 
-                        /*
-                         * Primero eliminamos las entregas.
-                         */
-
                         const {
                             error:errorEntregas
                         } =
@@ -6485,10 +6426,6 @@ window.materialesAuth = (async function protegerMateriales(){
                             throw errorEntregas;
                         }
 
-
-                        /*
-                         * Después eliminamos los materiales.
-                         */
 
                         const {
                             error:errorMateriales
