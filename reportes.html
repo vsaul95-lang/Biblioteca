@@ -40,7 +40,6 @@
                 const autorizado =
                     await window.protegerPagina();
 
-
                 if (!autorizado) {
 
                     window.location.replace(
@@ -50,7 +49,6 @@
                     return false;
 
                 }
-
 
                 if (!window.esAdministrador()) {
 
@@ -62,13 +60,10 @@
 
                 }
 
-
                 document.documentElement.style.visibility =
                     "visible";
 
-
                 return true;
-
 
             } catch (error) {
 
@@ -77,11 +72,9 @@
                     error
                 );
 
-
                 window.location.replace(
                     "index.html"
                 );
-
 
                 return false;
 
@@ -100,6 +93,10 @@
 
     <style>
 
+        /* =========================
+           CONTENEDOR PRINCIPAL
+        ========================= */
+
         .reportes-contenedor {
 
             max-width: 1200px;
@@ -111,17 +108,82 @@
         }
 
 
+        /* =========================
+           ENCABEZADO
+        ========================= */
+
+        .encabezado {
+
+            background: #009ddc !important;
+
+            color: white;
+
+            padding: 16px 20px;
+
+        }
+
+
         .encabezado .encabezado-contenido {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            min-height: 48px;
 
             display: flex;
 
             align-items: center;
 
-            justify-content: space-between;
+            justify-content: center;
+
+            position: relative;
 
             width: 100%;
 
             box-sizing: border-box;
+
+        }
+
+
+        .marca {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            text-align: center;
+
+        }
+
+
+        .icono-marca {
+
+            font-size: 27px;
+
+        }
+
+
+        .titulo-marca {
+
+            margin: 0;
+
+            font-size: 23px;
+
+            line-height: 1.2;
+
+            font-weight: bold;
+
+        }
+
+
+        .subtitulo-marca {
+
+            display: none;
 
         }
 
@@ -134,13 +196,13 @@
 
             justify-content: center;
 
-            padding: 8px 14px;
+            padding: 8px 13px;
 
-            border-radius: 6px;
+            border-radius: 7px;
 
-            background: rgba(38, 50, 56, 0.55);
+            background: rgba(255, 255, 255, 0.16);
 
-            border: 1px solid rgba(255, 255, 255, 0.55);
+            border: none;
 
             color: #ffffff !important;
 
@@ -148,22 +210,27 @@
 
             font-size: 13px;
 
-            font-weight: 600;
+            font-weight: bold;
 
             white-space: nowrap;
 
+            position: absolute;
+
+            right: 0;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
             transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
+                background 0.2s ease;
 
         }
 
 
         .volver-header:hover {
 
-            background: rgba(38, 50, 56, 0.72);
-
-            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.24);
 
             color: #ffffff !important;
 
@@ -172,34 +239,9 @@
         }
 
 
-        .reporte-encabezado {
-
-            margin-bottom: 16px;
-
-        }
-
-
-        .reporte-encabezado h1 {
-
-            margin: 0 0 4px;
-
-            font-size: 26px;
-
-            color: #263238;
-
-        }
-
-
-        .reporte-encabezado p {
-
-            margin: 0;
-
-            color: #607d8b;
-
-            font-size: 13px;
-
-        }
-
+        /* =========================
+           ESTADÍSTICAS
+        ========================= */
 
         .estadisticas-reportes {
 
@@ -210,7 +252,7 @@
 
             gap: 10px;
 
-            margin-bottom: 14px;
+            margin-bottom: 16px;
 
         }
 
@@ -221,14 +263,13 @@
 
             border: 1px solid #e0e0e0;
 
-            border-radius: 9px;
+            border-radius: 8px;
 
-            padding: 11px 8px;
+            padding: 11px 10px;
 
             text-align: center;
 
-            box-shadow:
-                0 2px 5px rgba(0,0,0,0.04);
+            box-shadow: none;
 
         }
 
@@ -239,14 +280,14 @@
 
             line-height: 1;
 
-            margin-bottom: 4px;
+            margin-bottom: 3px;
 
         }
 
 
         .estadistica-reporte .numero {
 
-            font-size: 22px;
+            font-size: 20px;
 
             line-height: 1.1;
 
@@ -261,16 +302,20 @@
 
             margin-top: 3px;
 
-            font-size: 11px;
+            font-size: 12px;
 
-            color: #78909c;
+            color: #607d8b;
 
         }
 
 
+        /* =========================
+           GRÁFICOS
+        ========================= */
+
         .graficos-seccion {
 
-            margin-bottom: 14px;
+            margin-bottom: 16px;
 
         }
 
@@ -294,7 +339,7 @@
 
             margin: 0;
 
-            font-size: 17px;
+            font-size: 16px;
 
             color: #37474f;
 
@@ -360,7 +405,11 @@
 
         .selector-grafica:focus {
 
-            border-color: #78909c;
+            border-color: #009ddc;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(0, 157, 220, 0.12);
 
         }
 
@@ -372,7 +421,7 @@
             grid-template-columns:
                 repeat(3, 1fr);
 
-            gap: 14px;
+            gap: 12px;
 
         }
 
@@ -383,12 +432,11 @@
 
             border: 1px solid #e0e0e0;
 
-            border-radius: 9px;
+            border-radius: 8px;
 
-            padding: 14px;
+            padding: 13px;
 
-            box-shadow:
-                0 2px 5px rgba(0,0,0,0.04);
+            box-shadow: none;
 
             min-width: 0;
 
@@ -410,19 +458,21 @@
 
             position: relative;
 
-            height: 245px;
+            height: 230px;
 
         }
 
 
-        .grafico-libros .grafico-contenedor {
+        .grafico-libros
+        .grafico-contenedor {
 
-            height: 245px;
+            height: 230px;
 
         }
 
 
-        .grafico-libros .leyenda-circular {
+        .grafico-libros
+        .leyenda-circular {
 
             display: flex;
 
@@ -484,37 +534,9 @@
         }
 
 
-        .vistas-resultados {
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            gap: 12px;
-
-            flex-wrap: wrap;
-
-            margin-bottom: 12px;
-
-        }
-
-
-        .btn-vista {
-
-            min-width: 175px;
-
-            padding: 11px 24px;
-
-            font-size: 14px;
-
-            font-weight: 700;
-
-            border-radius: 7px;
-
-        }
-
+        /* =========================
+           RESULTADOS
+        ========================= */
 
         .resultados-seccion {
 
@@ -522,12 +544,11 @@
 
             border: 1px solid #e0e0e0;
 
-            border-radius: 9px;
+            border-radius: 8px;
 
-            padding: 14px;
+            padding: 16px;
 
-            box-shadow:
-                0 2px 5px rgba(0,0,0,0.04);
+            box-shadow: none;
 
         }
 
@@ -543,7 +564,7 @@
 
             margin: 0;
 
-            font-size: 18px;
+            font-size: 16px;
 
             color: #37474f;
 
@@ -560,6 +581,10 @@
 
         }
 
+
+        /* =========================
+           FILTROS
+        ========================= */
 
         .filtros {
 
@@ -653,7 +678,11 @@
         .campo input:focus,
         .campo select:focus {
 
-            border-color: #78909c;
+            border-color: #009ddc;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(0, 157, 220, 0.12);
 
         }
 
@@ -670,13 +699,25 @@
         }
 
 
+        /* =========================
+           BOTONES DE FILTROS
+        ========================= */
+
         .botones-filtros {
 
             display: flex;
 
-            gap: 6px;
+            justify-content: center;
 
-            margin-top: 7px;
+            align-items: center;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+
+            margin-top: 10px;
+
+            width: 100%;
 
         }
 
@@ -685,9 +726,9 @@
 
             border: none;
 
-            border-radius: 5px;
+            border-radius: 6px;
 
-            padding: 7px 11px;
+            padding: 8px 13px;
 
             cursor: pointer;
 
@@ -698,26 +739,20 @@
         }
 
 
-        .btn-buscar,
-        .btn-limpiar {
+        .btn-buscar {
+
+            background: #009ddc;
+
+            color: white;
 
             min-width: 145px;
 
         }
 
 
-        .btn-buscar {
-
-            background: #455a64;
-
-            color: white;
-
-        }
-
-
         .btn-buscar:hover {
 
-            background: #37474f;
+            background: #008bc4;
 
         }
 
@@ -727,6 +762,8 @@
             background: #eceff1;
 
             color: #455a64;
+
+            min-width: 145px;
 
         }
 
@@ -755,6 +792,10 @@
 
         }
 
+
+        /* =========================
+           RESUMEN
+        ========================= */
 
         .resultado-resumen {
 
@@ -796,6 +837,46 @@
 
         }
 
+
+        /* =========================
+           VISTAS
+        ========================= */
+
+        .vistas-resultados {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .btn-vista {
+
+            min-width: 175px;
+
+            padding: 10px 22px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            border-radius: 7px;
+
+        }
+
+
+        /* =========================
+           TABLA
+        ========================= */
 
         .tabla-contenedor {
 
@@ -934,6 +1015,10 @@
         }
 
 
+        /* =========================
+           PAGINACIÓN
+        ========================= */
+
         .paginacion-resultados {
 
             display: flex;
@@ -998,6 +1083,22 @@
 
         }
 
+
+        /* =========================
+           FLECHAS
+        ========================= */
+
+        .accion-flecha,
+        .opcion-flecha {
+
+            display: none !important;
+
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
         @media (max-width: 950px) {
 
@@ -1074,18 +1175,60 @@
             }
 
 
-            .encabezado .encabezado-contenido {
+            .encabezado {
 
-                gap: 10px;
+                padding:
+                    12px 15px;
+
+            }
+
+
+            .encabezado
+            .encabezado-contenido {
+
+                flex-direction: column;
+
+                gap: 8px;
+
+                padding:
+                    2px 0;
+
+            }
+
+
+            .marca {
+
+                width: 100%;
+
+            }
+
+
+            .titulo-marca {
+
+                font-size: 21px;
+
+            }
+
+
+            .icono-marca {
+
+                font-size: 24px;
 
             }
 
 
             .volver-header {
 
-                padding: 7px 10px;
+                position: static;
 
-                font-size: 11px;
+                transform: none;
+
+                margin: 0;
+
+                padding:
+                    8px 13px;
+
+                font-size: 12px;
 
             }
 
@@ -1108,28 +1251,16 @@
 
             .botones-filtros {
 
-                flex-direction: column;
-
-            }
-
-            .vistas-resultados {
-
-                justify-content: center;
-
                 flex-direction: row;
 
-            }
-
-            .btn-vista {
-
-                min-width: 160px;
+                justify-content: center;
 
             }
 
 
             .btn {
 
-                width: 100%;
+                width: auto;
 
             }
 
@@ -1138,7 +1269,7 @@
             .btn-limpiar,
             .btn-excel {
 
-                min-width: 0;
+                min-width: 145px;
 
             }
 
@@ -1150,7 +1281,8 @@
             }
 
 
-            .grafico-libros .grafico-contenedor {
+            .grafico-libros
+            .grafico-contenedor {
 
                 height: 235px;
 
@@ -1173,6 +1305,53 @@
 
         }
 
+
+        @media (max-width: 480px) {
+
+            .estadisticas-reportes {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 8px;
+
+            }
+
+
+            .estadistica-reporte {
+
+                padding:
+                    10px 7px;
+
+            }
+
+
+            .estadistica-reporte .numero {
+
+                font-size: 19px;
+
+            }
+
+
+            .botones-filtros {
+
+                flex-direction: column;
+
+            }
+
+
+            .btn-buscar,
+            .btn-limpiar,
+            .btn-excel {
+
+                width: 100%;
+
+                max-width: 250px;
+
+            }
+
+        }
+
     </style>
 
 </head>
@@ -1181,6 +1360,10 @@
 <body>
 
 
+    <!-- =========================
+         ENCABEZADO
+    ========================= -->
+
     <header class="encabezado">
 
         <div class="encabezado-contenido">
@@ -1188,17 +1371,13 @@
             <div class="marca">
 
                 <div class="icono-marca">
-                    📚
+                    📊
                 </div>
 
                 <div>
 
                     <div class="titulo-marca">
-                        Biblioteca
-                    </div>
-
-                    <div class="subtitulo-marca">
-                        Sistema de control de préstamos
+                        Reportes
                     </div>
 
                 </div>
@@ -1221,18 +1400,9 @@
     <main class="reportes-contenedor">
 
 
-        <section class="reporte-encabezado">
-
-            <h1>
-                📊 Reportes
-            </h1>
-
-            <p>
-                Consulta y analiza la actividad de préstamos de la biblioteca.
-            </p>
-
-        </section>
-
+        <!-- =========================
+             ESTADÍSTICAS
+        ========================= -->
 
         <section class="estadisticas-reportes">
 
@@ -1339,6 +1509,10 @@
 
         </section>
 
+
+        <!-- =========================
+             GRÁFICOS
+        ========================= -->
 
         <section class="graficos-seccion">
 
@@ -1504,6 +1678,10 @@
 
         </section>
 
+
+        <!-- =========================
+             RESULTADOS
+        ========================= -->
 
         <section
             class="resultados-seccion"
