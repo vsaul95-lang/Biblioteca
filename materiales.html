@@ -1,77 +1,4171 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Materiales - Biblioteca</title>
-<style>html{visibility:hidden}</style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="auth.js?v=1002"></script>
-<style>
-:root{--celeste-fundacion:#009ddc;--celeste-oscuro:#008fc8;--celeste-suave:#eaf7fc;--fondo:#f4f7f9;--blanco:#fff;--texto:#263238;--texto-suave:#66727a;--borde:#dfe7eb;--sombra:0 3px 12px rgba(31,52,63,.08);--rojo:#c62828;--rojo-suave:#fdeeee;--verde:#2e7d32;--verde-suave:#edf7ee}
-*{box-sizing:border-box}body{margin:0;background:var(--fondo);color:var(--texto);font-family:Arial,Helvetica,sans-serif}.encabezado{background:var(--celeste-fundacion);color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.12)}.encabezado-contenido{min-height:90px;display:flex;align-items:center;justify-content:center;position:relative}.marca{display:flex;align-items:center;justify-content:center;gap:13px}.icono-marca{width:47px;height:47px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);border-radius:11px;font-size:29px}.marca h1{margin:0;color:#fff;font-size:24px;font-weight:750;line-height:1.1}.marca p{margin:3px 0 0;color:#fff;font-size:12px;opacity:.96}#botonVolver{position:absolute;left:18px;color:#fff;border:1px solid rgba(255,255,255,.42);background:transparent;border-radius:8px;padding:9px 15px;cursor:pointer;font-size:14px;font-weight:600}#botonCerrarSesion{position:absolute;right:18px;color:#fff;border:1px solid rgba(255,255,255,.42);background:transparent;border-radius:8px;padding:9px 15px;cursor:pointer;font-size:14px;font-weight:600}#botonVolver:hover,#botonCerrarSesion:hover{background:rgba(255,255,255,.15)}.contenedor{max-width:1180px;margin:20px auto 30px;padding:0 18px}.titulo-pagina{text-align:center;margin:4px 0 4px;font-size:24px;color:#34434b}.subtitulo-pagina{text-align:center;margin:0 0 18px;color:var(--texto-suave);font-size:13px}.estadisticas{display:grid;grid-template-columns:repeat(4,minmax(145px,175px));justify-content:center;gap:15px;margin-bottom:14px}.tarjeta-estadistica{background:#fff;border:1px solid var(--borde);border-radius:9px;width:100%;min-height:96px;padding:11px 10px;box-shadow:var(--sombra);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.estadistica-icono{width:36px;height:36px;margin-bottom:5px;border-radius:9px;background:var(--celeste-suave);display:flex;align-items:center;justify-content:center;font-size:19px}.estadistica-numero{font-size:22px;font-weight:750;color:var(--celeste-fundacion);line-height:1;margin-bottom:3px}.estadistica-texto{color:var(--texto-suave);font-size:12px;font-weight:500}.seccion{background:#fff;border:1px solid var(--borde);border-radius:10px;margin-bottom:14px;box-shadow:var(--sombra);overflow:hidden}.seccion-titulo{margin:0;padding:11px 17px;background:#fbfcfd;border-bottom:1px solid var(--borde);color:#34434b;font-size:15px;font-weight:700}.seccion-contenido{padding:16px}.barra-acciones{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.btn{border:1px solid var(--borde);background:#fff;color:var(--texto);border-radius:8px;padding:9px 13px;font-size:13px;font-weight:600;cursor:pointer}.btn:hover{border-color:#9ed9ed;background:#fbfeff}.btn-principal{background:var(--celeste-fundacion);border-color:var(--celeste-fundacion);color:#fff}.btn-principal:hover{background:var(--celeste-oscuro);border-color:var(--celeste-oscuro)}.btn-peligro{background:#fff;border-color:#efb7b7;color:var(--rojo)}.btn-peligro:hover{background:var(--rojo-suave);border-color:#e59a9a}.filtros{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:9px;align-items:end}.campo{display:flex;flex-direction:column;gap:5px}.campo label{font-size:12px;font-weight:700;color:#52636b}.campo input,.campo select,.campo textarea{width:100%;padding:9px 10px;border:1px solid #cfd9de;border-radius:7px;font-size:13px;background:#fff;color:var(--texto);outline:none}.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--celeste-fundacion);box-shadow:0 0 0 3px rgba(0,157,220,.10)}.tabla-contenedor{overflow:auto}.tabla{width:100%;border-collapse:collapse;min-width:850px}.tabla th{background:#f6f9fa;color:#52636b;font-size:11px;text-transform:uppercase;letter-spacing:.2px;text-align:left;padding:10px;border-bottom:1px solid var(--borde);white-space:nowrap}.tabla td{padding:10px;border-bottom:1px solid #edf1f3;font-size:12px;vertical-align:middle}.tabla tr:hover td{background:#fbfeff}.estado{display:inline-flex;align-items:center;padding:4px 8px;border-radius:20px;font-size:11px;font-weight:700}.estado-activo{background:var(--verde-suave);color:var(--verde)}.estado-baja{background:var(--rojo-suave);color:var(--rojo)}.cantidad-disponible{font-weight:700;color:var(--verde)}.cantidad-cero{font-weight:700;color:#b26a00}.cantidad-negativa{font-weight:700;color:var(--rojo)}.mini-acciones{display:flex;gap:5px;flex-wrap:wrap}.mini-acciones .btn{padding:6px 8px;font-size:11px}.nota{margin-top:10px;padding:10px 12px;background:var(--celeste-suave);border:1px solid #ccebf6;border-left:4px solid var(--celeste-fundacion);border-radius:7px;color:#52636b;font-size:12px;line-height:1.4}.admin-subtitulo{font-size:12px;color:var(--texto-suave);margin:0 0 12px}.oculto{display:none!important}.modal{position:fixed;inset:0;background:rgba(22,35,42,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}.modal.mostrar{display:flex}.modal-contenido{width:100%;max-width:650px;max-height:92vh;overflow:auto;background:#fff;border-radius:12px;box-shadow:0 15px 45px rgba(0,0,0,.22)}.modal-cabecera{display:flex;align-items:center;justify-content:space-between;padding:14px 17px;border-bottom:1px solid var(--borde)}.modal-cabecera h2{margin:0;font-size:17px;color:#34434b}.modal-cerrar{border:0;background:transparent;font-size:23px;color:#66727a;cursor:pointer}.modal-cuerpo{padding:16px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.form-grid .ancho-completo{grid-column:1/-1}.modal-pie{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;border-top:1px solid var(--borde)}.mensaje-vacio{text-align:center;padding:24px;color:var(--texto-suave);font-size:13px}footer{color:#7a878e;font-size:11px;padding:10px 0 20px;text-align:center;line-height:1.6}footer .version,footer .creditos{display:block;color:#87939a;font-size:10px}@media(max-width:950px){.estadisticas{grid-template-columns:repeat(2,minmax(145px,175px))}.filtros{grid-template-columns:1fr 1fr}.filtros .campo-busqueda{grid-column:1/-1}}@media(max-width:650px){.contenedor{margin-top:14px;padding:0 12px}.encabezado-contenido{min-height:auto;padding:12px;flex-direction:column;gap:8px}.marca{gap:8px}.marca h1{font-size:19px}.marca p{font-size:10px}.icono-marca{width:42px;height:42px;font-size:25px}#botonVolver,#botonCerrarSesion{position:static;padding:8px 10px;font-size:12px}.estadisticas{grid-template-columns:repeat(2,minmax(130px,165px));gap:9px}.tarjeta-estadistica{min-height:91px}.filtros{grid-template-columns:1fr}.filtros .campo-busqueda{grid-column:auto}.form-grid{grid-template-columns:1fr}.form-grid .ancho-completo{grid-column:auto}}
-</style>
-<script>
-window.materialesAutorizado = false;
 
-window.materialesAuth = (async function protegerMateriales() {
-    try {
-        const autorizado = await window.protegerPagina();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        if (!autorizado) {
-            window.location.replace("index.html");
-            return false;
+    <title>Materiales - Biblioteca</title>
+
+    <style>
+
+        html {
+            visibility: hidden;
         }
 
-        if (!window.esUsuario() && !window.esAdministrador()) {
-            window.location.replace("index.html");
-            return false;
+        * {
+            box-sizing: border-box;
         }
 
-        window.materialesAutorizado = true;
-        document.documentElement.style.visibility = "visible";
-        return true;
-    } catch (error) {
-        console.error("Error al comprobar permisos de materiales:", error);
-        window.location.replace("index.html");
-        return false;
-    }
-})();
-</script>
+        body {
+            margin: 0;
+            background: #f5f7fa;
+            color: #263238;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* =========================================================
+           ENCABEZADO
+        ========================================================= */
+
+        .encabezado {
+            background: #009ddc;
+            color: #ffffff;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            min-height: 64px;
+            padding: 0 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .encabezado-izquierda {
+            min-width: 120px;
+        }
+
+        .encabezado-textos {
+            text-align: center;
+        }
+
+        .encabezado-textos h1 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .btn-volver {
+            justify-self: end;
+            text-decoration: none;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            background: transparent;
+            border-radius: 7px;
+            padding: 8px 13px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-volver:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        /* =========================================================
+           CONTENEDOR
+        ========================================================= */
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        /* =========================================================
+           SECCIONES
+        ========================================================= */
+
+        .seccion {
+            background: #ffffff;
+            border: 1px solid #dfe7eb;
+            border-radius: 9px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(31, 52, 63, 0.06);
+            overflow: hidden;
+        }
+
+        .seccion h2 {
+            margin: 0;
+            padding: 13px 16px;
+            background: #fbfcfd;
+            border-bottom: 1px solid #dfe7eb;
+            color: #34434b;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .seccion-contenido {
+            padding: 16px;
+        }
+
+        /* =========================================================
+           TIPO DE SOLICITANTE
+        ========================================================= */
+
+        .tipo-solicitante {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .btn-tipo {
+            border: 1px solid #cfd9de;
+            background: #ffffff;
+            color: #52636b;
+            border-radius: 8px;
+            padding: 11px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-tipo:hover {
+            border-color: #009ddc;
+            background: #f8fdff;
+        }
+
+        .btn-tipo.activa {
+            background: #009ddc;
+            border-color: #009ddc;
+            color: #ffffff;
+        }
+
+        /* =========================================================
+           BÚSQUEDA
+        ========================================================= */
+
+        .fila-busqueda {
+            display: flex;
+            gap: 9px;
+            align-items: end;
+        }
+
+        .campo-busqueda {
+            flex: 1;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .campo label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #52636b;
+        }
+
+        .campo input,
+        .campo select,
+        .campo textarea {
+            width: 100%;
+            padding: 9px 10px;
+            border: 1px solid #cfd9de;
+            border-radius: 7px;
+            font-size: 13px;
+            background: #ffffff;
+            color: #263238;
+            outline: none;
+        }
+
+        .campo input:focus,
+        .campo select:focus,
+        .campo textarea:focus {
+            border-color: #009ddc;
+            box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.10);
+        }
+
+        .btn {
+            border: 1px solid #cfd9de;
+            background: #ffffff;
+            color: #263238;
+            border-radius: 7px;
+            padding: 9px 13px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            border-color: #9ed9ed;
+            background: #fbfeff;
+        }
+
+        .btn-principal {
+            background: #009ddc;
+            border-color: #009ddc;
+            color: #ffffff;
+        }
+
+        .btn-principal:hover {
+            background: #008fc8;
+            border-color: #008fc8;
+        }
+
+        .btn-peligro {
+            background: #ffffff;
+            border-color: #e6aaaa;
+            color: #c62828;
+        }
+
+        .btn-peligro:hover {
+            background: #fdeeee;
+        }
+
+        /* =========================================================
+           MENSAJES
+        ========================================================= */
+
+        .mensaje {
+            display: none;
+            margin-top: 10px;
+            padding: 9px 11px;
+            border-radius: 7px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .mensaje.error {
+            display: block;
+            background: #fdeeee;
+            border: 1px solid #efc0c0;
+            color: #b32626;
+        }
+
+        .mensaje.exito {
+            display: block;
+            background: #edf7ee;
+            border: 1px solid #c6e3c8;
+            color: #2e7d32;
+        }
+
+        .mensaje.info {
+            display: block;
+            background: #eaf7fc;
+            border: 1px solid #ccebf6;
+            color: #52636b;
+        }
+
+        /* =========================================================
+           TABLAS
+        ========================================================= */
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 760px;
+        }
+
+        th {
+            background: #f6f9fa;
+            color: #52636b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #dfe7eb;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #edf1f3;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: #fbfeff;
+        }
+
+        tr.seleccionada td {
+            background: #eaf7fc;
+        }
+
+        td.nombre {
+            font-weight: 600;
+        }
+
+        .btn-seleccionar {
+            border: 1px solid #009ddc;
+            background: #ffffff;
+            color: #008fc8;
+            border-radius: 6px;
+            padding: 6px 9px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-seleccionar:hover {
+            background: #eaf7fc;
+        }
+
+        .btn-seleccionar.seleccionada {
+            background: #009ddc;
+            color: #ffffff;
+        }
+
+        /* =========================================================
+           MATERIAL SELECCIONADO
+        ========================================================= */
+
+        .material-seleccionado {
+            display: none;
+            margin-top: 14px;
+            padding: 13px;
+            background: #f8fcfe;
+            border: 1px solid #ccebf6;
+            border-radius: 8px;
+        }
+
+        .material-seleccionado.visible {
+            display: block;
+        }
+
+        .material-superior {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .material-codigo {
+            color: #009ddc;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .material-nombre {
+            margin-top: 3px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #34434b;
+        }
+
+        .material-detalles {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .material-detalle {
+            padding: 8px;
+            background: #ffffff;
+            border: 1px solid #e1eaee;
+            border-radius: 6px;
+        }
+
+        .material-detalle-label {
+            font-size: 10px;
+            color: #78858b;
+        }
+
+        .material-detalle-valor {
+            margin-top: 2px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #34434b;
+        }
+
+        .btn-quitar {
+            border: 1px solid #efb7b7;
+            background: #ffffff;
+            color: #c62828;
+            border-radius: 6px;
+            padding: 6px 9px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* =========================================================
+           CANTIDAD
+        ========================================================= */
+
+        .cantidad-entrega {
+            display: grid;
+            grid-template-columns: 1fr 180px;
+            gap: 12px;
+            align-items: end;
+            margin-top: 14px;
+        }
+
+        .disponibilidad {
+            padding: 10px 12px;
+            background: #edf7ee;
+            border: 1px solid #c6e3c8;
+            border-radius: 7px;
+            color: #2e7d32;
+            font-size: 12px;
+        }
+
+        .disponibilidad.sin-existencia {
+            background: #fdeeee;
+            border-color: #efc0c0;
+            color: #b32626;
+        }
+
+        /* =========================================================
+           RESUMEN
+        ========================================================= */
+
+        #resumenEntrega {
+            display: none;
+        }
+
+        .resumen-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .bloque-resumen {
+            border: 1px solid #dfe7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .bloque-resumen-titulo {
+            padding: 9px 12px;
+            background: #f6f9fa;
+            border-bottom: 1px solid #dfe7eb;
+            font-size: 13px;
+            font-weight: 700;
+            color: #34434b;
+        }
+
+        .bloque-resumen-contenido {
+            padding: 12px;
+        }
+
+        .dato-resumen {
+            display: grid;
+            grid-template-columns: 115px 1fr;
+            gap: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f2f3;
+            font-size: 12px;
+        }
+
+        .dato-resumen:last-child {
+            border-bottom: 0;
+        }
+
+        .dato-resumen strong {
+            color: #66727a;
+        }
+
+        .dato-resumen span {
+            color: #263238;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           CONFIRMACIÓN
+        ========================================================= */
+
+        .confirmacion {
+            display: none;
+            margin-top: 14px;
+            padding: 14px;
+            border: 1px solid #ccebf6;
+            background: #eaf7fc;
+            border-radius: 8px;
+        }
+
+        .confirmacion-titulo {
+            margin: 0 0 6px;
+            color: #34434b;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .confirmacion-texto {
+            margin: 0;
+            color: #52636b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .acciones-confirmacion {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 13px;
+        }
+
+        /* =========================================================
+           HISTORIAL
+        ========================================================= */
+
+        .filtros-historial {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 9px;
+            align-items: end;
+        }
+
+        /* =========================================================
+           ADMINISTRACIÓN
+        ========================================================= */
+
+        .admin-nota {
+            margin: 0 0 12px;
+            color: #66727a;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .barra-acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(22, 35, 42, 0.48);
+            z-index: 1000;
+        }
+
+        .modal.mostrar {
+            display: flex;
+        }
+
+        .modal-contenido {
+            width: 100%;
+            max-width: 650px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.22);
+        }
+
+        .modal-cabecera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 17px;
+            border-bottom: 1px solid #dfe7eb;
+        }
+
+        .modal-cabecera h2 {
+            margin: 0;
+            font-size: 17px;
+            color: #34434b;
+        }
+
+        .modal-cerrar {
+            border: 0;
+            background: transparent;
+            color: #66727a;
+            font-size: 23px;
+            cursor: pointer;
+        }
+
+        .modal-cuerpo {
+            padding: 16px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 11px;
+        }
+
+        .ancho-completo {
+            grid-column: 1 / -1;
+        }
+
+        .modal-pie {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid #dfe7eb;
+        }
+
+        .nota {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #eaf7fc;
+            border: 1px solid #ccebf6;
+            border-left: 4px solid #009ddc;
+            border-radius: 7px;
+            color: #52636b;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 800px) {
+
+            .material-detalles {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .resumen-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filtros-historial {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .encabezado {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 10px;
+            }
+
+            .encabezado-izquierda {
+                display: none;
+            }
+
+            .btn-volver {
+                justify-self: center;
+                order: 2;
+            }
+
+            .encabezado-textos {
+                order: 1;
+            }
+
+            .contenedor {
+                margin: 14px auto;
+                padding: 0 12px;
+            }
+
+            .tipo-solicitante {
+                grid-template-columns: 1fr;
+            }
+
+            .fila-busqueda {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cantidad-entrega {
+                grid-template-columns: 1fr;
+            }
+
+            .material-superior {
+                flex-direction: column;
+            }
+
+            .material-detalles {
+                grid-template-columns: 1fr;
+            }
+
+            .filtros-historial {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ancho-completo {
+                grid-column: auto;
+            }
+
+            .acciones-confirmacion {
+                flex-direction: column;
+            }
+
+            .acciones-confirmacion .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js?v=1002"></script>
+
+    <script>
+
+        window.materialesAutorizado = false;
+
+        window.materialesAuth = (async function protegerMateriales() {
+
+            try {
+
+                const autorizado =
+                    await window.protegerPagina();
+
+                if (!autorizado) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return false;
+                }
+
+                if (
+                    !window.esUsuario() &&
+                    !window.esAdministrador()
+                ) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return false;
+                }
+
+                window.materialesAutorizado = true;
+
+                document.documentElement.style.visibility =
+                    "visible";
+
+                return true;
+
+            } catch (error) {
+
+                console.error(
+                    "Error al comprobar permisos de materiales:",
+                    error
+                );
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return false;
+            }
+
+        })();
+
+    </script>
+
 </head>
+
 <body>
-<!-- Módulo Materiales: usa la sesión existente de index.html/Biblioteca. No contiene login propio. -->
-<header class="encabezado"><div class="encabezado-contenido"><button id="botonVolver" type="button">← Volver al inicio</button><div class="marca"><div class="icono-marca">📦</div><div><h1>Biblioteca</h1><p>Módulo de materiales</p></div></div><button id="botonCerrarSesion" type="button">Cerrar sesión</button></div></header>
+
+<header class="encabezado">
+
+    <div class="encabezado-izquierda"></div>
+
+    <div class="encabezado-textos">
+
+        <h1>Materiales</h1>
+
+    </div>
+
+    <a
+        href="index.html"
+        class="btn-volver"
+    >
+        Volver al inicio
+    </a>
+
+</header>
+
+
 <main class="contenedor">
-<h1 class="titulo-pagina">Materiales</h1><p class="subtitulo-pagina">Administración del inventario y entrega de materiales</p>
-<section class="estadisticas"><div class="tarjeta-estadistica"><div class="estadistica-icono">📦</div><div class="estadistica-numero" id="totalTipos">0</div><div class="estadistica-texto">Tipos de materiales</div></div><div class="tarjeta-estadistica"><div class="estadistica-icono">📥</div><div class="estadistica-numero" id="totalEntradas">0</div><div class="estadistica-texto">Unidades ingresadas</div></div><div class="tarjeta-estadistica"><div class="estadistica-icono">🎁</div><div class="estadistica-numero" id="totalEntregadas">0</div><div class="estadistica-texto">Unidades entregadas</div></div><div class="tarjeta-estadistica"><div class="estadistica-icono">📊</div><div class="estadistica-numero" id="totalDisponibles">0</div><div class="estadistica-texto">Unidades disponibles</div></div></section>
-<section class="seccion"><h2 class="seccion-titulo">Inventario de materiales</h2><div class="seccion-contenido"><div class="filtros"><div class="campo campo-busqueda"><label for="buscarMaterial">Buscar material</label><input id="buscarMaterial" type="search" placeholder="Código o nombre"></div><div class="campo"><label for="filtroCategoria">Categoría</label><select id="filtroCategoria"><option value="">Todas</option></select></div><div class="campo"><label for="filtroBiblioteca">Biblioteca</label><select id="filtroBiblioteca"><option value="">Todas</option><option>F</option><option>M</option><option>N</option><option>R</option><option>Z</option><option>NE</option></select></div><div class="campo"><label for="filtroEstado">Estado</label><select id="filtroEstado"><option value="">Todos</option><option value="Activo">Activo</option><option value="Baja">Baja</option></select></div><button class="btn" id="btnLimpiarFiltros" type="button">Limpiar</button></div><div class="tabla-contenedor" style="margin-top:14px;"><table class="tabla"><thead><tr><th>Código</th><th>Material</th><th>Categoría</th><th>Unidad</th><th>Biblioteca</th><th>Entradas</th><th>Entregadas</th><th>Disponibles</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tablaInventario"></tbody></table></div></div></section>
-<section class="seccion"><h2 class="seccion-titulo">Entregas de materiales</h2><div class="seccion-contenido"><div class="barra-acciones"><button class="btn btn-principal" id="btnRegistrarEntrega" type="button">➕ Registrar entrega de material</button></div><div class="tabla-contenedor" style="margin-top:14px;"><table class="tabla"><thead><tr><th>Fecha</th><th>Material</th><th>Cantidad</th><th>Nombres</th><th>Apellidos</th><th>Receptor</th><th>Biblioteca</th><th>Sitio</th><th>Entregado por</th></tr></thead><tbody id="tablaEntregas"></tbody></table></div></div></section>
-<section class="seccion"><h2 class="seccion-titulo">Registro de materiales</h2><div class="seccion-contenido"><p style="margin:0 0 10px;font-size:12px;color:var(--texto-suave);">Permite registrar un nuevo tipo de material en el catálogo. Este registro también formará parte del MasterMateriales al descargarlo.</p><button class="btn btn-principal" id="btnNuevoMaterial" type="button">➕ Registrar nuevo material</button></div></section>
-<section class="seccion" id="seccionAdministracionMateriales" style="display:none;"><h2 class="seccion-titulo">Administración de materiales</h2><div class="seccion-contenido"><p class="admin-subtitulo">Estas opciones están disponibles únicamente para administradores.</p><div class="barra-acciones"><button class="btn" id="btnSubirMaster" type="button">📥 Subir MasterMateriales</button><button class="btn" id="btnDescargarMaster" type="button">📤 Descargar MasterMateriales</button></div><input id="archivoMaster" type="file" accept=".xlsx,.xls" class="oculto"><div class="nota">El MasterMateriales se utilizará para importar y descargar la información del sistema. Las entregas y movimientos se conservarán en sus respectivos historiales.</div></div></section>
-<section class="seccion" id="seccionBorrarMateriales" style="display:none;"><h2 class="seccion-titulo">Administración avanzada</h2><div class="seccion-contenido"><p class="admin-subtitulo">Esta opción debe utilizarse únicamente cuando sea necesario eliminar la información de materiales.</p><button class="btn btn-peligro" id="btnBorrarBase" type="button">🗑️ Borrar base de datos de materiales</button></div></section>
-</main><footer><span>Sistema de Biblioteca</span><span class="version">Módulo Materiales</span><span class="creditos">Desarrollado por Saúl Velásquez</span></footer>
-<div class="modal" id="modalMaterial"><div class="modal-contenido"><div class="modal-cabecera"><h2>Registrar nuevo material</h2><button class="modal-cerrar" data-cerrar="modalMaterial" type="button">×</button></div><form id="formMaterial"><div class="modal-cuerpo"><div class="form-grid"><div class="campo"><label>Código del material</label><input id="materialCodigo" required placeholder="Ej. M001"></div><div class="campo"><label>Nombre del material</label><input id="materialNombre" required placeholder="Ej. Hojas tamaño carta"></div><div class="campo"><label>Categoría / tipo</label><input id="materialCategoria" required placeholder="Ej. Papelería"></div><div class="campo"><label>Unidad</label><input id="materialUnidad" required placeholder="Ej. Paquete"></div><div class="campo"><label>Biblioteca</label><select id="materialBiblioteca" required><option value="">Seleccionar</option><option>F</option><option>M</option><option>N</option><option>R</option><option>Z</option><option>NE</option></select></div><div class="campo ancho-completo"><label>Observaciones</label><textarea id="materialObservaciones" rows="3" placeholder="Opcional"></textarea></div></div></div><div class="modal-pie"><button class="btn" type="button" data-cerrar="modalMaterial">Cancelar</button><button class="btn btn-principal" type="submit">Registrar material</button></div></form></div></div>
-<div class="modal" id="modalEntrega"><div class="modal-contenido"><div class="modal-cabecera"><h2>Registrar entrega de material</h2><button class="modal-cerrar" data-cerrar="modalEntrega" type="button">×</button></div><form id="formEntrega"><div class="modal-cuerpo"><div class="form-grid"><div class="campo"><label>Material</label><select id="entregaMaterial" required></select></div><div class="campo"><label>Cantidad</label><input id="entregaCantidad" type="number" min="1" step="1" required></div><div class="campo"><label>Tipo de receptor</label><select id="tipoReceptor" required><option value="Afiliado">Afiliado</option><option value="Colaborador">Colaborador</option></select></div><div class="campo"><label>Persona / colaborador</label><input id="entregaPersona" placeholder="Buscar por nombre o código"></div><div class="campo"><label>Nombres</label><input id="entregaNombres" required></div><div class="campo"><label>Apellidos</label><input id="entregaApellidos"></div><div class="campo"><label>PersonaId</label><input id="entregaPersonaId"></div><div class="campo"><label>FamiliaId</label><input id="entregaFamiliaId"></div><div class="campo"><label>Código colaborador</label><input id="entregaCodigoColaborador"></div><div class="campo"><label>Área colaborador</label><input id="entregaAreaColaborador"></div><div class="campo"><label>Biblioteca</label><select id="entregaBiblioteca" required><option value="">Seleccionar</option><option>F</option><option>M</option><option>N</option><option>R</option><option>Z</option><option>NE</option></select></div><div class="campo"><label>Sitio que entrega</label><select id="entregaSitio" required><option value="">Seleccionar</option><option>F</option><option>M</option><option>N</option><option>R</option><option>Z</option></select></div><div class="campo ancho-completo"><label>Observaciones</label><textarea id="entregaObservaciones" rows="3"></textarea></div></div><div class="nota">La información de este módulo se conectará a Supabase en la siguiente etapa. Aquí se mantiene únicamente la estructura de la interfaz y sus controles.</div></div><div class="modal-pie"><button class="btn" type="button" data-cerrar="modalEntrega">Cancelar</button><button class="btn btn-principal" type="submit">Registrar entrega</button></div></form></div></div>
+
+
+    <!-- =========================================================
+         1. QUIÉN RECIBE
+    ========================================================== -->
+
+    <section class="seccion">
+
+        <h2>
+            1. ¿Quién recibe el material?
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <div class="tipo-solicitante">
+
+                <button
+                    type="button"
+                    id="btnTipoAfiliado"
+                    class="btn-tipo activa"
+                >
+                    Afiliado
+                </button>
+
+                <button
+                    type="button"
+                    id="btnTipoColaborador"
+                    class="btn-tipo"
+                >
+                    Colaborador
+                </button>
+
+            </div>
+
+
+            <!-- AFILIADO -->
+
+            <div id="seccionAfiliado">
+
+                <div class="fila-busqueda">
+
+                    <div class="campo campo-busqueda">
+
+                        <label for="buscarFamiliaInput">
+                            Número de familia
+                        </label>
+
+                        <input
+                            type="text"
+                            id="buscarFamiliaInput"
+                            placeholder="Ingrese el número de familia"
+                        >
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-principal"
+                        id="btnBuscarFamilia"
+                    >
+                        Buscar familia
+                    </button>
+
+                </div>
+
+                <div
+                    id="mensajeFamilia"
+                    class="mensaje"
+                ></div>
+
+
+                <div
+                    class="tabla-contenedor"
+                    id="contenedorTablaFamilia"
+                    style="display:none;"
+                >
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    PersonaId
+                                </th>
+
+                                <th>
+                                    FamiliaId
+                                </th>
+
+                                <th>
+                                    Nombre
+                                </th>
+
+                                <th>
+                                    Estado
+                                </th>
+
+                                <th>
+                                    Seleccionar
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="cuerpoFamilia"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- COLABORADOR -->
+
+            <div
+                id="seccionColaborador"
+                style="display:none;"
+            >
+
+                <div class="fila-busqueda">
+
+                    <div class="campo campo-busqueda">
+
+                        <label for="buscarColaboradorInput">
+                            Nombre, apellido o código
+                        </label>
+
+                        <input
+                            type="text"
+                            id="buscarColaboradorInput"
+                            placeholder="Buscar colaborador"
+                        >
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-principal"
+                        id="btnBuscarColaborador"
+                    >
+                        Buscar colaborador
+                    </button>
+
+                </div>
+
+                <div
+                    id="mensajeColaborador"
+                    class="mensaje"
+                ></div>
+
+
+                <div
+                    class="tabla-contenedor"
+                    id="contenedorTablaColaborador"
+                    style="display:none;"
+                >
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Código
+                                </th>
+
+                                <th>
+                                    Nombre
+                                </th>
+
+                                <th>
+                                    Área
+                                </th>
+
+                                <th>
+                                    Estado
+                                </th>
+
+                                <th>
+                                    Seleccionar
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="cuerpoColaborador"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         2. BUSCAR MATERIAL
+    ========================================================== -->
+
+    <section class="seccion">
+
+        <h2>
+            2. Buscar material
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <div class="fila-busqueda">
+
+                <div class="campo campo-busqueda">
+
+                    <label for="buscarMaterialInput">
+                        Código o nombre del material
+                    </label>
+
+                    <input
+                        type="text"
+                        id="buscarMaterialInput"
+                        placeholder="Ingrese código o nombre"
+                    >
+
+                </div>
+
+                <button
+                    type="button"
+                    class="btn btn-principal"
+                    id="btnBuscarMaterial"
+                >
+                    Buscar material
+                </button>
+
+            </div>
+
+
+            <div
+                id="mensajeMaterial"
+                class="mensaje"
+            ></div>
+
+
+            <div
+                id="materialInfo"
+                class="material-seleccionado"
+            >
+
+                <div class="material-superior">
+
+                    <div>
+
+                        <div
+                            id="materialCodigo"
+                            class="material-codigo"
+                        ></div>
+
+                        <div
+                            id="materialNombre"
+                            class="material-nombre"
+                        ></div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        id="btnQuitarMaterial"
+                        class="btn-quitar"
+                    >
+                        Quitar
+                    </button>
+
+                </div>
+
+
+                <div class="material-detalles">
+
+                    <div class="material-detalle">
+
+                        <div class="material-detalle-label">
+                            Categoría
+                        </div>
+
+                        <div
+                            id="materialCategoria"
+                            class="material-detalle-valor"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <div class="material-detalle">
+
+                        <div class="material-detalle-label">
+                            Unidad
+                        </div>
+
+                        <div
+                            id="materialUnidad"
+                            class="material-detalle-valor"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <div class="material-detalle">
+
+                        <div class="material-detalle-label">
+                            Biblioteca
+                        </div>
+
+                        <div
+                            id="materialBiblioteca"
+                            class="material-detalle-valor"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <div class="material-detalle">
+
+                        <div class="material-detalle-label">
+                            Disponible
+                        </div>
+
+                        <div
+                            id="materialDisponible"
+                            class="material-detalle-valor"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cantidad-entrega">
+
+                    <div
+                        id="mensajeDisponibilidad"
+                        class="disponibilidad"
+                    >
+                        Material disponible.
+                    </div>
+
+                    <div class="campo">
+
+                        <label for="cantidadMaterial">
+                            Cantidad a entregar
+                        </label>
+
+                        <input
+                            type="number"
+                            id="cantidadMaterial"
+                            min="1"
+                            step="1"
+                            value="1"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         3. CONFIRMAR ENTREGA
+    ========================================================== -->
+
+    <section
+        class="seccion"
+        id="resumenEntrega"
+    >
+
+        <h2>
+            3. Confirmar entrega
+        </h2>
+
+        <div class="seccion-contenido">
+
+
+            <div class="resumen-grid">
+
+
+                <!-- PERSONA -->
+
+                <div class="bloque-resumen">
+
+                    <div
+                        class="bloque-resumen-titulo"
+                        id="tituloResumenPersona"
+                    >
+                        Afiliado
+                    </div>
+
+                    <div class="bloque-resumen-contenido">
+
+                        <div class="dato-resumen">
+
+                            <strong id="etiquetaIdentificador">
+                                Familia
+                            </strong>
+
+                            <span id="resumenIdentificador">
+                            </span>
+
+                        </div>
+
+
+                        <div class="dato-resumen">
+
+                            <strong>
+                                PersonaId
+                            </strong>
+
+                            <span id="resumenPersonaId">
+                            </span>
+
+                        </div>
+
+
+                        <div class="dato-resumen">
+
+                            <strong>
+                                Nombre
+                            </strong>
+
+                            <span id="resumenNombre">
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="dato-resumen"
+                            id="filaAreaResumen"
+                            style="display:none;"
+                        >
+
+                            <strong>
+                                Área
+                            </strong>
+
+                            <span id="resumenArea">
+                            </span>
+
+                        </div>
+
+
+                        <div class="dato-resumen">
+
+                            <strong>
+                                Sitio
+                            </strong>
+
+                            <span id="resumenSitio">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MATERIAL -->
+
+                <div class="bloque-resumen">
+
+                    <div class="bloque-resumen-titulo">
+                        Material
+                    </div>
+
+                    <div class="bloque-resumen-contenido">
+
+                        <div class="dato-resumen">
+
+                            <strong>
+                                Código
+                            </strong>
+
+                            <span id="resumenCodigoMaterial">
+                            </span>
+
+                        </div>
+
+
+                        <div class="dato-resumen">
+
+                            <strong>
+                                Material
+                            </strong>
+
+                            <span id="resumenNombreMaterial">
+                            </span>
+
+                        </div>
+
+
+                        <div class="dato-resumen">
+
+                            <strong>
+                                Cantidad
+                            </strong>
+
+                            <span id="resumenCantidadMaterial">
+                            </span>
+
+                        </div>
+
+
+                        <div class="dato-resumen">
+
+                            <strong>
+                                Biblioteca
+                            </strong>
+
+                            <span id="resumenBibliotecaMaterial">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DATOS DE ENTREGA -->
+
+            <div
+                class="bloque-resumen"
+                style="margin-top:12px;"
+            >
+
+                <div class="bloque-resumen-titulo">
+                    Datos de la entrega
+                </div>
+
+                <div class="bloque-resumen-contenido">
+
+                    <div class="resumen-grid">
+
+                        <div class="campo">
+
+                            <label for="sitioEntregaInput">
+                                Sitio que entrega
+                            </label>
+
+                            <select id="sitioEntregaInput">
+
+                                <option value="F">
+                                    F
+                                </option>
+
+                                <option value="M">
+                                    M
+                                </option>
+
+                                <option value="N">
+                                    N
+                                </option>
+
+                                <option value="R">
+                                    R
+                                </option>
+
+                                <option value="Z">
+                                    Z
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="fechaEntregaInput">
+                                Fecha de entrega
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fechaEntregaInput"
+                            >
+
+                        </div>
+
+
+                        <div class="campo ancho-completo">
+
+                            <label for="observacionesEntregaInput">
+                                Observaciones
+                            </label>
+
+                            <textarea
+                                id="observacionesEntregaInput"
+                                rows="3"
+                                placeholder="Opcional"
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="confirmacion">
+
+                <p class="confirmacion-titulo">
+                    ¿Desea registrar esta entrega?
+                </p>
+
+                <p class="confirmacion-texto">
+                    El material será descontado del inventario
+                    y la entrega quedará registrada en el historial.
+                    Los materiales entregados no se devuelven.
+                </p>
+
+
+                <div class="acciones-confirmacion">
+
+                    <button
+                        type="button"
+                        class="btn"
+                        id="btnCancelarEntrega"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-principal"
+                        id="btnConfirmarEntrega"
+                    >
+                        Sí, registrar entrega
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="mensajeFinal"
+                class="mensaje"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         HISTORIAL
+    ========================================================== -->
+
+    <section class="seccion">
+
+        <h2>
+            Historial de entregas
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <div class="filtros-historial">
+
+                <div class="campo">
+
+                    <label for="buscarHistorialInput">
+                        Buscar
+                    </label>
+
+                    <input
+                        type="search"
+                        id="buscarHistorialInput"
+                        placeholder="Material, nombre o código"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="filtroHistorialSitio">
+                        Sitio
+                    </label>
+
+                    <select id="filtroHistorialSitio">
+
+                        <option value="">
+                            Todos
+                        </option>
+
+                        <option value="F">
+                            F
+                        </option>
+
+                        <option value="M">
+                            M
+                        </option>
+
+                        <option value="N">
+                            N
+                        </option>
+
+                        <option value="R">
+                            R
+                        </option>
+
+                        <option value="Z">
+                            Z
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="filtroHistorialTipo">
+                        Receptor
+                    </label>
+
+                    <select id="filtroHistorialTipo">
+
+                        <option value="">
+                            Todos
+                        </option>
+
+                        <option value="Afiliado">
+                            Afiliado
+                        </option>
+
+                        <option value="Colaborador">
+                            Colaborador
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn"
+                    id="btnLimpiarHistorial"
+                >
+                    Limpiar
+                </button>
+
+            </div>
+
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Fecha
+                            </th>
+
+                            <th>
+                                Código
+                            </th>
+
+                            <th>
+                                Material
+                            </th>
+
+                            <th>
+                                Cantidad
+                            </th>
+
+                            <th>
+                                Nombres
+                            </th>
+
+                            <th>
+                                Apellidos
+                            </th>
+
+                            <th>
+                                PersonaId
+                            </th>
+
+                            <th>
+                                FamiliaId
+                            </th>
+
+                            <th>
+                                Biblioteca
+                            </th>
+
+                            <th>
+                                Sitio
+                            </th>
+
+                            <th>
+                                Entregado por
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="cuerpoHistorial"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         INVENTARIO
+    ========================================================== -->
+
+    <section class="seccion">
+
+        <h2>
+            Inventario de materiales
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Código
+                            </th>
+
+                            <th>
+                                Material
+                            </th>
+
+                            <th>
+                                Categoría
+                            </th>
+
+                            <th>
+                                Unidad
+                            </th>
+
+                            <th>
+                                Biblioteca
+                            </th>
+
+                            <th>
+                                Ingresadas
+                            </th>
+
+                            <th>
+                                Entregadas
+                            </th>
+
+                            <th>
+                                Disponibles
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="cuerpoInventario"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         REGISTRAR MATERIAL
+    ========================================================== -->
+
+    <section class="seccion">
+
+        <h2>
+            Registro de materiales
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <p class="admin-nota">
+                Registre un nuevo tipo de material para incorporarlo
+                posteriormente al inventario.
+            </p>
+
+            <button
+                type="button"
+                class="btn btn-principal"
+                id="btnNuevoMaterial"
+            >
+                + Registrar nuevo material
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         ADMINISTRACIÓN
+    ========================================================== -->
+
+    <section
+        class="seccion"
+        id="seccionAdministracion"
+        style="display:none;"
+    >
+
+        <h2>
+            Administración de materiales
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <p class="admin-nota">
+                Estas opciones están disponibles únicamente
+                para usuarios administradores.
+            </p>
+
+
+            <div class="barra-acciones">
+
+                <button
+                    type="button"
+                    class="btn"
+                    id="btnSubirMaster"
+                >
+                    Subir MasterMateriales
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn"
+                    id="btnDescargarMaster"
+                >
+                    Descargar MasterMateriales
+                </button>
+
+            </div>
+
+
+            <input
+                type="file"
+                id="archivoMaster"
+                class="oculto"
+                accept=".xlsx,.xls"
+            >
+
+
+            <div class="nota">
+
+                El MasterMateriales permitirá administrar
+                la información general del catálogo.
+                Los movimientos y entregas deberán conservar
+                su historial.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         BORRAR BASE
+    ========================================================== -->
+
+    <section
+        class="seccion"
+        id="seccionBorrarMateriales"
+        style="display:none;"
+    >
+
+        <h2>
+            Administración avanzada
+        </h2>
+
+        <div class="seccion-contenido">
+
+            <p class="admin-nota">
+                Esta opción es exclusiva para administradores
+                y deberá utilizarse únicamente cuando sea necesario.
+            </p>
+
+            <button
+                type="button"
+                class="btn btn-peligro"
+                id="btnBorrarBase"
+            >
+                Borrar base de datos de materiales
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     MODAL NUEVO MATERIAL
+========================================================== -->
+
+<div
+    class="modal"
+    id="modalMaterial"
+>
+
+    <div class="modal-contenido">
+
+        <div class="modal-cabecera">
+
+            <h2>
+                Registrar nuevo material
+            </h2>
+
+            <button
+                type="button"
+                class="modal-cerrar"
+                data-cerrar="modalMaterial"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="formMaterial">
+
+            <div class="modal-cuerpo">
+
+                <div class="form-grid">
+
+                    <div class="campo">
+
+                        <label for="nuevoCodigoMaterial">
+                            Código del material
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevoCodigoMaterial"
+                            placeholder="Ej. M001"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="nuevoNombreMaterial">
+                            Nombre del material
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevoNombreMaterial"
+                            placeholder="Ej. Hojas tamaño carta"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="nuevoCategoriaMaterial">
+                            Categoría
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevoCategoriaMaterial"
+                            placeholder="Ej. Papelería"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="nuevoUnidadMaterial">
+                            Unidad
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevoUnidadMaterial"
+                            placeholder="Ej. Unidad, paquete, caja"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="nuevoBibliotecaMaterial">
+                            Biblioteca
+                        </label>
+
+                        <select
+                            id="nuevoBibliotecaMaterial"
+                            required
+                        >
+
+                            <option value="">
+                                Seleccionar
+                            </option>
+
+                            <option value="F">
+                                F
+                            </option>
+
+                            <option value="M">
+                                M
+                            </option>
+
+                            <option value="N">
+                                N
+                            </option>
+
+                            <option value="R">
+                                R
+                            </option>
+
+                            <option value="Z">
+                                Z
+                            </option>
+
+                            <option value="NE">
+                                NE
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="nuevoEstadoMaterial">
+                            Estado
+                        </label>
+
+                        <select
+                            id="nuevoEstadoMaterial"
+                        >
+
+                            <option value="Activo">
+                                Activo
+                            </option>
+
+                            <option value="Baja">
+                                Baja
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo ancho-completo">
+
+                        <label for="nuevoObservacionesMaterial">
+                            Observaciones
+                        </label>
+
+                        <textarea
+                            id="nuevoObservacionesMaterial"
+                            rows="3"
+                            placeholder="Opcional"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-pie">
+
+                <button
+                    type="button"
+                    class="btn"
+                    data-cerrar="modalMaterial"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-principal"
+                >
+                    Registrar material
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
 <script>
-(async function(){
- const autorizado=await window.materialesAuth;if(!autorizado)return;
- const administrador=window.esAdministrador();
- const materialesDemo=[{codigo:'M001',nombre:'Hojas tamaño carta',categoria:'Papelería',unidad:'Paquete',biblioteca:'F',entradas:200,entregadas:30,estado:'Activo'},{codigo:'M002',nombre:'Cuadernos',categoria:'Papelería',unidad:'Unidad',biblioteca:'M',entradas:50,entregadas:12,estado:'Activo'},{codigo:'M003',nombre:'Marcadores',categoria:'Material educativo',unidad:'Caja',biblioteca:'NE',entradas:20,entregadas:5,estado:'Activo'}];
- const entregasDemo=[{fecha:'28/09/2026',material:'Hojas tamaño carta',cantidad:5,nombres:'Maria Priscila',apellidos:'Pérez Hernández',receptor:'Afiliado',biblioteca:'F',sitio:'F',usuario:'Usuario actual'},{fecha:'27/09/2026',material:'Cuadernos',cantidad:2,nombres:'Blanca Elizabeth',apellidos:'Aguirre Aguirre',receptor:'Colaborador',biblioteca:'M',sitio:'M',usuario:'Usuario actual'}];
- const esc=v=>String(v??'').replace(/[&<>\'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));const disponible=m=>Number(m.entradas||0)-Number(m.entregadas||0);
- function actualizarEstadisticas(){document.getElementById('totalTipos').textContent=materialesDemo.length;document.getElementById('totalEntradas').textContent=materialesDemo.reduce((a,m)=>a+Number(m.entradas||0),0);document.getElementById('totalEntregadas').textContent=materialesDemo.reduce((a,m)=>a+Number(m.entregadas||0),0);document.getElementById('totalDisponibles').textContent=materialesDemo.reduce((a,m)=>a+disponible(m),0)}
- function renderCategorias(){const s=document.getElementById('filtroCategoria');[...new Set(materialesDemo.map(m=>m.categoria))].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o)})}
- function renderInventario(){const q=document.getElementById('buscarMaterial').value.trim().toLowerCase(),cat=document.getElementById('filtroCategoria').value,bib=document.getElementById('filtroBiblioteca').value,est=document.getElementById('filtroEstado').value,filas=materialesDemo.filter(m=>(!q||m.codigo.toLowerCase().includes(q)||m.nombre.toLowerCase().includes(q))&&(!cat||m.categoria===cat)&&(!bib||m.biblioteca===bib)&&(!est||m.estado===est)),tbody=document.getElementById('tablaInventario');tbody.innerHTML=filas.length?filas.map(m=>{const d=disponible(m),clase=d<0?'cantidad-negativa':d===0?'cantidad-cero':'cantidad-disponible';return `<tr><td><strong>${esc(m.codigo)}</strong></td><td>${esc(m.nombre)}</td><td>${esc(m.categoria)}</td><td>${esc(m.unidad)}</td><td>${esc(m.biblioteca)}</td><td>${m.entradas}</td><td>${m.entregadas}</td><td class="${clase}">${d}</td><td><span class="estado ${m.estado==='Activo'?'estado-activo':'estado-baja'}">${esc(m.estado)}</span></td><td>${administrador?'<div class="mini-acciones"><button class="btn" type="button" onclick="alert(\'La edición se conectará a Supabase en la siguiente etapa.\')">Editar</button></div>':'—'}</td></tr>`}).join(''):'<tr><td colspan="10" class="mensaje-vacio">No hay materiales que coincidan con los filtros.</td></tr>';actualizarEstadisticas()}
- function renderEntregas(){document.getElementById('tablaEntregas').innerHTML=entregasDemo.map(e=>`<tr><td>${esc(e.fecha)}</td><td>${esc(e.material)}</td><td>${e.cantidad}</td><td>${esc(e.nombres)}</td><td>${esc(e.apellidos)}</td><td>${esc(e.receptor)}</td><td>${esc(e.biblioteca)}</td><td>${esc(e.sitio)}</td><td>${esc(e.usuario)}</td></tr>`).join('')}
- function llenarMaterialesEntrega(){document.getElementById('entregaMaterial').innerHTML='<option value="">Seleccionar material</option>'+materialesDemo.filter(m=>m.estado==='Activo').map(m=>`<option value="${esc(m.codigo)}">${esc(m.codigo)} - ${esc(m.nombre)}</option>`).join('')}
- function abrir(id){document.getElementById(id).classList.add('mostrar')}function cerrar(id){document.getElementById(id).classList.remove('mostrar')}
- document.getElementById('seccionAdministracionMateriales').style.display=administrador?'':'none';document.getElementById('seccionBorrarMateriales').style.display=administrador?'':'none';
- document.querySelectorAll('[data-cerrar]').forEach(b=>b.addEventListener('click',()=>cerrar(b.dataset.cerrar)));document.getElementById('btnNuevoMaterial').addEventListener('click',()=>abrir('modalMaterial'));document.getElementById('btnRegistrarEntrega').addEventListener('click',()=>{llenarMaterialesEntrega();abrir('modalEntrega')});document.getElementById('btnLimpiarFiltros').addEventListener('click',()=>{document.getElementById('buscarMaterial').value='';document.getElementById('filtroCategoria').value='';document.getElementById('filtroBiblioteca').value='';document.getElementById('filtroEstado').value='';renderInventario()});['buscarMaterial','filtroCategoria','filtroBiblioteca','filtroEstado'].forEach(id=>document.getElementById(id).addEventListener('input',renderInventario));document.getElementById('formMaterial').addEventListener('submit',e=>{e.preventDefault();alert('Interfaz lista. El registro se conectará a Supabase en la siguiente etapa.');cerrar('modalMaterial')});document.getElementById('formEntrega').addEventListener('submit',e=>{e.preventDefault();alert('Interfaz lista. La entrega se conectará a Supabase en la siguiente etapa.');cerrar('modalEntrega')});
- document.getElementById('btnSubirMaster').addEventListener('click',()=>document.getElementById('archivoMaster').click());document.getElementById('archivoMaster').addEventListener('change',e=>{if(e.target.files[0])alert('Archivo seleccionado: '+e.target.files[0].name+'\nLa importación real se conectará después.')});document.getElementById('btnDescargarMaster').addEventListener('click',()=>alert('La descarga real de MasterMateriales se conectará después.'));document.getElementById('btnBorrarBase').addEventListener('click',()=>{if(confirm('¿Estás seguro de que deseas borrar la base de datos de materiales? Esta acción será irreversible.'))alert('La eliminación real se conectará después.')});document.getElementById('botonVolver').addEventListener('click',()=>window.location.href='index.html');document.getElementById('botonCerrarSesion').addEventListener('click',async()=>{try{await supabaseClient.auth.signOut()}finally{window.location.href='index.html'}});
- renderCategorias();renderInventario();renderEntregas();llenarMaterialesEntrega();
+
+(async function () {
+
+    /* =========================================================
+       AUTENTICACIÓN
+    ========================================================== */
+
+    const autorizado =
+        await window.materialesAuth;
+
+    if (!autorizado) {
+        return;
+    }
+
+
+    const esAdministrador =
+        window.esAdministrador();
+
+
+    /* =========================================================
+       VARIABLES
+    ========================================================== */
+
+    let tipoReceptor =
+        "Afiliado";
+
+    let personaSeleccionada =
+        null;
+
+    let colaboradorSeleccionado =
+        null;
+
+    let materialSeleccionado =
+        null;
+
+
+    /*
+       Datos temporales únicamente para probar
+       la interfaz antes de conectar Supabase.
+
+       NO representan la base definitiva.
+    */
+
+    const materialesDemo = [
+
+        {
+            codigoMaterial: "M001",
+            nombreMaterial: "Hojas tamaño carta",
+            categoria: "Papelería",
+            unidad: "Paquete",
+            Biblioteca: "F",
+            entradas: 200,
+            entregadas: 30,
+            estado: "Activo"
+        },
+
+        {
+            codigoMaterial: "M002",
+            nombreMaterial: "Cuadernos",
+            categoria: "Papelería",
+            unidad: "Unidad",
+            Biblioteca: "M",
+            entradas: 100,
+            entregadas: 20,
+            estado: "Activo"
+        },
+
+        {
+            codigoMaterial: "M003",
+            nombreMaterial: "Marcadores",
+            categoria: "Material educativo",
+            unidad: "Caja",
+            Biblioteca: "NE",
+            entradas: 50,
+            entregadas: 10,
+            estado: "Activo"
+        }
+
+    ];
+
+
+    const historialDemo = [];
+
+
+    /* =========================================================
+       ELEMENTOS
+    ========================================================== */
+
+    const btnTipoAfiliado =
+        document.getElementById(
+            "btnTipoAfiliado"
+        );
+
+    const btnTipoColaborador =
+        document.getElementById(
+            "btnTipoColaborador"
+        );
+
+    const seccionAfiliado =
+        document.getElementById(
+            "seccionAfiliado"
+        );
+
+    const seccionColaborador =
+        document.getElementById(
+            "seccionColaborador"
+        );
+
+    const buscarFamiliaInput =
+        document.getElementById(
+            "buscarFamiliaInput"
+        );
+
+    const buscarColaboradorInput =
+        document.getElementById(
+            "buscarColaboradorInput"
+        );
+
+    const buscarMaterialInput =
+        document.getElementById(
+            "buscarMaterialInput"
+        );
+
+    const cuerpoFamilia =
+        document.getElementById(
+            "cuerpoFamilia"
+        );
+
+    const cuerpoColaborador =
+        document.getElementById(
+            "cuerpoColaborador"
+        );
+
+    const contenedorTablaFamilia =
+        document.getElementById(
+            "contenedorTablaFamilia"
+        );
+
+    const contenedorTablaColaborador =
+        document.getElementById(
+            "contenedorTablaColaborador"
+        );
+
+    const materialInfo =
+        document.getElementById(
+            "materialInfo"
+        );
+
+    const resumenEntrega =
+        document.getElementById(
+            "resumenEntrega"
+        );
+
+
+    /* =========================================================
+       MENSAJES
+    ========================================================== */
+
+    function mostrarMensaje(
+        elemento,
+        texto,
+        tipo
+    ) {
+
+        elemento.textContent =
+            texto;
+
+        elemento.className =
+            "mensaje " + tipo;
+
+    }
+
+
+    function limpiarMensaje(
+        elemento
+    ) {
+
+        elemento.textContent =
+            "";
+
+        elemento.className =
+            "mensaje";
+
+    }
+
+
+    /* =========================================================
+       FECHA
+    ========================================================== */
+
+    function obtenerFechaLocalInput() {
+
+        const fecha =
+            new Date();
+
+        const año =
+            fecha.getFullYear();
+
+        const mes =
+            String(
+                fecha.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+        const dia =
+            String(
+                fecha.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+        return `${año}-${mes}-${dia}`;
+
+    }
+
+
+    document.getElementById(
+        "fechaEntregaInput"
+    ).value =
+        obtenerFechaLocalInput();
+
+
+    /* =========================================================
+       CAMBIAR TIPO DE RECEPTOR
+    ========================================================== */
+
+    function cambiarTipoReceptor(
+        tipo
+    ) {
+
+        tipoReceptor =
+            tipo;
+
+        personaSeleccionada =
+            null;
+
+        colaboradorSeleccionado =
+            null;
+
+        buscarFamiliaInput.value =
+            "";
+
+        buscarColaboradorInput.value =
+            "";
+
+        cuerpoFamilia.innerHTML =
+            "";
+
+        cuerpoColaborador.innerHTML =
+            "";
+
+        contenedorTablaFamilia.style.display =
+            "none";
+
+        contenedorTablaColaborador.style.display =
+            "none";
+
+        limpiarMensaje(
+            document.getElementById(
+                "mensajeFamilia"
+            )
+        );
+
+        limpiarMensaje(
+            document.getElementById(
+                "mensajeColaborador"
+            )
+        );
+
+
+        if (
+            tipo === "Afiliado"
+        ) {
+
+            btnTipoAfiliado.classList.add(
+                "activa"
+            );
+
+            btnTipoColaborador.classList.remove(
+                "activa"
+            );
+
+            seccionAfiliado.style.display =
+                "block";
+
+            seccionColaborador.style.display =
+                "none";
+
+        } else {
+
+            btnTipoAfiliado.classList.remove(
+                "activa"
+            );
+
+            btnTipoColaborador.classList.add(
+                "activa"
+            );
+
+            seccionAfiliado.style.display =
+                "none";
+
+            seccionColaborador.style.display =
+                "block";
+
+        }
+
+        actualizarResumen();
+
+    }
+
+
+    btnTipoAfiliado.addEventListener(
+        "click",
+        function () {
+
+            cambiarTipoReceptor(
+                "Afiliado"
+            );
+
+        }
+    );
+
+
+    btnTipoColaborador.addEventListener(
+        "click",
+        function () {
+
+            cambiarTipoReceptor(
+                "Colaborador"
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       BUSCAR FAMILIA
+    ========================================================== */
+
+    async function buscarFamilia() {
+
+        const familia =
+            buscarFamiliaInput.value.trim();
+
+        const mensaje =
+            document.getElementById(
+                "mensajeFamilia"
+            );
+
+        limpiarMensaje(
+            mensaje
+        );
+
+        cuerpoFamilia.innerHTML =
+            "";
+
+        contenedorTablaFamilia.style.display =
+            "none";
+
+        personaSeleccionada =
+            null;
+
+        actualizarResumen();
+
+
+        if (!familia) {
+
+            mostrarMensaje(
+                mensaje,
+                "Ingrese un número de familia.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /*
+           Esta parte ya está preparada
+           para la tabla real de afiliados.
+        */
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("afiliados")
+                    .select("*")
+                    .eq(
+                        "FamiliaId",
+                        familia
+                    )
+                    .eq(
+                        "estado",
+                        "Activo"
+                    )
+                    .order(
+                        "Apellidos",
+                        {
+                            ascending: true
+                        }
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "No se encontraron personas activas para esta familia.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            data.forEach(
+                persona => {
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    fila.innerHTML = `
+
+                        <td>
+                            ${persona.PersonaId || ""}
+                        </td>
+
+                        <td>
+                            ${persona.FamiliaId || ""}
+                        </td>
+
+                        <td class="nombre">
+                            ${
+                                persona.Nombres || ""
+                            }
+                            ${
+                                persona.Apellidos || ""
+                            }
+                        </td>
+
+                        <td>
+                            ${persona.estado || ""}
+                        </td>
+
+                        <td>
+                            <button
+                                type="button"
+                                class="btn-seleccionar"
+                            >
+                                Seleccionar
+                            </button>
+                        </td>
+
+                    `;
+
+
+                    const boton =
+                        fila.querySelector(
+                            ".btn-seleccionar"
+                        );
+
+
+                    boton.addEventListener(
+                        "click",
+                        function () {
+
+                            seleccionarPersona(
+                                persona,
+                                fila,
+                                boton
+                            );
+
+                        }
+                    );
+
+
+                    cuerpoFamilia.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+
+            contenedorTablaFamilia.style.display =
+                "block";
+
+
+        } catch (error) {
+
+            console.error(
+                "ERROR BUSCANDO FAMILIA:",
+                error
+            );
+
+            mostrarMensaje(
+                mensaje,
+                "Ocurrió un error al consultar la familia.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    function seleccionarPersona(
+        persona,
+        fila,
+        boton
+    ) {
+
+        document
+            .querySelectorAll(
+                "#cuerpoFamilia tr"
+            )
+            .forEach(
+                filaActual => {
+
+                    filaActual.classList.remove(
+                        "seleccionada"
+                    );
+
+                    const botonActual =
+                        filaActual.querySelector(
+                            ".btn-seleccionar"
+                        );
+
+                    if (botonActual) {
+
+                        botonActual.classList.remove(
+                            "seleccionada"
+                        );
+
+                        botonActual.textContent =
+                            "Seleccionar";
+
+                    }
+
+                }
+            );
+
+
+        fila.classList.add(
+            "seleccionada"
+        );
+
+        boton.classList.add(
+            "seleccionada"
+        );
+
+        boton.textContent =
+            "✓ Seleccionada";
+
+
+        personaSeleccionada =
+            persona;
+
+        colaboradorSeleccionado =
+            null;
+
+        actualizarResumen();
+
+    }
+
+
+    document.getElementById(
+        "btnBuscarFamilia"
+    ).addEventListener(
+        "click",
+        buscarFamilia
+    );
+
+
+    /* =========================================================
+       BUSCAR COLABORADOR
+    ========================================================== */
+
+    async function buscarColaborador() {
+
+        const texto =
+            buscarColaboradorInput.value.trim();
+
+        const mensaje =
+            document.getElementById(
+                "mensajeColaborador"
+            );
+
+        limpiarMensaje(
+            mensaje
+        );
+
+        cuerpoColaborador.innerHTML =
+            "";
+
+        contenedorTablaColaborador.style.display =
+            "none";
+
+        colaboradorSeleccionado =
+            null;
+
+        actualizarResumen();
+
+
+        if (!texto) {
+
+            mostrarMensaje(
+                mensaje,
+                "Ingrese el nombre, apellido o código del colaborador.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("colaboradores")
+                    .select("*")
+                    .eq(
+                        "estado",
+                        "Activo"
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            const textoNormalizado =
+                texto.toLowerCase();
+
+
+            const encontrados =
+                (data || []).filter(
+                    colaborador => {
+
+                        const nombre =
+                            String(
+                                colaborador.Nombre || ""
+                            ).toLowerCase();
+
+                        const codigo =
+                            String(
+                                colaborador.CodigoColaborador || ""
+                            ).toLowerCase();
+
+                        return (
+                            nombre.includes(
+                                textoNormalizado
+                            ) ||
+                            codigo.includes(
+                                textoNormalizado
+                            )
+                        );
+
+                    }
+                );
+
+
+            if (
+                encontrados.length === 0
+            ) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "No se encontró un colaborador activo.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            encontrados.forEach(
+                colaborador => {
+
+                    const fila =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    fila.innerHTML = `
+
+                        <td>
+                            ${
+                                colaborador.CodigoColaborador || ""
+                            }
+                        </td>
+
+                        <td class="nombre">
+                            ${
+                                colaborador.Nombre || ""
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                colaborador.Area || ""
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                colaborador.estado || ""
+                            }
+                        </td>
+
+                        <td>
+                            <button
+                                type="button"
+                                class="btn-seleccionar"
+                            >
+                                Seleccionar
+                            </button>
+                        </td>
+
+                    `;
+
+
+                    const boton =
+                        fila.querySelector(
+                            ".btn-seleccionar"
+                        );
+
+
+                    boton.addEventListener(
+                        "click",
+                        function () {
+
+                            seleccionarColaborador(
+                                colaborador,
+                                fila,
+                                boton
+                            );
+
+                        }
+                    );
+
+
+                    cuerpoColaborador.appendChild(
+                        fila
+                    );
+
+                }
+            );
+
+
+            contenedorTablaColaborador.style.display =
+                "block";
+
+
+        } catch (error) {
+
+            console.error(
+                "ERROR BUSCANDO COLABORADOR:",
+                error
+            );
+
+            mostrarMensaje(
+                mensaje,
+                "Ocurrió un error al consultar el colaborador.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    function seleccionarColaborador(
+        colaborador,
+        fila,
+        boton
+    ) {
+
+        document
+            .querySelectorAll(
+                "#cuerpoColaborador tr"
+            )
+            .forEach(
+                filaActual => {
+
+                    filaActual.classList.remove(
+                        "seleccionada"
+                    );
+
+                    const botonActual =
+                        filaActual.querySelector(
+                            ".btn-seleccionar"
+                        );
+
+                    if (botonActual) {
+
+                        botonActual.classList.remove(
+                            "seleccionada"
+                        );
+
+                        botonActual.textContent =
+                            "Seleccionar";
+
+                    }
+
+                }
+            );
+
+
+        fila.classList.add(
+            "seleccionada"
+        );
+
+        boton.classList.add(
+            "seleccionada"
+        );
+
+        boton.textContent =
+            "✓ Seleccionado";
+
+
+        colaboradorSeleccionado =
+            colaborador;
+
+        personaSeleccionada =
+            null;
+
+        actualizarResumen();
+
+    }
+
+
+    document.getElementById(
+        "btnBuscarColaborador"
+    ).addEventListener(
+        "click",
+        buscarColaborador
+    );
+
+
+    /* =========================================================
+       BUSCAR MATERIAL
+    ========================================================== */
+
+    async function buscarMaterial() {
+
+        const texto =
+            buscarMaterialInput.value.trim();
+
+        const mensaje =
+            document.getElementById(
+                "mensajeMaterial"
+            );
+
+        limpiarMensaje(
+            mensaje
+        );
+
+
+        materialInfo.classList.remove(
+            "visible"
+        );
+
+        materialSeleccionado =
+            null;
+
+        actualizarResumen();
+
+
+        if (!texto) {
+
+            mostrarMensaje(
+                mensaje,
+                "Ingrese el código o nombre del material.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        try {
+
+            /*
+               Esta consulta está preparada para la
+               futura tabla materiales de Supabase.
+
+               Por ahora también se busca en los datos
+               temporales para poder revisar la interfaz.
+            */
+
+            let encontrados = [];
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("materiales")
+                        .select("*");
+
+
+                if (
+                    !error &&
+                    data &&
+                    data.length
+                ) {
+
+                    encontrados =
+                        data;
+
+                }
+
+            } catch (error) {
+
+                console.log(
+                    "La tabla materiales todavía no está conectada."
+                );
+
+            }
+
+
+            if (
+                encontrados.length === 0
+            ) {
+
+                encontrados =
+                    materialesDemo;
+
+            }
+
+
+            const busqueda =
+                texto.toLowerCase();
+
+
+            const material =
+                encontrados.find(
+                    item => {
+
+                        const codigo =
+                            String(
+                                item.codigoMaterial ||
+                                item.codigo ||
+                                ""
+                            ).toLowerCase();
+
+                        const nombre =
+                            String(
+                                item.nombreMaterial ||
+                                item.nombre ||
+                                ""
+                            ).toLowerCase();
+
+                        return (
+                            codigo === busqueda ||
+                            nombre.includes(
+                                busqueda
+                            ) ||
+                            codigo.includes(
+                                busqueda
+                            )
+                        );
+
+                    }
+                );
+
+
+            if (!material) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "No se encontró un material con ese código o nombre.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const entradas =
+                Number(
+                    material.entradas || 0
+                );
+
+            const entregadas =
+                Number(
+                    material.entregadas || 0
+                );
+
+            const disponibles =
+                Number(
+                    material.disponibles !== undefined
+                        ? material.disponibles
+                        : entradas - entregadas
+                );
+
+
+            materialSeleccionado = {
+
+                ...material,
+
+                codigoMaterial:
+                    material.codigoMaterial ||
+                    material.codigo,
+
+                nombreMaterial:
+                    material.nombreMaterial ||
+                    material.nombre,
+
+                categoria:
+                    material.categoria ||
+                    "",
+
+                unidad:
+                    material.unidad ||
+                    "",
+
+                Biblioteca:
+                    material.Biblioteca ||
+                    material.biblioteca ||
+                    "",
+
+                disponibles:
+                    disponibles
+
+            };
+
+
+            mostrarMaterialSeleccionado();
+
+
+        } catch (error) {
+
+            console.error(
+                "ERROR BUSCANDO MATERIAL:",
+                error
+            );
+
+            mostrarMensaje(
+                mensaje,
+                "Ocurrió un error al consultar el material.",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    function mostrarMaterialSeleccionado() {
+
+        if (
+            !materialSeleccionado
+        ) {
+            return;
+        }
+
+
+        document.getElementById(
+            "materialCodigo"
+        ).textContent =
+            `Código: ${materialSeleccionado.codigoMaterial}`;
+
+
+        document.getElementById(
+            "materialNombre"
+        ).textContent =
+            materialSeleccionado.nombreMaterial;
+
+
+        document.getElementById(
+            "materialCategoria"
+        ).textContent =
+            materialSeleccionado.categoria ||
+            "No definida";
+
+
+        document.getElementById(
+            "materialUnidad"
+        ).textContent =
+            materialSeleccionado.unidad ||
+            "No definida";
+
+
+        document.getElementById(
+            "materialBiblioteca"
+        ).textContent =
+            materialSeleccionado.Biblioteca ||
+            "No definida";
+
+
+        document.getElementById(
+            "materialDisponible"
+        ).textContent =
+            materialSeleccionado.disponibles;
+
+
+        const disponibilidad =
+            document.getElementById(
+                "mensajeDisponibilidad"
+            );
+
+
+        if (
+            materialSeleccionado.disponibles <= 0
+        ) {
+
+            disponibilidad.textContent =
+                "No hay unidades disponibles.";
+
+            disponibilidad.classList.add(
+                "sin-existencia"
+            );
+
+            document.getElementById(
+                "cantidadMaterial"
+            ).disabled =
+                true;
+
+        } else {
+
+            disponibilidad.textContent =
+                `Hay ${materialSeleccionado.disponibles} unidades disponibles.`;
+
+            disponibilidad.classList.remove(
+                "sin-existencia"
+            );
+
+            document.getElementById(
+                "cantidadMaterial"
+            ).disabled =
+                false;
+
+            document.getElementById(
+                "cantidadMaterial"
+            ).max =
+                materialSeleccionado.disponibles;
+
+        }
+
+
+        materialInfo.classList.add(
+            "visible"
+        );
+
+
+        actualizarResumen();
+
+    }
+
+
+    document.getElementById(
+        "btnBuscarMaterial"
+    ).addEventListener(
+        "click",
+        buscarMaterial
+    );
+
+
+    buscarMaterialInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                buscarMaterial();
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnQuitarMaterial"
+    ).addEventListener(
+        "click",
+        function () {
+
+            materialSeleccionado =
+                null;
+
+            materialInfo.classList.remove(
+                "visible"
+            );
+
+            buscarMaterialInput.value =
+                "";
+
+            actualizarResumen();
+
+            buscarMaterialInput.focus();
+
+        }
+    );
+
+
+    document.getElementById(
+        "cantidadMaterial"
+    ).addEventListener(
+        "input",
+        actualizarResumen
+    );
+
+
+    /* =========================================================
+       ACTUALIZAR RESUMEN
+    ========================================================== */
+
+    function actualizarResumen() {
+
+        const hayPersona =
+            tipoReceptor === "Afiliado"
+                ? !!personaSeleccionada
+                : !!colaboradorSeleccionado;
+
+
+        const cantidad =
+            Number(
+                document.getElementById(
+                    "cantidadMaterial"
+                ).value
+            );
+
+
+        const hayMaterial =
+            !!materialSeleccionado &&
+            cantidad > 0;
+
+
+        if (
+            !hayPersona ||
+            !hayMaterial
+        ) {
+
+            resumenEntrega.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "tituloResumenPersona"
+        ).textContent =
+            tipoReceptor;
+
+
+        if (
+            tipoReceptor === "Afiliado"
+        ) {
+
+            document.getElementById(
+                "etiquetaIdentificador"
+            ).textContent =
+                "Familia";
+
+
+            document.getElementById(
+                "resumenIdentificador"
+            ).textContent =
+                personaSeleccionada.FamiliaId ||
+                "";
+
+
+            document.getElementById(
+                "resumenPersonaId"
+            ).textContent =
+                personaSeleccionada.PersonaId ||
+                "";
+
+
+            document.getElementById(
+                "resumenNombre"
+            ).textContent =
+                `${
+                    personaSeleccionada.Nombres || ""
+                } ${
+                    personaSeleccionada.Apellidos || ""
+                }`;
+
+
+            document.getElementById(
+                "filaAreaResumen"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "resumenSitio"
+            ).textContent =
+                obtenerSitioAfiliado(
+                    personaSeleccionada
+                ) ||
+                "No definido";
+
+        } else {
+
+            document.getElementById(
+                "etiquetaIdentificador"
+            ).textContent =
+                "Código";
+
+
+            document.getElementById(
+                "resumenIdentificador"
+            ).textContent =
+                colaboradorSeleccionado.CodigoColaborador ||
+                "";
+
+
+            document.getElementById(
+                "resumenPersonaId"
+            ).textContent =
+                "Colaborador";
+
+
+            document.getElementById(
+                "resumenNombre"
+            ).textContent =
+                colaboradorSeleccionado.Nombre ||
+                "";
+
+
+            document.getElementById(
+                "filaAreaResumen"
+            ).style.display =
+                "grid";
+
+
+            document.getElementById(
+                "resumenArea"
+            ).textContent =
+                colaboradorSeleccionado.Area ||
+                "No definida";
+
+
+            document.getElementById(
+                "resumenSitio"
+            ).textContent =
+                document.getElementById(
+                    "sitioEntregaInput"
+                ).value ||
+                "No definido";
+
+        }
+
+
+        document.getElementById(
+            "resumenCodigoMaterial"
+        ).textContent =
+            materialSeleccionado.codigoMaterial;
+
+
+        document.getElementById(
+            "resumenNombreMaterial"
+        ).textContent =
+            materialSeleccionado.nombreMaterial;
+
+
+        document.getElementById(
+            "resumenCantidadMaterial"
+        ).textContent =
+            `${cantidad} ${
+                materialSeleccionado.unidad || "unidad(es)"
+            }`;
+
+
+        document.getElementById(
+            "resumenBibliotecaMaterial"
+        ).textContent =
+            materialSeleccionado.Biblioteca ||
+            "No definida";
+
+
+        resumenEntrega.style.display =
+            "block";
+
+    }
+
+
+    /* =========================================================
+       SITIO AFILIADO
+    ========================================================== */
+
+    function obtenerSitioAfiliado(
+        persona
+    ) {
+
+        /*
+           Mantiene la idea utilizada en Préstamos.
+           Se intenta obtener el sitio directamente
+           y luego desde FamiliaId.
+
+           La lógica definitiva se ajustará a la
+           estructura real de afiliados.
+        */
+
+        if (
+            persona.Sitio
+        ) {
+
+            return persona.Sitio;
+
+        }
+
+
+        if (
+            persona.sitio
+        ) {
+
+            return persona.sitio;
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================================
+       CANCELAR
+    ========================================================== */
+
+    document.getElementById(
+        "btnCancelarEntrega"
+    ).addEventListener(
+        "click",
+        function () {
+
+            materialSeleccionado =
+                null;
+
+            personaSeleccionada =
+                null;
+
+            colaboradorSeleccionado =
+                null;
+
+            buscarMaterialInput.value =
+                "";
+
+            materialInfo.classList.remove(
+                "visible"
+            );
+
+            resumenEntrega.style.display =
+                "none";
+
+            document.getElementById(
+                "cantidadMaterial"
+            ).value =
+                "1";
+
+            limpiarMensaje(
+                document.getElementById(
+                    "mensajeFinal"
+                )
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       CONFIRMAR ENTREGA
+    ========================================================== */
+
+    document.getElementById(
+        "btnConfirmarEntrega"
+    ).addEventListener(
+        "click",
+        async function () {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeFinal"
+                );
+
+
+            limpiarMensaje(
+                mensaje
+            );
+
+
+            if (!materialSeleccionado) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "Debe seleccionar un material.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                tipoReceptor === "Afiliado" &&
+                !personaSeleccionada
+            ) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "Debe seleccionar un afiliado.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                tipoReceptor === "Colaborador" &&
+                !colaboradorSeleccionado
+            ) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "Debe seleccionar un colaborador.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const cantidad =
+                Number(
+                    document.getElementById(
+                        "cantidadMaterial"
+                    ).value
+                );
+
+
+            if (
+                !cantidad ||
+                cantidad < 1
+            ) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "Ingrese una cantidad válida.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                cantidad >
+                materialSeleccionado.disponibles
+            ) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "La cantidad solicitada supera las unidades disponibles.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const sitio =
+                document.getElementById(
+                    "sitioEntregaInput"
+                ).value;
+
+
+            if (!sitio) {
+
+                mostrarMensaje(
+                    mensaje,
+                    "Debe seleccionar el sitio que realiza la entrega.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+               IMPORTANTE:
+
+               Todavía NO se realiza el INSERT.
+               Primero aprobamos esta estructura visual.
+
+               Después conectaremos:
+
+               materiales
+               movimientos_materiales
+               entregas_materiales
+
+               sin tocar las tablas existentes.
+            */
+
+
+            mostrarMensaje(
+                mensaje,
+                "La interfaz de entrega está lista. La conexión definitiva con Supabase se realizará después de aprobar esta estructura.",
+                "info"
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       HISTORIAL TEMPORAL
+    ========================================================== */
+
+    function mostrarHistorial() {
+
+        const cuerpo =
+            document.getElementById(
+                "cuerpoHistorial"
+            );
+
+
+        if (
+            historialDemo.length === 0
+        ) {
+
+            cuerpo.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="11"
+                        style="
+                            text-align:center;
+                            color:#66727a;
+                            padding:24px;
+                        "
+                    >
+                        No hay entregas registradas todavía.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       INVENTARIO TEMPORAL
+    ========================================================== */
+
+    function mostrarInventario() {
+
+        const cuerpo =
+            document.getElementById(
+                "cuerpoInventario"
+            );
+
+
+        cuerpo.innerHTML = "";
+
+
+        materialesDemo.forEach(
+            material => {
+
+                const entradas =
+                    Number(
+                        material.entradas || 0
+                    );
+
+                const entregadas =
+                    Number(
+                        material.entregadas || 0
+                    );
+
+                const disponibles =
+                    entradas -
+                    entregadas;
+
+
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                fila.innerHTML = `
+
+                    <td>
+                        <strong>
+                            ${
+                                material.codigoMaterial
+                            }
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${
+                            material.nombreMaterial
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            material.categoria
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            material.unidad
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            material.Biblioteca
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            entradas
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            entregadas
+                        }
+                    </td>
+
+                    <td
+                        style="
+                            font-weight:700;
+                            color:${
+                                disponibles > 0
+                                    ? "#2e7d32"
+                                    : "#c62828"
+                            };
+                        "
+                    >
+                        ${
+                            disponibles
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            material.estado
+                        }
+                    </td>
+
+                `;
+
+
+                cuerpo.appendChild(
+                    fila
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       MODALES
+    ========================================================== */
+
+    function abrirModal(
+        id
+    ) {
+
+        document
+            .getElementById(id)
+            .classList.add(
+                "mostrar"
+            );
+
+    }
+
+
+    function cerrarModal(
+        id
+    ) {
+
+        document
+            .getElementById(id)
+            .classList.remove(
+                "mostrar"
+            );
+
+    }
+
+
+    document
+        .querySelectorAll(
+            "[data-cerrar]"
+        )
+        .forEach(
+            boton => {
+
+                boton.addEventListener(
+                    "click",
+                    function () {
+
+                        cerrarModal(
+                            boton.dataset.cerrar
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    document.getElementById(
+        "btnNuevoMaterial"
+    ).addEventListener(
+        "click",
+        function () {
+
+            abrirModal(
+                "modalMaterial"
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       FORMULARIO NUEVO MATERIAL
+    ========================================================== */
+
+    document.getElementById(
+        "formMaterial"
+    ).addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            /*
+               No INSERTAMOS todavía.
+
+               Primero se define la estructura
+               definitiva de Supabase.
+            */
+
+            alert(
+                "El formulario de registro está listo. La conexión con Supabase se agregará después de aprobar la estructura del módulo."
+            );
+
+
+            cerrarModal(
+                "modalMaterial"
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       MASTER MATERIAL
+    ========================================================== */
+
+    if (
+        esAdministrador
+    ) {
+
+        document.getElementById(
+            "seccionAdministracion"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "seccionBorrarMateriales"
+        ).style.display =
+            "block";
+
+    }
+
+
+    document.getElementById(
+        "btnSubirMaster"
+    ).addEventListener(
+        "click",
+        function () {
+
+            if (!esAdministrador) {
+                return;
+            }
+
+            document.getElementById(
+                "archivoMaster"
+            ).click();
+
+        }
+    );
+
+
+    document.getElementById(
+        "archivoMaster"
+    ).addEventListener(
+        "change",
+        function () {
+
+            if (
+                !this.files ||
+                !this.files.length
+            ) {
+                return;
+            }
+
+
+            alert(
+                "Archivo seleccionado: " +
+                this.files[0].name +
+                "\n\nLa importación real se conectará con Supabase después de aprobar la estructura."
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "btnDescargarMaster"
+    ).addEventListener(
+        "click",
+        function () {
+
+            if (!esAdministrador) {
+                return;
+            }
+
+
+            alert(
+                "La descarga del MasterMateriales se conectará después."
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       BORRAR BASE
+    ========================================================== */
+
+    document.getElementById(
+        "btnBorrarBase"
+    ).addEventListener(
+        "click",
+        function () {
+
+            if (!esAdministrador) {
+                return;
+            }
+
+
+            const confirmar =
+                confirm(
+                    "¿Está seguro de que desea borrar la base de datos de materiales?\n\nEsta acción será irreversible."
+                );
+
+
+            if (!confirmar) {
+                return;
+            }
+
+
+            alert(
+                "La eliminación real se habilitará únicamente cuando la estructura definitiva de Supabase esté aprobada."
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       VOLVER AL INICIO
+    ========================================================== */
+
+    /*
+       El botón ya es un enlace directo a index.html,
+       igual que en Préstamos.
+    */
+
+
+    /* =========================================================
+       ENTER - FAMILIA
+    ========================================================== */
+
+    buscarFamiliaInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                buscarFamilia();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       ENTER - COLABORADOR
+    ========================================================== */
+
+    buscarColaboradorInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                buscarColaborador();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       SITIO
+    ========================================================== */
+
+    document.getElementById(
+        "sitioEntregaInput"
+    ).addEventListener(
+        "change",
+        actualizarResumen
+    );
+
+
+    /* =========================================================
+       INICIALIZAR
+    ========================================================== */
+
+    mostrarHistorial();
+
+    mostrarInventario();
+
+    actualizarResumen();
+
+
 })();
+
 </script>
+
 </body>
+
 </html>
