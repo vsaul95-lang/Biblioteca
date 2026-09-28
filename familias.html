@@ -13,11 +13,6 @@
     <title>Familias - Biblioteca</title>
 
 
-    <!-- =========================================
-         OCULTAR LA PAGINA MIENTRAS SE VERIFICA
-         LA SESION Y EL ROL
-    ========================================== -->
-
     <style>
 
         html {
@@ -27,28 +22,12 @@
     </style>
 
 
-    <!-- =========================================
-         SUPABASE
-    ========================================== -->
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="supabase.js"></script>
 
-
-    <!-- =========================================
-         PROTECCION GENERAL
-    ========================================== -->
-
     <script src="auth.js?v=1002"></script>
 
-
-    <!-- =========================================
-         PROTECCION ESPECIFICA DE FAMILIAS
-         
-         Esta pagina solamente puede ser utilizada
-         por usuarios con rol ADMINISTRADOR.
-    ========================================== -->
 
     <script>
 
@@ -73,11 +52,6 @@
                 }
 
 
-                /*
-                 * Verificar especificamente
-                 * el rol de Administrador.
-                 */
-
                 if (
                     !window.esAdministrador()
                 ) {
@@ -97,18 +71,8 @@
                 }
 
 
-                /*
-                 * El usuario esta autenticado,
-                 * activo y tiene permisos de
-                 * Administrador.
-                 */
-
                 window.familiasAutorizado = true;
 
-
-                /*
-                 * Ahora si mostramos la pagina.
-                 */
 
                 document.documentElement.style.visibility =
                     "visible";
@@ -145,10 +109,6 @@
     </script>
 
 
-    <!-- =========================================
-         SHEETJS
-    ========================================== -->
-
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 
@@ -172,61 +132,67 @@
         ========================================== */
 
         .encabezado {
-            background: #263238;
+            background: #009ddc;
             color: white;
-            padding: 22px 20px;
+            padding: 16px 20px;
         }
 
 
         .encabezado-contenido {
             max-width: 1100px;
             margin: auto;
+            min-height: 48px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            justify-content: center;
+            position: relative;
         }
 
 
         .marca {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            gap: 9px;
+            text-align: center;
         }
 
 
         .icono-marca {
-            font-size: 32px;
+            font-size: 27px;
         }
 
 
         .marca h1 {
             margin: 0;
-            font-size: 25px;
+            font-size: 23px;
+            line-height: 1.2;
         }
 
 
         .marca p {
-            margin: 4px 0 0;
-            color: #cfd8dc;
-            font-size: 14px;
+            display: none;
         }
 
 
         .boton-volver {
             display: inline-block;
             text-decoration: none;
-            background: #37474f;
+            background: rgba(255, 255, 255, 0.16);
             color: white;
-            padding: 9px 15px;
+            padding: 8px 13px;
             border-radius: 7px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
 
         .boton-volver:hover {
-            background: #455a64;
+            background: rgba(255, 255, 255, 0.25);
         }
 
 
@@ -236,23 +202,13 @@
 
         .contenedor {
             max-width: 1100px;
-            margin: 25px auto;
+            margin: 22px auto;
             padding: 0 18px;
         }
 
 
         .barra-superior {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-
-        .barra-superior h2 {
-            margin: 0;
-            font-size: 22px;
+            display: none;
         }
 
 
@@ -263,36 +219,36 @@
         .estadisticas {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
 
         .tarjeta {
             background: white;
             border: 1px solid #e0e0e0;
-            border-radius: 9px;
-            padding: 17px;
+            border-radius: 8px;
+            padding: 11px 10px;
             text-align: center;
         }
 
 
         .tarjeta .icono {
-            font-size: 23px;
-            margin-bottom: 6px;
+            font-size: 19px;
+            margin-bottom: 3px;
         }
 
 
         .tarjeta .numero {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
 
         .tarjeta .texto {
             color: #607d8b;
-            font-size: 13px;
+            font-size: 12px;
         }
 
 
@@ -303,15 +259,15 @@
         .seccion {
             background: white;
             border: 1px solid #e0e0e0;
-            border-radius: 9px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
         }
 
 
         .seccion h3 {
-            margin: 0 0 15px;
-            font-size: 18px;
+            margin: 0 0 12px;
+            font-size: 16px;
         }
 
 
@@ -321,11 +277,11 @@
 
         .importacion-info {
             background: #f5f7f8;
-            border-left: 4px solid #546e7a;
-            padding: 12px 14px;
+            border-left: 4px solid #009ddc;
+            padding: 10px 12px;
             border-radius: 5px;
-            margin-bottom: 15px;
-            font-size: 13px;
+            margin-bottom: 12px;
+            font-size: 12px;
             line-height: 1.5;
         }
 
@@ -346,21 +302,21 @@
         .boton {
             border: none;
             border-radius: 6px;
-            padding: 10px 16px;
+            padding: 9px 14px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
         }
 
 
         .boton-principal {
-            background: #37474f;
+            background: #009ddc;
             color: white;
         }
 
 
         .boton-principal:hover {
-            background: #263238;
+            background: #008bc4;
         }
 
 
@@ -387,12 +343,12 @@
 
         .resultado-importacion {
             display: none;
-            margin-top: 15px;
-            padding: 14px;
+            margin-top: 12px;
+            padding: 12px;
             border-radius: 7px;
             background: #e8f5e9;
             color: #2e7d32;
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.6;
         }
 
@@ -415,26 +371,34 @@
         .busqueda {
             display: grid;
             grid-template-columns: 1fr 180px;
-            gap: 12px;
+            gap: 10px;
         }
 
 
         .campo label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
 
         .campo input,
         .campo select {
             width: 100%;
-            padding: 10px;
+            padding: 9px;
             border: 1px solid #b0bec5;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             background: white;
+        }
+
+
+        .campo input:focus,
+        .campo select:focus {
+            outline: none;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.12);
         }
 
 
@@ -448,9 +412,9 @@
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #607d8b;
-            font-size: 13px;
+            font-size: 12px;
         }
 
 
@@ -472,13 +436,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
+            font-size: 12px;
         }
 
 
         th {
             background: #eceff1;
-            padding: 11px 8px;
+            padding: 9px 7px;
             text-align: center;
             border-bottom: 1px solid #cfd8dc;
             white-space: nowrap;
@@ -491,17 +455,17 @@
 
         .fila-filtros th {
             background: #f7f9fa;
-            padding: 7px 6px;
+            padding: 6px 5px;
         }
 
 
         .filtro-tabla {
             width: 100%;
-            min-width: 90px;
-            padding: 7px 6px;
+            min-width: 85px;
+            padding: 6px 5px;
             border: 1px solid #b0bec5;
             border-radius: 5px;
-            font-size: 12px;
+            font-size: 11px;
             background: white;
             color: #263238;
         }
@@ -509,18 +473,18 @@
 
         .filtro-tabla:focus {
             outline: none;
-            border-color: #607d8b;
-            box-shadow: 0 0 0 2px rgba(96, 125, 139, 0.12);
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.12);
         }
 
 
         .filtro-estado {
-            min-width: 105px;
+            min-width: 100px;
         }
 
 
         td {
-            padding: 10px 8px;
+            padding: 8px 7px;
             border-bottom: 1px solid #eeeeee;
             text-align: center;
         }
@@ -542,9 +506,9 @@
 
         .estado {
             display: inline-block;
-            padding: 5px 9px;
+            padding: 4px 8px;
             border-radius: 15px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
 
@@ -569,8 +533,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
-            margin-top: 18px;
+            gap: 9px;
+            margin-top: 15px;
             flex-wrap: wrap;
         }
 
@@ -580,9 +544,9 @@
             background: white;
             color: #263238;
             border-radius: 6px;
-            padding: 8px 13px;
+            padding: 7px 12px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
@@ -599,7 +563,7 @@
 
 
         .informacion-pagina {
-            font-size: 13px;
+            font-size: 12px;
             color: #607d8b;
             font-weight: bold;
             min-width: 120px;
@@ -613,9 +577,9 @@
 
         .sin-resultados {
             text-align: center;
-            padding: 30px 15px;
+            padding: 25px 15px;
             color: #78909c;
-            font-size: 14px;
+            font-size: 13px;
         }
 
 
@@ -624,10 +588,24 @@
         ========================================== */
 
         .pie {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 22px;
+            flex-wrap: wrap;
             color: #78909c;
-            font-size: 12px;
-            padding: 10px 0 25px;
+            font-size: 11px;
+            padding: 8px 0 22px;
+        }
+
+
+        .pie .version {
+            color: #90a4ae;
+        }
+
+
+        .pie .creditos {
+            color: #90a4ae;
         }
 
 
@@ -654,13 +632,86 @@
 
 
             .encabezado-contenido {
-                align-items: flex-start;
-                flex-direction: column;
+                min-height: auto;
             }
 
 
             .boton-volver {
-                align-self: flex-end;
+                right: 0;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .encabezado {
+                padding: 12px 15px;
+            }
+
+
+            .encabezado-contenido {
+                flex-direction: column;
+                gap: 8px;
+                padding: 2px 0;
+            }
+
+
+            .marca {
+                width: 100%;
+            }
+
+
+            .marca h1 {
+                font-size: 21px;
+            }
+
+
+            .icono-marca {
+                font-size: 24px;
+            }
+
+
+            .boton-volver {
+                position: static;
+                transform: none;
+                margin: 0;
+            }
+
+
+            .estadisticas {
+                gap: 8px;
+            }
+
+
+            .tarjeta {
+                padding: 9px 7px;
+            }
+
+
+            .tarjeta .icono {
+                font-size: 18px;
+            }
+
+
+            .tarjeta .numero {
+                font-size: 19px;
+            }
+
+
+            .tarjeta .texto {
+                font-size: 11px;
+            }
+
+
+            .seccion {
+                padding: 13px;
+            }
+
+
+            .pie {
+                gap: 8px;
+                flex-direction: column;
             }
 
         }
@@ -710,12 +761,8 @@
                 <div>
 
                     <h1>
-                        Biblioteca
+                        Familias
                     </h1>
-
-                    <p>
-                        Base de familias y afiliados
-                    </p>
 
                 </div>
 
@@ -1203,9 +1250,21 @@
 
 
 
-        <div class="pie">
-            Sistema de Biblioteca
-        </div>
+        <footer class="pie">
+
+            <span>
+                Sistema de Biblioteca
+            </span>
+
+            <span class="version">
+                Versión 1.0
+            </span>
+
+            <span class="creditos">
+                Desarrollado por Saúl Velásquez
+            </span>
+
+        </footer>
 
 
     </main>
