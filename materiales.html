@@ -1795,6 +1795,17 @@ window.materialesAuth = (async function protegerMateriales(){
     let entregasDemo = [];
 
 
+    /* ============================================================
+       PAGINACIÓN
+       ============================================================ */
+
+    const REGISTROS_POR_PAGINA = 25;
+
+    let paginaEntregas = 1;
+
+    let paginaInventario = 1;
+
+
     const materialesPrueba = [
 
         {
@@ -2762,6 +2773,365 @@ window.materialesAuth = (async function protegerMateriales(){
 
 
     /* ============================================================
+       PAGINACIÓN
+       ============================================================ */
+
+    function obtenerContenedorPaginacion(
+        tablaId,
+        contenedorId
+    ){
+
+        const tabla =
+            document.getElementById(
+                tablaId
+            );
+
+        if(!tabla){
+            return null;
+        }
+
+
+        let contenedor =
+            document.getElementById(
+                contenedorId
+            );
+
+
+        if(!contenedor){
+
+            contenedor =
+                document.createElement(
+                    "div"
+                );
+
+            contenedor.id =
+                contenedorId;
+
+            contenedor.style.cssText =
+                "display:flex;" +
+                "align-items:center;" +
+                "justify-content:center;" +
+                "gap:10px;" +
+                "margin:14px 0 2px;" +
+                "flex-wrap:wrap;";
+
+            tabla.insertAdjacentElement(
+                "afterend",
+                contenedor
+            );
+
+        }
+
+
+        return contenedor;
+
+    }
+
+
+    function desplazarAlInicioApartado(
+        tablaId
+    ){
+
+        const tabla =
+            document.getElementById(
+                tablaId
+            );
+
+        if(!tabla){
+            return;
+        }
+
+
+        const seccion =
+            tabla.closest(
+                ".seccion"
+            );
+
+
+        const objetivo =
+            seccion || tabla;
+
+
+        const posicion =
+            objetivo.getBoundingClientRect().top +
+            window.scrollY -
+            10;
+
+
+        window.scrollTo({
+
+            top:
+                Math.max(
+                    0,
+                    posicion
+                ),
+
+            behavior:"smooth"
+
+        });
+
+    }
+
+
+    function renderPaginacionEntregas(
+        totalPaginas
+    ){
+
+        const contenedor =
+            obtenerContenedorPaginacion(
+                "tablaEntregas",
+                "paginacionEntregas"
+            );
+
+
+        if(!contenedor){
+            return;
+        }
+
+
+        if(totalPaginas <= 1){
+
+            contenedor.innerHTML = "";
+
+            contenedor.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        contenedor.style.display =
+            "flex";
+
+
+        contenedor.innerHTML = `
+
+            <button
+                class="btn"
+                id="btnAnteriorEntregas"
+                type="button"
+                ${paginaEntregas <= 1 ? "disabled" : ""}
+                style="${
+                    paginaEntregas <= 1
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Anterior
+            </button>
+
+            <span
+                style="
+                    font-size:12px;
+                    color:var(--texto-suave);
+                    font-weight:600;
+                "
+            >
+                Página ${paginaEntregas} de ${totalPaginas}
+            </span>
+
+            <button
+                class="btn"
+                id="btnSiguienteEntregas"
+                type="button"
+                ${
+                    paginaEntregas >= totalPaginas
+                    ? "disabled"
+                    : ""
+                }
+                style="${
+                    paginaEntregas >= totalPaginas
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Siguiente
+            </button>
+
+        `;
+
+
+        document.getElementById(
+            "btnAnteriorEntregas"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaEntregas <= 1
+                ){
+                    return;
+                }
+
+                paginaEntregas--;
+
+                renderEntregas();
+
+                desplazarAlInicioApartado(
+                    "tablaEntregas"
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "btnSiguienteEntregas"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaEntregas >= totalPaginas
+                ){
+                    return;
+                }
+
+                paginaEntregas++;
+
+                renderEntregas();
+
+                desplazarAlInicioApartado(
+                    "tablaEntregas"
+                );
+
+            }
+        );
+
+    }
+
+
+    function renderPaginacionInventario(
+        totalPaginas
+    ){
+
+        const contenedor =
+            obtenerContenedorPaginacion(
+                "tablaInventario",
+                "paginacionInventario"
+            );
+
+
+        if(!contenedor){
+            return;
+        }
+
+
+        if(totalPaginas <= 1){
+
+            contenedor.innerHTML = "";
+
+            contenedor.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        contenedor.style.display =
+            "flex";
+
+
+        contenedor.innerHTML = `
+
+            <button
+                class="btn"
+                id="btnAnteriorInventario"
+                type="button"
+                ${paginaInventario <= 1 ? "disabled" : ""}
+                style="${
+                    paginaInventario <= 1
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Anterior
+            </button>
+
+            <span
+                style="
+                    font-size:12px;
+                    color:var(--texto-suave);
+                    font-weight:600;
+                "
+            >
+                Página ${paginaInventario} de ${totalPaginas}
+            </span>
+
+            <button
+                class="btn"
+                id="btnSiguienteInventario"
+                type="button"
+                ${
+                    paginaInventario >= totalPaginas
+                    ? "disabled"
+                    : ""
+                }
+                style="${
+                    paginaInventario >= totalPaginas
+                    ? "opacity:.5;cursor:not-allowed;"
+                    : ""
+                }"
+            >
+                Siguiente
+            </button>
+
+        `;
+
+
+        document.getElementById(
+            "btnAnteriorInventario"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaInventario <= 1
+                ){
+                    return;
+                }
+
+                paginaInventario--;
+
+                renderInventario();
+
+                desplazarAlInicioApartado(
+                    "tablaInventario"
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "btnSiguienteInventario"
+        ).addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    paginaInventario >= totalPaginas
+                ){
+                    return;
+                }
+
+                paginaInventario++;
+
+                renderInventario();
+
+                desplazarAlInicioApartado(
+                    "tablaInventario"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ============================================================
        INVENTARIO
        ============================================================ */
 
@@ -2836,6 +3206,51 @@ window.materialesAuth = (async function protegerMateriales(){
             );
 
 
+        const totalPaginas =
+            Math.max(
+                1,
+                Math.ceil(
+                    filas.length /
+                    REGISTROS_POR_PAGINA
+                )
+            );
+
+
+        if(
+            paginaInventario >
+            totalPaginas
+        ){
+
+            paginaInventario =
+                totalPaginas;
+
+        }
+
+
+        if(
+            paginaInventario < 1
+        ){
+
+            paginaInventario = 1;
+
+        }
+
+
+        const inicio =
+            (
+                paginaInventario - 1
+            ) *
+            REGISTROS_POR_PAGINA;
+
+
+        const filasPagina =
+            filas.slice(
+                inicio,
+                inicio +
+                REGISTROS_POR_PAGINA
+            );
+
+
         const tbody =
             document.getElementById(
                 "tablaInventario"
@@ -2843,11 +3258,11 @@ window.materialesAuth = (async function protegerMateriales(){
 
 
         tbody.innerHTML =
-            filas.length
+            filasPagina.length
 
             ?
 
-            filas.map(m=>{
+            filasPagina.map(m=>{
 
                 const d =
                     disponible(m);
@@ -2968,6 +3383,11 @@ window.materialesAuth = (async function protegerMateriales(){
             `;
 
 
+        renderPaginacionInventario(
+            totalPaginas
+        );
+
+
         actualizarEstadisticas();
 
     }
@@ -2983,6 +3403,36 @@ window.materialesAuth = (async function protegerMateriales(){
             document.getElementById(
                 "tablaEntregas"
             );
+
+
+        const totalPaginas =
+            Math.max(
+                1,
+                Math.ceil(
+                    entregasDemo.length /
+                    REGISTROS_POR_PAGINA
+                )
+            );
+
+
+        if(
+            paginaEntregas >
+            totalPaginas
+        ){
+
+            paginaEntregas =
+                totalPaginas;
+
+        }
+
+
+        if(
+            paginaEntregas < 1
+        ){
+
+            paginaEntregas = 1;
+
+        }
 
 
         if(!entregasDemo.length){
@@ -3002,13 +3452,33 @@ window.materialesAuth = (async function protegerMateriales(){
 
             `;
 
+
+            renderPaginacionEntregas(
+                totalPaginas
+            );
+
             return;
 
         }
 
 
+        const inicio =
+            (
+                paginaEntregas - 1
+            ) *
+            REGISTROS_POR_PAGINA;
+
+
+        const filasPagina =
+            entregasDemo.slice(
+                inicio,
+                inicio +
+                REGISTROS_POR_PAGINA
+            );
+
+
         tbody.innerHTML =
-            entregasDemo.map(e=>`
+            filasPagina.map(e=>`
 
                 <tr>
 
@@ -3053,6 +3523,11 @@ window.materialesAuth = (async function protegerMateriales(){
                 </tr>
 
             `).join("");
+
+
+        renderPaginacionEntregas(
+            totalPaginas
+        );
 
     }
 
@@ -6277,6 +6752,8 @@ window.materialesAuth = (async function protegerMateriales(){
         "click",
         ()=>{
 
+            paginaInventario = 1;
+
             document.getElementById(
                 "buscarMaterial"
             ).value = "";
@@ -6311,14 +6788,26 @@ window.materialesAuth = (async function protegerMateriales(){
             .getElementById(id)
             .addEventListener(
                 "input",
-                renderInventario
+                ()=>{
+
+                    paginaInventario = 1;
+
+                    renderInventario();
+
+                }
             );
 
         document
             .getElementById(id)
             .addEventListener(
                 "change",
-                renderInventario
+                ()=>{
+
+                    paginaInventario = 1;
+
+                    renderInventario();
+
+                }
             );
 
     });
@@ -6448,6 +6937,10 @@ window.materialesAuth = (async function protegerMateriales(){
                         materialesDemo = [];
 
                         entregasDemo = [];
+
+                        paginaInventario = 1;
+
+                        paginaEntregas = 1;
 
 
                         renderCategorias();
