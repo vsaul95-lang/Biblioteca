@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Materiales</title>
+    <title>Materiales - Biblioteca</title>
+
+    <!-- Ocultar la página mientras se comprueban los permisos -->
+    <style>
+        html {
+            visibility: hidden;
+        }
+    </style>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -12,9 +19,39 @@
     <!-- Librería XLSX para procesar archivos Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-    <!-- Archivos existentes del sistema -->
+    <!-- Archivos de autenticación y configuración -->
     <script src="supabase.js"></script>
     <script src="auth.js?v=1002"></script>
+
+    <!-- Protección de la página de Materiales -->
+    <script>
+        window.materialesAutorizado = false;
+
+        window.materialesAuth = (async function protegerMateriales() {
+            try {
+                const autorizado = await window.protegerPagina();
+
+                if (!autorizado) {
+                    window.location.replace("index.html");
+                    return false;
+                }
+
+                if (!window.esUsuario() && !window.esAdministrador()) {
+                    window.location.replace("index.html");
+                    return false;
+                }
+
+                window.materialesAutorizado = true;
+                document.documentElement.style.visibility = "visible";
+                return true;
+
+            } catch (error) {
+                console.error("Error al comprobar permisos de materiales:", error);
+                window.location.replace("index.html");
+                return false;
+            }
+        })();
+    </script>
 
     <style>
         :root {
@@ -82,6 +119,7 @@
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
+            text-decoration: none;
         }
 
         #botonVolver:hover {
@@ -432,11 +470,15 @@
             font-size: 12px;
         }
 
-        /* SECCIÓN CARGA Y RESPALDO EXCEL */
+        /* SECCIÓN CARGA Y RESPALDO EXCEL (SOLO ADMINS) */
         .seccion-admin {
-            display: block; /* Muestra el módulo directamente para evitar bloqueos de permisos */
+            display: none;
             border: 1px dashed var(--celeste-fundacion);
             background: #f4fafc;
+        }
+
+        .seccion-admin.visible {
+            display: block;
         }
 
         .acciones-excel {
@@ -484,7 +526,7 @@
 <header class="encabezado">
     <div class="encabezado-contenido">
         <div class="marca">Materiales</div>
-        <button id="botonVolver">← Volver al inicio</button>
+        <a id="botonVolver" href="index.html">← Volver al inicio</a>
     </div>
 </header>
 
@@ -647,11 +689,11 @@
         </div>
     </section>
 
-    <!-- CARGA DE INFORMACIÓN Y RESPALDO -->
+    <!-- CARGA DE INFORMACIÓN Y RESPALDO (SOLO ADMINISTRADORES) -->
     <section class="seccion seccion-admin" id="seccionAdmin">
         <h2>Carga de información y respaldo</h2>
         <p class="seccion-descripcion">
-            Permite descargar el reporte MasterMateriales.xlsx e importar nuevos ingresos de materiales a la base de datos.
+            Módulo exclusivo para Administradores. Permite descargar el reporte Excel completo e importar nuevos ingresos de materiales.
         </p>
 
         <div class="acciones-excel">
@@ -744,9 +786,14 @@
         return d.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });
     }
 
-    /* OBTENER NOMBRE REAL DEL USUARIO (EVITA CORREOS) */
+    /* OBTENER NOMBRE REAL DEL USUARIO USANDO AUTH.JS DE TU SISTEMA */
     async function obtenerUsuarioActual() {
         try {
+            if (typeof window.obtenerNombreUsuarioActual === "function") {
+                const nombre = window.obtenerNombreUsuarioActual();
+                if (nombre && !nombre.includes("@")) return nombre;
+            }
+
             if (typeof supabaseClient !== "undefined") {
                 const { data } = await supabaseClient.auth.getUser();
                 if (data && data.user) {
@@ -757,22 +804,19 @@
                 }
             }
         } catch (e) {
-            console.warn("No se pudo obtener metadatos de usuario:", e);
+            console.warn("No se pudo obtener el metadato del usuario:", e);
         }
 
-        try {
-            if (typeof window.obtenerNombreUsuarioActual === "function") {
-                const nombre = window.obtenerNombreUsuarioActual();
-                if (nombre && !nombre.includes("@")) return nombre;
-            }
-        } catch(error) {
-            console.warn("Error en función local de usuario:", error);
+        return localStorage.getItem("nombreUsuarioActual") || "Usuario Sistema";
+    }
+
+    /* VERIFICACIÓN DE PERMISOS BASADA EN AUTH.JS */
+    function verificarPermisosAdmin() {
+        if (typeof window.esAdministrador === "function" && window.esAdministrador()) {
+            seccionAdmin.classList.add("visible");
+        } else {
+            seccionAdmin.classList.remove("visible");
         }
-
-        const almacenado = localStorage.getItem("nombreUsuarioActual") || window.nombreUsuarioActual;
-        if (almacenado && !almacenado.includes("@")) return almacenado;
-
-        return "Usuario Sistema";
     }
 
     /* ==========================================================
@@ -829,7 +873,7 @@
     }
 
     /* ==========================================================
-       CARGAR MATERIALES ENTREGADOS (DESDE TABLA: entregas_materiales)
+       CARGAR MATERIALES ENTREGADOS (TABLA: entregas_materiales)
     ========================================================== */
     async function cargarEntregados() {
         tablaEntregados.innerHTML = `
@@ -1434,11 +1478,11 @@
     /* ==========================================================
        INICIALIZACIÓN
     ========================================================== */
-    document.getElementById("botonVolver").addEventListener("click", () => {
-        window.location.href = "index.html";
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
+        if (window.materialesAuth) {
+            await window.materialesAuth;
+        }
+        verificarPermisosAdmin();
         cargarEstadisticas();
         cargarMateriales();
         cargarEntregados();
