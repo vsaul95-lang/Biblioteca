@@ -871,7 +871,7 @@
     });
 
     /* ==========================================================
-       BUSCAR AFILIADO POR FAMILIA
+       BUSCAR AFILIADO POR FAMILIA (TABLA: afiliados)
     ========================================================== */
     let temporizadorFamilia;
     document.getElementById("inputFamilia").addEventListener("input", function() {
@@ -893,10 +893,10 @@
 
         try {
             const { data, error } = await supabaseClient
-                .from("afiliado")
+                .from("afiliados")
                 .select("id, PersonaId, FamiliaId, Nombres, Apellidos, estado, Sitio")
                 .eq("FamiliaId", familia)
-                .eq("estado", "Activo")
+                .ilike("estado", "Activo")
                 .order("Apellidos", { ascending: true });
 
             if (error) throw error;
@@ -907,16 +907,80 @@
             }
 
             let html = "";
-            data.forEach(af => {
+            data.forEach((af, idx) => {
                 html += `
-                    <div class="resultado" onclick='seleccionarPersona(${JSON.stringify(af)})'>
+                    <div class="resultado" id="res-af-${idx}">
                         <div class="resultado-titulo">${escapar(af.Nombres)} ${escapar(af.Apellidos)}</div>
                         <div class="resultado-detalle">Familia: ${escapar(af.FamiliaId)} | ID Persona: ${escapar(af.PersonaId)}</div>
                     </div>`;
             });
             resultadosFamilia.innerHTML = html;
+
+            data.forEach((af, idx) => {
+                document.getElementById(`res-af-${idx}`).addEventListener("click", () => {
+                    seleccionarPersona(af);
+                });
+            });
+
         } catch (err) {
             resultadosFamilia.innerHTML = `<div class="resultado" style="color:var(--rojo);">Error: ${escapar(err.message)}</div>`;
+        }
+    }
+
+    /* ==========================================================
+       BUSCAR COLABORADOR (TABLA: colaboradores)
+    ========================================================== */
+    let temporizadorColaborador;
+    document.getElementById("inputColaborador").addEventListener("input", function() {
+        clearTimeout(temporizadorColaborador);
+        const valor = this.value.trim();
+        resultadosColaborador.innerHTML = "";
+        receptorSeleccionado = null;
+        limpiarPersona();
+
+        if (!valor) return;
+
+        temporizadorColaborador = setTimeout(() => {
+            buscarColaborador(valor);
+        }, 250);
+    });
+
+    async function buscarColaborador(busqueda) {
+        resultadosColaborador.innerHTML = `<div class="resultado">Buscando colaboradores...</div>`;
+
+        try {
+            const { data, error } = await supabaseClient
+                .from("colaboradores")
+                .select("*")
+                .or(`Nombres.ilike.%${busqueda}%,Apellidos.ilike.%${busqueda}%,codigo.ilike.%${busqueda}%`)
+                .ilike("estado", "Activo")
+                .order("Nombres", { ascending: true });
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                resultadosColaborador.innerHTML = `<div class="resultado">No se encontraron colaboradores activos.</div>`;
+                return;
+            }
+
+            let html = "";
+            data.forEach((col, idx) => {
+                html += `
+                    <div class="resultado" id="res-col-${idx}">
+                        <div class="resultado-titulo">${escapar(col.Nombres || col.nombre)} ${escapar(col.Apellidos || col.apellido || "")}</div>
+                        <div class="resultado-detalle">Código: ${escapar(col.codigo || "-")} | Área: ${escapar(col.area || "-")}</div>
+                    </div>`;
+            });
+            resultadosColaborador.innerHTML = html;
+
+            data.forEach((col, idx) => {
+                document.getElementById(`res-col-${idx}`).addEventListener("click", () => {
+                    seleccionarPersona(col);
+                });
+            });
+
+        } catch (err) {
+            resultadosColaborador.innerHTML = `<div class="resultado" style="color:var(--rojo);">Error: ${escapar(err.message)}</div>`;
         }
     }
 
@@ -924,10 +988,15 @@
         receptorSeleccionado = persona;
         resultadosFamilia.innerHTML = "";
         resultadosColaborador.innerHTML = "";
-        personaNombre.textContent = `${persona.Nombres || ""} ${persona.Apellidos || ""}`;
+        
+        const nombres = persona.Nombres || persona.nombre || "";
+        const apellidos = persona.Apellidos || persona.apellido || "";
+        
+        personaNombre.textContent = `${nombres} ${apellidos}`.trim();
         personaDetalle.textContent = receptorTipo === "Afiliado" 
             ? `Familia: ${persona.FamiliaId || "-"} | Persona ID: ${persona.PersonaId || "-"}`
             : `Código: ${persona.codigo || "-"} | Área: ${persona.area || "-"}`;
+            
         personaSeleccionada.classList.add("visible");
     }
 
@@ -960,14 +1029,20 @@
             }
 
             let html = "";
-            filtrados.forEach(m => {
+            filtrados.forEach((m, idx) => {
                 html += `
-                    <div class="resultado" onclick='agregarMaterialLista(${JSON.stringify(m)})'>
+                    <div class="resultado" id="res-mat-${idx}">
                         <div class="resultado-titulo">${escapar(m.nombre)} (${escapar(m.codigo)})</div>
                         <div class="resultado-detalle">Disponible: ${disponible(m)} ${escapar(m.unidad || 'unidades')}</div>
                     </div>`;
             });
             resultadosMaterial.innerHTML = html;
+
+            filtrados.forEach((m, idx) => {
+                document.getElementById(`res-mat-${idx}`).addEventListener("click", () => {
+                    agregarMaterialLista(m);
+                });
+            });
         }, 200);
     });
 
@@ -1082,8 +1157,8 @@
                     nombre_material: mat.nombre,
                     cantidad: mat.cantidadEntrega,
                     receptor_tipo: receptorTipo,
-                    nombres: receptorSeleccionado.Nombres || "",
-                    apellidos: receptorSeleccionado.Apellidos || "",
+                    nombres: receptorSeleccionado.Nombres || receptorSeleccionado.nombre || "",
+                    apellidos: receptorSeleccionado.Apellidos || receptorSeleccionado.apellido || "",
                     persona_id: receptorSeleccionado.PersonaId || null,
                     familia_id: receptorSeleccionado.FamiliaId || null,
                     codigo_colaborador: receptorSeleccionado.codigo || null,
