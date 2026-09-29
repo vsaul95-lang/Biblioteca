@@ -106,11 +106,16 @@
             font-weight: bold;
         }
 
-        #botonVolver {
+        .botones-encabezado {
             position: absolute;
             right: 18px;
             top: 50%;
             transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-encabezado {
             background: rgba(255,255,255,.14);
             border: 1px solid rgba(255,255,255,.50);
             color: white;
@@ -122,7 +127,7 @@
             text-decoration: none;
         }
 
-        #botonVolver:hover {
+        .btn-encabezado:hover {
             background: rgba(255,255,255,.24);
         }
 
@@ -271,6 +276,11 @@
             background: #fbeaea;
             color: var(--rojo);
             border: 1px solid #efc8c4;
+        }
+
+        .btn-rojo:hover {
+            background: var(--rojo);
+            color: white;
         }
 
         .btn:disabled {
@@ -475,6 +485,7 @@
             display: none;
             border: 1px dashed var(--celeste-fundacion);
             background: #f4fafc;
+            text-align: center;
         }
 
         .seccion-admin.visible {
@@ -486,6 +497,7 @@
             flex-wrap: wrap;
             gap: 12px;
             align-items: center;
+            justify-content: center;
             margin-top: 10px;
         }
 
@@ -495,11 +507,93 @@
             gap: 8px;
         }
 
+        /* BLOQUE ELIMINAR DATOS EN CENTRO */
+        .bloque-peligro {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--borde);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .titulo-peligro {
+            color: var(--rojo);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .grupo-botones-peligro {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* MODAL FLOTANTE DE INVENTARIO */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(38, 50, 56, 0.55);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal.visible {
+            display: flex;
+        }
+
+        .modal-contenido {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.2);
+            padding: 16px;
+        }
+
+        .modal-cabecera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--borde);
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .modal-cabecera h3 {
+            margin: 0;
+            font-size: 17px;
+            color: var(--texto);
+        }
+
+        .btn-cerrar {
+            background: var(--celeste-suave);
+            color: var(--celeste-oscuro);
+            border: 1px solid #c7eaf8;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         footer {
             text-align: center;
             color: var(--texto-suave);
             font-size: 11px;
-            padding: 10px 10px 16px;
+            padding: 14px 10px 18px;
+            line-height: 1.5;
+        }
+
+        footer .version, footer .creditos {
+            margin-left: 6px;
         }
 
         @media(max-width:800px) {
@@ -512,9 +606,11 @@
             .marca {
                 font-size: 18px;
             }
-            #botonVolver {
+            .botones-encabezado {
                 right: 8px;
-                padding: 6px 10px;
+            }
+            .btn-encabezado {
+                padding: 6px 9px;
                 font-size: 11px;
             }
         }
@@ -526,7 +622,10 @@
 <header class="encabezado">
     <div class="encabezado-contenido">
         <div class="marca">Materiales</div>
-        <a id="botonVolver" href="index.html">← Volver al inicio</a>
+        <div class="botones-encabezado">
+            <button id="btnVerInventario" class="btn-encabezado" type="button">Ver inventario</button>
+            <a id="botonVolver" class="btn-encabezado" href="index.html">Volver al inicio</a>
+        </div>
     </div>
 </header>
 
@@ -709,13 +808,61 @@
             </div>
         </div>
 
+        <!-- MANTENIMIENTO BASE DE DATOS AL CENTRO -->
+        <div class="bloque-peligro">
+            <div class="titulo-peligro">Acciones de Mantenimiento de Base de Datos</div>
+            <div class="grupo-botones-peligro">
+                <button id="btnEliminarMaterialesDB" type="button" class="btn btn-rojo">
+                    🗑️ Eliminar Base de datos de Materiales
+                </button>
+                <button id="btnEliminarEntregasDB" type="button" class="btn btn-rojo">
+                    🗑️ Eliminar registros de entregas de materiales
+                </button>
+            </div>
+        </div>
+
         <div id="mensajeAdmin" class="mensaje"></div>
     </section>
 
 </main>
 
+<!-- MODAL INVENTARIO COMPLETO -->
+<div id="modalInventario" class="modal">
+    <div class="modal-contenido">
+        <div class="modal-cabecera">
+            <h3>Inventario de Materiales Disponibles</h3>
+            <button id="btnCerrarInventario" class="btn-cerrar" type="button">✕ Cerrar</button>
+        </div>
+        <p class="seccion-descripcion">Listado consolidado de todos los materiales existentes en el sistema.</p>
+        
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Material</th>
+                        <th>Categoría</th>
+                        <th>Biblioteca</th>
+                        <th>Entradas Totales</th>
+                        <th>Entregadas</th>
+                        <th>Disponibles</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaInventarioModal">
+                    <tr>
+                        <td colspan="8" class="vacio">Cargando inventario...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <footer>
-    Control de materiales · Fundación Familias de Esperanza
+    <span>Sistema de Biblioteca</span>
+    <span class="version">Versión 1.0</span>
+    <span class="creditos">Desarrollado por Saúl Velásquez</span>
 </footer>
 
 <script>
@@ -751,6 +898,8 @@
     const btnAnterior = document.getElementById("btnAnterior");
     const btnSiguiente = document.getElementById("btnSiguiente");
     const seccionAdmin = document.getElementById("seccionAdmin");
+    const modalInventario = document.getElementById("modalInventario");
+    const tablaInventarioModal = document.getElementById("tablaInventarioModal");
 
     /* ==========================================================
        UTILIDADES Y MENSAJES
@@ -786,7 +935,6 @@
         return d.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });
     }
 
-    /* OBTENER NOMBRE REAL DEL USUARIO USANDO AUTH.JS DE TU SISTEMA */
     async function obtenerUsuarioActual() {
         try {
             if (typeof window.obtenerNombreUsuarioActual === "function") {
@@ -804,18 +952,91 @@
                 }
             }
         } catch (e) {
-            console.warn("No se pudo obtener el metadato del usuario:", e);
+            console.warn("No se pudo obtener metadatos del usuario:", e);
         }
 
         return localStorage.getItem("nombreUsuarioActual") || "Usuario Sistema";
     }
 
-    /* VERIFICACIÓN DE PERMISOS BASADA EN AUTH.JS */
     function verificarPermisosAdmin() {
         if (typeof window.esAdministrador === "function" && window.esAdministrador()) {
             seccionAdmin.classList.add("visible");
         } else {
             seccionAdmin.classList.remove("visible");
+        }
+    }
+
+    /* ==========================================================
+       INVENTARIO EN MODAL FLOTANTE (REGISTROS UNIFICADOS POR CÓDIGO)
+    ========================================================== */
+    document.getElementById("btnVerInventario").addEventListener("click", () => {
+        modalInventario.classList.add("visible");
+        cargarInventarioModal();
+    });
+
+    document.getElementById("btnCerrarInventario").addEventListener("click", () => {
+        modalInventario.classList.remove("visible");
+    });
+
+    async function cargarInventarioModal() {
+        tablaInventarioModal.innerHTML = `<tr><td colspan="8" class="vacio">Cargando inventario...</td></tr>`;
+
+        try {
+            const { data, error } = await supabaseClient
+                .from("materiales")
+                .select("*")
+                .order("nombre", { ascending: true });
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                tablaInventarioModal.innerHTML = `<tr><td colspan="8" class="vacio">No existen materiales registrados en el sistema.</td></tr>`;
+                return;
+            }
+
+            // Agrupar e unificar por código de material
+            const mapaConsolidado = new Map();
+
+            data.forEach(m => {
+                const key = String(m.codigo).trim().toUpperCase();
+                if (mapaConsolidado.has(key)) {
+                    const existente = mapaConsolidado.get(key);
+                    existente.entradas = Number(existente.entradas || 0) + Number(m.entradas || 0);
+                    existente.entregadas = Number(existente.entregadas || 0) + Number(m.entregadas || 0);
+                } else {
+                    mapaConsolidado.set(key, {
+                        codigo: m.codigo,
+                        nombre: m.nombre,
+                        categoria: m.categoria || "-",
+                        biblioteca: m.biblioteca || "-",
+                        entradas: Number(m.entradas || 0),
+                        entregadas: Number(m.entregadas || 0),
+                        estado: m.estado || "Activo"
+                    });
+                }
+            });
+
+            let html = "";
+            mapaConsolidado.forEach(m => {
+                const disp = Math.max(0, m.entradas - m.entregadas);
+                html += `
+                    <tr>
+                        <td><strong>${escapar(m.codigo)}</strong></td>
+                        <td>${escapar(m.nombre)}</td>
+                        <td>${escapar(m.categoria)}</td>
+                        <td>${escapar(m.biblioteca)}</td>
+                        <td>${m.entradas}</td>
+                        <td>${m.entregadas}</td>
+                        <td><strong style="color:var(--celeste-oscuro);">${disp}</strong></td>
+                        <td>${escapar(m.estado)}</td>
+                    </tr>`;
+            });
+
+            tablaInventarioModal.innerHTML = html;
+
+        } catch (err) {
+            console.error("Error al cargar inventario consolidado:", err);
+            tablaInventarioModal.innerHTML = `<tr><td colspan="8" class="vacio" style="color:var(--rojo);">Error: ${escapar(err.message)}</td></tr>`;
         }
     }
 
@@ -1473,6 +1694,56 @@
         };
 
         lector.readAsArrayBuffer(archivo);
+    });
+
+    /* ==========================================================
+       ELIMINACIÓN DE DATOS (MANTENIMIENTO DE BASE DE DATOS)
+    ========================================================== */
+    document.getElementById("btnEliminarMaterialesDB").addEventListener("click", async () => {
+        const confirmacion = confirm("⚠️ ATENCIÓN: ¿Está seguro de que desea eliminar TODA la base de datos de Materiales? Esta acción no se puede deshacer.");
+        if (!confirmacion) return;
+
+        mostrarMensaje(mensajeAdmin, "Eliminando base de datos de materiales...", "info");
+
+        try {
+            const { error } = await supabaseClient
+                .from("materiales")
+                .delete()
+                .neq("id", "00000000-0000-0000-0000-000000000000"); // Elimina todos los registros de la tabla
+
+            if (error) throw error;
+
+            mostrarMensaje(mensajeAdmin, "Se ha eliminado toda la base de datos de materiales correctamente.", "ok");
+            await cargarEstadisticas();
+            await cargarMateriales();
+        } catch (err) {
+            console.error("Error al eliminar materiales:", err);
+            mostrarMensaje(mensajeAdmin, "Error al vaciar materiales: " + err.message, "error");
+        }
+    });
+
+    document.getElementById("btnEliminarEntregasDB").addEventListener("click", async () => {
+        const confirmacion = confirm("⚠️ ATENCIÓN: ¿Está seguro de que desea eliminar TODOS los registros de entregas de materiales? Esta acción borrará el historial por completo.");
+        if (!confirmacion) return;
+
+        mostrarMensaje(mensajeAdmin, "Eliminando registros de entregas...", "info");
+
+        try {
+            const { error } = await supabaseClient
+                .from("entregas_materiales")
+                .delete()
+                .neq("id", "00000000-0000-0000-0000-000000000000"); // Elimina todos los registros de la tabla
+
+            if (error) throw error;
+
+            mostrarMensaje(mensajeAdmin, "Se han eliminado todos los registros de entregas correctamente.", "ok");
+            paginaActual = 1;
+            await cargarEstadisticas();
+            await cargarEntregados();
+        } catch (err) {
+            console.error("Error al eliminar entregas:", err);
+            mostrarMensaje(mensajeAdmin, "Error al vaciar entregas: " + err.message, "error");
+        }
     });
 
     /* ==========================================================
