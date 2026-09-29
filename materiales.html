@@ -607,6 +607,7 @@
                         <th>Persona ID</th>
                         <th>Familia ID</th>
                         <th>Código colaborador</th>
+                        <th>Área colaborador</th>
                         <th>Biblioteca</th>
                         <th>Sitio</th>
                         <th>Observaciones</th>
@@ -615,7 +616,7 @@
                 </thead>
                 <tbody id="tablaEntregados">
                     <tr>
-                        <td colspan="14" class="vacio">Cargando registros...</td>
+                        <td colspan="15" class="vacio">Cargando registros...</td>
                     </tr>
                 </tbody>
             </table>
@@ -761,7 +762,7 @@
     async function cargarEntregados() {
         tablaEntregados.innerHTML = `
             <tr>
-                <td colspan="14" class="vacio">Cargando registros...</td>
+                <td colspan="15" class="vacio">Cargando registros...</td>
             </tr>`;
 
         try {
@@ -779,7 +780,7 @@
             if (!data || data.length === 0) {
                 tablaEntregados.innerHTML = `
                     <tr>
-                        <td colspan="14" class="vacio">No hay materiales entregados registrados.</td>
+                        <td colspan="15" class="vacio">No hay materiales entregados registrados.</td>
                     </tr>`;
                 totalPaginas = 1;
                 actualizarPaginacion();
@@ -794,15 +795,16 @@
                 html += `
                     <tr>
                         <td>${escapar(fechaGuatemala(reg.fecha || reg.created_at))}</td>
-                        <td>${escapar(reg.codigo_material || reg.codigo || "-")}</td>
-                        <td>${escapar(reg.nombre_material || reg.material || "-")}</td>
+                        <td>${escapar(reg.codigo_material || "-")}</td>
+                        <td>${escapar(reg.material || "-")}</td>
                         <td>${escapar(reg.cantidad || 1)}</td>
-                        <td>${escapar(reg.receptor_tipo || reg.receptor || "-")}</td>
+                        <td>${escapar(reg.receptor || "-")}</td>
                         <td>${escapar(reg.nombres || "-")}</td>
                         <td>${escapar(reg.apellidos || "-")}</td>
-                        <td>${escapar(reg.persona_id || reg.PersonaId || "-")}</td>
-                        <td>${escapar(reg.familia_id || reg.FamiliaId || "-")}</td>
+                        <td>${escapar(reg.persona_id || "-")}</td>
+                        <td>${escapar(reg.familia_id || "-")}</td>
                         <td>${escapar(reg.codigo_colaborador || "-")}</td>
+                        <td>${escapar(reg.area_colaborador || "-")}</td>
                         <td>${escapar(reg.biblioteca || "-")}</td>
                         <td>${escapar(reg.sitio || "-")}</td>
                         <td>${escapar(reg.observaciones || "-")}</td>
@@ -816,7 +818,7 @@
             console.error("Error al consultar entregas_materiales:", err);
             tablaEntregados.innerHTML = `
                 <tr>
-                    <td colspan="14" class="vacio" style="color:var(--rojo);">
+                    <td colspan="15" class="vacio" style="color:var(--rojo);">
                         Error al cargar los registros: ${escapar(err.message)}
                     </td>
                 </tr>`;
@@ -949,10 +951,10 @@
         try {
             const { data, error } = await supabaseClient
                 .from("colaboradores")
-                .select("*")
-                .or(`Nombres.ilike.%${busqueda}%,Apellidos.ilike.%${busqueda}%,codigo.ilike.%${busqueda}%`)
+                .select("id, CodigoColaborador, Nombre, Area, estado")
+                .or(`Nombre.ilike.%${busqueda}%,CodigoColaborador.ilike.%${busqueda}%`)
                 .ilike("estado", "Activo")
-                .order("Nombres", { ascending: true });
+                .order("Nombre", { ascending: true });
 
             if (error) throw error;
 
@@ -965,8 +967,8 @@
             data.forEach((col, idx) => {
                 html += `
                     <div class="resultado" id="res-col-${idx}">
-                        <div class="resultado-titulo">${escapar(col.Nombres || col.nombre)} ${escapar(col.Apellidos || col.apellido || "")}</div>
-                        <div class="resultado-detalle">Código: ${escapar(col.codigo || "-")} | Área: ${escapar(col.area || "-")}</div>
+                        <div class="resultado-titulo">${escapar(col.Nombre)}</div>
+                        <div class="resultado-detalle">Código: ${escapar(col.CodigoColaborador || "-")} | Área: ${escapar(col.Area || "-")}</div>
                     </div>`;
             });
             resultadosColaborador.innerHTML = html;
@@ -986,15 +988,15 @@
         receptorSeleccionado = persona;
         resultadosFamilia.innerHTML = "";
         resultadosColaborador.innerHTML = "";
-        
-        const nombres = persona.Nombres || persona.nombre || "";
-        const apellidos = persona.Apellidos || persona.apellido || "";
-        
-        personaNombre.textContent = `${nombres} ${apellidos}`.trim();
-        personaDetalle.textContent = receptorTipo === "Afiliado" 
-            ? `Familia: ${persona.FamiliaId || "-"} | Persona ID: ${persona.PersonaId || "-"}`
-            : `Código: ${persona.codigo || "-"} | Área: ${persona.area || "-"}`;
-            
+
+        if (receptorTipo === "Afiliado") {
+            personaNombre.textContent = `${persona.Nombres || ""} ${persona.Apellidos || ""}`.trim();
+            personaDetalle.textContent = `Familia: ${persona.FamiliaId || "-"} | Persona ID: ${persona.PersonaId || "-"}`;
+        } else {
+            personaNombre.textContent = `${persona.Nombre || ""}`.trim();
+            personaDetalle.textContent = `Código: ${persona.CodigoColaborador || "-"} | Área: ${persona.Area || "-"}`;
+        }
+
         personaSeleccionada.classList.add("visible");
     }
 
@@ -1150,16 +1152,37 @@
             const usuarioActual = obtenerUsuario();
 
             for (const mat of materialesSeleccionados) {
+                // Mapear campos según el tipo de receptor y la estructura real de entregas_materiales
+                let nombres = "";
+                let apellidos = "";
+                let personaId = null;
+                let familiaId = null;
+                let codigoColaborador = null;
+                let areaColaborador = null;
+
+                if (receptorTipo === "Afiliado") {
+                    nombres = receptorSeleccionado.Nombres || "";
+                    apellidos = receptorSeleccionado.Apellidos || "";
+                    personaId = receptorSeleccionado.PersonaId || null;
+                    familiaId = receptorSeleccionado.FamiliaId || null;
+                } else {
+                    nombres = receptorSeleccionado.Nombre || "";
+                    apellidos = "";
+                    codigoColaborador = receptorSeleccionado.CodigoColaborador || null;
+                    areaColaborador = receptorSeleccionado.Area || null;
+                }
+
                 const registro = {
                     codigo_material: mat.codigo,
-                    nombre_material: mat.nombre,
+                    material: mat.nombre,
                     cantidad: mat.cantidadEntrega,
-                    receptor_tipo: receptorTipo,
-                    nombres: receptorSeleccionado.Nombres || receptorSeleccionado.nombre || "",
-                    apellidos: receptorSeleccionado.Apellidos || receptorSeleccionado.apellido || "",
-                    persona_id: receptorSeleccionado.PersonaId || null,
-                    familia_id: receptorSeleccionado.FamiliaId || null,
-                    codigo_colaborador: receptorSeleccionado.codigo || null,
+                    receptor: receptorTipo,
+                    nombres: nombres,
+                    apellidos: apellidos,
+                    persona_id: personaId,
+                    familia_id: familiaId,
+                    codigo_colaborador: codigoColaborador,
+                    area_colaborador: areaColaborador,
                     biblioteca: biblioteca,
                     sitio: sitio,
                     observaciones: observaciones,
