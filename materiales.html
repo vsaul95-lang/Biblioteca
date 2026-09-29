@@ -52,7 +52,7 @@
 
         .encabezado-contenido {
             max-width: 1180px;
-            min-height: 64px;
+            min-height: 56px;
             margin: auto;
             padding: 0 18px;
             display: flex;
@@ -62,7 +62,7 @@
         }
 
         .marca {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
         }
 
@@ -74,9 +74,9 @@
             background: rgba(255,255,255,.14);
             border: 1px solid rgba(255,255,255,.50);
             color: white;
-            border-radius: 8px;
-            padding: 9px 14px;
-            font-size: 13px;
+            border-radius: 6px;
+            padding: 7px 12px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -89,102 +89,96 @@
         .contenedor {
             max-width: 1180px;
             margin: auto;
-            padding: 18px;
+            padding: 14px 18px;
         }
 
         .titulo-pagina {
             text-align: center;
-            margin: 2px 0 5px;
-            font-size: 23px;
+            margin: 2px 0 3px;
+            font-size: 21px;
         }
 
         .subtitulo {
             text-align: center;
             color: var(--texto-suave);
-            font-size: 14px;
-            margin: 0 0 14px;
+            font-size: 13px;
+            margin: 0 0 10px;
         }
 
         /* ESTADÍSTICAS */
         .estadisticas {
             display: grid;
             grid-template-columns: repeat(4,1fr);
-            gap: 10px;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .estadistica {
             background: var(--blanco);
             border: 1px solid var(--borde);
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: var(--sombra);
-            padding: 11px;
+            padding: 8px 10px;
             text-align: center;
         }
 
         .estadistica .numero {
             color: var(--celeste-fundacion);
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
         }
 
         .estadistica .texto {
             color: var(--texto-suave);
-            font-size: 12px;
-            margin-top: 4px;
+            font-size: 11px;
+            margin-top: 2px;
         }
 
         /* SECCIONES */
         .seccion {
             background: var(--blanco);
             border: 1px solid var(--borde);
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: var(--sombra);
-            padding: 14px;
-            margin-bottom: 14px;
+            padding: 12px;
+            margin-bottom: 12px;
         }
 
         .seccion h2 {
-            margin: 0 0 10px;
-            font-size: 18px;
+            margin: 0 0 6px;
+            font-size: 16px;
         }
 
         .seccion-descripcion {
             color: var(--texto-suave);
-            font-size: 13px;
-            margin: -3px 0 12px;
+            font-size: 12px;
+            margin: -2px 0 10px;
         }
 
-        /* FORMULARIOS */
-        .fila {
+        /* FORMULARIOS Y COMPACTACIÓN */
+        .fila-compacta {
             display: grid;
-            grid-template-columns: repeat(2,minmax(0,1fr));
-            gap: 10px;
-        }
-
-        .fila-3 {
-            display: grid;
-            grid-template-columns: repeat(3,minmax(0,1fr));
-            gap: 10px;
+            grid-template-columns: 140px 140px 1fr;
+            gap: 8px;
         }
 
         .campo {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 3px;
         }
 
         .campo label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
         }
 
         input, select, textarea {
             width: 100%;
             border: 1px solid var(--borde);
-            border-radius: 7px;
-            padding: 9px 10px;
-            font-size: 14px;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 13px;
             color: var(--texto);
             background: white;
             outline: none;
@@ -198,15 +192,15 @@
         /* BOTONES */
         .botones-tipo {
             display: flex;
-            gap: 8px;
-            margin-bottom: 11px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
 
         .btn {
             border: none;
-            border-radius: 7px;
-            padding: 9px 14px;
-            font-size: 13px;
+            border-radius: 6px;
+            padding: 7px 12px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -247,15 +241,15 @@
         .resultados {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 4px;
+            margin-top: 6px;
         }
 
         .resultado {
             background: #fafcfd;
             border: 1px solid var(--borde);
-            border-radius: 7px;
-            padding: 9px 10px;
+            border-radius: 6px;
+            padding: 7px 9px;
             cursor: pointer;
         }
 
@@ -265,24 +259,24 @@
         }
 
         .resultado-titulo {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
         }
 
         .resultado-detalle {
             color: var(--texto-suave);
-            font-size: 12px;
-            margin-top: 3px;
+            font-size: 11px;
+            margin-top: 2px;
         }
 
         /* PERSONA SELECCIONADA */
         .persona-seleccionada {
             display: none;
-            margin-top: 10px;
-            padding: 10px;
+            margin-top: 8px;
+            padding: 8px;
             background: var(--celeste-suave);
             border: 1px solid #c7eaf8;
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         .persona-seleccionada.visible {
@@ -290,25 +284,25 @@
         }
 
         .persona-nombre {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
         }
 
         .persona-detalle {
             color: var(--texto-suave);
-            font-size: 12px;
-            margin-top: 3px;
+            font-size: 11px;
+            margin-top: 2px;
         }
 
         /* MATERIAL SELECCIONADO */
         .material-info {
             display: none;
-            margin-top: 8px;
-            padding: 9px;
+            margin-top: 6px;
+            padding: 7px;
             background: #fafcfd;
             border: 1px solid var(--borde);
-            border-radius: 7px;
-            font-size: 13px;
+            border-radius: 6px;
+            font-size: 12px;
         }
 
         .material-info.visible {
@@ -317,46 +311,46 @@
 
         .fila-material {
             display: grid;
-            grid-template-columns: 1fr 100px 40px;
-            gap: 8px;
-            align-items: end;
+            grid-template-columns: 1fr 90px 34px;
+            gap: 6px;
+            align-items: center;
             background: #fafcfd;
             border: 1px solid var(--borde);
-            border-radius: 8px;
-            padding: 9px;
-            margin-top: 8px;
+            border-radius: 6px;
+            padding: 6px 8px;
+            margin-top: 6px;
         }
 
         .material-nombre {
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .material-detalle {
             color: var(--texto-suave);
-            font-size: 11px;
-            margin-top: 3px;
+            font-size: 10px;
+            margin-top: 1px;
         }
 
         .btn-quitar {
-            width: 38px;
-            height: 38px;
-            border-radius: 7px;
+            width: 32px;
+            height: 32px;
+            border-radius: 5px;
             border: 1px solid #efc8c4;
             background: #fbeaea;
             color: var(--rojo);
             cursor: pointer;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         /* MENSAJES */
         .mensaje {
             display: none;
-            margin-top: 9px;
-            padding: 9px 10px;
-            border-radius: 7px;
-            font-size: 13px;
+            margin-top: 8px;
+            padding: 7px 9px;
+            border-radius: 6px;
+            font-size: 12px;
         }
 
         .mensaje.visible {
@@ -385,7 +379,7 @@
         .tabla-contenedor {
             overflow-x: auto;
             border: 1px solid var(--borde);
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         table {
@@ -397,14 +391,14 @@
 
         th {
             background: var(--celeste-suave);
-            padding: 9px 8px;
+            padding: 7px 8px;
             text-align: left;
             border-bottom: 1px solid var(--borde);
             white-space: nowrap;
         }
 
         td {
-            padding: 8px;
+            padding: 7px 8px;
             border-bottom: 1px solid #edf1f3;
             vertical-align: top;
         }
@@ -416,7 +410,7 @@
         .vacio {
             text-align: center;
             color: var(--texto-suave);
-            padding: 20px;
+            padding: 16px;
         }
 
         /* PAGINACIÓN */
@@ -425,11 +419,11 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
-            margin-top: 11px;
+            margin-top: 9px;
         }
 
         .pagina-info {
-            min-width: 110px;
+            min-width: 100px;
             text-align: center;
             color: var(--texto-suave);
             font-size: 12px;
@@ -438,24 +432,24 @@
         footer {
             text-align: center;
             color: var(--texto-suave);
-            font-size: 12px;
-            padding: 12px 10px 20px;
+            font-size: 11px;
+            padding: 10px 10px 16px;
         }
 
         @media(max-width:800px) {
             .estadisticas {
                 grid-template-columns: repeat(2,1fr);
             }
-            .fila, .fila-3 {
+            .fila-compacta {
                 grid-template-columns: 1fr;
             }
             .marca {
-                font-size: 20px;
+                font-size: 18px;
             }
             #botonVolver {
                 right: 8px;
-                padding: 8px 10px;
-                font-size: 12px;
+                padding: 6px 10px;
+                font-size: 11px;
             }
         }
     </style>
@@ -531,12 +525,12 @@
             <div id="personaDetalle" class="persona-detalle"></div>
         </div>
 
-        <!-- BIBLIOTECA / SITIO / OBSERVACIONES -->
-        <div class="fila-3" style="margin-top:12px;">
+        <!-- BIBLIOTECA / SITIO / OBSERVACIONES (COMPACTO) -->
+        <div class="fila-compacta" style="margin-top:10px;">
             <div class="campo">
-                <label>Biblioteca que entrega</label>
+                <label>Biblioteca</label>
                 <select id="selectBiblioteca">
-                    <option value="">Seleccione una biblioteca</option>
+                    <option value="">Seleccionar</option>
                     <option value="F">F</option>
                     <option value="M">M</option>
                     <option value="R">R</option>
@@ -548,7 +542,7 @@
             <div class="campo">
                 <label>Sitio</label>
                 <select id="selectSitio">
-                    <option value="">Seleccione un sitio</option>
+                    <option value="">Seleccionar</option>
                     <option value="N">N</option>
                     <option value="R">R</option>
                     <option value="F">F</option>
@@ -558,12 +552,12 @@
 
             <div class="campo">
                 <label>Observaciones</label>
-                <input id="inputObservaciones" type="text" placeholder="Opcional">
+                <input id="inputObservaciones" type="text" placeholder="Observaciones opcionales">
             </div>
         </div>
 
         <!-- BUSCAR MATERIAL -->
-        <div style="margin-top:12px;">
+        <div style="margin-top:10px;">
             <div class="campo">
                 <label>Material</label>
                 <input id="inputMaterial" type="text" placeholder="Escriba el nombre o código del material" autocomplete="off">
@@ -573,17 +567,17 @@
         </div>
 
         <!-- LISTA DE MATERIALES A ENTREGAR -->
-        <div style="margin-top:12px;">
-            <strong style="font-size:14px;">Materiales a entregar</strong>
+        <div style="margin-top:10px;">
+            <strong style="font-size:13px;">Materiales a entregar</strong>
             <div id="listaMateriales"></div>
-            <button id="btnAgregarOtro" type="button" class="btn btn-secundario" style="margin-top:9px;">
+            <button id="btnAgregarOtro" type="button" class="btn btn-secundario" style="margin-top:6px;">
                 + Agregar otro material
             </button>
         </div>
 
         <div id="mensajeEntrega" class="mensaje"></div>
 
-        <div style="text-align:right; margin-top:12px;">
+        <div style="text-align:right; margin-top:10px;">
             <button id="btnAceptar" type="button" class="btn btn-verde">Aceptar entrega</button>
         </div>
     </section>
@@ -700,16 +694,28 @@
         return d.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });
     }
 
-    function obtenerUsuario() {
+    async function obtenerUsuarioActual() {
+        try {
+            if (typeof supabaseClient !== "undefined") {
+                const { data } = await supabaseClient.auth.getUser();
+                if (data && data.user) {
+                    return data.user.user_metadata?.full_name || data.user.email || "Usuario autenticado";
+                }
+            }
+        } catch (e) {
+            console.warn("No se pudo obtener el usuario de Supabase Auth:", e);
+        }
+
         try {
             if (typeof window.obtenerNombreUsuarioActual === "function") {
                 const nombre = window.obtenerNombreUsuarioActual();
                 if (nombre) return nombre;
             }
         } catch(error) {
-            console.warn("No se pudo obtener el nombre del usuario:", error);
+            console.warn("Error en obtenerNombreUsuarioActual:", error);
         }
-        return window.nombreUsuarioActual || "Usuario Sistema";
+
+        return localStorage.getItem("usuarioActual") || window.nombreUsuarioActual || "Usuario Sistema";
     }
 
     /* ==========================================================
@@ -717,25 +723,36 @@
     ========================================================== */
     async function cargarEstadisticas() {
         try {
-            const { data, error } = await supabaseClient
+            // 1. Obtener materiales
+            const { data: mats, error: errMats } = await supabaseClient
                 .from("materiales")
-                .select("id, codigo, nombre, entradas, entregadas, estado");
+                .select("id, entradas, entregadas, estado");
 
-            if (error) throw error;
+            if (errMats) throw errMats;
 
-            const activos = (data || []).filter(m => String(m.estado || "").toLowerCase() === "activo");
-            let entradas = 0;
-            let entregadas = 0;
+            const activos = (mats || []).filter(m => String(m.estado || "").toLowerCase() === "activo");
+            let totalEntradas = 0;
 
             activos.forEach(m => {
-                entradas += Number(m.entradas || 0);
-                entregadas += Number(m.entregadas || 0);
+                totalEntradas += Number(m.entradas || 0);
+            });
+
+            // 2. Obtener suma real de unidades entregadas desde la tabla entregas_materiales
+            const { data: entregas, error: errEnt } = await supabaseClient
+                .from("entregas_materiales")
+                .select("cantidad");
+
+            if (errEnt) throw errEnt;
+
+            let totalEntregadas = 0;
+            (entregas || []).forEach(e => {
+                totalEntregadas += Number(e.cantidad || 0);
             });
 
             document.getElementById("totalTipos").textContent = activos.length;
-            document.getElementById("totalEntradas").textContent = entradas;
-            document.getElementById("totalEntregadas").textContent = entregadas;
-            document.getElementById("totalDisponibles").textContent = Math.max(0, entradas - entregadas);
+            document.getElementById("totalEntradas").textContent = totalEntradas;
+            document.getElementById("totalEntregadas").textContent = totalEntregadas;
+            document.getElementById("totalDisponibles").textContent = Math.max(0, totalEntradas - totalEntregadas);
         } catch (err) {
             console.error("Error al cargar estadísticas:", err.message);
         }
@@ -1067,7 +1084,7 @@
 
     function renderizarListaMateriales() {
         if (materialesSeleccionados.length === 0) {
-            listaMateriales.innerHTML = `<div style="color:var(--texto-suave); font-size:13px; margin-top:8px;">No hay materiales agregados.</div>`;
+            listaMateriales.innerHTML = `<div style="color:var(--texto-suave); font-size:12px; margin-top:6px;">No hay materiales agregados.</div>`;
             return;
         }
 
@@ -1149,10 +1166,9 @@
         mostrarMensaje(mensajeEntrega, "Guardando entrega...", "info");
 
         try {
-            const usuarioActual = obtenerUsuario();
+            const usuarioActual = await obtenerUsuarioActual();
 
             for (const mat of materialesSeleccionados) {
-                // Mapear campos según el tipo de receptor y la estructura real de entregas_materiales
                 let nombres = "";
                 let apellidos = "";
                 let personaId = null;
