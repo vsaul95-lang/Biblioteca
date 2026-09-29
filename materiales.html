@@ -175,11 +175,17 @@
             margin-top: 2px;
         }
 
-        /* BARRA DE ACCIÓN INVENTARIO (LADO IZQUIERDO) */
+        /* BARRA DE ACCIÓN INVENTARIO (AL CENTRO Y MÁS ALTO) */
         .barra-accion-inventario {
             display: flex;
-            justify-content: flex-start;
-            margin-bottom: 12px;
+            justify-content: center;
+            margin: 12px 0 16px;
+        }
+
+        .btn-inventario-principal {
+            padding: 10px 22px;
+            font-size: 13px;
+            border-radius: 6px;
         }
 
         /* SECCIONES */
@@ -536,7 +542,7 @@
             margin-top: 10px;
         }
 
-        /* MODAL FLOTANTE DE INVENTARIO */
+        /* MODALES FLOTANTES GENERÁLICOS */
         .modal {
             display: none;
             position: fixed;
@@ -591,6 +597,39 @@
 
         .filtro-modal {
             margin-bottom: 12px;
+        }
+
+        /* ESTILOS ESPECÍFICOS PARA MODAL DE CONFIRMACIÓN DE ELIMINACIÓN */
+        .modal-alerta {
+            max-width: 440px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .icono-alerta {
+            font-size: 38px;
+            margin-bottom: 8px;
+            color: var(--rojo);
+        }
+
+        .titulo-modal-alerta {
+            font-size: 17px;
+            font-weight: bold;
+            color: var(--texto);
+            margin-bottom: 8px;
+        }
+
+        .texto-modal-alerta {
+            font-size: 13px;
+            color: var(--texto-suave);
+            margin-bottom: 18px;
+            line-height: 1.4;
+        }
+
+        .acciones-modal-alerta {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
         }
 
         /* PIE DE PÁGINA */
@@ -662,9 +701,9 @@
         </div>
     </section>
 
-    <!-- BOTÓN DE INVENTARIO (LADO IZQUIERDO ENTRE ESTADÍSTICAS Y ENTREGAS) -->
+    <!-- BOTÓN DE INVENTARIO (AL CENTRO Y MÁS ALTO) -->
     <div class="barra-accion-inventario">
-        <button id="btnVerInventario" class="btn btn-primario" type="button">
+        <button id="btnVerInventario" class="btn btn-primario btn-inventario-principal" type="button">
             📋 Ver inventario
         </button>
     </div>
@@ -845,7 +884,7 @@
 
 </main>
 
-<!-- MODAL INVENTARIO COMPLETO (ORDENADO C001, BUSCADOR Y PAGINADO DE 25) -->
+<!-- MODAL INVENTARIO COMPLETO -->
 <div id="modalInventario" class="modal">
     <div class="modal-contenido">
         <div class="modal-cabecera">
@@ -887,6 +926,19 @@
     </div>
 </div>
 
+<!-- MODAL FLOTANTE DE CONFIRMACIÓN DE ELIMINACIÓN DE DATOS -->
+<div id="modalConfirmacionPeligro" class="modal">
+    <div class="modal-contenido modal-alerta">
+        <div class="icono-alerta">⚠️</div>
+        <div id="tituloModalConfirmacion" class="titulo-modal-alerta">¿Está completamente seguro?</div>
+        <div id="textoModalConfirmacion" class="texto-modal-alerta">Esta acción eliminará registros de forma permanente y no se podrá deshacer.</div>
+        <div class="acciones-modal-alerta">
+            <button id="btnCancelarAccionPeligro" type="button" class="btn btn-secundario">Cancelar</button>
+            <button id="btnConfirmarAccionPeligro" type="button" class="btn btn-rojo">Sí, eliminar</button>
+        </div>
+    </div>
+</div>
+
 <footer>
     <div>Sistema de Biblioteca</div>
     <div>Versión 1.0</div>
@@ -913,6 +965,9 @@
     let paginaModalActual = 1;
     const REGISTROS_MODAL_POR_PAGINA = 25;
 
+    // Callback para confirmación personalizada
+    let callbackAccionPeligrosa = null;
+
     /* ==========================================================
        ELEMENTOS DEL DOM
     ========================================================== */
@@ -936,12 +991,19 @@
     const seccionAdmin = document.getElementById("seccionAdmin");
     const seccionPeligro = document.getElementById("seccionPeligro");
     
+    // Modales
     const modalInventario = document.getElementById("modalInventario");
     const tablaInventarioModal = document.getElementById("tablaInventarioModal");
     const inputBuscarInventario = document.getElementById("inputBuscarInventario");
     const paginaInfoModal = document.getElementById("paginaInfoModal");
     const btnAnteriorModal = document.getElementById("btnAnteriorModal");
     const btnSiguienteModal = document.getElementById("btnSiguienteModal");
+
+    const modalConfirmacionPeligro = document.getElementById("modalConfirmacionPeligro");
+    const tituloModalConfirmacion = document.getElementById("tituloModalConfirmacion");
+    const textoModalConfirmacion = document.getElementById("textoModalConfirmacion");
+    const btnCancelarAccionPeligro = document.getElementById("btnCancelarAccionPeligro");
+    const btnConfirmarAccionPeligro = document.getElementById("btnConfirmarAccionPeligro");
 
     /* ==========================================================
        UTILIDADES Y MENSAJES
@@ -1011,6 +1073,29 @@
     }
 
     /* ==========================================================
+       MODAL DE CONFIRMACIÓN ESTILIZADO DE ALERTA
+    ========================================================== */
+    function solicitarConfirmacionPersonalizada(titulo, mensaje, accionConfirmada) {
+        tituloModalConfirmacion.textContent = titulo;
+        textoModalConfirmacion.textContent = mensaje;
+        callbackAccionPeligrosa = accionConfirmada;
+        modalConfirmacionPeligro.classList.add("visible");
+    }
+
+    btnCancelarAccionPeligro.addEventListener("click", () => {
+        modalConfirmacionPeligro.classList.remove("visible");
+        callbackAccionPeligrosa = null;
+    });
+
+    btnConfirmarAccionPeligro.addEventListener("click", async () => {
+        modalConfirmacionPeligro.classList.remove("visible");
+        if (typeof callbackAccionPeligrosa === "function") {
+            await callbackAccionPeligrosa();
+        }
+        callbackAccionPeligrosa = null;
+    });
+
+    /* ==========================================================
        INVENTARIO EN MODAL FLOTANTE (C001 ASC, BUSCADOR Y PAGINACIÓN)
     ========================================================== */
     document.getElementById("btnVerInventario").addEventListener("click", () => {
@@ -1042,7 +1127,6 @@
                 return;
             }
 
-            // Agrupar por código de material
             const mapaConsolidado = new Map();
 
             data.forEach(m => {
@@ -1064,7 +1148,6 @@
                 }
             });
 
-            // Convertir a Array y ordenar alfanuméricamente desde C001
             inventarioConsolidadoCompleto = Array.from(mapaConsolidado.values()).sort((a, b) => {
                 return a.codigo.localeCompare(b.codigo, undefined, { numeric: true, sensitivity: 'base' });
             });
@@ -1807,53 +1890,51 @@
     });
 
     /* ==========================================================
-       ELIMINACIÓN DE DATOS (MANTENIMIENTO EN BLOQUE INDEPENDIENTE)
+       ELIMINACIÓN DE DATOS (MANTENIMIENTO CON MODAL ESTILIZADO)
     ========================================================== */
-    document.getElementById("btnEliminarMaterialesDB").addEventListener("click", async () => {
-        const confirmacion = confirm("⚠️ ATENCIÓN: ¿Está seguro de que desea eliminar TODA la base de datos de Materiales? Esta acción no se puede deshacer.");
-        if (!confirmacion) return;
+    document.getElementById("btnEliminarMaterialesDB").addEventListener("click", () => {
+        solicitarConfirmacionPersonalizada(
+            "¿Eliminar Base de datos de Materiales?",
+            "Esta acción eliminará de forma PERMANENTE todos los materiales de la base de datos. ¿Desea continuar?",
+            async () => {
+                try {
+                    const { error } = await supabaseClient
+                        .from("materiales")
+                        .delete()
+                        .neq("id", "00000000-0000-0000-0000-000000000000");
 
-        mostrarMensaje(mensajeAdmin, "Eliminando base de datos de materiales...", "info");
+                    if (error) throw error;
 
-        try {
-            const { error } = await supabaseClient
-                .from("materiales")
-                .delete()
-                .neq("id", "00000000-0000-0000-0000-000000000000");
-
-            if (error) throw error;
-
-            alert("Se ha eliminado toda la base de datos de materiales correctamente.");
-            await cargarEstadisticas();
-            await cargarMateriales();
-        } catch (err) {
-            console.error("Error al eliminar materiales:", err);
-            alert("Error al vaciar materiales: " + err.message);
-        }
+                    await cargarEstadisticas();
+                    await cargarMateriales();
+                } catch (err) {
+                    console.error("Error al eliminar materiales:", err);
+                }
+            }
+        );
     });
 
-    document.getElementById("btnEliminarEntregasDB").addEventListener("click", async () => {
-        const confirmacion = confirm("⚠️ ATENCIÓN: ¿Está seguro de que desea eliminar TODOS los registros de entregas de materiales? Esta acción borrará el historial por completo.");
-        if (!confirmacion) return;
+    document.getElementById("btnEliminarEntregasDB").addEventListener("click", () => {
+        solicitarConfirmacionPersonalizada(
+            "¿Eliminar Registros de Entregas?",
+            "Esta acción borra completamente el historial de entregas realizadas. ¿Está seguro de proceder?",
+            async () => {
+                try {
+                    const { error } = await supabaseClient
+                        .from("entregas_materiales")
+                        .delete()
+                        .neq("id", "00000000-0000-0000-0000-000000000000");
 
-        mostrarMensaje(mensajeAdmin, "Eliminando registros de entregas...", "info");
+                    if (error) throw error;
 
-        try {
-            const { error } = await supabaseClient
-                .from("entregas_materiales")
-                .delete()
-                .neq("id", "00000000-0000-0000-0000-000000000000");
-
-            if (error) throw error;
-
-            alert("Se han eliminado todos los registros de entregas correctamente.");
-            paginaActual = 1;
-            await cargarEstadisticas();
-            await cargarEntregados();
-        } catch (err) {
-            console.error("Error al eliminar entregas:", err);
-            alert("Error al vaciar entregas: " + err.message);
-        }
+                    paginaActual = 1;
+                    await cargarEstadisticas();
+                    await cargarEntregados();
+                } catch (err) {
+                    console.error("Error al eliminar entregas:", err);
+                }
+            }
+        );
     });
 
     /* ==========================================================
