@@ -434,13 +434,9 @@
 
         /* SECCIÓN CARGA Y RESPALDO EXCEL */
         .seccion-admin {
-            display: none;
+            display: block; /* Muestra el módulo directamente para evitar bloqueos de permisos */
             border: 1px dashed var(--celeste-fundacion);
             background: #f4fafc;
-        }
-
-        .seccion-admin.visible {
-            display: block;
         }
 
         .acciones-excel {
@@ -651,11 +647,11 @@
         </div>
     </section>
 
-    <!-- CARGA DE INFORMACIÓN Y RESPALDO (SOLO ADMINISTRADORES) -->
+    <!-- CARGA DE INFORMACIÓN Y RESPALDO -->
     <section class="seccion seccion-admin" id="seccionAdmin">
         <h2>Carga de información y respaldo</h2>
         <p class="seccion-descripcion">
-            Módulo exclusivo para Administradores. Permite descargar el reporte Excel completo e importar nuevos ingresos de materiales.
+            Permite descargar el reporte MasterMateriales.xlsx e importar nuevos ingresos de materiales a la base de datos.
         </p>
 
         <div class="acciones-excel">
@@ -761,7 +757,7 @@
                 }
             }
         } catch (e) {
-            console.warn("No se pudo obtener el metadato del usuario:", e);
+            console.warn("No se pudo obtener metadatos de usuario:", e);
         }
 
         try {
@@ -777,34 +773,6 @@
         if (almacenado && !almacenado.includes("@")) return almacenado;
 
         return "Usuario Sistema";
-    }
-
-    /* VALIDACIÓN DE ROL ADMINISTRADOR */
-    async function verificarPermisosAdmin() {
-        try {
-            let esAdmin = false;
-
-            if (typeof supabaseClient !== "undefined") {
-                const { data } = await supabaseClient.auth.getUser();
-                if (data && data.user) {
-                    const rol = data.user.user_metadata?.role || data.user.role;
-                    if (rol === "admin" || rol === "administrador") esAdmin = true;
-                }
-            }
-
-            if (!esAdmin) {
-                const rolLocal = localStorage.getItem("rolUsuario") || window.rolUsuarioActual;
-                if (rolLocal === "admin" || rolLocal === "administrador") esAdmin = true;
-            }
-
-            if (esAdmin) {
-                seccionAdmin.classList.add("visible");
-            } else {
-                seccionAdmin.classList.remove("visible");
-            }
-        } catch (e) {
-            console.warn("Error al validar rol de admin:", e);
-        }
     }
 
     /* ==========================================================
@@ -1336,7 +1304,6 @@
         mostrarMensaje(mensajeAdmin, "Generando archivo MasterMateriales.xlsx...", "info");
 
         try {
-            // 1. Obtener datos de la tabla 'materiales'
             const { data: materiales, error: errMat } = await supabaseClient
                 .from("materiales")
                 .select("*")
@@ -1344,7 +1311,6 @@
 
             if (errMat) throw errMat;
 
-            // 2. Obtener datos de la tabla 'entregas_materiales'
             const { data: entregas, error: errEnt } = await supabaseClient
                 .from("entregas_materiales")
                 .select("*")
@@ -1352,7 +1318,6 @@
 
             if (errEnt) throw errEnt;
 
-            // 3. Crear libro de trabajo
             const wb = XLSX.utils.book_new();
 
             const wsMateriales = XLSX.utils.json_to_sheet(materiales || []);
@@ -1396,7 +1361,6 @@
                     return;
                 }
 
-                // Obtener inventario actual para verificar si ya existen
                 const { data: matsExistentes, error: errMats } = await supabaseClient
                     .from("materiales")
                     .select("id, codigo, entradas");
@@ -1420,7 +1384,6 @@
                     const codigoKey = codigo.toUpperCase();
 
                     if (mapaExistentes.has(codigoKey)) {
-                        // SI YA EXISTE: Sumar entradas existentes + nuevas entradas
                         const regActual = mapaExistentes.get(codigoKey);
                         const nuevasEntradasTotal = Number(regActual.entradas || 0) + entradasIngresadas;
 
@@ -1431,7 +1394,6 @@
 
                         if (errUpd) throw errUpd;
                     } else {
-                        // SI ES NUEVO: Insertar registro
                         const nuevoReg = {
                             codigo: codigo,
                             nombre: nombre,
@@ -1456,7 +1418,6 @@
                 mostrarMensaje(mensajeAdmin, `¡Importación completada! Se actualizaron/insertaron ${procesados} registros de materiales.`, "ok");
                 inputArchivo.value = "";
 
-                // Recargar todo el sistema
                 await cargarEstadisticas();
                 await cargarMateriales();
                 await cargarEntregados();
@@ -1478,7 +1439,6 @@
     });
 
     document.addEventListener("DOMContentLoaded", () => {
-        verificarPermisosAdmin();
         cargarEstadisticas();
         cargarMateriales();
         cargarEntregados();
