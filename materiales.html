@@ -488,7 +488,7 @@
             font-size: 12px;
         }
 
-        /* SECCIÓN CARGA Y RESPALDO EXCEL (SOLO ADMINS) */
+        /* SECCIÓN CARGA DE INFORMACIÓN (SOLO ADMINS) */
         .seccion-admin {
             display: none;
             border: 1px dashed var(--celeste-fundacion);
@@ -513,6 +513,27 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        /* SECCIÓN RESPALDO Y RESTAURACIÓN INDEPENDIENTE (SOLO ADMINS) */
+        .seccion-respaldo {
+            display: none;
+            border: 1px dashed #7bc8eb;
+            background: #f0f9fd;
+            text-align: center;
+        }
+
+        .seccion-respaldo.visible {
+            display: block;
+        }
+
+        .grupo-botones-respaldo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
         }
 
         /* SECCIÓN MANTENIMIENTO INDEPENDIENTE (SOLO ADMINS) */
@@ -843,11 +864,11 @@
         </div>
     </section>
 
-    <!-- CARGA DE INFORMACIÓN Y RESPALDO (SOLO ADMINISTRADORES) -->
+    <!-- 1. CARGA DE INFORMACIÓN (SOLO ADMINISTRADORES) -->
     <section class="seccion seccion-admin" id="seccionAdmin">
-        <h2>Carga de información y respaldo</h2>
+        <h2>Carga de información</h2>
         <p class="seccion-descripcion">
-            Módulo exclusivo para Administradores. Permite descargar el reporte Excel completo e importar nuevos ingresos de materiales.
+            Módulo exclusivo para Administradores. Permite descargar la plantilla base e importar nuevos ingresos de materiales.
         </p>
 
         <div class="acciones-excel">
@@ -866,7 +887,28 @@
         <div id="mensajeAdmin" class="mensaje"></div>
     </section>
 
-    <!-- MANTENIMIENTO BASE DE DATOS (BLOQUE SEPARADO Y EXCLUSIVO ADMINS) -->
+    <!-- 2. RESPALDO Y RESTAURACIÓN DE INFORMACIÓN (SOLO ADMINS) -->
+    <section class="seccion seccion-respaldo" id="seccionRespaldo">
+        <h2>Respaldo de Información</h2>
+        <p class="seccion-descripcion">
+            Genera una copia de seguridad o restaura la base de datos completa desde un archivo de respaldo.
+        </p>
+        <div class="grupo-botones-respaldo">
+            <button id="btnRespaldarInformacion" type="button" class="btn btn-primario" style="padding:10px 18px;">
+                💾 Respaldar información de Materiales
+            </button>
+
+            <div class="caja-subida">
+                <input type="file" id="archivoRespaldoExcel" accept=".xlsx, .xls" style="max-width:230px;">
+                <button id="btnRestaurarRespaldo" type="button" class="btn btn-verde" style="padding:10px 18px;">
+                    📤 Restaurar respaldo
+                </button>
+            </div>
+        </div>
+        <div id="mensajeRespaldo" class="mensaje"></div>
+    </section>
+
+    <!-- 3. MANTENIMIENTO BASE DE DATOS (BLOQUE SEPARADO - SOLO ADMINS) -->
     <section class="seccion seccion-peligro" id="seccionPeligro">
         <div class="titulo-peligro">Acciones de Mantenimiento de Base de Datos</div>
         <p class="seccion-descripcion">
@@ -934,7 +976,7 @@
         <div id="textoModalConfirmacion" class="texto-modal-alerta">Esta acción eliminará registros de forma permanente y no se podrá deshacer.</div>
         <div class="acciones-modal-alerta">
             <button id="btnCancelarAccionPeligro" type="button" class="btn btn-secundario">Cancelar</button>
-            <button id="btnConfirmarAccionPeligro" type="button" class="btn btn-rojo">Sí, eliminar</button>
+            <button id="btnConfirmarAccionPeligro" type="button" class="btn btn-rojo">Sí, procesar</button>
         </div>
     </div>
 </div>
@@ -974,6 +1016,8 @@
     const mensajeGeneral = document.getElementById("mensajeGeneral");
     const mensajeEntrega = document.getElementById("mensajeEntrega");
     const mensajeAdmin = document.getElementById("mensajeAdmin");
+    const mensajeRespaldo = document.getElementById("mensajeRespaldo");
+    
     const bloqueAfiliado = document.getElementById("bloqueAfiliado");
     const bloqueColaborador = document.getElementById("bloqueColaborador");
     const resultadosFamilia = document.getElementById("resultadosFamilia");
@@ -988,7 +1032,9 @@
     const paginaInfo = document.getElementById("paginaInfo");
     const btnAnterior = document.getElementById("btnAnterior");
     const btnSiguiente = document.getElementById("btnSiguiente");
+    
     const seccionAdmin = document.getElementById("seccionAdmin");
+    const seccionRespaldo = document.getElementById("seccionRespaldo");
     const seccionPeligro = document.getElementById("seccionPeligro");
     
     // Modales
@@ -1065,9 +1111,11 @@
     function verificarPermisosAdmin() {
         if (typeof window.esAdministrador === "function" && window.esAdministrador()) {
             seccionAdmin.classList.add("visible");
+            seccionRespaldo.classList.add("visible");
             seccionPeligro.classList.add("visible");
         } else {
             seccionAdmin.classList.remove("visible");
+            seccionRespaldo.classList.remove("visible");
             seccionPeligro.classList.remove("visible");
         }
     }
@@ -1756,7 +1804,7 @@
     });
 
     /* ==========================================================
-       CARGA DE INFORMACIÓN Y RESPALDO (DESCARGA Y SUBIDA EXCEL)
+       CARGA DE INFORMACIÓN (DESCARGA PLANTILLA Y SUBIDA EXCEL)
     ========================================================== */
     document.getElementById("btnDescargarExcel").addEventListener("click", async () => {
         mostrarMensaje(mensajeAdmin, "Generando archivo MasterMateriales.xlsx...", "info");
@@ -1887,6 +1935,151 @@
         };
 
         lector.readAsArrayBuffer(archivo);
+    });
+
+    /* ==========================================================
+       RESPALDO Y RESTAURACIÓN DE INFORMACIÓN (SOLO ADMINS)
+    ========================================================== */
+    document.getElementById("btnRespaldarInformacion").addEventListener("click", async () => {
+        mostrarMensaje(mensajeRespaldo, "Generando respaldo completo de la base de datos...", "info");
+
+        try {
+            const { data: materiales, error: errMat } = await supabaseClient
+                .from("materiales")
+                .select("*")
+                .order("codigo", { ascending: true });
+
+            if (errMat) throw errMat;
+
+            const { data: entregas, error: errEnt } = await supabaseClient
+                .from("entregas_materiales")
+                .select("*")
+                .order("created_at", { ascending: false });
+
+            if (errEnt) throw errEnt;
+
+            const wb = XLSX.utils.book_new();
+
+            const wsMateriales = XLSX.utils.json_to_sheet(materiales || []);
+            const wsEntregas = XLSX.utils.json_to_sheet(entregas || []);
+
+            XLSX.utils.book_append_sheet(wb, wsMateriales, "Inventario_Materiales");
+            XLSX.utils.book_append_sheet(wb, wsEntregas, "Historial_Entregas");
+
+            const fechaActual = new Date().toISOString().split('T')[0];
+            const nombreArchivo = `Respaldo_Materiales_${fechaActual}.xlsx`;
+
+            XLSX.writeFile(wb, nombreArchivo);
+            mostrarMensaje(mensajeRespaldo, `¡Respaldo descargado con éxito! (${nombreArchivo})`, "ok");
+
+        } catch (err) {
+            console.error("Error al generar el respaldo:", err);
+            mostrarMensaje(mensajeRespaldo, "Error al generar respaldo: " + err.message, "error");
+        }
+    });
+
+    document.getElementById("btnRestaurarRespaldo").addEventListener("click", () => {
+        const inputArchivo = document.getElementById("archivoRespaldoExcel");
+        if (!inputArchivo.files || inputArchivo.files.length === 0) {
+            mostrarMensaje(mensajeRespaldo, "Seleccione un archivo de respaldo .xlsx para procesar.", "error");
+            return;
+        }
+
+        solicitarConfirmacionPersonalizada(
+            "¿Restaurar Respaldo de Materiales?",
+            "Esta operación procesará el archivo seleccionado e insertará/actualizará registros en la base de datos. ¿Desea continuar?",
+            async () => {
+                const archivo = inputArchivo.files[0];
+                const lector = new FileReader();
+
+                mostrarMensaje(mensajeRespaldo, "Restaurando base de datos desde respaldo...", "info");
+
+                lector.onload = async (e) => {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: "array" });
+
+                        let contadorMat = 0;
+                        let contadorEnt = 0;
+
+                        // 1. Restaurar Inventario de Materiales
+                        const hojaMatNombre = workbook.SheetNames.find(n => n.toLowerCase().includes("material"));
+                        if (hojaMatNombre) {
+                            const hojaMat = workbook.Sheets[hojaMatNombre];
+                            const filasMat = XLSX.utils.sheet_to_json(hojaMat);
+
+                            for (const fila of filasMat) {
+                                const codigo = String(fila.codigo || fila.Codigo || "").trim();
+                                if (!codigo) continue;
+
+                                const item = {
+                                    codigo: codigo,
+                                    nombre: fila.nombre || fila.Nombre || "",
+                                    categoria: fila.categoria || fila.Categoria || "",
+                                    unidad: fila.unidad || fila.Unidad || "unidad",
+                                    biblioteca: fila.biblioteca || fila.Biblioteca || "F",
+                                    entradas: Number(fila.entradas || fila.Entradas || 0),
+                                    entregadas: Number(fila.entregadas || fila.Entregadas || 0),
+                                    estado: fila.estado || fila.Estado || "Activo",
+                                    observaciones: fila.observaciones || fila.Observaciones || ""
+                                };
+
+                                const { error } = await supabaseClient
+                                    .from("materiales")
+                                    .upsert([item], { onConflict: "codigo" });
+
+                                if (!error) contadorMat++;
+                            }
+                        }
+
+                        // 2. Restaurar Historial de Entregas
+                        const hojaEntNombre = workbook.SheetNames.find(n => n.toLowerCase().includes("entrega"));
+                        if (hojaEntNombre) {
+                            const hojaEnt = workbook.Sheets[hojaEntNombre];
+                            const filasEnt = XLSX.utils.sheet_to_json(hojaEnt);
+
+                            for (const fila of filasEnt) {
+                                const regEnt = {
+                                    codigo_material: fila.codigo_material || fila.CodigoMaterial || fila.codigo || "",
+                                    material: fila.material || fila.Material || "",
+                                    cantidad: Number(fila.cantidad || fila.Cantidad || 1),
+                                    receptor: fila.receptor || fila.Receptor || "Afiliado",
+                                    nombres: fila.nombres || fila.Nombres || "",
+                                    apellidos: fila.apellidos || fila.Apellidos || "",
+                                    persona_id: fila.persona_id || fila.PersonaId || null,
+                                    familia_id: fila.familia_id || fila.FamiliaId || null,
+                                    codigo_colaborador: fila.codigo_colaborador || fila.CodigoColaborador || null,
+                                    area_colaborador: fila.area_colaborador || fila.AreaColaborador || null,
+                                    biblioteca: fila.biblioteca || fila.Biblioteca || "F",
+                                    sitio: fila.sitio || fila.Sitio || "N",
+                                    observaciones: fila.observaciones || fila.Observaciones || "",
+                                    usuario: fila.usuario || fila.Usuario || "Sistema"
+                                };
+
+                                const { error } = await supabaseClient
+                                    .from("entregas_materiales")
+                                    .insert([regEnt]);
+
+                                if (!error) contadorEnt++;
+                            }
+                        }
+
+                        mostrarMensaje(mensajeRespaldo, `¡Restauración exitosa! (${contadorMat} materiales procesados, ${contadorEnt} entregas restauradas).`, "ok");
+                        inputArchivo.value = "";
+
+                        await cargarEstadisticas();
+                        await cargarMateriales();
+                        await cargarEntregados();
+
+                    } catch (err) {
+                        console.error("Error en la restauración:", err);
+                        mostrarMensaje(mensajeRespaldo, "Error al restaurar respaldo: " + err.message, "error");
+                    }
+                };
+
+                lector.readAsArrayBuffer(archivo);
+            }
+        );
     });
 
     /* ==========================================================
