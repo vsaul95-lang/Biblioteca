@@ -607,7 +607,6 @@
                         <th>Persona ID</th>
                         <th>Familia ID</th>
                         <th>Código colaborador</th>
-                        <th>Área</th>
                         <th>Biblioteca</th>
                         <th>Sitio</th>
                         <th>Observaciones</th>
@@ -616,7 +615,7 @@
                 </thead>
                 <tbody id="tablaEntregados">
                     <tr>
-                        <td colspan="15" class="vacio">Cargando registros...</td>
+                        <td colspan="14" class="vacio">Cargando registros...</td>
                     </tr>
                 </tbody>
             </table>
@@ -762,7 +761,7 @@
     async function cargarEntregados() {
         tablaEntregados.innerHTML = `
             <tr>
-                <td colspan="15" class="vacio">Cargando registros...</td>
+                <td colspan="14" class="vacio">Cargando registros...</td>
             </tr>`;
 
         try {
@@ -780,7 +779,7 @@
             if (!data || data.length === 0) {
                 tablaEntregados.innerHTML = `
                     <tr>
-                        <td colspan="15" class="vacio">No hay materiales entregados registrados.</td>
+                        <td colspan="14" class="vacio">No hay materiales entregados registrados.</td>
                     </tr>`;
                 totalPaginas = 1;
                 actualizarPaginacion();
@@ -804,7 +803,6 @@
                         <td>${escapar(reg.persona_id || reg.PersonaId || "-")}</td>
                         <td>${escapar(reg.familia_id || reg.FamiliaId || "-")}</td>
                         <td>${escapar(reg.codigo_colaborador || "-")}</td>
-                        <td>${escapar(reg.area || "-")}</td>
                         <td>${escapar(reg.biblioteca || "-")}</td>
                         <td>${escapar(reg.sitio || "-")}</td>
                         <td>${escapar(reg.observaciones || "-")}</td>
@@ -818,7 +816,7 @@
             console.error("Error al consultar entregas_materiales:", err);
             tablaEntregados.innerHTML = `
                 <tr>
-                    <td colspan="15" class="vacio" style="color:var(--rojo);">
+                    <td colspan="14" class="vacio" style="color:var(--rojo);">
                         Error al cargar los registros: ${escapar(err.message)}
                     </td>
                 </tr>`;
@@ -1162,7 +1160,6 @@
                     persona_id: receptorSeleccionado.PersonaId || null,
                     familia_id: receptorSeleccionado.FamiliaId || null,
                     codigo_colaborador: receptorSeleccionado.codigo || null,
-                    area: receptorSeleccionado.area || null,
                     biblioteca: biblioteca,
                     sitio: sitio,
                     observaciones: observaciones,
@@ -1196,7 +1193,7 @@
             document.getElementById("inputColaborador").value = "";
             document.getElementById("inputObservaciones").value = "";
 
-            // Recargar datos
+            // Recargar estadísticas, lista de materiales y tabla de entregados
             await cargarEstadisticas();
             await cargarMateriales();
             await cargarEntregados();
