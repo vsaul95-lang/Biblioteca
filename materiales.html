@@ -6,11 +6,15 @@
 
     <title>Materiales</title>
 
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Archivos existentes del sistema -->
     <script src="supabase.js"></script>
     <script src="auth.js?v=1002"></script>
 
     <style>
+
         :root {
             --celeste-fundacion: #009ddc;
             --celeste-oscuro: #008bc4;
@@ -22,8 +26,7 @@
             --borde: #dfe7eb;
             --verde: #2e8b57;
             --rojo: #c0392b;
-            --amarillo: #f39c12;
-            --sombra: 0 3px 12px rgba(31, 52, 63, .08);
+            --sombra: 0 3px 12px rgba(31,52,63,.08);
         }
 
         * {
@@ -39,7 +42,6 @@
             font-family: Arial, Helvetica, sans-serif;
             background: var(--fondo);
             color: var(--texto);
-            visibility: hidden;
         }
 
         /* =========================
@@ -54,8 +56,8 @@
 
         .encabezado-contenido {
             max-width: 1180px;
-            margin: auto;
             min-height: 64px;
+            margin: auto;
             padding: 0 18px;
             display: flex;
             align-items: center;
@@ -66,7 +68,6 @@
         .marca {
             font-size: 24px;
             font-weight: bold;
-            text-align: center;
         }
 
         #botonVolver {
@@ -74,18 +75,18 @@
             right: 18px;
             top: 50%;
             transform: translateY(-50%);
-            border: 1px solid rgba(255,255,255,.55);
-            background: rgba(255,255,255,.13);
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.50);
             color: white;
-            padding: 9px 14px;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
+            padding: 9px 14px;
+            font-size: 13px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         #botonVolver:hover {
-            background: rgba(255,255,255,.22);
+            background: rgba(255,255,255,.24);
         }
 
         /* =========================
@@ -94,7 +95,7 @@
 
         .contenedor {
             max-width: 1180px;
-            margin: 0 auto;
+            margin: auto;
             padding: 18px;
         }
 
@@ -107,8 +108,8 @@
         .subtitulo {
             text-align: center;
             color: var(--texto-suave);
-            margin: 0 0 15px;
             font-size: 14px;
+            margin: 0 0 14px;
         }
 
         /* =========================
@@ -117,7 +118,7 @@
 
         .estadisticas {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4,1fr);
             gap: 10px;
             margin-bottom: 14px;
         }
@@ -127,21 +128,20 @@
             border: 1px solid var(--borde);
             border-radius: 10px;
             box-shadow: var(--sombra);
-            padding: 12px 10px;
+            padding: 11px;
             text-align: center;
         }
 
         .estadistica .numero {
-            font-size: 23px;
-            font-weight: bold;
             color: var(--celeste-fundacion);
-            line-height: 1.1;
+            font-size: 22px;
+            font-weight: bold;
         }
 
         .estadistica .texto {
-            margin-top: 5px;
             color: var(--texto-suave);
-            font-size: 13px;
+            font-size: 12px;
+            margin-top: 4px;
         }
 
         /* =========================
@@ -158,15 +158,14 @@
         }
 
         .seccion h2 {
-            margin: 0 0 11px;
+            margin: 0 0 10px;
             font-size: 18px;
-            color: var(--texto);
         }
 
         .seccion-descripcion {
             color: var(--texto-suave);
             font-size: 13px;
-            margin: -4px 0 12px;
+            margin: -3px 0 12px;
         }
 
         /* =========================
@@ -175,13 +174,13 @@
 
         .fila {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(2,minmax(0,1fr));
             gap: 10px;
         }
 
         .fila-3 {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(3,minmax(0,1fr));
             gap: 10px;
         }
 
@@ -216,11 +215,6 @@
             box-shadow: 0 0 0 2px rgba(0,157,220,.10);
         }
 
-        textarea {
-            min-height: 70px;
-            resize: vertical;
-        }
-
         /* =========================
            BOTONES
         ========================= */
@@ -228,7 +222,7 @@
         .botones-tipo {
             display: flex;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 11px;
         }
 
         .btn {
@@ -245,18 +239,10 @@
             color: white;
         }
 
-        .btn-primario:hover {
-            background: var(--celeste-oscuro);
-        }
-
         .btn-secundario {
             background: var(--celeste-suave);
             color: var(--celeste-oscuro);
             border: 1px solid #c7eaf8;
-        }
-
-        .btn-secundario:hover {
-            background: #dff3fb;
         }
 
         .btn-activo {
@@ -264,15 +250,15 @@
             color: white;
         }
 
-        .btn-peligro {
-            background: #fbeaea;
-            color: var(--rojo);
-            border: 1px solid #f1c8c5;
-        }
-
         .btn-verde {
             background: var(--verde);
             color: white;
+        }
+
+        .btn-rojo {
+            background: #fbeaea;
+            color: var(--rojo);
+            border: 1px solid #efc8c4;
         }
 
         .btn:disabled {
@@ -285,69 +271,35 @@
         ========================= */
 
         .resultados {
-            margin-top: 9px;
             display: flex;
             flex-direction: column;
             gap: 6px;
+            margin-top: 8px;
         }
 
         .resultado {
+            background: #fafcfd;
             border: 1px solid var(--borde);
             border-radius: 7px;
-            background: #fafcfd;
             padding: 9px 10px;
             cursor: pointer;
-            transition: .15s;
         }
 
-        .resultado:hover {
-            border-color: var(--celeste-fundacion);
-            background: var(--celeste-suave);
-        }
-
+        .resultado:hover,
         .resultado.seleccionado {
-            border-color: var(--celeste-fundacion);
             background: var(--celeste-suave);
+            border-color: var(--celeste-fundacion);
         }
 
         .resultado-titulo {
-            font-weight: bold;
             font-size: 14px;
+            font-weight: bold;
         }
 
         .resultado-detalle {
             color: var(--texto-suave);
             font-size: 12px;
             margin-top: 3px;
-        }
-
-        .mensaje {
-            display: none;
-            padding: 9px 10px;
-            border-radius: 7px;
-            margin-top: 8px;
-            font-size: 13px;
-        }
-
-        .mensaje.ok {
-            display: block;
-            background: #eaf8ef;
-            border: 1px solid #c7e8d1;
-            color: #267344;
-        }
-
-        .mensaje.error {
-            display: block;
-            background: #fbeaea;
-            border: 1px solid #efc8c4;
-            color: #a93226;
-        }
-
-        .mensaje.info {
-            display: block;
-            background: var(--celeste-suave);
-            border: 1px solid #c7eaf8;
-            color: #176d8d;
         }
 
         /* =========================
@@ -373,81 +325,100 @@
         }
 
         .persona-detalle {
-            margin-top: 3px;
-            font-size: 12px;
             color: var(--texto-suave);
+            font-size: 12px;
+            margin-top: 3px;
         }
 
         /* =========================
-           MATERIALES A ENTREGAR
+           MATERIAL SELECCIONADO
         ========================= */
-
-        .material-busqueda {
-            margin-top: 12px;
-        }
 
         .material-info {
             display: none;
             margin-top: 8px;
-            padding: 9px 10px;
+            padding: 9px;
             background: #fafcfd;
             border: 1px solid var(--borde);
             border-radius: 7px;
+            font-size: 13px;
         }
 
         .material-info.visible {
             display: block;
         }
 
-        .material-info strong {
-            color: var(--celeste-oscuro);
-        }
-
         .fila-material {
             display: grid;
-            grid-template-columns: 1fr 100px 110px 40px;
+            grid-template-columns: 1fr 100px 40px;
             gap: 8px;
             align-items: end;
+            background: #fafcfd;
             border: 1px solid var(--borde);
             border-radius: 8px;
             padding: 9px;
             margin-top: 8px;
-            background: #fafcfd;
         }
 
-        .material-resumen {
-            min-width: 0;
-        }
-
-        .material-resumen-nombre {
+        .material-nombre {
             font-weight: bold;
             font-size: 13px;
         }
 
-        .material-resumen-detalle {
-            font-size: 11px;
+        .material-detalle {
             color: var(--texto-suave);
+            font-size: 11px;
             margin-top: 3px;
         }
 
         .btn-quitar {
             width: 38px;
             height: 38px;
-            padding: 0;
             border-radius: 7px;
             border: 1px solid #efc8c4;
             background: #fbeaea;
             color: var(--rojo);
             cursor: pointer;
             font-weight: bold;
-        }
-
-        .btn-agregar {
-            margin-top: 9px;
+            font-size: 18px;
         }
 
         /* =========================
-           TABLA ENTREGAS
+           MENSAJES
+        ========================= */
+
+        .mensaje {
+            display: none;
+            margin-top: 9px;
+            padding: 9px 10px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .mensaje.visible {
+            display: block;
+        }
+
+        .mensaje.error {
+            background: #fbeaea;
+            border: 1px solid #efc8c4;
+            color: #a93226;
+        }
+
+        .mensaje.ok {
+            background: #eaf8ef;
+            border: 1px solid #c7e8d1;
+            color: #267344;
+        }
+
+        .mensaje.info {
+            background: var(--celeste-suave);
+            border: 1px solid #c7eaf8;
+            color: #176d8d;
+        }
+
+        /* =========================
+           TABLA
         ========================= */
 
         .tabla-contenedor {
@@ -458,17 +429,15 @@
 
         table {
             width: 100%;
+            min-width: 1100px;
             border-collapse: collapse;
             font-size: 12px;
-            min-width: 980px;
         }
 
         th {
             background: var(--celeste-suave);
-            color: var(--texto);
-            font-size: 12px;
-            text-align: left;
             padding: 9px 8px;
+            text-align: left;
             border-bottom: 1px solid var(--borde);
             white-space: nowrap;
         }
@@ -483,7 +452,7 @@
             background: #fafcfd;
         }
 
-        .estado-vacio {
+        .vacio {
             text-align: center;
             color: var(--texto-suave);
             padding: 20px;
@@ -495,22 +464,18 @@
 
         .paginacion {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 8px;
             margin-top: 11px;
         }
 
-        .paginacion-info {
-            font-size: 12px;
-            color: var(--texto-suave);
+        .pagina-info {
             min-width: 110px;
             text-align: center;
+            color: var(--texto-suave);
+            font-size: 12px;
         }
-
-        /* =========================
-           PIE
-        ========================= */
 
         footer {
             text-align: center;
@@ -523,10 +488,10 @@
            RESPONSIVE
         ========================= */
 
-        @media (max-width: 800px) {
+        @media(max-width:800px) {
 
             .estadisticas {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2,1fr);
             }
 
             .fila,
@@ -534,586 +499,476 @@
                 grid-template-columns: 1fr;
             }
 
-            .fila-material {
-                grid-template-columns: 1fr 90px 40px;
-            }
-
-            .fila-material .material-resumen {
-                grid-column: 1 / -1;
-            }
-
-            .fila-material .cantidad-campo {
-                grid-column: 1 / 2;
+            .marca {
+                font-size: 20px;
             }
 
             #botonVolver {
-                right: 10px;
+                right: 8px;
                 padding: 8px 10px;
                 font-size: 12px;
             }
 
-            .marca {
-                font-size: 20px;
-            }
         }
 
-        @media (max-width: 500px) {
-
-            .contenedor {
-                padding: 10px;
-            }
-
-            .estadisticas {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .estadistica .numero {
-                font-size: 20px;
-            }
-
-            .estadistica .texto {
-                font-size: 11px;
-            }
-        }
     </style>
 </head>
 
 <body>
 
+<header class="encabezado">
+
+    <div class="encabezado-contenido">
+
+        <div class="marca">
+            Materiales
+        </div>
+
+        <button id="botonVolver">
+            ← Volver al inicio
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="contenedor">
+
+    <h1 class="titulo-pagina">
+        Materiales
+    </h1>
+
+    <p class="subtitulo">
+        Administración y control de materiales de la biblioteca.
+    </p>
+
+
     <!-- =========================
-         ENCABEZADO
+         ESTADÍSTICAS
     ========================= -->
 
-    <header class="encabezado">
-        <div class="encabezado-contenido">
-            <div class="marca">Materiales</div>
+    <section class="estadisticas">
 
-            <button id="botonVolver">
-                ← Volver al inicio
-            </button>
+        <div class="estadistica">
+            <div class="numero" id="totalTipos">0</div>
+            <div class="texto">Tipos de materiales</div>
         </div>
-    </header>
+
+        <div class="estadistica">
+            <div class="numero" id="totalEntradas">0</div>
+            <div class="texto">Entradas</div>
+        </div>
+
+        <div class="estadistica">
+            <div class="numero" id="totalEntregadas">0</div>
+            <div class="texto">Entregadas</div>
+        </div>
+
+        <div class="estadistica">
+            <div class="numero" id="totalDisponibles">0</div>
+            <div class="texto">Disponibles</div>
+        </div>
+
+    </section>
 
 
-    <main class="contenedor">
+    <!-- =========================
+         MENSAJE GENERAL
+    ========================= -->
 
-        <h1 class="titulo-pagina">Materiales</h1>
+    <div id="mensajeGeneral" class="mensaje"></div>
 
-        <p class="subtitulo">
-            Administración y control de materiales de la biblioteca.
+
+    <!-- =========================
+         ENTREGAR MATERIAL
+    ========================= -->
+
+    <section class="seccion">
+
+        <h2>
+            Entregar material
+        </h2>
+
+        <p class="seccion-descripcion">
+            Registra los materiales que serán entregados a un afiliado o colaborador.
         </p>
 
 
-        <!-- =========================
-             ESTADÍSTICAS
-        ========================= -->
+        <!-- TIPO -->
 
-        <section class="estadisticas">
+        <div class="botones-tipo">
 
-            <div class="estadistica">
-                <div class="numero" id="totalTipos">0</div>
-                <div class="texto">Tipos de materiales</div>
-            </div>
+            <button
+                id="btnAfiliado"
+                class="btn btn-activo"
+                type="button">
+                Afiliado
+            </button>
 
-            <div class="estadistica">
-                <div class="numero" id="totalEntradas">0</div>
-                <div class="texto">Entradas</div>
-            </div>
+            <button
+                id="btnColaborador"
+                class="btn btn-secundario"
+                type="button">
+                Colaborador
+            </button>
 
-            <div class="estadistica">
-                <div class="numero" id="totalEntregadas">0</div>
-                <div class="texto">Entregadas</div>
-            </div>
-
-            <div class="estadistica">
-                <div class="numero" id="totalDisponibles">0</div>
-                <div class="texto">Disponibles</div>
-            </div>
-
-        </section>
+        </div>
 
 
-        <!-- =========================
-             ENTREGAR MATERIAL
-        ========================= -->
+        <!-- AFILIADO -->
 
-        <section class="seccion" id="seccionEntrega">
+        <div id="bloqueAfiliado">
 
-            <h2>Entregar material</h2>
+            <div class="campo">
 
-            <p class="seccion-descripcion">
-                Registra los materiales que serán entregados a un afiliado o colaborador.
-            </p>
+                <label>
+                    Número de familia
+                </label>
 
-
-            <!-- TIPO DE RECEPTOR -->
-
-            <div class="botones-tipo">
-
-                <button
-                    type="button"
-                    id="btnTipoAfiliado"
-                    class="btn btn-activo">
-                    Afiliado
-                </button>
-
-                <button
-                    type="button"
-                    id="btnTipoColaborador"
-                    class="btn btn-secundario">
-                    Colaborador
-                </button>
+                <input
+                    id="inputFamilia"
+                    type="text"
+                    placeholder="Ejemplo: F1048"
+                    autocomplete="off">
 
             </div>
 
+            <div id="resultadosFamilia" class="resultados"></div>
 
-            <!-- =========================
-                 AFILIADO
-            ========================= -->
+        </div>
 
-            <div id="bloqueAfiliado">
 
-                <div class="fila">
+        <!-- COLABORADOR -->
 
-                    <div class="campo">
+        <div
+            id="bloqueColaborador"
+            style="display:none;">
 
-                        <label for="buscarFamiliaInput">
-                            Número de familia
-                        </label>
+            <div class="campo">
 
-                        <input
-                            type="text"
-                            id="buscarFamiliaInput"
-                            placeholder="Ejemplo: F1048"
-                            autocomplete="off">
+                <label>
+                    Nombre o código del colaborador
+                </label>
 
-                    </div>
-
-                </div>
-
-                <div
-                    id="resultadosFamilia"
-                    class="resultados">
-                </div>
+                <input
+                    id="inputColaborador"
+                    type="text"
+                    placeholder="Escriba nombre o código"
+                    autocomplete="off">
 
             </div>
-
-
-            <!-- =========================
-                 COLABORADOR
-            ========================= -->
-
-            <div id="bloqueColaborador" style="display:none;">
-
-                <div class="fila">
-
-                    <div class="campo">
-
-                        <label for="buscarColaboradorInput">
-                            Nombre o código del colaborador
-                        </label>
-
-                        <input
-                            type="text"
-                            id="buscarColaboradorInput"
-                            placeholder="Escriba nombre o código"
-                            autocomplete="off">
-
-                    </div>
-
-                </div>
-
-                <div
-                    id="resultadosColaborador"
-                    class="resultados">
-                </div>
-
-            </div>
-
-
-            <!-- PERSONA SELECCIONADA -->
 
             <div
-                id="personaSeleccionada"
-                class="persona-seleccionada">
-
-                <div
-                    id="personaNombre"
-                    class="persona-nombre">
-                </div>
-
-                <div
-                    id="personaDetalle"
-                    class="persona-detalle">
-                </div>
-
+                id="resultadosColaborador"
+                class="resultados">
             </div>
 
-
-            <!-- =========================
-                 BIBLIOTECA Y SITIO
-            ========================= -->
-
-            <div class="fila-3" style="margin-top:12px;">
-
-                <div class="campo">
-
-                    <label for="bibliotecaEntrega">
-                        Biblioteca que entrega
-                    </label>
-
-                    <select id="bibliotecaEntrega">
-
-                        <option value="">
-                            Seleccione una biblioteca
-                        </option>
-
-                        <option value="F">
-                            F
-                        </option>
-
-                        <option value="M">
-                            M
-                        </option>
-
-                        <option value="R">
-                            R
-                        </option>
-
-                        <option value="N">
-                            N
-                        </option>
-
-                        <option value="NE">
-                            NE
-                        </option>
-
-                    </select>
-
-                </div>
+        </div>
 
 
-                <div class="campo">
+        <!-- PERSONA SELECCIONADA -->
 
-                    <label for="sitioEntregaInput">
-                        Sitio
-                    </label>
-
-                    <select id="sitioEntregaInput">
-
-                        <option value="">
-                            Seleccione un sitio
-                        </option>
-
-                        <option value="N">
-                            N
-                        </option>
-
-                        <option value="R">
-                            R
-                        </option>
-
-                        <option value="F">
-                            F
-                        </option>
-
-                        <option value="M">
-                            M
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="observacionesEntregaInput">
-                        Observaciones
-                    </label>
-
-                    <input
-                        type="text"
-                        id="observacionesEntregaInput"
-                        placeholder="Opcional">
-
-                </div>
-
-            </div>
-
-
-            <!-- =========================
-                 BUSCAR MATERIAL
-            ========================= -->
-
-            <div class="material-busqueda">
-
-                <div class="campo">
-
-                    <label for="buscarMaterialInput">
-                        Material
-                    </label>
-
-                    <input
-                        type="text"
-                        id="buscarMaterialInput"
-                        placeholder="Escriba el nombre del material"
-                        autocomplete="off">
-
-                </div>
-
-
-                <div
-                    id="resultadosMaterial"
-                    class="resultados">
-                </div>
-
-
-                <div
-                    id="materialInfo"
-                    class="material-info">
-
-                    <div id="materialInfoTexto"></div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =========================
-                 MATERIALES SELECCIONADOS
-            ========================= -->
-
-            <div style="margin-top:12px;">
-
-                <strong style="font-size:14px;">
-                    Materiales a entregar
-                </strong>
-
-                <div id="resumenEntrega"></div>
-
-                <button
-                    type="button"
-                    id="btnAgregarMaterial"
-                    class="btn btn-secundario btn-agregar">
-
-                    + Agregar otro material
-
-                </button>
-
-            </div>
-
-
-            <!-- MENSAJE -->
+        <div
+            id="personaSeleccionada"
+            class="persona-seleccionada">
 
             <div
-                id="mensajeEntrega"
-                class="mensaje">
+                id="personaNombre"
+                class="persona-nombre">
             </div>
 
-
-            <!-- ACEPTAR -->
-
-            <div style="margin-top:12px; text-align:right;">
-
-                <button
-                    type="button"
-                    id="btnConfirmarEntrega"
-                    class="btn btn-verde">
-
-                    Aceptar entrega
-
-                </button>
-
+            <div
+                id="personaDetalle"
+                class="persona-detalle">
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- =========================
-             MATERIALES ENTREGADOS
-        ========================= -->
+        <!-- BIBLIOTECA / SITIO -->
 
-        <section
-            class="seccion"
-            id="seccionMaterialesEntregados">
+        <div
+            class="fila-3"
+            style="margin-top:12px;">
 
-            <h2>Materiales entregados</h2>
+            <div class="campo">
 
-            <p class="seccion-descripcion">
-                Registro de materiales entregados almacenados en Supabase.
-            </p>
+                <label>
+                    Biblioteca que entrega
+                </label>
 
+                <select id="selectBiblioteca">
 
-            <div class="tabla-contenedor">
+                    <option value="">
+                        Seleccione una biblioteca
+                    </option>
 
-                <table>
+                    <option value="F">F</option>
+                    <option value="M">M</option>
+                    <option value="R">R</option>
+                    <option value="N">N</option>
+                    <option value="NE">NE</option>
 
-                    <thead>
-
-                        <tr>
-
-                            <th>Fecha</th>
-                            <th>Código</th>
-                            <th>Material</th>
-                            <th>Cantidad</th>
-                            <th>Receptor</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Familia</th>
-                            <th>Colaborador</th>
-                            <th>Biblioteca</th>
-                            <th>Sitio</th>
-                            <th>Observaciones</th>
-                            <th>Usuario</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="tablaEntregas">
-
-                        <tr>
-                            <td
-                                colspan="13"
-                                class="estado-vacio">
-                                Cargando registros...
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
+                </select>
 
             </div>
 
 
-            <!-- PAGINACIÓN -->
+            <div class="campo">
 
-            <div class="paginacion">
+                <label>
+                    Sitio
+                </label>
 
-                <button
-                    type="button"
-                    id="btnAnterior"
-                    class="btn btn-secundario">
+                <select id="selectSitio">
 
-                    ← Anterior
+                    <option value="">
+                        Seleccione un sitio
+                    </option>
 
-                </button>
+                    <option value="N">N</option>
+                    <option value="R">R</option>
+                    <option value="F">F</option>
+                    <option value="M">M</option>
 
-                <div
-                    id="paginacionInfo"
-                    class="paginacion-info">
-                    Página 1
-                </div>
-
-                <button
-                    type="button"
-                    id="btnSiguiente"
-                    class="btn btn-secundario">
-
-                    Siguiente →
-
-                </button>
+                </select>
 
             </div>
 
-        </section>
 
-    </main>
+            <div class="campo">
+
+                <label>
+                    Observaciones
+                </label>
+
+                <input
+                    id="inputObservaciones"
+                    type="text"
+                    placeholder="Opcional">
+
+            </div>
+
+        </div>
 
 
-    <footer>
-        Control de materiales · Fundación Familias de Esperanza
-    </footer>
+        <!-- BUSCAR MATERIAL -->
+
+        <div style="margin-top:12px;">
+
+            <div class="campo">
+
+                <label>
+                    Material
+                </label>
+
+                <input
+                    id="inputMaterial"
+                    type="text"
+                    placeholder="Escriba el nombre o código del material"
+                    autocomplete="off">
+
+            </div>
+
+            <div
+                id="resultadosMaterial"
+                class="resultados">
+            </div>
+
+            <div
+                id="materialInfo"
+                class="material-info">
+            </div>
+
+        </div>
+
+
+        <!-- LISTA DE MATERIALES -->
+
+        <div style="margin-top:12px;">
+
+            <strong style="font-size:14px;">
+                Materiales a entregar
+            </strong>
+
+            <div id="listaMateriales"></div>
+
+            <button
+                id="btnAgregarOtro"
+                type="button"
+                class="btn btn-secundario"
+                style="margin-top:9px;">
+
+                + Agregar otro material
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="mensajeEntrega"
+            class="mensaje">
+        </div>
+
+
+        <div
+            style="
+                text-align:right;
+                margin-top:12px;
+            ">
+
+            <button
+                id="btnAceptar"
+                type="button"
+                class="btn btn-verde">
+
+                Aceptar entrega
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MATERIALES ENTREGADOS
+    ========================= -->
+
+    <section
+        class="seccion"
+        id="seccionEntregados">
+
+        <h2>
+            Materiales entregados
+        </h2>
+
+        <p class="seccion-descripcion">
+            Registro de materiales entregados almacenados en Supabase.
+        </p>
+
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Fecha</th>
+                        <th>Código</th>
+                        <th>Material</th>
+                        <th>Cantidad</th>
+                        <th>Receptor</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Persona ID</th>
+                        <th>Familia ID</th>
+                        <th>Código colaborador</th>
+                        <th>Área</th>
+                        <th>Biblioteca</th>
+                        <th>Sitio</th>
+                        <th>Observaciones</th>
+                        <th>Usuario</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tablaEntregados">
+
+                    <tr>
+                        <td
+                            colspan="15"
+                            class="vacio">
+                            Cargando registros...
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="paginacion">
+
+            <button
+                id="btnAnterior"
+                type="button"
+                class="btn btn-secundario">
+
+                ← Anterior
+
+            </button>
+
+            <div
+                id="paginaInfo"
+                class="pagina-info">
+                Página 1
+            </div>
+
+            <button
+                id="btnSiguiente"
+                type="button"
+                class="btn btn-secundario">
+
+                Siguiente →
+
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    Control de materiales · Fundación Familias de Esperanza
+</footer>
 
 
 <script>
 
-    /* ============================================================
+    /* ==========================================================
        VARIABLES
-    ============================================================ */
-
-    let materiales = [];
-    let materialesSeleccionados = [];
+    ========================================================== */
 
     let receptorTipo = "Afiliado";
 
     let receptorSeleccionado = null;
 
-    let paginaEntregas = 1;
-    const registrosPorPagina = 25;
+    let materialesDisponibles = [];
+
+    let materialesSeleccionados = [];
+
+    let paginaActual = 1;
+
+    const REGISTROS_POR_PAGINA = 25;
 
     let totalPaginas = 1;
 
 
-    /* ============================================================
-       AUTENTICACIÓN
-    ============================================================ */
-
-    window.materialesAuth = (async function protegerMateriales() {
-
-        try {
-
-            const autorizado = await window.protegerPagina();
-
-            if (!autorizado) {
-
-                window.location.replace("index.html");
-                return false;
-
-            }
-
-            if (!window.esUsuario() && !window.esAdministrador()) {
-
-                window.location.replace("index.html");
-                return false;
-
-            }
-
-            window.materialesAutorizado = true;
-
-            document.documentElement.style.visibility = "visible";
-
-            return true;
-
-        } catch (error) {
-
-            console.error("Error de autenticación:", error);
-
-            window.location.replace("index.html");
-
-            return false;
-
-        }
-
-    })();
-
-
-    /* ============================================================
+    /* ==========================================================
        ELEMENTOS
-    ============================================================ */
+    ========================================================== */
 
-    const btnTipoAfiliado =
-        document.getElementById("btnTipoAfiliado");
+    const mensajeGeneral =
+        document.getElementById("mensajeGeneral");
 
-    const btnTipoColaborador =
-        document.getElementById("btnTipoColaborador");
+    const mensajeEntrega =
+        document.getElementById("mensajeEntrega");
 
     const bloqueAfiliado =
         document.getElementById("bloqueAfiliado");
 
     const bloqueColaborador =
         document.getElementById("bloqueColaborador");
-
-    const buscarFamiliaInput =
-        document.getElementById("buscarFamiliaInput");
-
-    const buscarColaboradorInput =
-        document.getElementById("buscarColaboradorInput");
-
-    const buscarMaterialInput =
-        document.getElementById("buscarMaterialInput");
 
     const resultadosFamilia =
         document.getElementById("resultadosFamilia");
@@ -1133,35 +988,17 @@
     const personaDetalle =
         document.getElementById("personaDetalle");
 
-    const bibliotecaEntrega =
-        document.getElementById("bibliotecaEntrega");
-
-    const sitioEntregaInput =
-        document.getElementById("sitioEntregaInput");
-
-    const observacionesEntregaInput =
-        document.getElementById("observacionesEntregaInput");
+    const listaMateriales =
+        document.getElementById("listaMateriales");
 
     const materialInfo =
         document.getElementById("materialInfo");
 
-    const materialInfoTexto =
-        document.getElementById("materialInfoTexto");
+    const tablaEntregados =
+        document.getElementById("tablaEntregados");
 
-    const resumenEntrega =
-        document.getElementById("resumenEntrega");
-
-    const mensajeEntrega =
-        document.getElementById("mensajeEntrega");
-
-    const btnConfirmarEntrega =
-        document.getElementById("btnConfirmarEntrega");
-
-    const btnAgregarMaterial =
-        document.getElementById("btnAgregarMaterial");
-
-    const tablaEntregas =
-        document.getElementById("tablaEntregas");
+    const paginaInfo =
+        document.getElementById("paginaInfo");
 
     const btnAnterior =
         document.getElementById("btnAnterior");
@@ -1169,422 +1006,508 @@
     const btnSiguiente =
         document.getElementById("btnSiguiente");
 
-    const paginacionInfo =
-        document.getElementById("paginacionInfo");
 
-    const seccionMaterialesEntregados =
-        document.getElementById("seccionMaterialesEntregados");
+    /* ==========================================================
+       MENSAJES
+    ========================================================== */
+
+    function mostrarMensaje(elemento, texto, tipo) {
+
+        elemento.textContent = texto;
+
+        elemento.className =
+            "mensaje visible " + tipo;
+
+    }
 
 
-    /* ============================================================
-       UTILIDADES
-    ============================================================ */
+    function ocultarMensaje(elemento) {
 
-    function escaparHTML(valor) {
+        elemento.textContent = "";
 
-        if (valor === null || valor === undefined) {
+        elemento.className = "mensaje";
+
+    }
+
+
+    /* ==========================================================
+       ESCAPAR HTML
+    ========================================================== */
+
+    function escapar(valor) {
+
+        if (
+            valor === null ||
+            valor === undefined
+        ) {
             return "";
         }
 
         return String(valor)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-
-    function mostrarMensaje(texto, tipo = "info") {
-
-        mensajeEntrega.textContent = texto;
-
-        mensajeEntrega.className =
-            "mensaje " + tipo;
+            .replace(/&/g,"&amp;")
+            .replace(/</g,"&lt;")
+            .replace(/>/g,"&gt;")
+            .replace(/"/g,"&quot;")
+            .replace(/'/g,"&#039;");
 
     }
 
 
-    function limpiarMensaje() {
+    /* ==========================================================
+       DISPONIBLE
+    ========================================================== */
 
-        mensajeEntrega.textContent = "";
-
-        mensajeEntrega.className = "mensaje";
-
-    }
-
-
-    function obtenerDisponible(material) {
-
-        const entradas =
-            Number(material.entradas || 0);
-
-        const entregadas =
-            Number(material.entregadas || 0);
+    function disponible(material) {
 
         return Math.max(
             0,
-            entradas - entregadas
+            Number(material.entradas || 0) -
+            Number(material.entregadas || 0)
         );
 
     }
 
 
-    function formatearFecha(fecha) {
+    /* ==========================================================
+       FECHA
+    ========================================================== */
+
+    function fechaGuatemala(fecha) {
 
         if (!fecha) {
             return "";
         }
 
-        const d = new Date(fecha);
+        const d =
+            new Date(fecha);
 
-        if (isNaN(d.getTime())) {
-            return fecha;
+        if (
+            Number.isNaN(
+                d.getTime()
+            )
+        ) {
+            return String(fecha);
         }
 
-        return d.toLocaleString("es-GT", {
-            dateStyle: "short",
-            timeStyle: "short"
-        });
-
-    }
-
-
-    function obtenerUsuarioActual() {
-
-        try {
-
-            const usuario =
-                window.usuarioActual ||
-                window.usuario ||
-                null;
-
-            if (usuario) {
-
-                return (
-                    usuario.nombreCompleto ||
-                    usuario.nombre ||
-                    usuario.email ||
-                    "Usuario actual"
-                );
-
+        return d.toLocaleString(
+            "es-GT",
+            {
+                dateStyle: "short",
+                timeStyle: "short"
             }
-
-        } catch (error) {
-            console.warn(error);
-        }
-
-        return "Usuario actual";
-
-    }
-
-
-    /* ============================================================
-       CARGAR ESTADÍSTICAS
-    ============================================================ */
-
-    async function cargarEstadisticas() {
-
-        const { data, error } = await supabaseClient
-            .from("materiales")
-            .select(
-                "id,codigo,nombre,entradas,entregadas,estado"
-            );
-
-        if (error) {
-
-            console.error(
-                "Error cargando estadísticas:",
-                error
-            );
-
-            return;
-
-        }
-
-        const activos =
-            (data || []).filter(
-                material =>
-                    String(material.estado || "")
-                        .toLowerCase() === "activo"
-            );
-
-        let totalEntradas = 0;
-        let totalEntregadas = 0;
-
-        activos.forEach(material => {
-
-            totalEntradas +=
-                Number(material.entradas || 0);
-
-            totalEntregadas +=
-                Number(material.entregadas || 0);
-
-        });
-
-        const totalDisponibles =
-            Math.max(
-                0,
-                totalEntradas - totalEntregadas
-            );
-
-        document.getElementById("totalTipos")
-            .textContent = activos.length;
-
-        document.getElementById("totalEntradas")
-            .textContent = totalEntradas;
-
-        document.getElementById("totalEntregadas")
-            .textContent = totalEntregadas;
-
-        document.getElementById("totalDisponibles")
-            .textContent = totalDisponibles;
-
-    }
-
-
-    /* ============================================================
-       CARGAR MATERIALES
-    ============================================================ */
-
-    async function cargarMateriales() {
-
-        const { data, error } = await supabaseClient
-            .from("materiales")
-            .select(`
-                id,
-                codigo,
-                nombre,
-                categoria,
-                unidad,
-                biblioteca,
-                entradas,
-                entregadas,
-                estado,
-                observaciones
-            `)
-            .order("nombre", {
-                ascending: true
-            });
-
-        if (error) {
-
-            console.error(
-                "Error cargando materiales:",
-                error
-            );
-
-            materiales = [];
-
-            return;
-
-        }
-
-        materiales = (data || []).filter(
-            material =>
-                String(material.estado || "")
-                    .toLowerCase() === "activo" &&
-                obtenerDisponible(material) > 0
         );
 
     }
 
 
-    /* ============================================================
-       CAMBIAR TIPO DE RECEPTOR
-    ============================================================ */
+    /* ==========================================================
+       OBTENER NOMBRE DEL USUARIO
+    ========================================================== */
 
-    btnTipoAfiliado.addEventListener(
-        "click",
-        function () {
+    function obtenerUsuario() {
 
-            receptorTipo = "Afiliado";
+        try {
 
-            btnTipoAfiliado.className =
-                "btn btn-activo";
+            if (
+                typeof window.obtenerNombreUsuarioActual ===
+                "function"
+            ) {
 
-            btnTipoColaborador.className =
-                "btn btn-secundario";
+                const nombre =
+                    window.obtenerNombreUsuarioActual();
 
-            bloqueAfiliado.style.display =
-                "block";
+                if (nombre) {
+                    return nombre;
+                }
 
-            bloqueColaborador.style.display =
-                "none";
-
-            receptorSeleccionado = null;
-
-            limpiarPersona();
-
-            resultadosColaborador.innerHTML = "";
-
-        }
-    );
-
-
-    btnTipoColaborador.addEventListener(
-        "click",
-        function () {
-
-            receptorTipo = "Colaborador";
-
-            btnTipoColaborador.className =
-                "btn btn-activo";
-
-            btnTipoAfiliado.className =
-                "btn btn-secundario";
-
-            bloqueAfiliado.style.display =
-                "none";
-
-            bloqueColaborador.style.display =
-                "block";
-
-            receptorSeleccionado = null;
-
-            limpiarPersona();
-
-            resultadosFamilia.innerHTML = "";
-
-        }
-    );
-
-
-    /* ============================================================
-       BUSCAR AFILIADOS POR FAMILIA
-    ============================================================ */
-
-    let temporizadorFamilia = null;
-
-    buscarFamiliaInput.addEventListener(
-        "input",
-        function () {
-
-            clearTimeout(
-                temporizadorFamilia
-            );
-
-            const familia =
-                this.value.trim();
-
-            resultadosFamilia.innerHTML = "";
-
-            receptorSeleccionado = null;
-
-            limpiarPersona();
-
-            if (!familia) {
-                return;
             }
 
-            temporizadorFamilia =
-                setTimeout(
-                    () => buscarAfiliados(familia),
-                    300
-                );
+        } catch(error) {
+
+            console.warn(
+                "No se pudo obtener el nombre del usuario:",
+                error
+            );
 
         }
-    );
+
+        return (
+            window.nombreUsuarioActual ||
+            "Usuario actual"
+        );
+
+    }
 
 
-    async function buscarAfiliados(familia) {
+    /* ==========================================================
+       CARGAR ESTADÍSTICAS
+    ========================================================== */
+
+    async function cargarEstadisticas() {
+
+        const { data, error } =
+            await supabaseClient
+                .from("materiales")
+                .select(
+                    "id,codigo,nombre,entradas,entregadas,estado"
+                );
+
+        if (error) {
+            throw error;
+        }
+
+        const activos =
+            (data || []).filter(
+                m =>
+                    String(
+                        m.estado || ""
+                    ).toLowerCase() ===
+                    "activo"
+            );
+
+        let entradas = 0;
+        let entregadas = 0;
+
+        activos.forEach(m => {
+
+            entradas +=
+                Number(m.entradas || 0);
+
+            entregadas +=
+                Number(m.entregadas || 0);
+
+        });
+
+        document.getElementById(
+            "totalTipos"
+        ).textContent =
+            activos.length;
+
+        document.getElementById(
+            "totalEntradas"
+        ).textContent =
+            entradas;
+
+        document.getElementById(
+            "totalEntregadas"
+        ).textContent =
+            entregadas;
+
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent =
+            Math.max(
+                0,
+                entradas - entregadas
+            );
+
+    }
+
+
+    /* ==========================================================
+       CARGAR MATERIALES
+    ========================================================== */
+
+    async function cargarMateriales() {
+
+        const { data, error } =
+            await supabaseClient
+                .from("materiales")
+                .select(`
+                    id,
+                    codigo,
+                    nombre,
+                    categoria,
+                    unidad,
+                    biblioteca,
+                    entradas,
+                    entregadas,
+                    estado,
+                    observaciones
+                `)
+                .order(
+                    "nombre",
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (error) {
+            throw error;
+        }
+
+        materialesDisponibles =
+            (data || []).filter(
+                m =>
+                    String(
+                        m.estado || ""
+                    ).toLowerCase() ===
+                    "activo" &&
+                    disponible(m) > 0
+            );
+
+    }
+
+
+    /* ==========================================================
+       TIPO AFILIADO
+    ========================================================== */
+
+    document
+        .getElementById("btnAfiliado")
+        .addEventListener(
+            "click",
+            function() {
+
+                receptorTipo =
+                    "Afiliado";
+
+                this.className =
+                    "btn btn-activo";
+
+                document
+                    .getElementById(
+                        "btnColaborador"
+                    )
+                    .className =
+                    "btn btn-secundario";
+
+                bloqueAfiliado.style.display =
+                    "block";
+
+                bloqueColaborador.style.display =
+                    "none";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                resultadosColaborador.innerHTML =
+                    "";
+
+            }
+        );
+
+
+    /* ==========================================================
+       TIPO COLABORADOR
+    ========================================================== */
+
+    document
+        .getElementById("btnColaborador")
+        .addEventListener(
+            "click",
+            function() {
+
+                receptorTipo =
+                    "Colaborador";
+
+                this.className =
+                    "btn btn-activo";
+
+                document
+                    .getElementById(
+                        "btnAfiliado"
+                    )
+                    .className =
+                    "btn btn-secundario";
+
+                bloqueAfiliado.style.display =
+                    "none";
+
+                bloqueColaborador.style.display =
+                    "block";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                resultadosFamilia.innerHTML =
+                    "";
+
+            }
+        );
+
+
+    /* ==========================================================
+       BUSCAR FAMILIA
+    ========================================================== */
+
+    let temporizadorFamilia;
+
+    document
+        .getElementById("inputFamilia")
+        .addEventListener(
+            "input",
+            function() {
+
+                clearTimeout(
+                    temporizadorFamilia
+                );
+
+                const familia =
+                    this.value.trim();
+
+                resultadosFamilia.innerHTML =
+                    "";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                if (!familia) {
+                    return;
+                }
+
+                temporizadorFamilia =
+                    setTimeout(
+                        function() {
+                            buscarFamilia(
+                                familia
+                            );
+                        },
+                        250
+                    );
+
+            }
+        );
+
+
+    async function buscarFamilia(
+        familia
+    ) {
 
         resultadosFamilia.innerHTML =
             `<div class="resultado">
                 Buscando afiliados...
             </div>`;
 
-        /*
-         * La tabla de afiliados utilizada por el sistema
-         * contiene FamiliaId, PersonaId, Nombres, Apellidos,
-         * estado y Sitio.
-         */
+        try {
 
-        const { data, error } =
-            await supabaseClient
-                .from("afiliado")
-                .select(`
-                    id,
-                    PersonaId,
-                    FamiliaId,
-                    Nombres,
-                    Apellidos,
-                    estado,
-                    Sitio
-                `)
-                .eq("FamiliaId", familia)
-                .eq("estado", "Activo")
-                .order("Apellidos", {
-                    ascending: true
-                });
+            const { data, error } =
+                await supabaseClient
+                    .from("afiliado")
+                    .select(`
+                        id,
+                        PersonaId,
+                        FamiliaId,
+                        Nombres,
+                        Apellidos,
+                        estado,
+                        Sitio
+                    `)
+                    .eq(
+                        "FamiliaId",
+                        familia
+                    )
+                    .eq(
+                        "estado",
+                        "Activo"
+                    )
+                    .order(
+                        "Apellidos",
+                        {
+                            ascending: true
+                        }
+                    );
 
-        if (error) {
+            if (error) {
+                throw error;
+            }
 
-            console.error(
-                "Error buscando afiliados:",
-                error
-            );
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                resultadosFamilia.innerHTML =
+                    `<div class="mensaje visible info">
+                        No se encontraron afiliados activos para esta familia.
+                    </div>`;
+
+                return;
+            }
 
             resultadosFamilia.innerHTML =
-                `<div class="mensaje error" style="display:block;">
-                    No se pudieron consultar los afiliados.
-                </div>`;
+                "";
 
-            return;
+            data.forEach(
+                persona => {
 
-        }
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
 
-        if (!data || data.length === 0) {
+                    div.className =
+                        "resultado";
 
-            resultadosFamilia.innerHTML =
-                `<div class="mensaje info" style="display:block;">
-                    No se encontraron afiliados activos para la familia ${escaparHTML(familia)}.
-                </div>`;
+                    div.innerHTML = `
+                        <div class="resultado-titulo">
+                            ${escapar(
+                                (persona.Nombres || "") +
+                                " " +
+                                (persona.Apellidos || "")
+                            )}
+                        </div>
 
-            return;
+                        <div class="resultado-detalle">
+                            Familia:
+                            ${escapar(persona.FamiliaId)}
+                            · Persona:
+                            ${escapar(persona.PersonaId)}
+                            · Sitio:
+                            ${escapar(persona.Sitio)}
+                        </div>
+                    `;
 
-        }
+                    div.addEventListener(
+                        "click",
+                        function() {
 
-        resultadosFamilia.innerHTML = "";
+                            seleccionarAfiliado(
+                                persona,
+                                div
+                            );
 
-        data.forEach(persona => {
+                        }
+                    );
 
-            const div =
-                document.createElement("div");
-
-            div.className = "resultado";
-
-            div.innerHTML = `
-                <div class="resultado-titulo">
-                    ${escaparHTML(
-                        `${persona.Nombres || ""} ${persona.Apellidos || ""}`
-                    )}
-                </div>
-
-                <div class="resultado-detalle">
-                    Familia: ${escaparHTML(persona.FamiliaId || "")}
-                    · Persona: ${escaparHTML(persona.PersonaId || "")}
-                    · Sitio: ${escaparHTML(persona.Sitio || "")}
-                </div>
-            `;
-
-            div.addEventListener(
-                "click",
-                function () {
-
-                    seleccionarAfiliado(persona);
+                    resultadosFamilia.appendChild(
+                        div
+                    );
 
                 }
             );
 
-            resultadosFamilia.appendChild(div);
+        } catch(error) {
 
-        });
+            console.error(
+                "Error buscando familia:",
+                error
+            );
+
+            resultadosFamilia.innerHTML =
+                `<div class="mensaje visible error">
+                    Error al consultar los afiliados: ${escapar(error.message)}
+                </div>`;
+
+        }
 
     }
 
 
-    function seleccionarAfiliado(persona) {
+    /* ==========================================================
+       SELECCIONAR AFILIADO
+    ========================================================== */
+
+    function seleccionarAfiliado(
+        persona,
+        elemento
+    ) {
 
         receptorSeleccionado = {
 
@@ -1607,164 +1530,206 @@
 
         };
 
-        mostrarPersonaSeleccionada();
+        mostrarPersona();
 
-        const resultados =
-            resultadosFamilia.querySelectorAll(
+        resultadosFamilia
+            .querySelectorAll(
                 ".resultado"
+            )
+            .forEach(
+                item =>
+                    item.classList.remove(
+                        "seleccionado"
+                    )
             );
 
-        resultados.forEach(
-            elemento =>
-                elemento.classList.remove(
-                    "seleccionado"
-                )
+        elemento.classList.add(
+            "seleccionado"
         );
-
-        event.currentTarget
-            .classList.add("seleccionado");
 
     }
 
 
-    /* ============================================================
+    /* ==========================================================
        BUSCAR COLABORADORES
-    ============================================================ */
+    ========================================================== */
 
-    let temporizadorColaborador = null;
+    let temporizadorColaborador;
 
-    buscarColaboradorInput.addEventListener(
-        "input",
-        function () {
+    document
+        .getElementById(
+            "inputColaborador"
+        )
+        .addEventListener(
+            "input",
+            function() {
 
-            clearTimeout(
-                temporizadorColaborador
-            );
-
-            const termino =
-                this.value.trim();
-
-            resultadosColaborador.innerHTML = "";
-
-            receptorSeleccionado = null;
-
-            limpiarPersona();
-
-            if (!termino) {
-                return;
-            }
-
-            temporizadorColaborador =
-                setTimeout(
-                    () => buscarColaboradores(termino),
-                    300
+                clearTimeout(
+                    temporizadorColaborador
                 );
 
-        }
-    );
+                const termino =
+                    this.value.trim();
+
+                resultadosColaborador.innerHTML =
+                    "";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                if (!termino) {
+                    return;
+                }
+
+                temporizadorColaborador =
+                    setTimeout(
+                        function() {
+
+                            buscarColaborador(
+                                termino
+                            );
+
+                        },
+                        250
+                    );
+
+            }
+        );
 
 
-    async function buscarColaboradores(termino) {
+    async function buscarColaborador(
+        termino
+    ) {
 
         resultadosColaborador.innerHTML =
             `<div class="resultado">
                 Buscando colaboradores...
             </div>`;
 
-        const { data, error } =
-            await supabaseClient
-                .from("colaboradores")
-                .select(`
-                    id,
-                    CodigoColaborador,
-                    Nombre,
-                    Area,
-                    Telefono,
-                    Correo,
-                    estado,
-                    fechaRegistro
-                `)
-                .eq("estado", "Activo")
-                .or(
-                    `Nombre.ilike.%${termino}%,CodigoColaborador.ilike.%${termino}%`
-                )
-                .order("Nombre", {
-                    ascending: true
-                });
+        try {
 
-        if (error) {
+            const { data, error } =
+                await supabaseClient
+                    .from("colaboradores")
+                    .select(`
+                        id,
+                        CodigoColaborador,
+                        Nombre,
+                        Area,
+                        Telefono,
+                        Correo,
+                        estado,
+                        fechaRegistro
+                    `)
+                    .eq(
+                        "estado",
+                        "Activo"
+                    )
+                    .or(
+                        "Nombre.ilike.%" +
+                        termino +
+                        "%,CodigoColaborador.ilike.%" +
+                        termino +
+                        "%"
+                    )
+                    .order(
+                        "Nombre",
+                        {
+                            ascending: true
+                        }
+                    );
 
-            console.error(
-                "Error buscando colaboradores:",
-                error
-            );
+            if (error) {
+                throw error;
+            }
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                resultadosColaborador.innerHTML =
+                    `<div class="mensaje visible info">
+                        No se encontraron colaboradores activos.
+                    </div>`;
+
+                return;
+            }
 
             resultadosColaborador.innerHTML =
-                `<div class="mensaje error" style="display:block;">
-                    No se pudieron consultar los colaboradores.
-                </div>`;
+                "";
 
-            return;
+            data.forEach(
+                colaborador => {
 
-        }
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
 
-        if (!data || data.length === 0) {
+                    div.className =
+                        "resultado";
 
-            resultadosColaborador.innerHTML =
-                `<div class="mensaje info" style="display:block;">
-                    No se encontraron colaboradores activos.
-                </div>`;
+                    div.innerHTML = `
+                        <div class="resultado-titulo">
+                            ${escapar(
+                                colaborador.Nombre
+                            )}
+                        </div>
 
-            return;
+                        <div class="resultado-detalle">
+                            Código:
+                            ${escapar(
+                                colaborador.CodigoColaborador
+                            )}
+                            · Área:
+                            ${escapar(
+                                colaborador.Area
+                            )}
+                        </div>
+                    `;
 
-        }
+                    div.addEventListener(
+                        "click",
+                        function() {
 
-        resultadosColaborador.innerHTML = "";
+                            seleccionarColaborador(
+                                colaborador,
+                                div
+                            );
 
-        data.forEach(colaborador => {
+                        }
+                    );
 
-            const div =
-                document.createElement("div");
-
-            div.className = "resultado";
-
-            div.innerHTML = `
-                <div class="resultado-titulo">
-                    ${escaparHTML(
-                        colaborador.Nombre || ""
-                    )}
-                </div>
-
-                <div class="resultado-detalle">
-                    Código:
-                    ${escaparHTML(
-                        colaborador.CodigoColaborador || ""
-                    )}
-                    · Área:
-                    ${escaparHTML(
-                        colaborador.Area || ""
-                    )}
-                </div>
-            `;
-
-            div.addEventListener(
-                "click",
-                function () {
-
-                    seleccionarColaborador(
-                        colaborador,
+                    resultadosColaborador.appendChild(
                         div
                     );
 
                 }
             );
 
-            resultadosColaborador.appendChild(div);
+        } catch(error) {
 
-        });
+            console.error(
+                "Error buscando colaborador:",
+                error
+            );
+
+            resultadosColaborador.innerHTML =
+                `<div class="mensaje visible error">
+                    Error al consultar colaboradores: ${escapar(error.message)}
+                </div>`;
+
+        }
 
     }
 
+
+    /* ==========================================================
+       SELECCIONAR COLABORADOR
+    ========================================================== */
 
     function seleccionarColaborador(
         colaborador,
@@ -1786,10 +1751,12 @@
 
         };
 
-        mostrarPersonaSeleccionada();
+        mostrarPersona();
 
         resultadosColaborador
-            .querySelectorAll(".resultado")
+            .querySelectorAll(
+                ".resultado"
+            )
             .forEach(
                 item =>
                     item.classList.remove(
@@ -1804,21 +1771,20 @@
     }
 
 
-    /* ============================================================
-       MOSTRAR RECEPTOR
-    ============================================================ */
+    /* ==========================================================
+       MOSTRAR PERSONA
+    ========================================================== */
 
-    function mostrarPersonaSeleccionada() {
+    function mostrarPersona() {
 
         if (!receptorSeleccionado) {
-
-            limpiarPersona();
             return;
-
         }
 
         personaSeleccionada
-            .classList.add("visible");
+            .classList.add(
+                "visible"
+            );
 
         if (
             receptorSeleccionado.tipo ===
@@ -1826,10 +1792,17 @@
         ) {
 
             personaNombre.textContent =
-                `${receptorSeleccionado.Nombres} ${receptorSeleccionado.Apellidos}`;
+                receptorSeleccionado.Nombres +
+                " " +
+                receptorSeleccionado.Apellidos;
 
             personaDetalle.textContent =
-                `Afiliado · Familia ${receptorSeleccionado.FamiliaId} · Persona ${receptorSeleccionado.PersonaId} · Sitio ${receptorSeleccionado.Sitio || ""}`;
+                "Afiliado · Familia " +
+                receptorSeleccionado.FamiliaId +
+                " · Persona " +
+                receptorSeleccionado.PersonaId +
+                " · Sitio " +
+                receptorSeleccionado.Sitio;
 
         } else {
 
@@ -1837,7 +1810,10 @@
                 receptorSeleccionado.Nombre;
 
             personaDetalle.textContent =
-                `Colaborador · Código ${receptorSeleccionado.CodigoColaborador} · Área ${receptorSeleccionado.Area}`;
+                "Colaborador · Código " +
+                receptorSeleccionado.CodigoColaborador +
+                " · Área " +
+                receptorSeleccionado.Area;
 
         }
 
@@ -1847,193 +1823,274 @@
     function limpiarPersona() {
 
         personaSeleccionada
-            .classList.remove("visible");
+            .classList.remove(
+                "visible"
+            );
 
-        personaNombre.textContent = "";
+        personaNombre.textContent =
+            "";
 
-        personaDetalle.textContent = "";
+        personaDetalle.textContent =
+            "";
 
     }
 
 
-    /* ============================================================
+    /* ==========================================================
        BUSCAR MATERIAL
-    ============================================================ */
+    ========================================================== */
 
-    let temporizadorMaterial = null;
+    let temporizadorMaterial;
 
-    buscarMaterialInput.addEventListener(
-        "input",
-        function () {
+    document
+        .getElementById("inputMaterial")
+        .addEventListener(
+            "input",
+            function() {
 
-            clearTimeout(
-                temporizadorMaterial
-            );
-
-            const termino =
-                this.value.trim().toLowerCase();
-
-            resultadosMaterial.innerHTML = "";
-
-            materialInfo
-                .classList.remove("visible");
-
-            if (!termino) {
-                return;
-            }
-
-            temporizadorMaterial =
-                setTimeout(
-                    () => mostrarResultadosMaterial(
-                        termino
-                    ),
-                    150
+                clearTimeout(
+                    temporizadorMaterial
                 );
 
-        }
-    );
+                const termino =
+                    this.value
+                        .trim()
+                        .toLowerCase();
+
+                resultadosMaterial.innerHTML =
+                    "";
+
+                materialInfo.className =
+                    "material-info";
+
+                if (!termino) {
+                    return;
+                }
+
+                temporizadorMaterial =
+                    setTimeout(
+                        function() {
+
+                            mostrarMateriales(
+                                termino
+                            );
+
+                        },
+                        150
+                    );
+
+            }
+        );
 
 
-    function mostrarResultadosMaterial(
+    async function mostrarMateriales(
         termino
     ) {
 
-        const biblioteca =
-            bibliotecaEntrega.value;
+        /*
+         * Se consulta nuevamente Supabase para
+         * que la disponibilidad sea actual.
+         */
 
-        let encontrados =
-            materiales.filter(material => {
+        try {
 
-                const coincideNombre =
-                    String(
-                        material.nombre || ""
+            const { data, error } =
+                await supabaseClient
+                    .from("materiales")
+                    .select(`
+                        id,
+                        codigo,
+                        nombre,
+                        categoria,
+                        unidad,
+                        biblioteca,
+                        entradas,
+                        entregadas,
+                        estado
+                    `)
+                    .eq(
+                        "estado",
+                        "Activo"
                     )
-                    .toLowerCase()
-                    .includes(termino);
+                    .order(
+                        "nombre",
+                        {
+                            ascending: true
+                        }
+                    );
 
-                const coincideCodigo =
-                    String(
-                        material.codigo || ""
-                    )
-                    .toLowerCase()
-                    .includes(termino);
+            if (error) {
+                throw error;
+            }
 
-                const coincideBiblioteca =
-                    !biblioteca ||
-                    String(
-                        material.biblioteca || ""
-                    ) === biblioteca;
-
-                return (
-                    (coincideNombre ||
-                    coincideCodigo) &&
-                    coincideBiblioteca
+            materialesDisponibles =
+                (data || []).filter(
+                    material =>
+                        disponible(material) > 0
                 );
 
-            });
 
-        if (encontrados.length === 0) {
+            const biblioteca =
+                document
+                    .getElementById(
+                        "selectBiblioteca"
+                    )
+                    .value;
+
+
+            const encontrados =
+                materialesDisponibles.filter(
+                    material => {
+
+                        const nombre =
+                            String(
+                                material.nombre ||
+                                ""
+                            ).toLowerCase();
+
+                        const codigo =
+                            String(
+                                material.codigo ||
+                                ""
+                            ).toLowerCase();
+
+                        const coincide =
+                            nombre.includes(
+                                termino
+                            ) ||
+                            codigo.includes(
+                                termino
+                            );
+
+                        /*
+                         * Si se eligió una biblioteca,
+                         * se muestran únicamente los
+                         * materiales de esa biblioteca.
+                         */
+
+                        const mismaBiblioteca =
+                            !biblioteca ||
+                            String(
+                                material.biblioteca ||
+                                ""
+                            ) === biblioteca;
+
+                        return (
+                            coincide &&
+                            mismaBiblioteca
+                        );
+
+                    }
+                );
+
 
             resultadosMaterial.innerHTML =
-                `<div class="mensaje info" style="display:block;">
-                    No hay materiales disponibles con ese nombre para la biblioteca seleccionada.
-                </div>`;
+                "";
 
-            return;
 
-        }
+            if (
+                encontrados.length === 0
+            ) {
 
-        resultadosMaterial.innerHTML = "";
+                resultadosMaterial.innerHTML =
+                    `<div class="mensaje visible info">
+                        No hay materiales disponibles que coincidan con la búsqueda.
+                    </div>`;
 
-        encontrados.forEach(material => {
+                return;
 
-            const disponible =
-                obtenerDisponible(material);
+            }
 
-            const div =
-                document.createElement("div");
 
-            div.className = "resultado";
+            encontrados.forEach(
+                material => {
 
-            div.innerHTML = `
-                <div class="resultado-titulo">
-                    ${escaparHTML(material.nombre)}
-                </div>
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
 
-                <div class="resultado-detalle">
-                    Código:
-                    ${escaparHTML(material.codigo)}
-                    · Disponible:
-                    ${disponible}
-                    ${escaparHTML(material.unidad || "")}
-                    · Biblioteca:
-                    ${escaparHTML(material.biblioteca || "")}
-                </div>
-            `;
+                    div.className =
+                        "resultado";
 
-            div.addEventListener(
-                "click",
-                function () {
+                    div.innerHTML = `
+                        <div class="resultado-titulo">
+                            ${escapar(
+                                material.nombre
+                            )}
+                        </div>
 
-                    seleccionarMaterial(
-                        material
+                        <div class="resultado-detalle">
+                            Código:
+                            ${escapar(
+                                material.codigo
+                            )}
+                            · Disponible:
+                            ${disponible(material)}
+                            ${escapar(
+                                material.unidad
+                            )}
+                            · Biblioteca:
+                            ${escapar(
+                                material.biblioteca
+                            )}
+                        </div>
+                    `;
+
+                    div.addEventListener(
+                        "click",
+                        function() {
+
+                            agregarMaterial(
+                                material
+                            );
+
+                        }
+                    );
+
+                    resultadosMaterial.appendChild(
+                        div
                     );
 
                 }
             );
 
-            resultadosMaterial.appendChild(div);
+        } catch(error) {
 
-        });
+            console.error(
+                "Error buscando materiales:",
+                error
+            );
 
-    }
+            resultadosMaterial.innerHTML =
+                `<div class="mensaje visible error">
+                    Error al consultar materiales: ${escapar(error.message)}
+                </div>`;
 
-
-    function seleccionarMaterial(material) {
-
-        const disponible =
-            obtenerDisponible(material);
-
-        materialInfo.classList.add(
-            "visible"
-        );
-
-        materialInfoTexto.innerHTML = `
-            <strong>${escaparHTML(material.nombre)}</strong>
-            · Código: ${escaparHTML(material.codigo)}
-            · Disponible: <strong>${disponible}</strong>
-            · Biblioteca: ${escaparHTML(material.biblioteca || "")}
-        `;
-
-        agregarMaterialSeleccionado(
-            material
-        );
-
-        buscarMaterialInput.value = "";
-
-        resultadosMaterial.innerHTML = "";
+        }
 
     }
 
 
-    /* ============================================================
-       AGREGAR MATERIAL A LA ENTREGA
-    ============================================================ */
+    /* ==========================================================
+       AGREGAR MATERIAL
+    ========================================================== */
 
-    function agregarMaterialSeleccionado(
+    function agregarMaterial(
         material
     ) {
 
-        const existe =
+        const yaExiste =
             materialesSeleccionados.some(
                 item =>
                     item.id === material.id
             );
 
-        if (existe) {
+        if (yaExiste) {
 
             mostrarMensaje(
-                "Ese material ya fue agregado a la entrega.",
+                mensajeEntrega,
+                "Este material ya está agregado. Puede modificar su cantidad.",
                 "info"
             );
 
@@ -2041,9 +2098,11 @@
 
         }
 
+
         materialesSeleccionados.push({
 
-            id: material.id,
+            id:
+                material.id,
 
             codigo:
                 material.codigo,
@@ -2058,52 +2117,83 @@
                 material.biblioteca,
 
             disponible:
-                obtenerDisponible(material),
+                disponible(material),
 
-            cantidad: 1
+            cantidad:
+                1
 
         });
 
-        renderizarMaterialesSeleccionados();
+
+        renderizarMateriales();
+
+
+        document
+            .getElementById(
+                "inputMaterial"
+            )
+            .value = "";
+
+        resultadosMaterial.innerHTML =
+            "";
+
+        materialInfo.className =
+            "material-info";
 
     }
 
 
-    function renderizarMaterialesSeleccionados() {
+    /* ==========================================================
+       MOSTRAR MATERIALES SELECCIONADOS
+    ========================================================== */
 
-        resumenEntrega.innerHTML = "";
+    function renderizarMateriales() {
+
+        listaMateriales.innerHTML =
+            "";
+
 
         materialesSeleccionados.forEach(
             (material, indice) => {
 
                 const fila =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
                 fila.className =
                     "fila-material";
 
                 fila.innerHTML = `
 
-                    <div class="material-resumen">
+                    <div>
 
-                        <div class="material-resumen-nombre">
-                            ${escaparHTML(material.nombre)}
+                        <div class="material-nombre">
+                            ${escapar(
+                                material.nombre
+                            )}
                         </div>
 
-                        <div class="material-resumen-detalle">
+                        <div class="material-detalle">
                             Código:
-                            ${escaparHTML(material.codigo)}
+                            ${escapar(
+                                material.codigo
+                            )}
                             · Disponible:
                             ${material.disponible}
-                            ${escaparHTML(material.unidad || "")}
+                            ${escapar(
+                                material.unidad
+                            )}
                             · Biblioteca:
-                            ${escaparHTML(material.biblioteca || "")}
+                            ${escapar(
+                                material.biblioteca
+                            )}
                         </div>
 
                     </div>
 
 
-                    <div class="campo cantidad-campo">
+                    <div class="campo">
 
                         <label>
                             Cantidad
@@ -2115,20 +2205,7 @@
                             max="${material.disponible}"
                             value="${material.cantidad}"
                             data-indice="${indice}"
-                            class="input-cantidad-material">
-
-                    </div>
-
-
-                    <div
-                        style="
-                            font-size:11px;
-                            color:var(--texto-suave);
-                            padding-bottom:10px;
-                        ">
-
-                        Máx.
-                        ${material.disponible}
+                            class="cantidad-material">
 
                     </div>
 
@@ -2136,16 +2213,13 @@
                     <button
                         type="button"
                         class="btn-quitar"
-                        data-indice="${indice}"
-                        title="Quitar material">
-
+                        data-indice="${indice}">
                         ×
-
                     </button>
 
                 `;
 
-                resumenEntrega.appendChild(
+                listaMateriales.appendChild(
                     fila
                 );
 
@@ -2155,166 +2229,200 @@
 
         document
             .querySelectorAll(
-                ".input-cantidad-material"
+                ".cantidad-material"
             )
-            .forEach(input => {
+            .forEach(
+                input => {
 
-                input.addEventListener(
-                    "change",
-                    function () {
+                    input.addEventListener(
+                        "change",
+                        function() {
 
-                        const indice =
-                            Number(
-                                this.dataset.indice
-                            );
+                            const indice =
+                                Number(
+                                    this.dataset.indice
+                                );
 
-                        let cantidad =
-                            Number(
-                                this.value
-                            );
+                            let cantidad =
+                                Number(
+                                    this.value
+                                );
 
-                        const disponible =
+                            const maximo =
+                                materialesSeleccionados[
+                                    indice
+                                ].disponible;
+
+                            if (
+                                !Number.isInteger(
+                                    cantidad
+                                ) ||
+                                cantidad < 1
+                            ) {
+
+                                cantidad = 1;
+
+                            }
+
+                            if (
+                                cantidad >
+                                maximo
+                            ) {
+
+                                cantidad =
+                                    maximo;
+
+                            }
+
                             materialesSeleccionados[
                                 indice
-                            ].disponible;
+                            ].cantidad =
+                                cantidad;
 
-                        if (
-                            !Number.isInteger(
-                                cantidad
-                            ) ||
-                            cantidad < 1
-                        ) {
-
-                            cantidad = 1;
+                            this.value =
+                                cantidad;
 
                         }
+                    );
 
-                        if (
-                            cantidad >
-                            disponible
-                        ) {
-
-                            cantidad =
-                                disponible;
-
-                        }
-
-                        materialesSeleccionados[
-                            indice
-                        ].cantidad =
-                            cantidad;
-
-                        this.value =
-                            cantidad;
-
-                    }
-                );
-
-            });
+                }
+            );
 
 
         document
-            .querySelectorAll(".btn-quitar")
-            .forEach(button => {
+            .querySelectorAll(
+                ".btn-quitar"
+            )
+            .forEach(
+                button => {
 
-                button.addEventListener(
-                    "click",
-                    function () {
+                    button.addEventListener(
+                        "click",
+                        function() {
 
-                        const indice =
-                            Number(
-                                this.dataset.indice
-                            );
+                            const indice =
+                                Number(
+                                    this.dataset.indice
+                                );
 
-                        materialesSeleccionados
-                            .splice(indice, 1);
+                            materialesSeleccionados
+                                .splice(
+                                    indice,
+                                    1
+                                );
 
-                        renderizarMaterialesSeleccionados();
+                            renderizarMateriales();
 
-                    }
-                );
+                        }
+                    );
 
-            });
+                }
+            );
 
     }
 
 
-    /* ============================================================
-       AGREGAR OTRO MATERIAL
-    ============================================================ */
+    /* ==========================================================
+       AGREGAR OTRO
+    ========================================================== */
 
-    btnAgregarMaterial.addEventListener(
-        "click",
-        function () {
+    document
+        .getElementById(
+            "btnAgregarOtro"
+        )
+        .addEventListener(
+            "click",
+            function() {
 
-            buscarMaterialInput.focus();
+                document
+                    .getElementById(
+                        "inputMaterial"
+                    )
+                    .focus();
 
-            mostrarMensaje(
-                "Escriba el nombre del siguiente material para agregarlo.",
-                "info"
-            );
+                mostrarMensaje(
+                    mensajeEntrega,
+                    "Busque el siguiente material que desea agregar.",
+                    "info"
+                );
 
-        }
-    );
-
-
-    /* ============================================================
-       CAMBIO DE BIBLIOTECA
-    ============================================================ */
-
-    bibliotecaEntrega.addEventListener(
-        "change",
-        function () {
-
-            const biblioteca =
-                this.value;
-
-            resultadosMaterial.innerHTML = "";
-
-            materialInfo.classList.remove(
-                "visible"
-            );
-
-            buscarMaterialInput.value = "";
-
-            /*
-             * Si ya hay materiales seleccionados
-             * de otra biblioteca, se conservan.
-             * La nueva búsqueda solamente mostrará
-             * materiales de la biblioteca elegida.
-             */
-
-            if (!biblioteca) {
-                return;
             }
-
-            mostrarMensaje(
-                `Biblioteca seleccionada: ${biblioteca}. Los materiales disponibles se buscarán en esta biblioteca.`,
-                "info"
-            );
-
-        }
-    );
+        );
 
 
-    /* ============================================================
-       CONFIRMAR ENTREGA
-    ============================================================ */
+    /* ==========================================================
+       CAMBIO DE BIBLIOTECA
+    ========================================================== */
 
-    btnConfirmarEntrega.addEventListener(
-        "click",
-        registrarEntrega
-    );
+    document
+        .getElementById(
+            "selectBiblioteca"
+        )
+        .addEventListener(
+            "change",
+            function() {
+
+                resultadosMaterial.innerHTML =
+                    "";
+
+                materialInfo.className =
+                    "material-info";
+
+                const input =
+                    document.getElementById(
+                        "inputMaterial"
+                    );
+
+                /*
+                 * Si ya había texto escrito,
+                 * vuelve a buscar respetando
+                 * la biblioteca seleccionada.
+                 */
+
+                if (
+                    input.value.trim()
+                ) {
+
+                    mostrarMateriales(
+                        input.value
+                            .trim()
+                            .toLowerCase()
+                    );
+
+                }
+
+            }
+        );
+
+
+    /* ==========================================================
+       REGISTRAR ENTREGA
+    ========================================================== */
+
+    document
+        .getElementById(
+            "btnAceptar"
+        )
+        .addEventListener(
+            "click",
+            registrarEntrega
+        );
 
 
     async function registrarEntrega() {
 
-        limpiarMensaje();
+        ocultarMensaje(
+            mensajeEntrega
+        );
 
-        if (!receptorSeleccionado) {
+
+        if (
+            !receptorSeleccionado
+        ) {
 
             mostrarMensaje(
-                "Debe seleccionar primero el afiliado o colaborador que recibirá el material.",
+                mensajeEntrega,
+                "Seleccione primero quién recibirá el material.",
                 "error"
             );
 
@@ -2324,11 +2432,34 @@
 
 
         const biblioteca =
-            bibliotecaEntrega.value;
+            document
+                .getElementById(
+                    "selectBiblioteca"
+                )
+                .value;
+
+
+        const sitio =
+            document
+                .getElementById(
+                    "selectSitio"
+                )
+                .value;
+
+
+        const observaciones =
+            document
+                .getElementById(
+                    "inputObservaciones"
+                )
+                .value
+                .trim();
+
 
         if (!biblioteca) {
 
             mostrarMensaje(
+                mensajeEntrega,
                 "Seleccione la biblioteca que está entregando el material.",
                 "error"
             );
@@ -2338,12 +2469,10 @@
         }
 
 
-        const sitio =
-            sitioEntregaInput.value;
-
         if (!sitio) {
 
             mostrarMensaje(
+                mensajeEntrega,
                 "Seleccione el sitio.",
                 "error"
             );
@@ -2354,11 +2483,13 @@
 
 
         if (
-            materialesSeleccionados.length === 0
+            materialesSeleccionados.length ===
+            0
         ) {
 
             mostrarMensaje(
-                "Debe agregar por lo menos un material.",
+                mensajeEntrega,
+                "Agregue por lo menos un material.",
                 "error"
             );
 
@@ -2367,50 +2498,30 @@
         }
 
 
-        for (
-            const material
-            of materialesSeleccionados
-        ) {
+        const btnAceptar =
+            document.getElementById(
+                "btnAceptar"
+            );
 
-            if (
-                material.cantidad < 1 ||
-                material.cantidad >
-                material.disponible
-            ) {
-
-                mostrarMensaje(
-                    `La cantidad del material ${material.nombre} no es válida.`,
-                    "error"
-                );
-
-                return;
-
-            }
-
-        }
-
-
-        btnConfirmarEntrega.disabled =
+        btnAceptar.disabled =
             true;
 
-        btnConfirmarEntrega.textContent =
+        btnAceptar.textContent =
             "Registrando...";
 
 
-        const actualizaciones = [];
-        const registrosInsertados = [];
+        const inventarioActualizado =
+            [];
+
+        const registrosInsertados =
+            [];
 
 
         try {
 
             const usuario =
-                await obtenerUsuarioSupabase();
+                obtenerUsuario();
 
-
-            /*
-             * Se procesa cada material de manera
-             * individual.
-             */
 
             for (
                 const material
@@ -2418,12 +2529,14 @@
             ) {
 
                 /*
-                 * Volvemos a consultar el material
-                 * para verificar disponibilidad real.
+                 * Consultar nuevamente el inventario
+                 * directamente en Supabase.
                  */
 
-                const { data: materialActual,
-                        error: errorMaterial } =
+                const {
+                    data: actual,
+                    error: errorActual
+                } =
                     await supabaseClient
                         .from("materiales")
                         .select(`
@@ -2434,19 +2547,20 @@
                             entregadas,
                             biblioteca
                         `)
-                        .eq("id", material.id)
+                        .eq(
+                            "id",
+                            material.id
+                        )
                         .single();
 
 
-                if (errorMaterial) {
-                    throw errorMaterial;
+                if (errorActual) {
+                    throw errorActual;
                 }
 
 
                 const disponibleActual =
-                    obtenerDisponible(
-                        materialActual
-                    );
+                    disponible(actual);
 
 
                 if (
@@ -2455,26 +2569,35 @@
                 ) {
 
                     throw new Error(
-                        `Ya no hay suficiente cantidad disponible de ${material.nombre}. Disponible actual: ${disponibleActual}.`
+                        "No hay suficiente cantidad disponible de " +
+                        material.nombre +
+                        ". Disponible actualmente: " +
+                        disponibleActual
                     );
 
                 }
 
 
-                const nuevasEntregadas =
+                const entregadasAnteriores =
                     Number(
-                        materialActual.entregadas || 0
-                    ) +
+                        actual.entregadas || 0
+                    );
+
+
+                const nuevasEntregadas =
+                    entregadasAnteriores +
                     Number(
                         material.cantidad
                     );
 
 
                 /*
-                 * Actualizamos inventario.
+                 * Actualizar inventario.
                  */
 
-                const { error: errorUpdate } =
+                const {
+                    error: errorUpdate
+                } =
                     await supabaseClient
                         .from("materiales")
                         .update({
@@ -2482,7 +2605,8 @@
                                 nuevasEntregadas,
 
                             updated_at:
-                                new Date().toISOString()
+                                new Date()
+                                    .toISOString()
                         })
                         .eq(
                             "id",
@@ -2495,26 +2619,27 @@
                 }
 
 
-                actualizaciones.push({
+                inventarioActualizado.push({
 
-                    id: material.id,
+                    id:
+                        material.id,
 
-                    entregadasAnteriores:
-                        Number(
-                            materialActual.entregadas || 0
-                        )
+                    entregadas:
+                        entregadasAnteriores
 
                 });
 
 
                 /*
-                 * Datos del receptor.
+                 * Preparar registro exacto
+                 * para entrega_materiales.
                  */
 
-                let datosEntrega = {
+                const registro = {
 
                     fecha:
-                        new Date().toISOString(),
+                        new Date()
+                            .toISOString(),
 
                     codigo_material:
                         material.codigo,
@@ -2549,8 +2674,7 @@
                         sitio,
 
                     observaciones:
-                        observacionesEntregaInput.value
-                            .trim(),
+                        observaciones,
 
                     usuario:
                         usuario
@@ -2563,50 +2687,50 @@
                     "Afiliado"
                 ) {
 
-                    datosEntrega.nombres =
+                    registro.nombres =
                         receptorSeleccionado.Nombres;
 
-                    datosEntrega.apellidos =
+                    registro.apellidos =
                         receptorSeleccionado.Apellidos;
 
-                    datosEntrega.persona_id =
+                    registro.persona_id =
                         receptorSeleccionado.PersonaId;
 
-                    datosEntrega.familia_id =
+                    registro.familia_id =
                         receptorSeleccionado.FamiliaId;
 
                 } else {
 
-                    datosEntrega.codigo_colaborador =
+                    registro.nombres =
+                        receptorSeleccionado.Nombre;
+
+                    registro.codigo_colaborador =
                         receptorSeleccionado.CodigoColaborador;
 
-                    datosEntrega.area_colaborador =
+                    registro.area_colaborador =
                         receptorSeleccionado.Area;
-
-                    /*
-                     * Para colaboradores se puede
-                     * conservar el nombre completo
-                     * también en nombres.
-                     */
-
-                    datosEntrega.nombres =
-                        receptorSeleccionado.Nombre;
 
                 }
 
 
                 /*
-                 * Insertamos UN registro por material.
+                 * IMPORTANTE:
+                 * Un registro por cada material.
                  */
 
                 const {
-                    data: registroInsertado,
+                    data: insertado,
                     error: errorInsert
-                } = await supabaseClient
-                    .from("entrega_materiales")
-                    .insert(datosEntrega)
-                    .select()
-                    .single();
+                } =
+                    await supabaseClient
+                        .from(
+                            "entrega_materiales"
+                        )
+                        .insert(
+                            registro
+                        )
+                        .select()
+                        .single();
 
 
                 if (errorInsert) {
@@ -2615,13 +2739,14 @@
 
 
                 registrosInsertados.push(
-                    registroInsertado
+                    insertado
                 );
 
             }
 
 
             mostrarMensaje(
+                mensajeEntrega,
                 "La entrega fue registrada correctamente.",
                 "ok"
             );
@@ -2631,68 +2756,96 @@
              * Limpiar formulario.
              */
 
-            materialesSeleccionados = [];
+            receptorSeleccionado =
+                null;
 
-            renderizarMaterialesSeleccionados();
-
-            receptorSeleccionado = null;
+            materialesSeleccionados =
+                [];
 
             limpiarPersona();
 
-            buscarFamiliaInput.value = "";
+            document
+                .getElementById(
+                    "inputFamilia"
+                )
+                .value = "";
 
-            buscarColaboradorInput.value = "";
+            document
+                .getElementById(
+                    "inputColaborador"
+                )
+                .value = "";
 
-            buscarMaterialInput.value = "";
+            document
+                .getElementById(
+                    "inputMaterial"
+                )
+                .value = "";
 
-            resultadosFamilia.innerHTML = "";
+            document
+                .getElementById(
+                    "selectBiblioteca"
+                )
+                .value = "";
 
-            resultadosColaborador.innerHTML = "";
+            document
+                .getElementById(
+                    "selectSitio"
+                )
+                .value = "";
 
-            resultadosMaterial.innerHTML = "";
+            document
+                .getElementById(
+                    "inputObservaciones"
+                )
+                .value = "";
 
-            materialInfo.classList.remove(
-                "visible"
-            );
+            resultadosFamilia.innerHTML =
+                "";
 
-            bibliotecaEntrega.value = "";
+            resultadosColaborador.innerHTML =
+                "";
 
-            sitioEntregaInput.value = "";
+            resultadosMaterial.innerHTML =
+                "";
 
-            observacionesEntregaInput.value = "";
+            materialInfo.className =
+                "material-info";
+
+            listaMateriales.innerHTML =
+                "";
 
 
             /*
-             * Actualizar estadísticas,
-             * materiales y lista de entregas.
+             * Actualizar pantalla.
              */
 
             await cargarMateriales();
 
             await cargarEstadisticas();
 
-            paginaEntregas = 1;
+            paginaActual = 1;
 
-            await cargarEntregas();
+            await cargarEntregados();
 
 
-        } catch (error) {
+        } catch(error) {
 
             console.error(
-                "Error registrando entrega:",
+                "ERROR REGISTRANDO ENTREGA:",
                 error
             );
 
 
             /*
-             * Si hubo un error después de actualizar
-             * inventario, intentamos regresar las
-             * cantidades anteriores.
+             * Si hubo un problema después
+             * de actualizar inventario,
+             * intentamos revertirlo.
              */
 
             for (
-                const actualizacion
-                of actualizaciones
+                const item
+                of inventarioActualizado
             ) {
 
                 try {
@@ -2701,23 +2854,68 @@
                         .from("materiales")
                         .update({
                             entregadas:
-                                actualizacion.entregadasAnteriores,
+                                item.entregadas,
 
                             updated_at:
-                                new Date().toISOString()
+                                new Date()
+                                    .toISOString()
                         })
                         .eq(
                             "id",
-                            actualizacion.id
+                            item.id
                         );
 
-                } catch (
-                    errorRollback
+                } catch(
+                    errorReversion
                 ) {
 
                     console.error(
                         "Error revirtiendo inventario:",
-                        errorRollback
+                        errorReversion
+                    );
+
+                }
+
+            }
+
+
+            /*
+             * Si ya se insertaron registros,
+             * intentamos eliminarlos para no dejar
+             * una entrega incompleta.
+             */
+
+            for (
+                const registro
+                of registrosInsertados
+            ) {
+
+                try {
+
+                    if (
+                        registro &&
+                        registro.id
+                    ) {
+
+                        await supabaseClient
+                            .from(
+                                "entrega_materiales"
+                            )
+                            .delete()
+                            .eq(
+                                "id",
+                                registro.id
+                            );
+
+                    }
+
+                } catch(
+                    errorEliminar
+                ) {
+
+                    console.error(
+                        "Error eliminando registro parcial:",
+                        errorEliminar
                     );
 
                 }
@@ -2726,6 +2924,7 @@
 
 
             mostrarMensaje(
+                mensajeEntrega,
                 error.message ||
                 "No se pudo registrar la entrega.",
                 "error"
@@ -2734,10 +2933,10 @@
 
         } finally {
 
-            btnConfirmarEntrega.disabled =
+            btnAceptar.disabled =
                 false;
 
-            btnConfirmarEntrega.textContent =
+            btnAceptar.textContent =
                 "Aceptar entrega";
 
         }
@@ -2745,241 +2944,212 @@
     }
 
 
-    /* ============================================================
-       OBTENER USUARIO DE SUPABASE
-    ============================================================ */
-
-    async function obtenerUsuarioSupabase() {
-
-        try {
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.auth.getUser();
-
-            if (
-                !error &&
-                data &&
-                data.user
-            ) {
-
-                const user =
-                    data.user;
-
-                const metadata =
-                    user.user_metadata || {};
-
-                return (
-                    metadata.nombreCompleto ||
-                    metadata.full_name ||
-                    metadata.nombre ||
-                    user.email ||
-                    "Usuario actual"
-                );
-
-            }
-
-        } catch (error) {
-
-            console.warn(
-                "No se pudo obtener el usuario:",
-                error
-            );
-
-        }
-
-        return "Usuario actual";
-
-    }
-
-
-    /* ============================================================
+    /* ==========================================================
        CARGAR MATERIALES ENTREGADOS
-    ============================================================ */
+    ========================================================== */
 
-    async function cargarEntregas() {
+    async function cargarEntregados() {
 
-        tablaEntregas.innerHTML = `
+        tablaEntregados.innerHTML = `
             <tr>
-                <td
-                    colspan="13"
-                    class="estado-vacio">
+                <td colspan="15" class="vacio">
                     Cargando registros...
                 </td>
             </tr>
         `;
 
 
-        /*
-         * Primero obtenemos el total para calcular
-         * las páginas de 25 registros.
-         */
+        try {
 
-        const {
-            count,
-            error: errorCount
-        } =
-            await supabaseClient
-                .from("entrega_materiales")
-                .select(
-                    "id",
-                    {
-                        count: "exact",
-                        head: true
-                    }
+            /*
+             * Primero obtenemos la cantidad total.
+             */
+
+            const {
+                count,
+                error: errorCount
+            } =
+                await supabaseClient
+                    .from(
+                        "entrega_materiales"
+                    )
+                    .select(
+                        "id",
+                        {
+                            count: "exact",
+                            head: true
+                        }
+                    );
+
+
+            if (errorCount) {
+                throw errorCount;
+            }
+
+
+            const total =
+                Number(
+                    count || 0
                 );
 
 
-        if (errorCount) {
+            totalPaginas =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        total /
+                        REGISTROS_POR_PAGINA
+                    )
+                );
 
-            console.error(
-                "Error obteniendo total de entregas:",
-                errorCount
+
+            if (
+                paginaActual >
+                totalPaginas
+            ) {
+
+                paginaActual =
+                    totalPaginas;
+
+            }
+
+
+            const inicio =
+                (
+                    paginaActual - 1
+                ) *
+                REGISTROS_POR_PAGINA;
+
+
+            const fin =
+                inicio +
+                REGISTROS_POR_PAGINA -
+                1;
+
+
+            /*
+             * Cargar solamente 25.
+             */
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from(
+                        "entrega_materiales"
+                    )
+                    .select(`
+                        id,
+                        fecha,
+                        codigo_material,
+                        material,
+                        cantidad,
+                        receptor,
+                        nombres,
+                        apellidos,
+                        persona_id,
+                        familia_id,
+                        codigo_colaborador,
+                        area_colaborador,
+                        biblioteca,
+                        sitio,
+                        observaciones,
+                        usuario,
+                        created_at
+                    `)
+                    .order(
+                        "fecha",
+                        {
+                            ascending: false
+                        }
+                    )
+                    .range(
+                        inicio,
+                        fin
+                    );
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            mostrarEntregados(
+                data || []
             );
 
-            tablaEntregas.innerHTML = `
-                <tr>
-                    <td
-                        colspan="13"
-                        class="estado-vacio">
-                        No se pudieron cargar los registros.
-                    </td>
-                </tr>
-            `;
 
-            return;
-
-        }
-
-
-        const totalRegistros =
-            Number(count || 0);
-
-
-        totalPaginas =
-            Math.max(
-                1,
-                Math.ceil(
-                    totalRegistros /
-                    registrosPorPagina
-                )
-            );
-
-
-        if (
-            paginaEntregas >
-            totalPaginas
-        ) {
-
-            paginaEntregas =
+            paginaInfo.textContent =
+                "Página " +
+                paginaActual +
+                " de " +
                 totalPaginas;
 
-        }
+
+            btnAnterior.disabled =
+                paginaActual <= 1;
 
 
-        const desde =
-            (
-                paginaEntregas - 1
-            ) *
-            registrosPorPagina;
+            btnSiguiente.disabled =
+                paginaActual >=
+                totalPaginas;
 
-        const hasta =
-            desde +
-            registrosPorPagina -
-            1;
-
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("entrega_materiales")
-                .select(`
-                    id,
-                    fecha,
-                    codigo_material,
-                    material,
-                    cantidad,
-                    receptor,
-                    nombres,
-                    apellidos,
-                    persona_id,
-                    familia_id,
-                    codigo_colaborador,
-                    area_colaborador,
-                    biblioteca,
-                    sitio,
-                    observaciones,
-                    usuario,
-                    created_at
-                `)
-                .order("fecha", {
-                    ascending: false
-                })
-                .range(
-                    desde,
-                    hasta
-                );
-
-
-        if (error) {
+        } catch(error) {
 
             console.error(
-                "Error cargando entregas:",
+                "ERROR CARGANDO ENTREGA_MATERIALES:",
                 error
             );
 
-            tablaEntregas.innerHTML = `
+            tablaEntregados.innerHTML = `
                 <tr>
                     <td
-                        colspan="13"
-                        class="estado-vacio">
-                        No se pudieron cargar los registros.
+                        colspan="15"
+                        class="vacio"
+                        style="color:#c0392b;">
+                        No se pudieron cargar los materiales entregados.
+                        <br><br>
+                        ${escapar(error.message)}
                     </td>
                 </tr>
             `;
 
-            return;
+            paginaInfo.textContent =
+                "No disponible";
+
+            btnAnterior.disabled =
+                true;
+
+            btnSiguiente.disabled =
+                true;
 
         }
-
-
-        renderizarEntregas(
-            data || []
-        );
-
-
-        actualizarPaginacion(
-            totalRegistros
-        );
 
     }
 
 
-    /* ============================================================
-       RENDERIZAR ENTREGAS
-    ============================================================ */
+    /* ==========================================================
+       MOSTRAR TABLA
+    ========================================================== */
 
-    function renderizarEntregas(
+    function mostrarEntregados(
         registros
     ) {
 
-        tablaEntregas.innerHTML = "";
+        tablaEntregados.innerHTML =
+            "";
 
 
         if (
-            !registros ||
             registros.length === 0
         ) {
 
-            tablaEntregas.innerHTML = `
+            tablaEntregados.innerHTML = `
                 <tr>
                     <td
-                        colspan="13"
-                        class="estado-vacio">
+                        colspan="15"
+                        class="vacio">
                         No hay materiales entregados registrados.
                     </td>
                 </tr>
@@ -2990,175 +3160,185 @@
         }
 
 
-        registros.forEach(registro => {
+        registros.forEach(
+            registro => {
 
-            const fila =
-                document.createElement("tr");
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
 
 
-            fila.innerHTML = `
+                fila.innerHTML = `
 
-                <td>
-                    ${escaparHTML(
-                        formatearFecha(
-                            registro.fecha
-                        )
-                    )}
-                </td>
+                    <td>
+                        ${escapar(
+                            fechaGuatemala(
+                                registro.fecha
+                            )
+                        )}
+                    </td>
 
-                <td>
-                    <strong>
-                        ${escaparHTML(
+                    <td>
+                        ${escapar(
                             registro.codigo_material
                         )}
-                    </strong>
-                </td>
+                    </td>
 
-                <td>
-                    ${escaparHTML(
-                        registro.material
-                    )}
-                </td>
-
-                <td>
-                    ${escaparHTML(
-                        registro.cantidad
-                    )}
-                </td>
-
-                <td>
-                    ${escaparHTML(
-                        registro.receptor
-                    )}
-                </td>
-
-                <td>
-                    ${escaparHTML(
-                        registro.nombres
-                    )}
-                </td>
-
-                <td>
-                    ${escaparHTML(
-                        registro.apellidos
-                    )}
-                </td>
-
-                <td>
-                    ${escaparHTML(
-                        registro.familia_id
-                    )}
-                </td>
-
-                <td>
-                    ${escaparHTML(
-                        registro.codigo_colaborador
-                    )}
-                </td>
-
-                <td>
-                    <strong>
-                        ${escaparHTML(
-                            registro.biblioteca
+                    <td>
+                        ${escapar(
+                            registro.material
                         )}
-                    </strong>
-                </td>
+                    </td>
 
-                <td>
-                    <strong>
-                        ${escaparHTML(
-                            registro.sitio
+                    <td>
+                        ${escapar(
+                            registro.cantidad
                         )}
-                    </strong>
-                </td>
+                    </td>
 
-                <td>
-                    ${escaparHTML(
-                        registro.observaciones
-                    )}
-                </td>
+                    <td>
+                        ${escapar(
+                            registro.receptor
+                        )}
+                    </td>
 
-                <td>
-                    ${escaparHTML(
-                        registro.usuario
-                    )}
-                </td>
+                    <td>
+                        ${escapar(
+                            registro.nombres
+                        )}
+                    </td>
 
-            `;
+                    <td>
+                        ${escapar(
+                            registro.apellidos
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapar(
+                            registro.persona_id
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapar(
+                            registro.familia_id
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapar(
+                            registro.codigo_colaborador
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapar(
+                            registro.area_colaborador
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapar(
+                                registro.biblioteca
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapar(
+                                registro.sitio
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapar(
+                            registro.observaciones
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapar(
+                            registro.usuario
+                        )}
+                    </td>
+
+                `;
 
 
-            tablaEntregas.appendChild(
-                fila
-            );
+                tablaEntregados.appendChild(
+                    fila
+                );
 
-        });
+            }
+        );
 
     }
 
 
-    /* ============================================================
-       PAGINACIÓN
-    ============================================================ */
-
-    function actualizarPaginacion(
-        totalRegistros
-    ) {
-
-        paginacionInfo.textContent =
-            `Página ${paginaEntregas} de ${totalPaginas}`;
-
-        btnAnterior.disabled =
-            paginaEntregas <= 1;
-
-        btnSiguiente.disabled =
-            paginaEntregas >= totalPaginas;
-
-    }
-
+    /* ==========================================================
+       PAGINACIÓN ANTERIOR
+    ========================================================== */
 
     btnAnterior.addEventListener(
         "click",
-        async function () {
+        async function() {
 
             if (
-                paginaEntregas <= 1
+                paginaActual <= 1
             ) {
                 return;
             }
 
-            paginaEntregas--;
+            paginaActual--;
 
-            await cargarEntregas();
+            await cargarEntregados();
 
-            desplazarAEntregas();
+            desplazarHistorial();
 
         }
     );
 
+
+    /* ==========================================================
+       PAGINACIÓN SIGUIENTE
+    ========================================================== */
 
     btnSiguiente.addEventListener(
         "click",
-        async function () {
+        async function() {
 
             if (
-                paginaEntregas >= totalPaginas
+                paginaActual >=
+                totalPaginas
             ) {
                 return;
             }
 
-            paginaEntregas++;
+            paginaActual++;
 
-            await cargarEntregas();
+            await cargarEntregados();
 
-            desplazarAEntregas();
+            desplazarHistorial();
 
         }
     );
 
 
-    function desplazarAEntregas() {
+    /* ==========================================================
+       DESPLAZAMIENTO SUAVE
+    ========================================================== */
 
-        seccionMaterialesEntregados
+    function desplazarHistorial() {
+
+        document
+            .getElementById(
+                "seccionEntregados"
+            )
             .scrollIntoView({
                 behavior: "smooth",
                 block: "start"
@@ -3167,15 +3347,17 @@
     }
 
 
-    /* ============================================================
-       VOLVER AL INICIO
-    ============================================================ */
+    /* ==========================================================
+       VOLVER
+    ========================================================== */
 
     document
-        .getElementById("botonVolver")
+        .getElementById(
+            "botonVolver"
+        )
         .addEventListener(
             "click",
-            function () {
+            function() {
 
                 window.location.href =
                     "index.html";
@@ -3184,25 +3366,53 @@
         );
 
 
-    /* ============================================================
-       INICIAR
-    ============================================================ */
+    /* ==========================================================
+       INICIAR MÓDULO
+    ========================================================== */
 
-    async function iniciarMateriales() {
+    async function iniciarModulo() {
 
         try {
+
+            /*
+             * Verificación básica para evitar
+             * pantalla blanca si supabase.js
+             * no cargó correctamente.
+             */
+
+            if (
+                typeof supabaseClient ===
+                "undefined" ||
+                !supabaseClient
+            ) {
+
+                throw new Error(
+                    "No se encontró supabaseClient. Revise que supabase.js esté cargando correctamente."
+                );
+
+            }
+
 
             await cargarMateriales();
 
             await cargarEstadisticas();
 
-            await cargarEntregas();
+            await cargarEntregados();
 
-        } catch (error) {
+
+        } catch(error) {
 
             console.error(
-                "Error iniciando módulo de materiales:",
+                "ERROR INICIANDO MÓDULO:",
                 error
+            );
+
+
+            mostrarMensaje(
+                mensajeGeneral,
+                "No se pudo cargar completamente el módulo: " +
+                error.message,
+                "error"
             );
 
         }
@@ -3210,34 +3420,89 @@
     }
 
 
-    window.addEventListener(
-        "load",
-        async function () {
+    /* ==========================================================
+       INICIO SEGURO
+    ========================================================== */
+
+    (async function() {
+
+        try {
 
             /*
-             * Esperamos un momento para asegurarnos
-             * de que auth.js haya terminado.
+             * Primero dejamos que auth.js
+             * termine de preparar la sesión.
              */
 
-            await new Promise(
-                resolve =>
-                    setTimeout(
-                        resolve,
-                        150
-                    )
-            );
-
-
             if (
-                window.materialesAutorizado
+                typeof window.protegerPagina ===
+                "function"
             ) {
 
-                iniciarMateriales();
+                const autorizado =
+                    await window.protegerPagina();
+
+
+                if (!autorizado) {
+
+                    window.location.replace(
+                        "index.html"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    typeof window.esUsuario ===
+                    "function" &&
+                    typeof window.esAdministrador ===
+                    "function"
+                ) {
+
+                    if (
+                        !window.esUsuario() &&
+                        !window.esAdministrador()
+                    ) {
+
+                        window.location.replace(
+                            "index.html"
+                        );
+
+                        return;
+
+                    }
+
+                }
 
             }
 
+
+            /*
+             * Ya con autenticación lista,
+             * cargamos el módulo.
+             */
+
+            await iniciarModulo();
+
+
+        } catch(error) {
+
+            console.error(
+                "ERROR GENERAL DEL MÓDULO:",
+                error
+            );
+
+            mostrarMensaje(
+                mensajeGeneral,
+                "Error al iniciar el módulo: " +
+                error.message,
+                "error"
+            );
+
         }
-    );
+
+    })();
 
 </script>
 
