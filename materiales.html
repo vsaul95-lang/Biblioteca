@@ -6,8 +6,11 @@
 
     <title>Materiales</title>
 
-    <!-- Supabase -->
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Librería XLSX para procesar archivos Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <!-- Archivos existentes del sistema -->
     <script src="supabase.js"></script>
@@ -429,6 +432,31 @@
             font-size: 12px;
         }
 
+        /* SECCIÓN CARGA Y RESPALDO EXCEL */
+        .seccion-admin {
+            display: none;
+            border: 1px dashed var(--celeste-fundacion);
+            background: #f4fafc;
+        }
+
+        .seccion-admin.visible {
+            display: block;
+        }
+
+        .acciones-excel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .caja-subida {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         footer {
             text-align: center;
             color: var(--texto-suave);
@@ -622,6 +650,30 @@
             <button id="btnSiguiente" type="button" class="btn btn-secundario">Siguiente →</button>
         </div>
     </section>
+
+    <!-- CARGA DE INFORMACIÓN Y RESPALDO (SOLO ADMINISTRADORES) -->
+    <section class="seccion seccion-admin" id="seccionAdmin">
+        <h2>Carga de información y respaldo</h2>
+        <p class="seccion-descripcion">
+            Módulo exclusivo para Administradores. Permite descargar el reporte Excel completo e importar nuevos ingresos de materiales.
+        </p>
+
+        <div class="acciones-excel">
+            <button id="btnDescargarExcel" type="button" class="btn btn-primario">
+                📥 Descargar MasterMateriales.xlsx
+            </button>
+
+            <div class="caja-subida">
+                <input type="file" id="archivoExcel" accept=".xlsx, .xls" style="max-width:240px;">
+                <button id="btnCargarExcel" type="button" class="btn btn-verde">
+                    📤 Cargar nuevos ingresos
+                </button>
+            </div>
+        </div>
+
+        <div id="mensajeAdmin" class="mensaje"></div>
+    </section>
+
 </main>
 
 <footer>
@@ -645,6 +697,7 @@
     ========================================================== */
     const mensajeGeneral = document.getElementById("mensajeGeneral");
     const mensajeEntrega = document.getElementById("mensajeEntrega");
+    const mensajeAdmin = document.getElementById("mensajeAdmin");
     const bloqueAfiliado = document.getElementById("bloqueAfiliado");
     const bloqueColaborador = document.getElementById("bloqueColaborador");
     const resultadosFamilia = document.getElementById("resultadosFamilia");
@@ -659,6 +712,7 @@
     const paginaInfo = document.getElementById("paginaInfo");
     const btnAnterior = document.getElementById("btnAnterior");
     const btnSiguiente = document.getElementById("btnSiguiente");
+    const seccionAdmin = document.getElementById("seccionAdmin");
 
     /* ==========================================================
        UTILIDADES Y MENSAJES
@@ -694,28 +748,63 @@
         return d.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });
     }
 
+    /* OBTENER NOMBRE REAL DEL USUARIO (EVITA CORREOS) */
     async function obtenerUsuarioActual() {
         try {
             if (typeof supabaseClient !== "undefined") {
                 const { data } = await supabaseClient.auth.getUser();
                 if (data && data.user) {
-                    return data.user.user_metadata?.full_name || data.user.email || "Usuario autenticado";
+                    const meta = data.user.user_metadata;
+                    if (meta && (meta.full_name || meta.nombre || meta.name)) {
+                        return meta.full_name || meta.nombre || meta.name;
+                    }
                 }
             }
         } catch (e) {
-            console.warn("No se pudo obtener el usuario de Supabase Auth:", e);
+            console.warn("No se pudo obtener el metadato del usuario:", e);
         }
 
         try {
             if (typeof window.obtenerNombreUsuarioActual === "function") {
                 const nombre = window.obtenerNombreUsuarioActual();
-                if (nombre) return nombre;
+                if (nombre && !nombre.includes("@")) return nombre;
             }
         } catch(error) {
-            console.warn("Error en obtenerNombreUsuarioActual:", error);
+            console.warn("Error en función local de usuario:", error);
         }
 
-        return localStorage.getItem("usuarioActual") || window.nombreUsuarioActual || "Usuario Sistema";
+        const almacenado = localStorage.getItem("nombreUsuarioActual") || window.nombreUsuarioActual;
+        if (almacenado && !almacenado.includes("@")) return almacenado;
+
+        return "Usuario Sistema";
+    }
+
+    /* VALIDACIÓN DE ROL ADMINISTRADOR */
+    async function verificarPermisosAdmin() {
+        try {
+            let esAdmin = false;
+
+            if (typeof supabaseClient !== "undefined") {
+                const { data } = await supabaseClient.auth.getUser();
+                if (data && data.user) {
+                    const rol = data.user.user_metadata?.role || data.user.role;
+                    if (rol === "admin" || rol === "administrador") esAdmin = true;
+                }
+            }
+
+            if (!esAdmin) {
+                const rolLocal = localStorage.getItem("rolUsuario") || window.rolUsuarioActual;
+                if (rolLocal === "admin" || rolLocal === "administrador") esAdmin = true;
+            }
+
+            if (esAdmin) {
+                seccionAdmin.classList.add("visible");
+            } else {
+                seccionAdmin.classList.remove("visible");
+            }
+        } catch (e) {
+            console.warn("Error al validar rol de admin:", e);
+        }
     }
 
     /* ==========================================================
@@ -723,7 +812,6 @@
     ========================================================== */
     async function cargarEstadisticas() {
         try {
-            // 1. Obtener materiales
             const { data: mats, error: errMats } = await supabaseClient
                 .from("materiales")
                 .select("id, entradas, entregadas, estado");
@@ -737,7 +825,6 @@
                 totalEntradas += Number(m.entradas || 0);
             });
 
-            // 2. Obtener suma real de unidades entregadas desde la tabla entregas_materiales
             const { data: entregas, error: errEnt } = await supabaseClient
                 .from("entregas_materiales")
                 .select("cantidad");
@@ -1211,7 +1298,6 @@
 
                 if (errorIns) throw errorIns;
 
-                // Actualizar contadores de 'entregadas' en la tabla 'materiales'
                 const nuevasEntregadas = Number(mat.entregadas || 0) + mat.cantidadEntrega;
                 const { error: errorUpd } = await supabaseClient
                     .from("materiales")
@@ -1223,7 +1309,6 @@
 
             mostrarMensaje(mensajeEntrega, "¡Entrega registrada exitosamente!", "ok");
 
-            // Limpiar formulario
             materialesSeleccionados = [];
             receptorSeleccionado = null;
             limpiarPersona();
@@ -1232,7 +1317,6 @@
             document.getElementById("inputColaborador").value = "";
             document.getElementById("inputObservaciones").value = "";
 
-            // Recargar estadísticas, lista de materiales y tabla de entregados
             await cargarEstadisticas();
             await cargarMateriales();
             await cargarEntregados();
@@ -1246,6 +1330,147 @@
     });
 
     /* ==========================================================
+       CARGA DE INFORMACIÓN Y RESPALDO (DESCARGA Y SUBIDA EXCEL)
+    ========================================================== */
+    document.getElementById("btnDescargarExcel").addEventListener("click", async () => {
+        mostrarMensaje(mensajeAdmin, "Generando archivo MasterMateriales.xlsx...", "info");
+
+        try {
+            // 1. Obtener datos de la tabla 'materiales'
+            const { data: materiales, error: errMat } = await supabaseClient
+                .from("materiales")
+                .select("*")
+                .order("codigo", { ascending: true });
+
+            if (errMat) throw errMat;
+
+            // 2. Obtener datos de la tabla 'entregas_materiales'
+            const { data: entregas, error: errEnt } = await supabaseClient
+                .from("entregas_materiales")
+                .select("*")
+                .order("created_at", { ascending: false });
+
+            if (errEnt) throw errEnt;
+
+            // 3. Crear libro de trabajo
+            const wb = XLSX.utils.book_new();
+
+            const wsMateriales = XLSX.utils.json_to_sheet(materiales || []);
+            const wsEntregas = XLSX.utils.json_to_sheet(entregas || []);
+
+            XLSX.utils.book_append_sheet(wb, wsMateriales, "Materiales");
+            XLSX.utils.book_append_sheet(wb, wsEntregas, "Entregas");
+
+            XLSX.writeFile(wb, "MasterMateriales.xlsx");
+            mostrarMensaje(mensajeAdmin, "Descarga completada con éxito.", "ok");
+
+        } catch (err) {
+            console.error("Error al exportar Excel:", err);
+            mostrarMensaje(mensajeAdmin, "Error al generar el Excel: " + err.message, "error");
+        }
+    });
+
+    document.getElementById("btnCargarExcel").addEventListener("click", async () => {
+        const inputArchivo = document.getElementById("archivoExcel");
+        if (!inputArchivo.files || inputArchivo.files.length === 0) {
+            mostrarMensaje(mensajeAdmin, "Por favor seleccione un archivo .xlsx para subir.", "error");
+            return;
+        }
+
+        const archivo = inputArchivo.files[0];
+        const lector = new FileReader();
+
+        mostrarMensaje(mensajeAdmin, "Procesando e importando materiales...", "info");
+
+        lector.onload = async (e) => {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: "array" });
+
+                const nombreHoja = workbook.SheetNames.includes("Materiales") ? "Materiales" : workbook.SheetNames[0];
+                const hoja = workbook.Sheets[nombreHoja];
+                const filas = XLSX.utils.sheet_to_json(hoja);
+
+                if (!filas || filas.length === 0) {
+                    mostrarMensaje(mensajeAdmin, "La hoja de materiales está vacía.", "error");
+                    return;
+                }
+
+                // Obtener inventario actual para verificar si ya existen
+                const { data: matsExistentes, error: errMats } = await supabaseClient
+                    .from("materiales")
+                    .select("id, codigo, entradas");
+
+                if (errMats) throw errMats;
+
+                const mapaExistentes = new Map();
+                (matsExistentes || []).forEach(m => {
+                    mapaExistentes.set(String(m.codigo).trim().toUpperCase(), m);
+                });
+
+                let procesados = 0;
+
+                for (const fila of filas) {
+                    const codigo = String(fila.codigo || fila.Codigo || "").trim();
+                    const nombre = String(fila.nombre || fila.Nombre || "").trim();
+                    const entradasIngresadas = Number(fila.entradas || fila.Entradas || 0);
+
+                    if (!codigo || !nombre) continue;
+
+                    const codigoKey = codigo.toUpperCase();
+
+                    if (mapaExistentes.has(codigoKey)) {
+                        // SI YA EXISTE: Sumar entradas existentes + nuevas entradas
+                        const regActual = mapaExistentes.get(codigoKey);
+                        const nuevasEntradasTotal = Number(regActual.entradas || 0) + entradasIngresadas;
+
+                        const { error: errUpd } = await supabaseClient
+                            .from("materiales")
+                            .update({ entradas: nuevasEntradasTotal })
+                            .eq("id", regActual.id);
+
+                        if (errUpd) throw errUpd;
+                    } else {
+                        // SI ES NUEVO: Insertar registro
+                        const nuevoReg = {
+                            codigo: codigo,
+                            nombre: nombre,
+                            categoria: fila.categoria || fila.Categoria || "",
+                            unidad: fila.unidad || fila.Unidad || "unidad",
+                            biblioteca: fila.biblioteca || fila.Biblioteca || "F",
+                            entradas: entradasIngresadas,
+                            entregadas: 0,
+                            estado: fila.estado || fila.Estado || "Activo",
+                            observaciones: fila.observaciones || fila.Observaciones || ""
+                        };
+
+                        const { error: errIns } = await supabaseClient
+                            .from("materiales")
+                            .insert([nuevoReg]);
+
+                        if (errIns) throw errIns;
+                    }
+                    procesados++;
+                }
+
+                mostrarMensaje(mensajeAdmin, `¡Importación completada! Se actualizaron/insertaron ${procesados} registros de materiales.`, "ok");
+                inputArchivo.value = "";
+
+                // Recargar todo el sistema
+                await cargarEstadisticas();
+                await cargarMateriales();
+                await cargarEntregados();
+
+            } catch (err) {
+                console.error("Error al procesar la carga:", err);
+                mostrarMensaje(mensajeAdmin, "Error en la importación: " + err.message, "error");
+            }
+        };
+
+        lector.readAsArrayBuffer(archivo);
+    });
+
+    /* ==========================================================
        INICIALIZACIÓN
     ========================================================== */
     document.getElementById("botonVolver").addEventListener("click", () => {
@@ -1253,6 +1478,7 @@
     });
 
     document.addEventListener("DOMContentLoaded", () => {
+        verificarPermisosAdmin();
         cargarEstadisticas();
         cargarMateriales();
         cargarEntregados();
